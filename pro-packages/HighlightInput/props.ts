@@ -1,6 +1,6 @@
 import { CommonProps } from "../../packages/types";
 
-export type MsHighlightInputProps = {
+export type HighlightInputProps = {
   /** 输入值 */
   value?: string;
   /** 是否展示字数 */

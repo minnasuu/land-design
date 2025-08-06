@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import './index.scss';
 import useGetHightString from '../../packages/hooks/useGetHighlightStr';
-import { MsHighlightInputProps } from './props';
+import { HighlightInputProps } from './props';
 
-const MsHighlightInput: React.FC<MsHighlightInputProps> = ({
+const HighlightInput: React.FC<HighlightInputProps> = ({
   value = '',
   showNum = true,
   maxLength = 300,
@@ -101,4 +101,4 @@ const MsHighlightInput: React.FC<MsHighlightInputProps> = ({
   );
 };
 
-export default MsHighlightInput;
+export default HighlightInput;

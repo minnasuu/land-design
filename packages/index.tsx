@@ -165,6 +165,33 @@ export type { IconDefaultProps, IconProps } from "./Icon/props";
 
 export type { CommonProps } from "./types";
 
+
+// 进阶组件
+export type { AutoWidthHeightTextareaProps } from "../pro-packages/AutoWidthHeightTextarea/props";
+export { default as LandAutoWidthHeightTextarea } from "../pro-packages/AutoWidthHeightTextarea";
+
+export type { DoubleClickInputProps } from "../pro-packages/DoubleClickInput/props";
+export { default as LandDoubleClickInput } from "../pro-packages/DoubleClickInput";
+
+export type { GridTemplateProps } from "../pro-packages/GridTemplate/props";
+export { default as LandGridTemplate } from "../pro-packages/GridTemplate";
+
+export type { HighlightTextareaProps } from "../pro-packages/HighlightTextarea/props";
+export { default as LandHighlightTextarea } from "../pro-packages/HighlightTextarea";
+
+export type { HighlightInputProps } from "../pro-packages/HighlightInput/props";
+export { default as LandHighlightInput } from "../pro-packages/HighlightInput";
+
+export type {PrefixValueInputProps} from "../pro-packages/PrefixValueInput/props";
+export { default as LandPrefixValueInput } from "../pro-packages/PrefixValueInput";
+
+export type {SwiperMediaPreviewProps} from "../pro-packages/SwiperMediaPreview/props";
+export { default as LandSwiperMediaPreview } from "../pro-packages/SwiperMediaPreview";
+
+
+
+
+
 // React 兼容性工具
 export {
   getReactVersion,
