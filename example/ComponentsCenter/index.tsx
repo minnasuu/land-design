@@ -41,7 +41,7 @@ export default function ComponentsCenter() {
   const handleCategoryClick = (route: string) => {
     navigate(route)
   }
-  
+    
   return (
     <div className='flex flex-col' style={{ height: '100vh' }}>
       <div className='flex-1 flex flex-col items-center justify-center gap-12 px-24 w-fit-content'>
