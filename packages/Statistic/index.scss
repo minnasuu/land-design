@@ -1,0 +1,119 @@
+.land-statistic {
+  display: flex;
+  align-items: baseline;
+  gap: var(--land-statistic-gap, var(--gap-xs));
+  font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+
+  .land-statistic-prefix {
+    font-size: var(--land-statistic-prefix-font-size, var(--font-content-m));
+    color: var(--land-statistic-prefix-color, var(--color-text-secondary));
+    font-weight: var(--land-statistic-prefix-font-weight, 400);
+  }
+
+  .land-statistic-value {
+    display: flex;
+    align-items: baseline;
+    gap: var(--land-statistic-gap, var(--gap-xs));
+    font-size: var(--land-statistic-value-font-size, var(--font-title-l));
+    font-weight: var(--land-statistic-value-font-weight, 700);
+    color: var(--land-statistic-value-color, var(--color-text-primary));
+    white-space: nowrap;
+    line-height: 1;
+    position: relative;
+  }
+
+  .land-statistic-unit {
+    margin-left: var(--land-statistic-unit-margin-left, var(--gap-xs));
+    font-size: var(--land-statistic-unit-font-size, var(--font-content-s));
+    font-weight: var(--land-statistic-unit-font-weight, 400);
+    color: var(--land-statistic-unit-color, var(--color-text-secondary));
+    line-height: 1;
+  }
+
+  .land-statistic-suffix {
+    font-size: var(--land-statistic-suffix-font-size, var(--font-content-m));
+    color: var(--land-statistic-suffix-color, var(--color-text-secondary));
+    font-weight: var(--land-statistic-suffix-font-weight, 400);
+  }
+
+  .land-statistic-trend-icon {
+    flex-shrink: 0;
+    width: var(--land-statistic-trend-icon-size, 24px);
+    height: var(--land-statistic-trend-icon-size, 24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: var(--land-statistic-trend-icon-margin-left, var(--gap-xs));
+  }
+
+  // 随机数字动画样式
+  .land-statistic-random {
+    overflow: hidden;
+    display: inline-block;
+    width: 1ch;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    
+    .land-statistic-random-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      > div {
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+        line-height: 1;
+      }
+    }
+  }
+
+  // 动画状态样式
+  &.land-statistic-animating {
+    .land-statistic-value {
+      will-change: transform, opacity;
+    }
+  }
+
+  // 响应式设计
+  @media (max-width: 768px) {
+    .land-statistic-value {
+      font-size: var(--land-statistic-value-font-size-mobile, var(--font-title-m));
+    }
+    
+    .land-statistic-unit {
+      font-size: var(--land-statistic-unit-font-size-mobile, var(--font-content-xs));
+    }
+    
+    .land-statistic-trend-icon {
+      width: var(--land-statistic-trend-icon-size-mobile, 20px);
+      height: var(--land-statistic-trend-icon-size-mobile, 20px);
+    }
+  }
+
+  // 高对比度模式支持
+  @media (prefers-contrast: high) {
+    .land-statistic-value {
+      color: var(--color-text-primary-high-contrast, #000);
+    }
+    
+    .land-statistic-unit,
+    .land-statistic-prefix,
+    .land-statistic-suffix {
+      color: var(--color-text-secondary-high-contrast, #333);
+    }
+  }
+
+  // 减少动画偏好
+  @media (prefers-reduced-motion: reduce) {
+    .land-statistic-random-list,
+    .land-statistic-value {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}

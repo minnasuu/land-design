@@ -1,0 +1,23 @@
+.land-checked-container{
+  position: relative;
+  z-index: 0;
+  --land-checked-container-gap: var(--land-checked-container-gap, 2px);
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: var(--land-checked-container-gap);
+    left: var(--land-checked-container-gap);
+    width: calc(100% + var(--land-checked-container-gap) * 2);
+    height: calc(100% + var(--land-checked-container-gap) * 2);
+    border: var(--land-checked-container-size, 2px) solid var(--land-checked-container-color, var(--color-primary-6));
+    opacity: 0;
+    transition: opacity 0.2s linear;
+    pointer-events: none;
+  }
+  &.checked{
+    &::after{
+      opacity: 1;
+    }
+  }
+}

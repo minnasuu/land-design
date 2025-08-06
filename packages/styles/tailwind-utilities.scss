@@ -1,0 +1,325 @@
+/* ===== Tailwind CSS 工具类扩展 ===== */
+
+@layer components {
+  /* ===== 按钮样式组合 ===== */
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md transition-all duration-200 font-medium cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-primary text-white border border-primary hover:bg-primary-dark hover:border-primary-dark active:bg-primary-darker active:border-primary-darker;
+  }
+
+  .btn-outline {
+    @apply btn-base bg-transparent text-primary border border-primary hover:bg-primary-lighter hover:text-primary-dark hover:border-primary-dark active:bg-primary-light active:text-primary-darker active:border-primary-darker;
+  }
+
+  .btn-ghost {
+    @apply btn-base bg-transparent text-primary border border-transparent hover:bg-primary-lighter hover:text-primary-dark active:bg-primary-light active:text-primary-darker;
+  }
+
+  .btn-success {
+    @apply btn-base bg-success text-white border border-success hover:bg-success-dark hover:border-success-dark active:bg-success-darker active:border-success-darker;
+  }
+
+  .btn-warning {
+    @apply btn-base bg-warning text-white border border-warning hover:bg-warning-dark hover:border-warning-dark active:bg-warning-darker active:border-warning-darker;
+  }
+
+  .btn-error {
+    @apply btn-base bg-error text-white border border-error hover:bg-error-dark hover:border-error-dark active:bg-error-darker active:border-error-darker;
+  }
+
+  /* ===== 按钮尺寸 ===== */
+  .btn-xs {
+    @apply h-6 px-2 text-xs;
+  }
+
+  .btn-sm {
+    @apply h-8 px-3 text-sm;
+  }
+
+  .btn-md {
+    @apply h-10 px-4 text-sm;
+  }
+
+  .btn-lg {
+    @apply h-12 px-6 text-base;
+  }
+
+  .btn-xl {
+    @apply h-14 px-8 text-lg;
+  }
+
+  /* ===== 输入框样式组合 ===== */
+  .input-base {
+    @apply w-full px-3 py-2 border border-border-primary rounded-md bg-bg-primary text-text-primary placeholder-text-quaternary transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary-lighter focus:outline-none;
+  }
+
+  .input-sm {
+    @apply input-base h-8 px-2 text-sm;
+  }
+
+  .input-md {
+    @apply input-base h-10 px-3 text-sm;
+  }
+
+  .input-lg {
+    @apply input-base h-12 px-4 text-base;
+  }
+
+  .input-xl {
+    @apply input-base h-14 px-6 text-lg;
+  }
+
+  /* ===== 卡片样式组合 ===== */
+  .card-base {
+    @apply bg-bg-primary border border-border-primary rounded-lg shadow-sm;
+  }
+
+  .card-sm {
+    @apply card-base p-4;
+  }
+
+  .card-md {
+    @apply card-base p-6;
+  }
+
+  .card-lg {
+    @apply card-base p-8;
+  }
+
+  .card-xl {
+    @apply card-base p-10;
+  }
+
+  /* ===== 标签样式组合 ===== */
+  .tag-base {
+    @apply inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border;
+  }
+
+  .tag-primary {
+    @apply tag-base bg-primary-lighter text-primary border-primary-light;
+  }
+
+  .tag-success {
+    @apply tag-base bg-success-lighter text-success border-success-light;
+  }
+
+  .tag-warning {
+    @apply tag-base bg-warning-lighter text-warning border-warning-light;
+  }
+
+  .tag-error {
+    @apply tag-base bg-error-lighter text-error border-error-light;
+  }
+
+  .tag-gray {
+    @apply tag-base bg-gray-light text-gray-secondary border-gray-tertiary;
+  }
+
+  /* ===== 徽章样式组合 ===== */
+  .badge-base {
+    @apply inline-flex items-center justify-center rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge-base bg-primary text-white;
+  }
+
+  .badge-success {
+    @apply badge-base bg-success text-white;
+  }
+
+  .badge-warning {
+    @apply badge-base bg-warning text-white;
+  }
+
+  .badge-error {
+    @apply badge-base bg-error text-white;
+  }
+
+  .badge-gray {
+    @apply badge-base bg-gray-secondary text-white;
+  }
+
+  /* ===== 头像样式组合 ===== */
+  .avatar-base {
+    @apply inline-flex items-center justify-center rounded-full bg-gray-tertiary text-gray-quaternary overflow-hidden;
+  }
+
+  .avatar-xs {
+    @apply avatar-base w-6 h-6 text-xs;
+  }
+
+  .avatar-sm {
+    @apply avatar-base w-8 h-8 text-sm;
+  }
+
+  .avatar-md {
+    @apply avatar-base w-10 h-10 text-base;
+  }
+
+  .avatar-lg {
+    @apply avatar-base w-12 h-12 text-lg;
+  }
+
+  .avatar-xl {
+    @apply avatar-base w-16 h-16 text-xl;
+  }
+
+  .avatar-2xl {
+    @apply avatar-base w-20 h-20 text-2xl;
+  }
+
+  /* ===== 加载样式组合 ===== */
+  .loading-base {
+    @apply animate-spin rounded-full border-2 border-gray-tertiary border-t-current;
+  }
+
+  .loading-xs {
+    @apply loading-base w-4 h-4;
+  }
+
+  .loading-sm {
+    @apply loading-base w-6 h-6;
+  }
+
+  .loading-md {
+    @apply loading-base w-8 h-8;
+  }
+
+  .loading-lg {
+    @apply loading-base w-12 h-12;
+  }
+
+  .loading-xl {
+    @apply loading-base w-16 h-16;
+  }
+
+  /* ===== 进度条样式组合 ===== */
+  .progress-base {
+    @apply w-full bg-gray-tertiary rounded-full overflow-hidden;
+  }
+
+  .progress-xs {
+    @apply progress-base h-1;
+  }
+
+  .progress-sm {
+    @apply progress-base h-2;
+  }
+
+  .progress-md {
+    @apply progress-base h-3;
+  }
+
+  .progress-lg {
+    @apply progress-base h-4;
+  }
+
+  .progress-xl {
+    @apply progress-base h-6;
+  }
+
+  .progress-bar {
+    @apply h-full bg-primary transition-all duration-300 ease-out;
+  }
+
+  /* ===== 模态框样式组合 ===== */
+  .modal-overlay {
+    @apply fixed inset-0 bg-bg-mask flex items-center justify-center z-50;
+  }
+
+  .modal-content {
+    @apply bg-bg-primary rounded-lg shadow-xl max-w-lg w-full mx-4 max-h-[90vh] overflow-hidden;
+  }
+
+  .modal-header {
+    @apply flex items-center justify-between p-6 border-b border-border-primary;
+  }
+
+  .modal-body {
+    @apply p-6;
+  }
+
+  .modal-footer {
+    @apply flex items-center justify-end gap-3 p-6 border-t border-border-primary;
+  }
+
+  /* ===== 下拉菜单样式组合 ===== */
+  .dropdown-base {
+    @apply absolute top-full left-0 mt-1 bg-bg-primary border border-border-primary rounded-md shadow-lg z-40 min-w-48;
+  }
+
+  .dropdown-item {
+    @apply block w-full px-4 py-2 text-left text-sm text-text-primary hover:bg-bg-secondary cursor-pointer transition-colors duration-150;
+  }
+
+  .dropdown-item-active {
+    @apply dropdown-item bg-primary-lighter text-primary;
+  }
+
+  .dropdown-item-disabled {
+    @apply dropdown-item text-text-disabled cursor-not-allowed hover:bg-transparent;
+  }
+
+  /* ===== 工具提示样式组合 ===== */
+  .tooltip-base {
+    @apply absolute z-50 px-2 py-1 text-xs text-white bg-gray-darker rounded shadow-lg whitespace-nowrap;
+  }
+
+  .tooltip-top {
+    @apply tooltip-base bottom-full left-1/2 transform -translate-x-1/2 mb-1;
+  }
+
+  .tooltip-bottom {
+    @apply tooltip-base top-full left-1/2 transform -translate-x-1/2 mt-1;
+  }
+
+  .tooltip-left {
+    @apply tooltip-base right-full top-1/2 transform -translate-y-1/2 mr-1;
+  }
+
+  .tooltip-right {
+    @apply tooltip-base left-full top-1/2 transform -translate-y-1/2 ml-1;
+  }
+
+  /* ===== 表格样式组合 ===== */
+  .table-base {
+    @apply w-full border-collapse;
+  }
+
+  .table-header {
+    @apply bg-bg-secondary border-b border-border-primary;
+  }
+
+  .table-header-cell {
+    @apply px-4 py-3 text-left text-sm font-medium text-text-primary;
+  }
+
+  .table-row {
+    @apply border-b border-border-primary hover:bg-bg-secondary transition-colors duration-150;
+  }
+
+  .table-cell {
+    @apply px-4 py-3 text-sm text-text-primary;
+  }
+
+  /* ===== 分页样式组合 ===== */
+  .pagination-base {
+    @apply flex items-center gap-1;
+  }
+
+  .pagination-item {
+    @apply flex items-center justify-center w-8 h-8 text-sm border border-border-primary rounded hover:border-primary hover:text-primary cursor-pointer transition-all duration-150;
+  }
+
+  .pagination-item-active {
+    @apply pagination-item bg-primary text-white border-primary;
+  }
+
+  .pagination-item-disabled {
+    @apply pagination-item text-text-disabled cursor-not-allowed hover:border-border-primary hover:text-text-disabled;
+  }
+} 

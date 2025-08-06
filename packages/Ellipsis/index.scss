@@ -1,0 +1,37 @@
+.land-ellipsis{
+  position: relative;
+  width: 100%;
+  
+  .land-ellipsis-content{
+    font-size: var(--font-content-m);
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+    word-break: break-word;
+  }
+  
+  &.line-single{
+    .land-ellipsis-content{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  &.line-multiple{
+    .land-ellipsis-content{
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: inherit;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+    }
+  }
+
+  .land-ellipsis-popover{
+    max-width: 300px;
+    word-break: break-word;
+  }
+}

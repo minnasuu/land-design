@@ -1,0 +1,94 @@
+.land-alert {
+  @apply flex items-center gap-2 w-fit rounded-lg border p-4;
+  
+  // 基础样式
+  gap: var(--gap-s);
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
+  border-radius: var(--radius-m);
+  padding: var(--gap-l) var(--gap-xl);
+  
+  // 垂直布局
+  &.column {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-m);
+    padding: var(--gap-xl);
+  }
+  
+  // 无背景样式
+  &.no-bg {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    
+    &.column {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+    }
+  }
+  
+  // 主题样式
+  &.primary:not(.column) {
+    background-color: var(--color-primary-1);
+    border-color: var(--color-primary-2);
+  }
+  
+  &.success:not(.column) {
+    background-color: var(--color-success-lighter);
+    border-color: var(--color-success-light);
+  }
+  
+  &.warning:not(.column) {
+    background-color: var(--color-warning-lighter);
+    border-color: var(--color-warning-light);
+  }
+  
+  &.error:not(.column) {
+    background-color: var(--color-error-lighter);
+    border-color: var(--color-error-light);
+  }
+  
+  // 图标样式
+  .land-alert-icon {
+    flex-shrink: 0;
+    width: var(--icon-m);
+    height: var(--icon-m);
+  }
+  
+  // 内容样式
+  .land-alert-content {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  // 标题样式
+  .land-alert-title {
+    font-size: var(--font-content-m);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: var(--gap-xs);
+  }
+  
+  // 描述样式
+  .land-alert-description {
+    font-size: var(--font-content-s);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+  
+  // 关闭按钮样式
+  .land-alert-close {
+    flex-shrink: 0;
+    width: var(--icon-m);
+    height: var(--icon-m);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: color var(--transition-s) ease;
+    
+    &:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+}

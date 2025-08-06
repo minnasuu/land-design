@@ -1,0 +1,29 @@
+.land-collapse{
+  font-size: 14px;
+  transition: height var(--transition-s) cubic-bezier(0.38, 0, 0.24, 1);
+  .land-collapse-title {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    svg {
+      transform: rotate(-90deg);
+      transition: transform var(--transition-s) linear;
+    }
+  }
+  .land-collapse-content {
+    color: var(--color-text-primary);
+    overflow: hidden;
+    transition: max-height var(--transition-s) linear;
+    .land-collapse-content-details {
+      padding: 12px 12px 0;
+    }
+  }
+  &[open] {
+    .land-collapse-title {
+      svg {
+        transform: rotate(0deg);
+      }
+    }
+  } 
+}

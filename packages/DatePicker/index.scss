@@ -1,0 +1,102 @@
+.land-date-picker {
+  --land-date-picker-input-bg: var(--color-bg-secondary);
+  --land-date-picker-input-padding: 0 12px;
+  --land-date-picker-input-border-radius: var(--radius-m);
+  position: relative;
+
+  // 优化：禁用状态样式
+  &.disabled {
+    pointer-events: none;
+    
+    .land-date-picker-input {
+      opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
+      cursor: not-allowed;
+      
+      .land-date-picker-icon {
+        opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
+      }
+    }
+  }
+  
+  .land-date-picker-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--land-date-picker-input-bg);
+    border-radius: var(--land-date-picker-input-border-radius);
+    transition: opacity var(--transition-s) ease;
+    
+    // 优化：禁用状态下的输入框样式
+    &.disabled {
+      opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
+      cursor: not-allowed;
+      
+      .land-date-picker-input-value {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      
+      .land-date-picker-icon {
+        opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
+      }
+    }
+    
+    .land-date-picker-input-value {
+      flex: 1;
+      padding: var(--land-date-picker-input-padding);
+      
+      // 输入模式下的样式
+      &:not([readonly]) {
+        background-color: var(--color-bg-primary);
+        border: 1px solid var(--color-border-primary);
+        border-radius: var(--land-date-picker-input-border-radius);
+        
+        &:focus {
+          border-color: var(--color-primary);
+          box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
+        }
+      }
+    }
+    
+    .land-date-picker-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-secondary);
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    
+    &:hover:not(.empty):not(.input-mode):not(.disabled) {
+      .land-date-picker-icon {
+        opacity: 0;
+      }
+    }
+    &.input-mode{
+      .land-date-picker-input-value .land-input-clear-icon{
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+  
+  .land-date-picker-dropdown-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    .land-date-picker-dropdown-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      
+      .land-date-picker-dropdown-cancel-button,
+      .land-date-picker-dropdown-confirm-button {
+        min-width: 60px;
+      }
+    }
+  }
+}

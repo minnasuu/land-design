@@ -1,0 +1,26 @@
+.land-prefix-input{
+  position: relative;
+  overflow: hidden;
+}
+
+.land-prefix-value-input-prefix{
+  font-size: var(--font-content-m);
+  color: var(--color-text-secondary);
+  position: absolute;
+  display: flex;
+  overflow: hidden;
+  max-width: 100%;
+  border-radius: 2px;
+  z-index: 2;
+  top: 1px;
+  left: 0px;
+  background-color: var(--color-bg-tertiary);
+  &.withPrefix{
+    padding-inline: 4px;
+  }
+  .land-prefix-value-input-prefix-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

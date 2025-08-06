@@ -1,0 +1,73 @@
+.land-tag-input{
+   position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--land-tag-input-gap, var(--gap-s));
+    padding-block: var(--land-tag-input-padding-block, var(--gap-s));
+    height: fit-content;
+    border-radius: var(--land-tag-input-border-radius, var(--radius-m));
+    background-color: var(--land-tag-input-bg-color, var(--color-bg-secondary));
+    box-sizing: border-box;
+    overflow: auto;
+    transition: background-color var(--transition-s) linear;
+    padding-right: var(--land-tag-input-padding-right, var(--gap-s));
+    &.widthClear{
+      padding-right: var(--land-tag-input-padding-right-clear, var(--gap-m));
+    }
+    .land-tag-input-container{
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--land-tag-input-container-gap, var(--gap-s));
+      width: fit-content;
+      min-width: 0;
+      overflow: auto;
+    }
+    &::-webkit-scrollbar{
+      width: 0;
+      display: none;
+    }
+    &:focus-within,
+    &:hover{
+      background-color: var(--land-tag-input-hover-bg-color, var(--color-bg-secondary));
+      .land-input-clear-icon{
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    .land-tag-input-input{
+      flex: 1;
+      height: 28px;
+      min-width: 80px;
+    }
+    .land-input-clear-icon{
+      width: var(--land-tag-input-clear-icon-size, 16px);
+      height: var(--land-tag-input-clear-icon-size, 16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      color: var(--land-tag-input-clear-icon-color, var(--color-text-secondary));
+      svg{
+        width: var(--land-tag-input-clear-icon-size, 16px);
+        height: var(--land-tag-input-clear-icon-size, 16px);
+      }
+    }
+
+  .land-tag-input-tag{
+    display: flex;
+    align-items: center;
+    gap: var(--land-tag-input-tag-gap, var(--gap-s));
+    padding-left: var(--land-tag-input-tag-padding-left, var(--gap-m));
+    padding-right: var(--land-tag-input-tag-padding-right, var(--gap-s));
+    background-color: var(--land-tag-input-tag-bg-color, var(--color-bg-primary));
+    border-radius: var(--land-tag-input-tag-border-radius, var(--radius-s));
+    color: var(--land-tag-input-tag-color, var(--color-text-primary));
+    font-size: var(--land-tag-input-tag-font-size, var(--font-content-s));
+    border: var(--land-tag-input-tag-border, none);
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+}

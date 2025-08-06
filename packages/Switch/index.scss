@@ -1,0 +1,75 @@
+.land-switch{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--land-switch-gap, var(--gap-m));
+  &.disabled{
+    .land-switch-content{
+      opacity: var(--land-switch-disabled-opacity, var(--opacity-disabled));
+      cursor: not-allowed;
+    }
+    cursor: not-allowed;
+  }
+  .land-switch-content{
+    display: flex;
+    align-items: center;
+    gap: var(--land-switch-content-gap, var(--gap-m));
+    cursor: pointer;
+    .land-switch-bar {
+      display: flex;
+      justify-content: start;
+      padding: 2px;
+      width: var(--land-switch-bar-width, 36px);
+      height: var(--land-switch-bar-height, 20px);
+      background-color: var(--land-switch-bar-background-color, var(--color-bg-secondary));
+      border-radius: var(--land-switch-bar-border-radius, 24px);
+      flex-shrink: 0;
+      transition: background-color var(--transition-s) linear;
+      &:hover {
+        background-color: var(--land-switch-bar-hover-background-color, var(--color-bg-tertiary));
+      }
+      &:active {
+        background-color: var(--land-switch-bar-active-background-color, var(--color-bg-quaternary));
+      }
+    }
+    .land-switch-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      aspect-ratio: 1;
+      background-color: var(--land-switch-indicator-background-color, var(--color-white));
+      border-radius: var(--land-switch-indicator-border-radius, var(--radius-circle));
+    }
+    .land-switch-label {
+      font-size: var(--land-switch-label-font-size, var(--font-content-m));
+      color: var(--land-switch-label-color, var(--color-text-primary));
+      user-select: none;
+    }
+    & + .land-switch-label-iconTip {
+      position: relative;
+      height: var(--land-switch-label-iconTip-height, 16px);
+      cursor: default;
+    }
+    &.checked {
+      .land-switch-bar {
+        background-color: var(--land-switch-bar-checked-background-color, var(--color-primary));
+        transition-delay: var(--land-switch-bar-checked-transition-delay, 100ms);
+      }
+    }
+    &.dark{
+      .land-switch-bar{
+        background-color: var(--land-switch-bar-dark-background-color, rgba(0,0,0,0.2));
+        &:hover {
+          background-color: var(--land-switch-bar-dark-hover-background-color, rgba(0,0,0,0.2));
+        }
+      }
+      &.checked{
+        .land-switch-bar {
+        background-color: var(--land-switch-bar-checked-background-color, var(--color-primary));
+        transition-delay: var(--land-switch-bar-checked-transition-delay, 100ms);
+      }
+      }
+      } 
+  }
+}

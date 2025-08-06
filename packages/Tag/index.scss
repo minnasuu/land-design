@@ -1,0 +1,24 @@
+.land-tag{
+  display: flex;
+  align-items: center;
+  gap: var(--land-tag-gap, var(--gap-s));
+  padding: var(--land-tag-padding, 4px 8px);
+  border-radius: var(--land-tag-border-radius, var(--radius-xs));
+  font-size: var(--land-tag-font-size, var(--font-content-m));
+  user-select: none;
+  color: var(--land-tag-color, var(--color-text-primary));
+  background-color: var(--land-tag-bg-color, var(--color-bg-secondary));
+  svg.land-tag-close{
+    flex-shrink: 0;
+    cursor: pointer;
+    width: var(--land-tag-close-size, 16px);
+    height: var(--land-tag-close-size, 16px);
+    path{
+      stroke-width: var(--land-tag-close-stroke-width, 3);
+    }
+  }
+  &--white{
+    background-color: var(--land-tag-white-bg-color, var(--color-bg-primary));
+    color: var(--color-text-primary);
+  }
+}

@@ -1,0 +1,144 @@
+.land-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding-inline: var(--land-header-padding-inline, var(--padding-xl));
+  gap: var(--land-header-gap, var(--gap-l));
+  width: 100%;
+  background: var(--land-header-background, var(--color-bg-primary));
+  box-sizing: border-box;
+  z-index: var(--land-header-z-index, var(--z-index-1000));
+  &.applications{
+    padding-left: 0;
+  }
+  &.border-bottom{
+    border-bottom: 1px solid var(--land-header-border-bottom-color, var(--color-border-primary));
+  }
+  &.filter{
+    background: var(--land-header-filter-background, rgba(255, 255, 255, 0.8));
+    backdrop-filter: var(--land-header-filter-backdrop-filter, var(--blur-s));
+  }
+  &.fixed {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .land-header-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--land-header-logo-gap, var(--gap-m));
+    height: 100%;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .land-header-application {
+    appearance: none;
+    border: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    height: 100%;
+    background-color: var(--land-header-application-background, var(--color-gray-3));
+    &:hover .land-application-drop {
+      transform: translate(0, 0);
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+  .land-application-drop {
+    position: absolute;
+    left: var(--land-header-application-drop-left, 12px);
+    top: 100%;
+    padding: var(--land-header-application-drop-padding, var(--padding-s));
+    background-color: var(--color-white);
+    border-radius: var(--radius-m);
+    border: 1px solid var(--land-header-application-drop-border-color, var(--color-gray-4));
+    box-shadow: var(--land-header-application-drop-box-shadow, var(--shadow-m));
+    transform: translate(var(--land-header-application-drop-transform-x, -12px), var(--land-header-application-drop-transform-y, -40%));
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--transition-s);
+    will-change: transform, opacity;
+    z-index: -1;
+  }
+  .land-header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--land-header-right-gap, var(--gap-l));
+  }
+  .land-mobile-toggle-button {
+    display: none;
+  }
+  @media screen and (max-width: var(--land-header-mobile-size, 767px)) {
+    gap: var(--land-header-mobile-gap, var(--gap-l));
+    .land-mobile-toggle-button {
+      display: flex;
+    }
+    .land-header-right{
+      margin-left: auto;
+    }
+  }
+  .land-header-nav{
+    display: flex;
+    flex: 1;
+    height: 100%;
+    .land-menu-item:hover .land-menu-drop-wrap {
+      left: 50%;
+      transform: translateX(-50%) scale(1);
+    }
+    .land-menu-drop-wrap {
+      width: fit-content;
+      &:not(.open) {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    @media screen and (max-width: var(--land-header-mobile-size, 767px)) {
+      position: fixed;
+      top: var(--land-header-mobile-top, 64px);
+      right: 0;
+      flex: none;
+      width: fit-content;
+      height: fit-content;
+      pointer-events: none;
+      display: none;
+      &.showMobileNav{
+        pointer-events: all;
+        display: block;
+        .land-menu{
+          opacity: 1;
+        }
+      }
+      .land-menu {
+        flex-direction: column;
+        padding: var(--land-header-mobile-menu-padding, var(--padding-s));
+        background: var(--land-header-mobile-menu-background, var(--color-white));
+        height: fit-content;
+        border: 1px solid var(--land-header-mobile-menu-border-color, var(--color-gray-4));
+        border-bottom-left-radius: var(--land-header-mobile-menu-border-radius-left, 8px);
+        border-bottom-right-radius: var(--land-header-mobile-menu-border-radius-right, 8px);
+        transition: opacity var(--transition-s) linear;
+        opacity: 0;
+        .land-menu-link.active::after {
+          opacity: 0;
+        }
+        .land-menu-drop-wrap {
+          position: relative;
+          opacity: 1;
+          transform: scale(1);
+          pointer-events: all;
+          .land-menu-drop,
+          .land-menu-drop .land-menu {
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            text-indent: 1em;
+          }
+        }
+      }
+    }
+  }
+}

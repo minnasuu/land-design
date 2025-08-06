@@ -1,0 +1,44 @@
+.land-divider {
+  display: flex;
+  align-items: center;
+  &.column {
+    flex-direction: column;
+    .land-divider-content{
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+    .land-divider-line{
+      width: 1px;
+      height: 100%;
+    }
+  }
+  .land-divider-line{
+    height: 1px;
+    width: 100%;
+    background-color: var(--land-divider-line-color, var(--color-border-primary));
+  }
+  &.width-content {
+    gap: var(--land-divider-content-gap, var(--gap-m));
+    .land-divider-line{
+      width: auto;
+      flex: 1;
+    }
+    &.left{
+      .land-divider-line:not(.land-divider-line-right){
+        flex: unset;
+        width: var(--land-divider-pre-line-width, 10%);
+      }
+    }
+    &.right{
+      .land-divider-line.land-divider-line-right{
+        flex: unset;
+        width: var(--land-divider-pre-line-width, 10%);
+      }
+    }
+  }
+  &.dashed{
+    .land-divider-line{
+      background: repeating-linear-gradient(to right, var(--land-divider-line-color, var(--color-gray-5)) 0 var(--land-divider-dashed-gap, 5px), transparent var(--land-divider-dashed-gap, 5px) var(--land-divider-dashed-length, 10px));
+    }
+  }
+}

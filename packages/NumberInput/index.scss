@@ -1,0 +1,59 @@
+.land-number-input{
+  position: relative;
+  .land-number-input-input input{
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      height: auto;
+      -webkit-appearance: none;
+    }
+  }
+  
+  // 鼠标滚轮功能样式
+  &[data-wheel-enabled="true"] {
+    cursor: ns-resize;
+  }
+  &.hide-arrow-button{
+    .land-number-input-input{
+      padding-left: 0;
+    }
+  }
+  
+  .land-numberInput-arrow{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 100%;
+    color: var(--land-number-input-arrow-color, var(--color-text-primary));
+    
+    .land-numberInput-add svg{
+      transform: rotate(180deg);
+    }
+    .land-numberInput-add,
+    .land-numberInput-dec{
+      display: grid;
+      place-content: center;
+      height: var(--land-number-input-arrow-height, 18px);
+      width: 100%;
+      transition: color 0.15s linear;
+      cursor: pointer;
+      svg path{
+        transition: stroke-width 0.15s linear;
+      }
+      &:hover:not(.disabled){
+        color: var(--color-text-primary);
+        svg path{
+          stroke-width: 4px;
+        }
+      }
+      &.disabled{
+        cursor: not-allowed;
+        color: var(--color-text-secondary);
+      }
+    }
+  }
+}

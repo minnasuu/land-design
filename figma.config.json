@@ -1,0 +1,7 @@
+{
+  "codeConnect": {
+    "include": ["/**/*.{tsx,jsx}"],
+    "label": "React",
+    "interactiveSetupFigmaFileUrl": "https://www.figma.com/design/PisstaAoQkRKPaFMopVgYt/Land-Design-DS?node-id=1-2&t=eVKEYpaisbhnwfxC-1"
+  }
+}

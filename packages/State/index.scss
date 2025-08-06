@@ -1,0 +1,27 @@
+.land-state{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .land-state-title {
+    font-size: 14px;
+    margin-top: 8px;
+    color: var(--color-text-primary);
+  }
+  .land-state-subTitle {
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--color-text-secondary);
+    .land-state-subTitle-link {
+      font-size: 12px;
+    }
+    }
+  .land-state-button {
+    margin-top: 8px;
+  }
+  .land-state-empty-icon {
+    color: var(--color-text-quaternary);
+  }
+  .land-state-offline-icon {
+    color: var(--color-text-quaternary);
+  }
+}

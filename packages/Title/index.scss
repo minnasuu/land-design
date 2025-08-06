@@ -1,0 +1,41 @@
+.land-title{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-m);
+  width: fit-content;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  h1 {
+    font-size: var(--font-title-l);
+  }
+  h2 {
+    font-size: var(--font-title-m);
+  }
+  h3 {
+    font-size: var(--font-title-s);
+  }
+  h4{
+    font-size: var(--font-title-xs);
+  }
+  p {
+    font-size: var(--font-content-m);
+    font-weight: 400;
+  }
+  .land-title-sub {
+    position: absolute;
+    top: -30%;
+    right: -50%;
+    padding: 2px 4px;
+    font-size: 8px;
+    font-weight: 400;
+    color: white;
+    background-color: var(--color-text-secondary);
+    border-radius: 4px;
+  }
+  .land-title-tip {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+}

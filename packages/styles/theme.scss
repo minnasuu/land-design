@@ -1,0 +1,369 @@
+:root {
+  // ===== 语义化字体系统 =====
+  // 正文字体
+  --font-content-xs: var(--font-size-10);    // 正文-极小
+  --font-content-s: var(--font-size-12);      // 正文-小
+  --font-content-m: var(--font-size-14);      // 正文-常规
+  --font-content-l: var(--font-size-16);      // 正文-大
+  
+  // 标题字体
+  --font-title-xs: var(--font-size-14);       // 标题-辅助
+  --font-title-s: var(--font-size-16);        // 标题-小
+  --font-title-m: var(--font-size-20);       // 标题-常规
+  --font-title-l: var(--font-size-24);      // 标题-大
+  --font-title-xl: var(--font-size-28);    // 标题-超大
+  
+  // 视觉标题字体
+  --font-slogan-xs: var(--font-size-32);  // 视觉标题-小
+  --font-slogan-s: var(--font-size-48);  // 视觉标题-中
+  --font-slogan-m: var(--font-size-64); // 视觉标题-常规
+  --font-slogan-l: var(--font-size-64); // 视觉标题-大
+
+  // ===== 语义化间距系统 =====
+  // 组件内间距
+  --padding-xs: var(--spacing-2);
+  --padding-s: var(--spacing-4);
+  --padding-m: var(--spacing-8);
+  --padding-l: var(--spacing-12);
+  --padding-xl: var(--spacing-16);
+  --padding-2xl: var(--spacing-20);
+  --padding-3xl: var(--spacing-24);
+  --padding-4xl: var(--spacing-32);
+  
+  // 组件间间距
+  --gap-xs: var(--spacing-2);
+  --gap-s: var(--spacing-4);
+  --gap-m: var(--spacing-8);
+  --gap-l: var(--spacing-12);
+  --gap-xl: var(--spacing-16);
+  --gap-2xl: var(--spacing-20);
+  --gap-3xl: var(--spacing-24);
+  --gap-4xl: var(--spacing-32);
+
+  // ===== 语义化颜色系统 =====
+  // 主色调
+  --color-primary: var(--color-primary-6);
+  --color-primary-light: var(--color-primary-1);
+  --color-primary-lighter: var(--color-primary-1);
+  --color-primary-dark: var(--color-primary-7);
+  --color-primary-darker: var(--color-primary-8);
+  
+  // 成功色
+  --color-success: var(--color-green-6);
+  --color-success-light: var(--color-green-1);
+  --color-success-lighter: var(--color-green-2);
+  --color-success-dark: var(--color-green-7);
+  --color-success-darker: var(--color-green-8);
+  
+  // 警告色
+  --color-warning: var(--color-orange-6);
+  --color-warning-light: var(--color-orange-1);
+  --color-warning-lighter: var(--color-orange-2);
+  --color-warning-dark: var(--color-orange-7);
+  --color-warning-darker: var(--color-orange-8);
+  
+  // 错误色
+  --color-error: var(--color-red-6);
+  --color-error-light: var(--color-red-1);
+  --color-error-lighter: var(--color-red-2);
+  --color-error-dark: var(--color-red-7);
+  --color-error-darker: var(--color-red-8);
+  
+  // 链接色
+  --color-link: var(--color-blue-6);
+  --color-link-light: var(--color-blue-1);
+  --color-link-lighter: var(--color-blue-2);
+  --color-link-dark: var(--color-blue-7);
+  --color-link-darker: var(--color-blue-8);
+  
+  // 中性色
+  --color-text-primary: var(--color-gray-10);
+  --color-text-secondary: var(--color-gray-8);
+  --color-text-tertiary: var(--color-gray-6);
+  --color-text-quaternary: var(--color-gray-4);
+  --color-text-disabled: var(--color-gray-5);
+  --color-text-primary-inverse: var(--color-gray-1);
+  
+  --color-bg-primary: var(--color-white);
+  --color-bg-secondary: var(--color-gray-2);
+  --color-bg-tertiary: var(--color-gray-3);
+  --color-bg-quaternary: var(--color-gray-4);
+  --color-bg-disabled: var(--color-gray-3);
+  --color-bg-opacity: rgba(255,255,255,0.8);
+  // 反色
+  --color-bg-primary-inverse: var(--color-gray-12);
+  
+  // 边框色
+  --color-border-primary: var(--color-gray-3);
+  --color-border-secondary: var(--color-gray-4);
+  --color-border-tertiary: var(--color-gray-5);
+
+  --color-bg-skeleton: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-tertiary) 37%, var(--color-bg-secondary) 63%);
+
+  // ===== 语义化组件变量 =====
+  // 按钮
+  --button-height-s: 24px;
+  --button-height-m: 32px;
+  --button-height-l: 40px;
+  --button-height-xl: 48px;
+  
+  // 输入框
+  --input-height-s: 24px;
+  --input-height-m: 32px;
+  --input-height-l: 40px;
+  --input-height-xl: 48px;
+  
+  // 卡片
+  --card-padding-s: var(--padding-s);
+  --card-padding-m: var(--padding-m);
+  --card-padding-l: var(--padding-l);
+  --card-padding-xl: var(--padding-xl);
+  
+  // 模态框
+  --modal-padding: var(--padding-xl);
+  --modal-header-height: 56px;
+  --modal-footer-height: 64px;
+  
+  // 导航
+  --nav-height: 64px;
+  --nav-item-height: 40px;
+  --nav-item-padding: var(--padding-m);
+  
+  // 表格
+  --table-header-height: 48px;
+  --table-row-height: 56px;
+  --table-cell-padding: var(--padding-m);
+  
+  // 分页
+  --pagination-height: 32px;
+  --pagination-item-width: 32px;
+  
+  // 标签
+  --tag-height-s: 20px;
+  --tag-height-m: 24px;
+  --tag-height-l: 28px;
+  --tag-padding-s: var(--padding-xs) var(--padding-s);
+  --tag-padding-m: var(--padding-s) var(--padding-m);
+  --tag-padding-l: var(--padding-s) var(--padding-l);
+  
+  // 徽章
+  --badge-size-s: 16px;
+  --badge-size-m: 20px;
+  --badge-size-l: 24px;
+  
+  // 头像
+  --avatar-size-xs: 24px;
+  --avatar-size-s: 32px;
+  --avatar-size-m: 40px;
+  --avatar-size-l: 48px;
+  --avatar-size-xl: 64px;
+  --avatar-size-xxl: 80px;
+  
+  // 图标
+  --icon-size-s: var(--icon-s);
+  --icon-size-m: var(--icon-m);
+  --icon-size-l: var(--icon-l);
+  --icon-size-xl: var(--icon-xl);
+  
+  // ===== 语义化状态变量 =====
+  // 交互状态
+  --state-hover-opacity: 0.8;
+  --state-active-opacity: 0.6;
+  --state-disabled-opacity: var(--opacity-disabled);
+  
+  // 加载状态
+  --loading-size-s: 16px;
+  --loading-size-m: 24px;
+  --loading-size-l: 32px;
+  --loading-size-xl: 48px;
+  
+  // 进度条
+  --progress-height-s: 4px;
+  --progress-height-m: 8px;
+  --progress-height-l: 12px;
+  --progress-height-xl: 16px;
+  
+  // ===== 语义化动画变量 =====
+  // 过渡动画
+  --transition-fast: var(--transition-s);
+  --transition-normal: var(--transition-m);
+  --transition-slow: var(--transition-l);
+  --transition-spring: var(--transition-xl);
+  
+  // 缓动函数
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  // ===== 语义化层级系统 =====
+  // 基础层级
+  --z-dropdown: var(--z-index-1000);
+  --z-modal: var(--z-index-1024);
+  --z-tooltip: var(--z-index-1000);
+  --z-popover: var(--z-index-1000);
+  --z-notification: var(--z-index-1025);
+  --z-loading: var(--z-index-1025);
+  
+  // ===== 语义化阴影系统 =====
+  // 组件阴影
+  --shadow-card: var(--shadow-s);
+  --shadow-dropdown: var(--shadow-m);
+  --shadow-modal: var(--shadow-l);
+  --shadow-tooltip: var(--shadow-s);
+  
+  // ===== 语义化圆角系统 =====
+  --radius-xs: var(--radius-2);
+  --radius-s: var(--radius-4);
+  --radius-m: var(--radius-8);
+  --radius-l: var(--radius-12);
+  --radius-xl: var(--radius-16);
+  --radius-2xl: var(--radius-20);
+  --radius-3xl: var(--radius-24);
+  --radius-full: var(--radius-999);
+  --radius-circle: 100%;
+}
+
+// ===== 深色模式语义化变量 =====
+@media (prefers-color-scheme: dark) {
+  :root {
+    // ===== 深色模式语义化颜色系统 =====
+    // 主色调 (深色模式下使用更亮的色调)
+    --color-primary: var(--color-primary-5);
+    --color-primary-light: var(--color-primary-1);
+    --color-primary-lighter: var(--color-primary-1);
+    --color-primary-dark: var(--color-primary-6);
+    --color-primary-darker: var(--color-primary-7);
+    
+    // 成功色 (深色模式下使用更亮的色调)
+    --color-success: var(--color-green-5);
+    --color-success-light: var(--color-green-1);
+    --color-success-lighter: var(--color-green-1);
+    --color-success-dark: var(--color-green-6);
+    --color-success-darker: var(--color-green-7);
+    
+    // 警告色 (深色模式下使用更亮的色调)
+    --color-warning: var(--color-orange-5);
+    --color-warning-light: var(--color-orange-1);
+    --color-warning-lighter: var(--color-orange-1);
+    --color-warning-dark: var(--color-orange-6);
+    --color-warning-darker: var(--color-orange-7);
+    
+    // 错误色 (深色模式下使用更亮的色调)
+    --color-error: var(--color-red-5);
+    --color-error-light: var(--color-red-1);
+    --color-error-lighter: var(--color-red-1);
+    --color-error-dark: var(--color-red-6);
+    --color-error-darker: var(--color-red-7);
+    
+    // 链接色 (深色模式下使用更亮的色调)
+    --color-link: var(--color-blue-5);
+    --color-link-light: var(--color-blue-1);
+    --color-link-lighter: var(--color-blue-1);
+    --color-link-dark: var(--color-blue-6);
+    --color-link-darker: var(--color-blue-7);
+    
+    // 中性色 (深色模式下的文本和背景)
+    --color-text-primary: var(--color-gray-2);
+    --color-text-secondary: var(--color-gray-6);
+    --color-text-tertiary: var(--color-gray-8);
+    --color-text-quaternary: var(--color-gray-9);
+    --color-text-disabled: var(--color-gray-4);
+    --color-text-primary-inverse: var(--color-gray-12);
+    
+    --color-bg-primary: var(--color-gray-12);
+    --color-bg-secondary: var(--color-gray-11);
+    --color-bg-tertiary: var(--color-gray-10);
+    --color-bg-quaternary: var(--color-gray-9);
+    --color-bg-disabled: var(--color-gray-4);
+    --color-bg-opacity: rgba(255,255,255,0.05);
+    // 反色
+    --color-bg-primary-inverse: var(--color-gray-1);
+    // 边框色 (深色模式下的边框)
+    --color-border-primary: var(--color-gray-10);
+    --color-border-secondary: var(--color-gray-9);
+    --color-border-tertiary: var(--color-gray-8);
+
+    --color-bg-skeleton: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-tertiary) 37%, var(--color-bg-secondary) 63%);
+    --color-bg-mask: rgba(0, 0, 0, 0.5);
+    
+    // ===== 深色模式语义化阴影系统 =====
+    // 深色模式下的阴影 (更明显的阴影效果)
+    --shadow-card: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+    --shadow-dropdown: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
+    --shadow-modal: 0px 16px 32px 0px rgba(0, 0, 0, 0.5);
+    --shadow-tooltip: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// ===== 手动深色模式语义化变量 =====
+[data-theme="dark"] {
+  // ===== 深色模式语义化颜色系统 =====
+  // 主色调 (深色模式下使用更亮的色调)
+  --color-primary: var(--color-primary-5);
+  --color-primary-light: var(--color-primary-1);
+  --color-primary-lighter: var(--color-primary-1);
+  --color-primary-dark: var(--color-primary-6);
+  --color-primary-darker: var(--color-primary-7);
+  
+  // 成功色 (深色模式下使用更亮的色调)
+  --color-success: var(--color-green-5);
+  --color-success-light: var(--color-green-1);
+  --color-success-lighter: var(--color-green-1);
+  --color-success-dark: var(--color-green-6);
+  --color-success-darker: var(--color-green-7);
+  
+  // 警告色 (深色模式下使用更亮的色调)
+  --color-warning: var(--color-orange-5);
+  --color-warning-light: var(--color-orange-1);
+  --color-warning-lighter: var(--color-orange-1);
+  --color-warning-dark: var(--color-orange-6);
+  --color-warning-darker: var(--color-orange-7);
+  
+  // 错误色 (深色模式下使用更亮的色调)
+  --color-error: var(--color-red-5);
+  --color-error-light: var(--color-red-1);
+  --color-error-lighter: var(--color-red-1);
+  --color-error-dark: var(--color-red-6);
+  --color-error-darker: var(--color-red-7);
+  
+  // 链接色 (深色模式下使用更亮的色调)
+  --color-link: var(--color-blue-5);
+  --color-link-light: var(--color-blue-1);
+  --color-link-lighter: var(--color-blue-1);
+  --color-link-dark: var(--color-blue-6);
+  --color-link-darker: var(--color-blue-7);
+  
+  // 中性色 (深色模式下的文本和背景)
+  --color-text-primary: var(--color-gray-2);
+  --color-text-secondary: var(--color-gray-6);
+  --color-text-tertiary: var(--color-gray-8);
+  --color-text-quaternary: var(--color-gray-9);
+  --color-text-disabled: var(--color-gray-4);
+  --color-text-primary-inverse: var(--color-gray-12);
+
+  // 背景色
+  --color-bg-primary: var(--color-gray-12);
+  --color-bg-secondary: var(--color-gray-11);
+  --color-bg-tertiary: var(--color-gray-10);
+  --color-bg-quaternary: var(--color-gray-9);
+  --color-bg-disabled: var(--color-gray-4);
+  --color-bg-opacity: rgba(255,255,255,0.05);
+  // 反色
+  --color-bg-primary-inverse: var(--color-gray-1);
+  // 边框色 (深色模式下的边框)
+  --color-border-primary: var(--color-gray-10);
+  --color-border-secondary: var(--color-gray-9);
+  --color-border-tertiary: var(--color-gray-8);
+
+  --color-bg-skeleton: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-tertiary) 37%, var(--color-bg-secondary) 63%);
+
+  // ===== 深色模式语义化阴影系统 =====
+  // 深色模式下的阴影 (更明显的阴影效果)
+  --shadow-card: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+  --shadow-dropdown: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0px 16px 32px 0px rgba(0, 0, 0, 0.5);
+  --shadow-tooltip: 0px 4px 8px 0px rgba(0, 0, 0, 0.3);
+
+  --color-bg-mask: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,116 @@
+.land-link{
+  position: relative;
+  width: fit-content;
+  font-size: 14px;
+  color: var(--land-link-color);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--transition-s) ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  .land-link-prefix-icon,
+  .land-link-suffix-icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: inherit;
+  }
+  &.hoverUnderline{
+    &:hover {
+      color: var(--land-link-hover-color);
+      &::before {
+        opacity: 1;
+        background-color: var(--land-link-hover-color);
+      }
+    }
+  }
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--land-link-color);
+    opacity: 0;
+    transition: all var(--transition-s) ease-in-out;
+  }
+  &.underline::before{
+    opacity: 1;
+  }
+
+  &:active,
+  &:visited {
+    color: var(--land-link-active-color);
+    &::before {
+      background-color: var(--land-link-active-color);
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: var(--land-link-disabled-color);
+    pointer-events: none;
+    
+    &:hover::before {
+      opacity: 0;
+    }
+  }
+}
+
+.land-link.link-wave{
+  position: relative;
+  &::before{
+    display: none;
+  }
+  
+  &.hoverUnderline:hover .land-link-wave {
+    opacity: 1;
+  }
+
+  &.underline .land-link-wave {
+    opacity: 1;
+  }
+  &.animation .land-link-wave{
+    animation: waveFlow 1s infinite linear;
+  }
+}
+
+.land-link-wave{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(4px);
+  width: 100%;
+  height: var(--land-link-wave-height, 20px);
+  opacity: 0;
+  background: radial-gradient(circle at 10px -7px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x,
+  radial-gradient(circle at 10px 27px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x;
+  background-size: var(--land-link-wave-size, 20px) var(--land-link-wave-size, 20px);
+  background-position: -10px calc(100% + 16px), 0 calc(100% - 4px);
+  transition: opacity var(--transition-s) ease-in-out;
+}
+@keyframes waveFlow {
+  from { background-position-x: -10px, 0; }
+  to { background-position-x: -30px, -20px; }
+}
+
+
+.land-link.link-wave.underline.transform{
+  &::before{
+    opacity: 1;
+    display: block;
+  }
+  .land-link-wave{
+    opacity: 0;
+  }
+  &:hover{
+    .land-link-wave{
+      opacity: 1;
+    }
+    &::before{
+      opacity: 0;
+    }
+  }
+}

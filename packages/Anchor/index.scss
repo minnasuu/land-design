@@ -1,0 +1,62 @@
+.land-anchor{
+  --land-anchor-link-padding: var(--gap-m) var(--gap-l);
+  --land-anchor-link-font-size: var(--font-content-m);
+  --land-anchor-link-color: var(--color-text-primary);
+  --land-anchor-link-border-color: var(--color-border-primary);
+  --land-anchor-link-hover-background-color: var(--color-bg-secondary);
+  --land-anchor-link-active-color: var(--color-primary-6);
+  --land-anchor-link-active-bg: var(--color-primary-lighter);
+  --land-anchor-active-indicator-height: 36px;
+  --land-anchor-active-indicator-background-color: var(--color-primary-6);
+  --land-anchor-indicator-border-color: var(--color-primary);
+  position: relative;
+  border-left: 1px solid var(--land-anchor-link-border-color);
+  .land-anchor-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .land-anchor-link {
+    position: relative;
+    display: inline-block;
+    padding: var(--land-anchor-link-padding);
+    width: 100%;
+    font-size: var(--land-anchor-link-font-size);
+    line-height: 22px;
+    color: var(--land-anchor-link-color);
+    transition: all var(--transition-s) linear;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    z-index: 1;
+    &.active{
+      color: var(--land-anchor-link-active-color);
+    }
+  
+
+    &:focus-visible {
+      outline: 2px solid var(--land-anchor-link-focus-outline-color);
+      outline-offset: -2px;
+    }
+  }
+  .land-anchor-hover-indicator,
+  .land-anchor-active-indicator {
+    position: absolute;
+    width: 100%;
+    height: var(--land-anchor-active-indicator-height);
+    left: 0;
+    top: 0;
+    background-color: var(--land-anchor-link-active-bg);
+    border-left: 1px solid var(--land-anchor-indicator-border-color);
+    z-index: 0;
+  }
+  .land-anchor-hover-indicator{
+    background-color: var(--land-anchor-link-hover-background-color);
+    border: none;
+    pointer-events: none;
+  }
+}

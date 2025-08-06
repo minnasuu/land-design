@@ -1,0 +1,40 @@
+.land-swiper-media-preview{
+  height: 100%;
+  cursor: default;
+  flex-shrink: 0;
+  width: fit-content;
+  .land-swiper-media-preview-content{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: fit-content;
+    height: 100%;
+    border-radius: 16px;
+    overflow: auto;
+    scrollbar-width: none;
+    .land-swiper-media-preview-group{
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      border-radius: 16px;
+        background-color: var(--color-bg-opacity);
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0.5;
+      &.active{
+        opacity: 1;
+      }
+    }
+    .land-swiper-media-preview-item{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      &.active{
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+    }
+  }
+}

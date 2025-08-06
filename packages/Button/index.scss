@@ -1,0 +1,455 @@
+// 定义颜色主题映射
+$color-themes: (
+  primary: var(--land-button-primary-color, var(--color-primary-6)),
+  warning: var(--land-button-warning-color, var(--color-orange-6)),
+  danger: var(--land-button-danger-color, var(--color-red-6)),
+  success: var(--land-button-success-color, var(--color-green-6))
+);
+
+$color-themes-hover: (
+  primary: var(--land-button-primary-hover-color, var(--color-primary-7)),
+  warning: var(--land-button-warning-hover-color, var(--color-orange-7)),
+  danger: var(--land-button-danger-hover-color, var(--color-red-7)),
+  success: var(--land-button-success-hover-color, var(--color-green-7))
+);
+
+$color-themes-active: (
+  primary: var(--land-button-primary-active-color, var(--color-primary-8)),
+  warning: var(--land-button-warning-active-color, var(--color-orange-8)),
+  danger: var(--land-button-danger-active-color, var(--color-red-8)),
+  success: var(--land-button-success-active-color, var(--color-green-8))
+);
+
+$color-themes-bg-hover: (
+  primary: var(--land-button-primary-bg-hover, var(--color-primary-1)),
+  warning: var(--land-button-warning-bg-hover, var(--color-orange-1)),
+  danger: var(--land-button-danger-bg-hover, var(--color-red-1)),
+  success: var(--land-button-success-bg-hover, var(--color-green-1))
+);
+
+$color-themes-bg-active: (
+  primary: var(--land-button-primary-bg-active, var(--color-primary-2)),
+  warning: var(--land-button-warning-bg-active, var(--color-orange-2)),
+  danger: var(--land-button-danger-bg-active, var(--color-red-2)),
+  success: var(--land-button-success-bg-active, var(--color-green-2))
+);
+
+$color-themes-border: (
+  primary: var(--land-button-primary-border-color, var(--color-primary-3)),
+  warning: var(--land-button-warning-border-color, var(--color-orange-3)),
+  danger: var(--land-button-danger-border-color, var(--color-red-3)),
+  success: var(--land-button-success-border-color, var(--color-green-3))
+);
+
+$color-themes-border-hover: (
+  primary: var(--land-button-primary-border-hover, var(--color-primary-4)),
+  warning: var(--land-button-warning-border-hover, var(--color-orange-4)),
+  danger: var(--land-button-danger-border-hover, var(--color-red-4)),
+  success: var(--land-button-success-border-hover, var(--color-green-4))
+);
+
+$color-themes-border-active: (
+  primary: var(--land-button-primary-border-active, var(--color-primary-5)),
+  warning: var(--land-button-warning-border-active, var(--color-orange-5)),
+  danger: var(--land-button-danger-border-active, var(--color-red-5)),
+  success: var(--land-button-success-border-active, var(--color-green-5))
+);
+
+$color-themes-bg: (
+  primary: var(--land-button-primary-bg, var(--color-primary-6)),
+  warning: var(--land-button-warning-bg, var(--color-orange-6)),
+  danger: var(--land-button-danger-bg, var(--color-red-6)),
+  success: var(--land-button-success-bg, var(--color-green-6))
+);
+
+// 混入：生成主题颜色样式
+@mixin theme-colors($type) {
+  @each $theme, $color in $color-themes {
+    &.#{$theme} {
+      color: $color;
+      &:hover:not([disabled]) {
+        color: map-get($color-themes-hover, $theme);
+      }
+      &:active:not([disabled]) {
+        color: map-get($color-themes-active, $theme);
+      }
+    }
+  }
+}
+
+// 混入：生成outline/dashed主题样式
+@mixin theme-outline-colors($type) {
+  @each $theme, $color in $color-themes {
+    &.#{$theme} {
+      color: $color;
+      border-color: map-get($color-themes-border, $theme);
+      &:hover:not([disabled]) {
+        color: map-get($color-themes-hover, $theme);
+        background-color: map-get($color-themes-bg-hover, $theme);
+        border-color: map-get($color-themes-border-hover, $theme);
+      }
+      &:active:not([disabled]) {
+        color: map-get($color-themes-active, $theme);
+        background-color: map-get($color-themes-bg-active, $theme);
+        border-color: map-get($color-themes-border-active, $theme);
+      }
+    }
+  }
+}
+
+// 混入：生成background主题样式
+@mixin theme-background-colors($type) {
+  @each $theme, $color in $color-themes-bg {
+    &.#{$theme} {
+      background-color: $color;
+      &:hover:not([disabled]) {
+        background-color: map-get($color-themes-hover, $theme);
+      }
+      &:active:not([disabled]) {
+        background-color: map-get($color-themes-active, $theme);
+      }
+    }
+  }
+}
+
+.land-button {
+  appearance: none;
+  outline: none;
+  position: relative;
+  margin: var(--land-button-margin, 0);
+  display: flex;
+  align-items: var(--land-button-align-items, center);
+  justify-content: var(--land-button-justify, center);
+  gap: var(--land-button-gap, var(--gap-s));
+  padding-inline: var(--land-button-padding-inline, 18px);
+  padding-block: var(--land-button-padding-block, 0);
+  width: var(--land-button-width, fit-content);
+  height: var(--land-button-height, 36px);
+  font-size: var(--land-button-font-size, var(--font-content-m));
+  font-weight: var(--land-button-font-weight, normal);
+  font-family: var(--land-button-font-family, inherit);
+  line-height: var(--land-button-line-height, 1.5);
+  color: var(--land-button-color, var(--color-text-primary));
+  white-space: var(--land-button-white-space, nowrap);
+  border-radius: var(--land-button-radius, var(--radius-m));
+  border: var(--land-button-border, none);
+  box-sizing: border-box;
+  transition: all var(--transition-s) linear;
+  cursor: var(--land-button-cursor, pointer);
+  text-decoration: var(--land-button-text-decoration, none);
+  user-select: var(--land-button-user-select, none);
+  height: var(--land-button-default-height, 36px);
+
+  // 尺寸变体
+      &.size-small,
+      &.default.size-small,
+  &.outline.size-small,
+  &.dashed.size-small,
+  &.transparent.size-small {
+    height: var(--land-button-small-height, 28px);
+    font-size: var(--land-button-small-font-size, var(--font-content-s));
+    padding-inline: var(--land-button-small-padding-inline, 14px);
+  }
+
+  &.size-large,
+  &.default.size-large,
+  &.outline.size-large,
+  &.dashed.size-large,
+  &.transparent.size-large {
+    height: var(--land-button-large-height, 40px);
+    font-size: var(--land-button-large-font-size, var(--font-content-l));
+    padding-inline: var(--land-button-large-padding-inline, 22px);
+  }
+
+  // 形状变体
+  &.capsule {
+    border-radius: var(--land-button-capsule-radius, var(--radius-full));
+  }
+
+  &.bold {
+    font-weight: var(--land-button-bold-font-weight, bold);
+  }
+
+  &.block {
+    width: var(--land-button-block-width, 100%);
+  }
+
+  // 遮罩内容
+  .land-button-mask-content-wrapper {
+    position: var(--land-button-mask-wrapper-position, relative);
+    .land-button-icon{
+      path{
+        transition: stroke-width var(--transition-s) linear;
+      }
+    }
+  }
+
+  .land-button-mask-content {
+    position: var(--land-button-mask-position, absolute);
+    top: var(--land-button-mask-top, 0);
+    left: var(--land-button-mask-left, 0);
+    display: var(--land-button-mask-display, flex);
+    align-items: var(--land-button-mask-align-items, center);
+    justify-content: var(--land-button-mask-justify, center);
+    width: var(--land-button-mask-width, 100%);
+    height: var(--land-button-mask-height, 100%);
+    font-weight: var(--land-button-font-weight-hover, bold);
+    opacity: 0;
+    z-index: var(--land-button-mask-z-index, 1);
+    pointer-events: var(--land-button-mask-pointer-events, none);
+    transition: var(--land-button-mask-transition, opacity var(--transition-s) linear);
+  }
+
+  &.hover-bold {
+    &:hover:not([disabled]) {
+      .land-button-mask-content {
+        opacity: 1;
+      }
+    }
+  }
+
+  .subText {
+    margin-left: var(--land-button-subtext-margin-left, 4px);
+    font-size: var(--land-button-subtext-font-size, var(--font-content-s));
+    opacity: var(--land-button-subtext-opacity, var(--opacity-disabled));
+  }
+
+  // 基础样式变体
+  &.text,
+  &.transparent {
+    border: var(--land-button-text-border, none);
+    background-color: var(--land-button-text-bg, transparent);
+    
+    &:hover:not([disabled]) {
+      color: var(--land-button-color-hover, var(--color-text-primary));
+    }
+    
+    &:active:not([disabled]) {
+      color: var(--land-button-color-active, var(--color-text-primary));
+    }
+  }
+
+  &.text,
+  &.outline.default {
+    &:hover:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-hover, var(--color-bg-secondary));
+    }
+    
+    &:active:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-active, var(--color-bg-tertiary));
+    }
+  }
+
+  // Fill 样式
+  &.fill {
+    border: var(--land-button-fill-border, none);
+    color: var(--land-button-color, var(--color-text-primary));
+    background-color: var(--land-button-fill-background-color, var(--color-bg-secondary));
+
+    &.default {
+      color: var(--land-button-fill-default-color, var(--color-text-primary));
+      background-color: var(--land-button-fill-background-color, var(--color-bg-secondary));
+    }
+
+    &:hover:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-hover, var(--color-bg-tertiary));
+    }
+    
+    &:active:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-active, var(--color-bg-disabled));
+    }
+  }
+
+  // Background 样式
+  &.background {
+    border: var(--land-button-background-border, none);
+    color: var(--land-button-background-color, var(--color-text-primary));
+
+    &.default {
+      color: var(--land-button-background-default-color, var(--color-white));
+      background-color: var(--land-button-background-bg, var(--color-gray-12));
+    }
+
+    &:hover:not([disabled]) {
+      background-color: var(--land-button-background-color-hover, var(--color-gray-12));
+    }
+    
+    &:active:not([disabled]) {
+      background-color: var(--land-button-background-color-active, var(--color-gray-12));
+    }
+  }
+
+  // Outline 样式
+  &.outline {
+    background-color: var(--land-button-outline-bg, transparent);
+    padding: var(--land-button-outline-padding, 8px 16px);
+    border: var(--land-button-outline-border, 1px solid var(--land-button-border-color, var(--color-border-primary)));
+
+    &.default {
+      border-color: var(--land-button-border-color, var(--color-border-primary));
+    }
+
+    &:hover:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-hover, var(--color-bg-primary));
+    }
+    
+    &:active:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-active, var(--color-bg-secondary));
+    }
+  }
+
+  // Dashed 样式
+  &.dashed {
+    border: var(--land-button-dashed-border, 1px dashed transparent);
+    padding: var(--land-button-dashed-padding, 8px 16px);
+    border-color: var(--land-button-border-color, var(--color-border-secondary));
+    background-color: var(--land-button-dashed-bg, transparent);
+
+    &.default {
+      border-color: var(--land-button-border-color, var(--color-border-secondary));
+    }
+
+    &:hover:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-hover, var(--color-bg-secondary));
+    }
+    
+    &:active:not([disabled]) {
+      background-color: var(--land-button-fill-background-color-active, var(--color-bg-tertiary));
+    }
+  }
+
+  // Transparent 样式
+  &.transparent {
+    border: var(--land-button-transparent-border, none);
+    padding: var(--land-button-transparent-padding, 0);
+    background-color: var(--land-button-transparent-bg, transparent);
+    color: var(--land-button-color, var(--color-text-primary));
+    position: relative;
+    
+    &:hover:not([disabled]) {
+      color: var(--land-button-color-hover, var(--color-text-primary));
+     .land-button-mask-content{
+      opacity: 1;
+     }
+     .land-button-icon{
+       path{
+        stroke-width: 5px;
+       }
+     }
+    }
+    
+    &:active:not([disabled]) {
+      color: var(--land-button-color-active, var(--color-text-primary));
+    }
+  }
+
+  // Icon only 样式
+  &.default.iconOnly,
+  &.outline.iconOnly,
+  &.dashed.iconOnly,
+  &.transparent.iconOnly {
+    padding: var(--land-button-icon-padding, 0);
+    aspect-ratio: var(--land-button-icon-aspect-ratio, 1);
+    height: var(--land-button-height, 36px);
+    &.small{
+      height: var(--land-button-small-height, 28px);
+    }
+    &.large{
+      height: var(--land-button-large-height, 40px);
+    }
+  }
+
+  // 禁用状态
+  &[disabled] {
+    cursor: var(--land-button-disabled-cursor, not-allowed);
+    opacity: var(--land-button-disabled-opacity, var(--opacity-disabled));
+  }
+
+  // 主题颜色应用
+  &.text,
+  &.transparent,
+  &.fill {
+    @include theme-colors('text');
+  }
+
+  &.outline,
+  &.dashed {
+    @include theme-outline-colors('outline');
+  }
+
+  &.background {
+    @include theme-background-colors('background');
+  }
+
+  &.hover-animation {
+    &:hover:not([disabled]) {
+      transform: var(--land-button-hover-animation-transform, scale(0.98));
+    }
+  }
+  &.active-animation {
+    &:active:not([disabled]) {
+      transform: var(--land-button-active-animation-transform, scale(0.98));
+    }
+  }
+  &.hover-animation,
+  &.active-animation {
+    &:hover:not([disabled]){
+      transform: var(--land-button-hover-animation-transform, scale(0.98));
+    }
+    &:active:not([disabled]) {
+      transform: var(--land-button-hover-animation-transform, scale(0.96));
+    }
+  }
+}
+
+// 按钮变化相关样式
+.land-button-change-hover {
+  position: var(--land-button-change-hover-position, absolute);
+  top: var(--land-button-change-hover-top, 0);
+  left: var(--land-button-change-hover-left, 0);
+  width: var(--land-button-change-hover-width, 100%);
+  height: var(--land-button-change-hover-height, 100%);
+  display: var(--land-button-change-hover-display, flex);
+  align-items: var(--land-button-change-hover-align-items, center);
+  justify-content: var(--land-button-change-hover-justify, center);
+}
+
+.land-button-change-default {
+  width: var(--land-button-change-default-width, 100%);
+  height: var(--land-button-change-default-height, 100%);
+  display: var(--land-button-change-default-display, flex);
+  align-items: var(--land-button-change-default-align-items, center);
+  justify-content: var(--land-button-change-default-justify, center);
+}
+
+// 箭头图标样式
+.land-button-arrow-icon {
+  transform: var(--land-button-arrow-transform, rotate(-90deg));
+  
+  path {
+    transition: var(--land-button-arrow-path-transition, transform 0.2s ease-in-out);
+  }
+  
+  path:first-child {
+    transform: var(--land-button-arrow-first-path-transform, scaleY(0));
+    transform-origin: var(--land-button-arrow-transform-origin, left);
+  }
+  
+  path:last-child {
+    transform: var(--land-button-arrow-last-path-transform, translateY(-12px));
+    transform-origin: var(--land-button-arrow-transform-origin, left);
+  }
+  
+  &.button-hover-arrow {
+    path:first-child {
+      transform: var(--land-button-arrow-hover-first-transform, scaleY(1));
+    }
+    
+    path:last-child {
+      transform: var(--land-button-arrow-hover-last-transform, translateY(0));
+    }
+  }
+}
+
+
+

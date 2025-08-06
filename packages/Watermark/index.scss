@@ -1,0 +1,92 @@
+.land-watermark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .land-watermark-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9;
+  }
+
+  .land-watermark-item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 64px;
+    color: var(--color-text-quaternary);
+    font-size: var(--font-content-m);
+    font-weight: normal;
+    font-family: sans-serif;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    transform: rotate(-22deg);
+    transform-origin: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+
+    &.img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+    }
+  }
+
+    .land-watermark-item {
+    animation: watermarkFloat 20s linear infinite;
+    
+    &:nth-child(even) {
+      animation-delay: -10s;
+    }
+    
+    &:nth-child(3n) {
+      animation-delay: -5s;
+    }
+  }
+
+}
+
+@keyframes watermarkFloat {
+  0% {
+    transform: rotate(-22deg) translateY(0) translateX(0);
+  }
+  25% {
+    transform: rotate(-22deg) translateY(-3px) translateX(2px);
+  }
+  50% {
+    transform: rotate(-22deg) translateY(-5px) translateX(0);
+  }
+  75% {
+    transform: rotate(-22deg) translateY(-3px) translateX(-2px);
+  }
+  100% {
+    transform: rotate(-22deg) translateY(0) translateX(0);
+  }
+}
+
+@keyframes watermarkPulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: rotate(-22deg) scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: rotate(-22deg) scale(1.02);
+  }
+}

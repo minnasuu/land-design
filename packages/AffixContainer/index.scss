@@ -1,0 +1,18 @@
+.land-affix-container{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.disabled{
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}
+
+.land-affix-container-item{
+  transition: opacity var(--transition-s) linear;
+  box-sizing: border-box;
+  &.hoverShow{
+    opacity: 0;
+  }
+}

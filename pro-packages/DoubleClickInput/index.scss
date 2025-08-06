@@ -1,0 +1,75 @@
+.double-click-input {
+  position: relative;
+  width: 100%;
+  display: flex;
+  color: var(--color-text-primary);
+  
+  .display-text {
+    width: 100%;
+    border-radius: 4px;
+    font-size: var(--font-content-m);
+    line-height: 22px;
+    letter-spacing: normal;
+    cursor: text;
+    word-break: break-all;
+    user-select: none;
+    
+    &.placeholder{
+      color: var(--color-text-tertiary);
+    }
+    &.input{
+      height: 100%;
+      white-space: nowrap;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    &.textarea{
+      overflow: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  input{
+    height: 22px;
+    width: 100%;
+  }
+  input, textarea {
+    appearance: none;
+    margin: 0;
+    width: 100%;
+    padding: 0px;
+    font-size: var(--font-content-m);
+    word-break: break-all;
+    border: none;
+    outline: none;
+    background: transparent;
+    line-height: 22px;
+    letter-spacing: normal;
+    font-family: inherit;
+    
+    &:focus,
+    &:focus-within,
+    &:focus-visible,
+    &:active {
+      border: none;
+      outline: none;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 32px;
+    line-height: 22px;
+    border: none;
+    outline: none;
+    background: transparent;
+    resize: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

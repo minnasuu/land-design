@@ -1,0 +1,100 @@
+.land-drawer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1000;
+  &.show{
+    pointer-events: auto;
+  }
+  &.right{
+    .land-drawer-content{
+      border-radius: 16px 0 0 16px;
+    }
+  }
+  &.bottom{
+    .land-drawer-content{
+      border-radius: 16px 16px 0 0;
+      max-width: unset;
+      min-width: unset;
+    }
+  }
+  .land-drawer-mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-mask);
+  }
+  .land-drawer-content{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg-primary);
+    box-shadow: var(--shadow-modal);
+    height: 100%;
+    .land-drawer-header-wrapper{
+      display: flex;
+      align-items: center;
+      padding: 0 var(--gap-xl);
+      height: 48px;
+    }
+    .land-drawer-header-close{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 100%;
+        color: var(--color-text-primary);
+        transition: color var(--transition-s) linear;
+        flex-shrink: 0;
+        cursor: pointer;
+        svg{
+          width: var(--icon-size-l);
+          height: var(--icon-size-l);
+        }
+        &:hover{
+          color: var(--color-text-secondary);
+        }
+      }
+    .land-drawer-header{
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      flex-shrink: 0;
+      .land-drawer-header-title{
+        font-size: var(--font-content-l);
+        font-weight: bold;
+        color: var(--color-text-primary);
+      }
+      .land-drawer-header-right{
+        margin-left: auto;
+      }
+    }
+    .land-drawer-body{
+      flex: 1;
+      height: 1%;
+      color: var(--color-text-primary);
+    }
+    .land-drawer-footer{
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--gap-l) var(--gap-xl);
+      .land-drawer-footer-btn{
+        display: flex;
+        gap: var(--gap-m);
+      }
+    }
+  }
+}

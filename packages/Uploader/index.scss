@@ -1,0 +1,38 @@
+.land-uploader{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--land-uploader-gap, var(--gap-m));
+  padding: var(--land-uploader-padding, var(--padding-m));
+  background-color: var(--land-uploader-background-color, var(--color-bg-secondary));
+  border-radius: var(--land-uploader-border-radius, var(--radius-m));
+  transition: background-color var(--transition-s) linear;
+  cursor: pointer;
+  &.drag,
+  &:hover {
+    background-color: var(--land-uploader-hover-background-color, var(--color-bg-tertiary));
+  }
+  &:active {
+    background-color: var(--land-uploader-active-background-color, var(--color-bg-quaternary));
+  }
+  .land-uploader-icon {
+    color: var(--land-uploader-icon-color, var(--color-text-secondary));
+    svg{
+      width: var(--land-uploader-icon-size, var(--icon-size-l));
+      height: var(--land-uploader-icon-size, var(--icon-size-l));
+    }
+  }
+  .land-uploader-desc {
+    font-size: var(--land-uploader-desc-font-size, var(--font-content-m));
+    color: var(--land-uploader-desc-color, var(--color-text-secondary));
+    transition: all var(--transition-s) linear;
+  }
+  .land-uploader-input{
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+}

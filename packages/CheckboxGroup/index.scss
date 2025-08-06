@@ -1,0 +1,5 @@
+.land-checkbox{
+  display: flex;
+  align-items: center;
+  gap: var(--land-checkbox-gap, var(--gap-xl));
+}

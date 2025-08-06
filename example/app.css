@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tailwindcss";
+
+/* 导入 LandDesign 样式系统 */
+@import "../packages/styles/index.scss";
+
+/* 自定义动画 */
+@keyframes icon-text-slide-in-bottom {
+  from {
+    transform: translate(-50%,10%);
+  }
+  to {
+    transform: translate(-50%,0);
+  }
+}
+
+/* 示例页面样式 */
+.example-page {
+  @apply min-h-screen bg-bg-secondary p-8;
+}
+
+.example-section {
+  @apply mb-8;
+}
+
+.example-title {
+  @apply text-title-l text-text-primary mb-4;
+}
+
+.example-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.example-card {
+  @apply bg-bg-primary border border-border-primary rounded-lg shadow-sm p-6;
+}
+
+.example-code {
+  @apply bg-gray-darker text-gray-lighter p-4 rounded-md font-mono text-sm overflow-x-auto;
+}
+
+/* 隐藏滚动条样式 */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

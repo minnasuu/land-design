@@ -1,0 +1,5 @@
+.land-content{
+  flex: 1;
+  min-height: calc(100vh - var(--land-content-min-height, 0px));
+  background: var(--land-content-background, var(--color-white));
+}

@@ -1,0 +1,181 @@
+.land-table-wrapper {
+  position: relative;
+  display: inline-block;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-s);
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+
+  // 表头固定样式
+  &.land-table-wrapper--head-fixed {
+    overflow-y: auto;
+  }
+
+  // 固定列样式
+  &.land-table-wrapper--fixed-columns {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+}
+
+.land-table{
+  width: fit-content;
+  position: relative;
+  border-spacing: 0px;
+    border-radius: var(--radius-s);
+    font-size: var(--font-content-m);
+    overflow: auto;
+    thead {
+        background-color: var(--color-bg-secondary);
+        td {
+            text-align: center;
+        }
+    }
+
+    // 表头固定样式
+    &.land-table--head-fixed {
+      thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background-color: var(--color-bg-secondary);
+      }
+    }
+
+    // 固定列样式
+    &.land-table--fixed-columns {
+      .land-table__cell--fixed {
+        position: sticky;
+        z-index: 1;
+      }
+
+      thead .land-table__cell--fixed {
+        z-index: 3;
+        background-color: var(--color-bg-secondary);
+      }
+
+      tbody .land-table__cell--fixed {
+        z-index: 1;
+      }
+
+      // 为固定列添加右边框
+      // .land-table__cell--fixed {
+      //   border-right: 2px solid var(--color-border-primary);
+      // }
+
+      // 设置每列的left位置
+      th:nth-child(1).land-table__cell--fixed { left: var(--fixed-col-0-left, 0px); }
+      th:nth-child(2).land-table__cell--fixed { left: var(--fixed-col-1-left, 0px); }
+      th:nth-child(3).land-table__cell--fixed { left: var(--fixed-col-2-left, 0px); }
+      th:nth-child(4).land-table__cell--fixed { left: var(--fixed-col-3-left, 0px); }
+      th:nth-child(5).land-table__cell--fixed { left: var(--fixed-col-4-left, 0px); }
+      th:nth-child(6).land-table__cell--fixed { left: var(--fixed-col-5-left, 0px); }
+      th:nth-child(7).land-table__cell--fixed { left: var(--fixed-col-6-left, 0px); }
+      th:nth-child(8).land-table__cell--fixed { left: var(--fixed-col-7-left, 0px); }
+      th:nth-child(9).land-table__cell--fixed { left: var(--fixed-col-8-left, 0px); }
+      th:nth-child(10).land-table__cell--fixed { left: var(--fixed-col-9-left, 0px); }
+
+      td:nth-child(1).land-table__cell--fixed { left: var(--fixed-col-0-left, 0px); }
+      td:nth-child(2).land-table__cell--fixed { left: var(--fixed-col-1-left, 0px); }
+      td:nth-child(3).land-table__cell--fixed { left: var(--fixed-col-2-left, 0px); }
+      td:nth-child(4).land-table__cell--fixed { left: var(--fixed-col-3-left, 0px); }
+      td:nth-child(5).land-table__cell--fixed { left: var(--fixed-col-4-left, 0px); }
+      td:nth-child(6).land-table__cell--fixed { left: var(--fixed-col-5-left, 0px); }
+      td:nth-child(7).land-table__cell--fixed { left: var(--fixed-col-6-left, 0px); }
+      td:nth-child(8).land-table__cell--fixed { left: var(--fixed-col-7-left, 0px); }
+      td:nth-child(9).land-table__cell--fixed { left: var(--fixed-col-8-left, 0px); }
+      td:nth-child(10).land-table__cell--fixed { left: var(--fixed-col-9-left, 0px); }
+    }
+    tbody tr td{
+      transition: background-color var(--transition-s) linear;
+    }
+    thead th,
+    tbody tr td{
+      font-size: var(--font-content-m);
+      padding: 8px 16px;
+    }
+    tbody tr td{
+        border-top: 1px solid var(--color-border-primary);
+    }
+    thead tr th:not(:last-child),
+    tbody tr td:not(:last-child) {
+        border-right: 1px solid var(--color-border-primary);
+    }
+    td,th {
+        padding: var(--padding-s);
+        box-sizing: border-box;
+        color: var(--color-text-primary);
+        line-height: 1.5em;
+    }
+
+    td{
+      background-color: var(--color-bg-primary);
+    }
+    tbody tr:hover td{
+      background-color: var(--color-bg-secondary);
+  }
+    // 隔行背景样式
+    &.land-table--striped {
+        tbody tr:nth-child(even) td{
+            background-color: var(--color-bg-secondary);
+        }
+        tbody tr:nth-child(odd) td{
+            background-color: var(--color-bg-primary);
+        }
+        tbody tr:hover td{
+            background-color: var(--color-bg-secondary);
+        }
+    }
+}
+
+// 十字高亮蒙层样式
+.land-table-wrapper--cross-highlight {
+  .land-table__row-overlay,
+  .land-table__col-overlay {
+    position: absolute;
+    pointer-events: none;
+    background-color: rgba(24, 144, 255, 0.08);
+    z-index: 1;
+    transition: all 0.15s ease-in-out;
+    box-sizing: border-box;
+  }
+
+  .land-table__row-overlay {
+    left: 0;
+    right: 0;
+  }
+
+  .land-table__col-overlay {
+    top: 0;
+    bottom: 0;
+  }
+
+  // 当启用十字高亮时，覆盖原有的hover样式
+  .land-table tbody tr:hover {
+    background-color: transparent;
+  }
+}
+
+// 表头固定与十字高亮兼容
+.land-table-wrapper--head-fixed.land-table-wrapper--cross-highlight {
+  .land-table__row-overlay,
+  .land-table__col-overlay {
+    z-index: 3; // 确保蒙层在固定表头之上
+  }
+}
+
+// 固定列与十字高亮兼容
+.land-table-wrapper--fixed-columns.land-table-wrapper--cross-highlight {
+  .land-table__row-overlay,
+  .land-table__col-overlay {
+    z-index: 4; // 确保蒙层在固定列之上
+  }
+}
+
+// 表头固定与固定列兼容
+.land-table-wrapper--head-fixed.land-table-wrapper--fixed-columns {
+  thead .land-table__cell--fixed {
+    z-index: 5; // 固定表头+固定列的最高层级
+  }
+}

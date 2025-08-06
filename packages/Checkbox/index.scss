@@ -1,0 +1,162 @@
+.land-check{
+  display: flex;
+  align-items: center;
+  gap: var(--land-checkbox-gap, var(--gap-s));
+  .land-check-label{
+    display: flex;
+    align-items: center;
+    gap: var(--land-checkbox-gap, var(--gap-s));
+    font-size: var(--land-checkbox-font-size, var(--font-content-m));
+    color: var(--land-checkbox-color, var(--color-text-primary));
+    cursor: pointer;
+    &.checked .land-check-circle{ 
+      border-color: var(--land-checkbox-circle-checked-border-color, var(--color-primary));
+      background-color: var(--land-checkbox-circle-checked-background-color, var(--color-primary));
+      &.animated{
+        animation: checkboxBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+      
+      // 背景填充动画
+      &::before {
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .land-check-circle-icon{
+        color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+      }
+    }
+    &.disabled {
+      opacity: var(--land-checkbox-disabled-opacity, var(--opacity-disabled));
+      cursor: not-allowed;
+      .land-check-circle{
+        cursor: not-allowed;
+      }
+    }
+  } 
+  .land-check-circle{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--land-checkbox-circle-size, 16px);
+    height: var(--land-checkbox-circle-size, 16px);
+    border-radius: var(--land-checkbox-circle-radius, var(--radius-s));
+    border: 1px solid var(--land-checkbox-circle-border-color, var(--color-border-primary));
+    transition: all var(--land-checkbox-circle-transition, var(--transition-s)) ease;
+    cursor: pointer;
+    overflow: hidden;
+    
+    // 背景填充动画
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background-color: var(--land-checkbox-circle-checked-background-color, var(--color-primary));
+      border-radius: var(--land-checkbox-circle-radius, var(--radius-s));
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    
+    .land-check-circle-icon{
+      color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
+      transform: scale(0) rotate(0deg);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
+      z-index: 2;
+      position: relative;
+      flex-shrink: 0;
+    }
+    &:hover {
+      background-color: var(--land-checkbox-circle-hover-background-color, var(--color-bg-secondary));
+      transform: scale(1.05);
+      .land-check-circle-icon{
+      color: var(--land-checkbox-circle-hover-icon-color, var(--color-bg-secondary));
+    }
+    }
+    &:active {
+      background-color: var(--land-checkbox-circle-active-background-color, var(--color-bg-secondary));
+      transform: scale(0.95);
+      .land-check-circle-icon{
+      color: var(--land-checkbox-circle-active-icon-color, var(--color-bg-secondary));
+    }
+    }
+    .land-check-indeterminate-icon{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
+      z-index: 1;
+    }
+    &.indeterminate{
+      border-color: var(--land-checkbox-circle-checked-border-color, var(--color-primary));
+      &::before {
+        transition: none;
+        width: 100%;
+        height: 100%;
+      }
+      .land-check-indeterminate-icon{
+        opacity: 1;
+      }
+    }
+    // 无动画模式
+    &.no-animation {
+      transition: none;
+      animation: none;
+      
+      &:hover {
+        transform: none;
+      }
+      &:active {
+        transform: none;
+      }
+      &.checked {
+        transform: none;
+        animation: none;
+        
+        &::before {
+          transition: none;
+          width: 100%;
+          height: 100%;
+        }
+        
+        .land-check-circle-icon {
+          transition: none;
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .land-check-circle-icon {
+        transition: none;
+      }
+    }
+  }
+  .land-check-pop{
+    position: relative;
+    height: var(--land-checkbox-pop-size, 16px);
+    line-height: var(--land-checkbox-pop-size, 16px);
+    .land-check-pop-icon{
+      color: var(--land-checkbox-pop-icon-color, var(--color-gray-6));
+    }
+  }
+}
+
+@keyframes checkboxBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}

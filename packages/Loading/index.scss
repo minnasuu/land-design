@@ -1,0 +1,20 @@
+.land-loading{
+  --land-loading-size: var(--icon-size-l);
+  --land-loading-stroke-size: 3px;
+  --land-loading-color: var(--color-text-primary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: var(--land-loading-size);
+  width: var(--land-loading-size);
+  border-radius: 50%;
+  background: 
+    radial-gradient(farthest-side,var(--land-loading-color) 94%,#0000) top/var(--land-loading-stroke-size) var(--land-loading-stroke-size) no-repeat,
+    conic-gradient(#0000 30%,var(--land-loading-color));
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - var(--land-loading-stroke-size)),#000 0);
+  animation: loadingSpin 1s infinite linear;
+@keyframes loadingSpin{ 
+  100%{transform: rotate(1turn)}
+}
+}

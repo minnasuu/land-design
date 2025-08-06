@@ -1,0 +1,40 @@
+.land-badge{
+  --land-badge-content-gap: var(--gap-xs);
+  --land-badge-content-padding: 0 var(--padding-m);
+  --land-badge-content-min-width: 20px;
+  --land-badge-content-height: 20px;
+  --land-badge-content-radius: var(--radius-full);
+  --land-badge-content-bg: var(--color-red-6);
+  --land-badge-content-color: var(--color-text-primary);
+  --land-badge-content-border: none;
+  position: relative;
+  --land-badge-content-font-size: var(--font-content-s);
+  --land-badge-content-font-weight: 400;
+  --land-badge-content-dot-size: 8px;
+  --land-badge-content-transform: translate(30%,-30%);
+  .land-badge-content{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--land-badge-content-gap);
+    padding:var(--land-badge-content-padding);
+    min-width: var(--land-badge-content-min-width);
+    height: var(--land-badge-content-height);
+    box-sizing: border-box;
+    border-radius: var(--land-badge-content-radius);
+    background-color: var(--land-badge-content-bg);
+    color: var(--land-badge-content-color);
+    border: var(--land-badge-content-border);
+    font-size: var(--land-badge-content-font-size);
+    font-weight: var(--land-badge-content-font-weight);
+    transform: var(--land-badge-content-transform);
+    &.dot{
+      padding: 0;
+      min-width: var(--land-badge-content-dot-size);
+      height: var(--land-badge-content-dot-size);
+    }
+  }
+}

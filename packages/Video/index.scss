@@ -1,0 +1,411 @@
+.land-video {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    &.error {
+      background-color: var(--color-bg-secondary);
+      border-radius: 12px;
+    }
+    &.fullView {
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 1);
+      z-index: var(--zIndex-5);
+    }
+  .land-video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  &:hover {
+    .land-video-controls {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+.land-video-affix-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  .land-affix-container-item.bc{
+    width: 100%;
+  }
+}
+
+.land-video-controls {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0.75rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s linear;
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  .land-video-controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  .land-video-controls-left,
+  .land-video-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .land-video-controls-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    min-width: 200px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: dropdownFadeIn 0.2s ease-out;
+    
+    @keyframes dropdownFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .land-video-controls-dropdown-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      .land-video-controls-dropdown-section-title {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .land-video-controls-dropdown-section-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      
+      .land-video-controls-dropdown-speed-btn {
+        padding: 6px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        background-color: transparent;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s linear;
+        min-width: 40px;
+        text-align: center;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 1);
+          transform: scale(1.05);
+        }
+        
+        &.active {
+          background-color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 1);
+          border-color: rgba(255, 255, 255, 0.4);
+          font-weight: 600;
+        }
+      }
+      
+      .land-video-controls-dropdown-toggle-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+        color: rgba(255, 255, 255, 0.8);
+        background-color: transparent;
+        cursor: pointer;
+        transition: all 0.2s linear;
+        border: none;
+        outline: none;
+        position: relative;
+        
+        &:hover {
+          color: rgba(255, 255, 255, 1);
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        &.active {
+          color: rgba(255, 255, 255, 1);
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        span {
+          font-size: 0.875rem;
+          white-space: nowrap;
+          font-weight: 500;
+          flex: 1;
+        }
+        
+        svg {
+          flex-shrink: 0;
+        }
+        
+        .land-video-controls-dropdown-toggle {
+          width: 32px;
+          height: 18px;
+          border-radius: 9px;
+          background-color: rgba(255, 255, 255, 0.2);
+          position: relative;
+          transition: all 0.2s linear;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: all 0.2s linear;
+          }
+          
+          &.active {
+            background-color: rgba(255, 255, 255, 0.4);
+            
+            &::before {
+              transform: translateX(14px);
+              background-color: rgba(255, 255, 255, 1);
+            }
+          }
+        }
+      }
+    }
+    
+    .land-video-controls-dropdown-divider {
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin: 4px 0;
+    }
+    
+    .land-video-controls-dropdown-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .land-video-controls-button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      color: rgba(255, 255, 255, 0.8);
+      background-color: transparent;
+      cursor: pointer;
+      transition: all 0.2s linear;
+      border: none;
+      outline: none;
+      
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+        background-color: rgba(255, 255, 255, 0.15);
+        transform: translateX(2px);
+      }
+      
+      span {
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      
+      svg {
+        flex-shrink: 0;
+      }
+    }
+  }
+  .land-video-controls-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    outline: none;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: transparent;
+    cursor: pointer;
+    transform-origin: center center;
+    transition: color 0.2s linear;
+    &:hover:not(.disabled) {
+      color: rgba(255, 255, 255, 1);
+    }
+    svg {
+      transition: transform 0.2s linear;
+    }
+    path {
+      transition: d 0.2s linear;
+    }
+    &.prev {
+      transform: rotate(180deg);
+    }
+    &.full-screen,
+    &.small-screen,
+    &.full-view,
+    &.full-width {
+      &:hover svg {
+        transform: scale(1.1);
+      }
+    }
+    &.setting {
+      &:hover svg {
+        transform: rotate(15deg);
+      }
+      .land-video-setting-panel {
+        position: absolute;
+        bottom: 100%;
+        padding-bottom: 24px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s linear;
+        .land-video-setting-content {
+          padding: 12px;
+          background-color: rgba(0, 0, 0, 0.68);
+          border-radius: 8px;
+        }
+      }
+      &:hover .land-video-setting-panel {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    
+    &.more {
+      &:hover svg {
+        transform: scale(1.1);
+      }
+    }
+    &.disabled {
+      color: rgba(255, 255, 255, 0.36);
+      cursor: not-allowed;
+    }
+  }
+  .land-video-controls-time {
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+  .land-video-controls-volume-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    &:hover .land-video-volume-slider {
+      width: 60px;
+      pointer-events: auto;
+    }
+    .land-video-volume-slider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 0px;
+      height: 28px;
+      overflow: hidden;
+      pointer-events: none;
+      transition: width 0.2s linear;
+      &.show {
+        width: 60px;
+      }
+    }
+    .volume svg.small {
+      path:last-of-type {
+        opacity: 0;
+        transition: opacity 0.2s linear;
+      }
+    }
+  }
+  .land-video-controls-keyImg-container {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    canvas {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  }
+}
+
+.land-video-tags-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 3.375rem;
+  height: 3.375rem;
+  font-size: 0.75rem;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0.2);
+  color: rgba(255,255,255,0.8);
+  transition: opacity 0.2s linear;
+  svg{
+    color: rgba(255,255,255);
+  }
+  .arrow-double{
+      &.back{
+        transform: rotate(90deg);
+        path:first-of-type{
+          animation: flash 800ms linear infinite;
+        }
+        path:last-of-type{
+          animation: flash 800ms 400ms linear infinite;
+        }
+      }
+      &.front{
+        transform: rotate(-90deg);
+        path:last-of-type{
+          animation: flash 800ms linear infinite;
+        }
+        path:first-of-type{
+          animation: flash 800ms 400ms linear infinite;
+        }
+      }
+      @keyframes flash {
+        0%{
+          opacity: 0;
+        }
+        100%{
+          opacity: 1;
+        }
+      }
+  }
+}
