@@ -60,7 +60,7 @@ export default function ColorPickerExample() {
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
-            id='color-picker-normal'
+            id='color-picker-basic'
             description='ColorPicker 组件的基础用法，支持颜色选择和透明度调节。'
           >
             <div className="flex column gap-8 color-text-secondary text-12 mb-8">
@@ -130,21 +130,6 @@ export default function ColorPickerExample() {
                   borderRadius: "4px",
                 }}
               />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 不同颜色 */}
-          <ComponentSectionLayout
-            title='不同颜色'
-            id='color-picker-colors'
-            description='ColorPicker 支持各种颜色值。'
-          >
-            <CodeOperationContainer>
-              <ColorPicker color="#ff6b6b" />
-              <ColorPicker color="#4ecdc4" />
-              <ColorPicker color="#45b7d1" />
-              <ColorPicker color="#96ceb4" />
-              <ColorPicker color="#feca57" />
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </>

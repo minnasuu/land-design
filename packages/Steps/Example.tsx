@@ -176,15 +176,7 @@ const stepsTypes = [
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
-
-          {/* 操作按钮 */}
-          <ComponentSectionLayout
-            title='操作按钮'
-            id='steps-actions'
-            description='通过按钮可以控制步骤的切换和状态。'
-          >
-            <CodeOperationContainer>
-              <div className='flex gap-12 justify-center'>
+          <div className='flex gap-12 justify-center'>
                 <Button
                   onClick={handlePrev}
                   disabled={currentStep === 1}
@@ -212,12 +204,6 @@ const stepsTypes = [
                   重置
                 </Button>
               </div>
-              <div className='flex gap-12 justify-center fs-12 color-gray-4'>
-                <span>当前步骤: {currentStep}</span>
-                <span>全局已完成步骤: {finishedSteps.length > 0 ? finishedSteps.join(', ') : '无'}</span>
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
         </div>
       )}
 

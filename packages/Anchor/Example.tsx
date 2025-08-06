@@ -61,7 +61,6 @@ export default function AnchorExample() {
             description='Anchor 组件的基础用法，支持滚动监听和自动选中。'
           >
             <CodeOperationContainer>
-              <Flex gap={24}>
                 <div className='sticky top-188 w-[200px] h-fit'>
                   <Anchor
                     data={anchorData1}
@@ -81,7 +80,6 @@ export default function AnchorExample() {
                     </div>
                   ))}
                 </div>
-              </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -92,7 +90,6 @@ export default function AnchorExample() {
             description='通过 offsetTop 属性设置滚动偏移量，适用于有固定头部的情况。'
           >
             <CodeOperationContainer>
-              <Flex gap={24}>
                 <div className='sticky top-188 w-[200px] h-fit'>
                   <Anchor
                     data={anchorData2}
@@ -112,18 +109,16 @@ export default function AnchorExample() {
                     </div>
                   ))}
                 </div>
-              </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
           {/* 自定义指示器 */}
           <ComponentSectionLayout
-            title='自定义指示器'
+            title='自定义指示器样式'
             id='anchor-indicator'
             description='可以自定义指示器的样式，或者隐藏指示器。'
           >
             <CodeOperationContainer>
-              <Flex gap={24}>
                 <div className='sticky top-188 w-[200px] h-fit'>
                   <Anchor
                     data={anchorData3}
@@ -148,7 +143,6 @@ export default function AnchorExample() {
                     </div>
                   ))}
                 </div>
-              </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </div>

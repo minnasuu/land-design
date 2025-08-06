@@ -133,7 +133,7 @@ export default function LinkExample() {
 
           {/* 链接禁用 */}
           <ComponentSectionLayout
-            title='链接禁用'
+            title='禁用链接'
             id='link-disabled'
             description='禁用状态的链接不可点击，但保持视觉样式。'
           >
