@@ -315,7 +315,7 @@ export const NAV_COMPONENTS_DATA = [
     example: <AffixContainerExample />,
     demo: (
       <AffixContainer
-        className="aspect-square border rounded-[8px]"
+        className="aspect-square border border-border-primary rounded-[8px]"
         style={{ width: "60%" }}
         rtOption={{
           content: (
@@ -527,7 +527,7 @@ export const NAV_COMPONENTS_DATA = [
       >
         <div
           style={{ width: "80px", height: "32px" }}
-          className="p-4 border rounded-[8px]"
+          className="p-4 border border-border-primary rounded-[8px]"
         >
           <div
             className="rounded-[4px] w-full h-full bg-bg-secondary"
@@ -761,11 +761,11 @@ export const INPUT_COMPONENTS_DATA = [
       <Tabs
         checked="1"
         data={[
-          { key: "1", label: "模块1" },
-          { key: "2", label: "模块2" },
-          { key: "3", label: "模块3" },
+          { key: "1", label: "1" },
+          { key: "2", label: "2" },
+          { key: "3", label: "3" },
         ]}
-        width="70%"
+        width="80%"
       />
     ),
     especial: true,
@@ -1284,11 +1284,10 @@ export const FEEDBACK_COMPONENTS_DATA = [
         style={{
           width: "100%",
           height: "100%",
-          backgroundColor: "var(--color-bg-secondary)",
         }}
       >
         <div
-          className="bg-white rounded-[8px] box-shadow"
+          className="rounded-[8px] box-shadow bg-bg-secondary"
           style={{ width: "60%", height: "80px" }}
         >
           <div
@@ -1299,7 +1298,7 @@ export const FEEDBACK_COMPONENTS_DATA = [
             <Icon
               name="close"
               size={16}
-              color="var(--color-text-primary)"
+              className="color-text-primary"
               strokeWidth={3}
             />
           </div>
@@ -1329,11 +1328,10 @@ export const FEEDBACK_COMPONENTS_DATA = [
         style={{
           width: "100%",
           height: "100%",
-          backgroundColor: "var(--color-bg-secondary)",
         }}
       >
         <div
-          className="bg-white rounded-[8px] box-shadow"
+          className="rounded-[8px] box-shadow bg-bg-secondary"
           style={{ width: "60%", height: "100%" }}
         >
           <div
@@ -1343,7 +1341,7 @@ export const FEEDBACK_COMPONENTS_DATA = [
             <Icon
               name="close"
               size={16}
-              color="var(--color-text-primary)"
+              className="color-text-primary"
               strokeWidth={3}
             />
           </div>
@@ -1483,11 +1481,9 @@ export const OTHER_COMPONENTS_DATA = [
     example: <AutoContainerExample />,
     demo: (
       <div
-        className="flex items-center justify-center p-12 border-box rounded-[8px]"
+        className="flex items-center justify-center p-12 border-box rounded-[20px] bg-bg-secondary"
         style={{
-          width: "80%",
-          height: "80%",
-          backgroundColor: "var(--color-bg-secondary)",
+          width: "60%",
         }}
       >
         <AutoContainer
