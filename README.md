@@ -118,7 +118,7 @@ Advanced components for complex use cases:
 | `GridTemplate` | Grid template component | ✅ |
 | `SwiperMediaPreview` | Media preview with swiper | ✅ |
 
-### Layout Components
+<!-- ### Layout Components
 
 | Component | Description | Status |
 |-----------|-------------|--------|
@@ -128,7 +128,7 @@ Advanced components for complex use cases:
 | `LandSider` | Sidebar component | ✅ |
 | `LandContent` | Content area component | ✅ |
 | `LandGrid` | Grid system component | ✅ |
-| `LandFlex` | Flexbox utility component | ✅ |
+| `LandFlex` | Flexbox utility component | ✅ | -->
 
 ## 🎨 Theming & Styling
 
@@ -247,12 +247,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with [React](https://reactjs.org/)
 - Styled with [SCSS](https://sass-lang.com/)
-- Icons from [Iconify](https://iconify.design/)
+- Icons from [IconPark](https://iconpark.oceanengine.com/official)
 - Animations powered by [Motion](https://motion.dev/)
 
 ## 📞 Support
 
-- 📧 Email: [your-email@example.com]
+- 📧 Email: [minhansu508@gmail.com]
 - 🐛 Issues: [GitHub Issues](https://github.com/suminhan/land-design/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/suminhan/land-design/discussions)
 
