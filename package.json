@@ -26,7 +26,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lib": "bash updateVersion.sh && tsc && vite build --config vite.config.lib.ts && pnpm publish --no-git-checks",
+    "lib": "bash updateVersion.sh --auto && tsc && vite build --config vite.config.lib.ts && pnpm publish --no-git-checks",
+    "publish": "bash scripts/publish.sh",
     "deploy": "gh-pages -d dist",
     "test": "vitest"
   },
