@@ -40,8 +40,7 @@ export default defineConfig({
   },
   build: {
     // 输出文件夹
-    // outDir: 'dist',
-    outDir: `dist/${branch}`,
+    outDir: 'dist',
     // lib: {
     //   // 组件库源码的入口文件
     //   entry: resolve('packages/index.tsx'),
@@ -62,7 +61,7 @@ export default defineConfig({
     host: 'localhost',
     hmr: true
   },
-  base: process.env.NODE_ENV === 'production' ? 'https://suminhan.cn/land-design/' : '/land-design/',
+  base: process.env.NODE_ENV === 'production' ? '/land-design/' : '/',
   optimizeDeps: {
     include: ['react', 'react-dom']
   }
