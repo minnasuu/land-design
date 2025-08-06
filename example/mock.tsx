@@ -104,7 +104,6 @@ import SwiperMediaPreviewExample from "../pro-packages/SwiperMediaPreview/Exampl
 import DoubleClickInput from "../pro-packages/DoubleClickInput";
 import DoubleClickInputExample from "../pro-packages/DoubleClickInput/Example";
 import PrefixValueInputExample from "../pro-packages/PrefixValueInput/Example";
-import MiniDrawerExample from "../mini-packages/drawer/Example";
 import Tabs from "../packages/Tabs";
 import TabsExample from "../packages/Tabs/Example";
 import AutoContainer from "../packages/AutoContainer";
@@ -1656,26 +1655,6 @@ export const PRO_COMPONENTS_DATA = [
     id: "proLayout",
     title: "布局型",
     data: PRO_LAYOUT_COMPONENTS_DATA,
-    titleDeputy: true,
-  },
-];
-
-export const MINI_NAV_COMPONENTS_DATA = [
-  {
-    id: "drawer",
-    en: "Drawer",
-    zh: "抽屉",
-    desc: "",
-    example: <MiniDrawerExample />,
-  },
-];
-
-// 小程序组件数据汇总
-export const MINI_COMPONENTS_DATA = [
-  {
-    id: "nav",
-    title: "弹窗类",
-    data: MINI_NAV_COMPONENTS_DATA,
     titleDeputy: true,
   },
 ];

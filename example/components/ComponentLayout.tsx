@@ -27,13 +27,6 @@ const ComponentLayout: React.FC<Props> = ({
   active,
   children,
   menuData = [
-    // { key: 'newer', title: "使用指南", clickType: ClickType.SELF, href: 'newer' },
-    // {
-    //   key: 'design',
-    //   label: "颜色",
-    //   clickType: ClickType.SELF,
-    //   href: '/design'
-    // },
     {
       key: 'base-component',
       label: "基础组件",
@@ -46,12 +39,6 @@ const ComponentLayout: React.FC<Props> = ({
       clickType: ClickType.SELF,
       href: '/pro-component'
     },
-    // {
-    //   key: 'mini-component',
-    //   label: "小程序组件",
-    //   clickType: ClickType.SELF,
-    //   href: '/mini-component'
-    // },
   ]
 }) => {
   const [page, setPage] = useState<string>(active || 'base-component');

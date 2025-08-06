@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import Title from "../../packages/Title";
-import Divider from "../../packages/Divider";
 import ComponentPreview from "../BaseComponents/ComponentPreview";
 import { motion } from 'motion/react';
 
@@ -10,7 +8,6 @@ import { COMPONENTS_DATA } from "../mock";
 import Menu from "../../packages/Menu";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../packages/Icon";
-import Flex from "../../packages/Flex";
 import BackToTop from '../../packages/BackToTop'
 import Anchor from "../../packages/Anchor";
 
@@ -27,7 +24,6 @@ const ComponentExplorer: React.FC<ComponentExplorerProps> = ({ componentsData = 
   const navigate = useNavigate();
   const [active, setActive] = useState<string>(defaultActive);
   const [dropActive, setDropActive] = useState<string>(defaultDropActive);
-  const [showDrawer, setShowDrawer] = useState(false);
 
   useEffect(() => {
     const href = window.location.href.split('?name=');
