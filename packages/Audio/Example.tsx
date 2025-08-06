@@ -27,19 +27,6 @@ export default function AudioExample() {
   ];
   const AudioTypes = [
     {
-      name: "AudioButtonType",
-      data: [
-        {
-          name: "play",
-          desc: "播放",
-        },
-        {
-          name: "pause",
-          desc: "暂停",
-        },
-      ],
-    },
-    {
       name: "AudioAnimationProps",
       data: [
         { name: "color", type: "string", desc: "颜色" },
@@ -237,9 +224,10 @@ export default function AudioExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={audioProps} />
-          {AudioTypes.map((type) => (
-            <ComponentPropsTable key={type.name} props={type.data as any} />
-          ))}
+          {AudioTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
         </div>
       )}
     </ComponentContentLayout>

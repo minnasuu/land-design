@@ -9,7 +9,7 @@ export default function StateExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const stateProps = [
-    { name: 'type', type: 'StateType', default: 'empty', desc: '状态类型：empty | offline' },
+    { name: 'type', type: 'StateType (empty | offline)', desc: '状态类型', default: 'empty' },
     { name: 'title', type: 'React.ReactNode | string', desc: '状态标题' },
     { name: 'subTitle', type: 'React.ReactNode | string', desc: '副标题' },
     { name: 'titleLink', type: 'string', desc: '标题链接' },

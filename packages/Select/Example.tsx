@@ -52,7 +52,7 @@ export default function SelectExample() {
   const selectProps = [
     {
       name: "data",
-      type: <Link anchor="SelectItemType-API">SelectItemType</Link>,
+      type: <><Link anchor="SelectItemType-API">SelectItemType</Link>[]</>,
       desc: "数据",
     },
     {
@@ -64,7 +64,7 @@ export default function SelectExample() {
     { name: "selected", type: "string | number", desc: "当前选中项" },
     {
       name: "type",
-      type: "'border' | 'background' | 'transparent' | 'text'",
+      type: "SelectType (border | background | transparent | text)",
       desc: "选择器样式",
       default: "border",
     },
@@ -79,8 +79,18 @@ export default function SelectExample() {
     },
     {
       name: "onChange",
-      type: "(item: SelectTreeItemType) => void",
+      type: <>(item: <Link anchor="SelectItemType-API">SelectItemType</Link>){' =>'} void</>,
       desc: "选择事件",
+    },
+  ];
+
+  const selectTypes = [
+    {
+      name: "SelectItemType",
+      data: [
+        { name: "key", type: "string", desc: "选项唯一标识" },
+        { name: "label", type: "string", desc: "选项标签" },
+      ],
     },
   ];
 
@@ -336,6 +346,10 @@ export default function SelectExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={selectProps} />
+          {selectTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
         </div>
       )}
     </ComponentContentLayout>

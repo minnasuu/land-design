@@ -10,7 +10,7 @@ export default function TitleExample() {
 
   const titleProps = [
     { name: 'title', type: 'string | ReactNode', desc: '标题内容，可以传入字符串或React节点' },
-    { name: 'type', type: 'h1 | h2 | h3 | h4', default: 'h3', desc: '标题层级：h1(一级) | h2(二级) | h3(三级) | h4(四级)' },
+    { name: 'type', type: 'h1 | h2 | h3 | h4', desc: '标题层级：h1(一级) | h2(二级) | h3(三级) | h4(四级)', default: 'h3' },
     { name: 'prefix', type: 'string', desc: '标题前缀，可以传入字符串作为标题的前缀' },
     { name: 'sub', type: 'string | ReactNode', desc: '标题角标，可以传入字符串或React节点作为标题的角标' },
     { name: 'tip', type: 'string | ReactNode', desc: '提示内容，可以传入字符串或React节点作为标题的提示' },

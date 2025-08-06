@@ -165,36 +165,6 @@ export default function SkeletonExample() {
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
-
-          {/* 自定义样式 */}
-          <ComponentSectionLayout
-            title='自定义样式'
-            id='skeleton-custom-style'
-            description='可以通过 style 属性自定义骨架屏的样式。'
-          >
-            <CodeOperationContainer>
-              <div className="flex gap-16">
-                <Skeleton
-                  width={150}
-                  height={50}
-                  style={{
-                    background: 'linear-gradient(45deg, #1890ff, #52c41a)',
-                    borderRadius: '8px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                  }}
-                />
-                <Skeleton
-                  width={150}
-                  height={50}
-                  style={{
-                    background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'loading 1.5s infinite'
-                  }}
-                />
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
         </div>
       )}
 

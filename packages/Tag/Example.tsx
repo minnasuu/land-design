@@ -12,9 +12,9 @@ export default function TagExample() {
   const tagProps = [
     { name: 'children', type: 'ReactNode', desc: '标签内容，可以是文字、图标或其他React节点' },
     { name: 'icon', type: 'ReactNode', desc: '标签图标，显示在标签内容前面的图标' },
-    { name: 'theme', type: 'white | dark', default: 'white', desc: '标签主题：white(白色) | dark(黑色)' },
-    { name: 'canDelete', type: 'boolean', default: 'false', desc: '是否可删除，设置为true时会显示删除按钮' },
-    { name: 'onDelete', type: '() => void', desc: '删除事件回调，当点击删除按钮时触发' },
+    { name: 'theme', type: 'TagTheme (white | dark)', desc: '标签主题：white(白色) | dark(黑色)', default: 'white' },
+    { name: 'canDelete', type: 'boolean', desc: '是否可删除，设置为true时会显示删除按钮', default: 'false' },
+    { name: 'onDelete', type: '(e: React.MouseEvent) => void;', desc: '删除事件回调，当点击删除按钮时触发' },
     { name: 'background', type: 'string', desc: '背景颜色，自定义标签的背景色' },
     { name: 'color', type: 'string', desc: '文字颜色，自定义标签的文字颜色' },
     { name: 'border', type: 'string', desc: '边框样式，自定义标签的边框' },

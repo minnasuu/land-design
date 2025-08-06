@@ -15,12 +15,12 @@ export default function PopConfirmExample() {
   const [showComplex, setShowComplex] = useState<boolean>(false);
 
   const popConfirmProps = [
-    { name: 'show', type: 'boolean', desc: '控制确认气泡显示状态' },
+    { name: 'show', type: 'boolean', desc: '控制确认气泡显示状态', default: 'false' },
     { name: 'content', type: 'ReactNode | string', desc: '确认气泡内容，可以是字符串或React节点' },
-    { name: 'title', type: 'string', desc: '确认气泡标题' },
-    { name: 'okText', type: 'string', default: '确定', desc: '确认按钮文案' },
-    { name: 'cancelText', type: 'string', default: '取消', desc: '取消按钮文案' },
-    { name: 'placement', type: 'top | bottom | left | right', default: 'top', desc: '气泡出现位置' },
+    { name: 'title', type: 'string', desc: '确认气泡标题', default: '提示' },
+    { name: 'okText', type: 'string', desc: '确认按钮文案', default: '确定' },
+    { name: 'cancelText', type: 'string', desc: '取消按钮文案', default: '取消' },
+    { name: 'placement', type: 'PopOverPlacement (top | bottom | left | right)', desc: '气泡出现位置', default: 'top' },
     { name: 'onCancel', type: '() => void', desc: '取消按钮回调' },
     { name: 'onSubmit', type: '() => void', desc: '确认按钮回调' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式' },

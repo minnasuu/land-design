@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Badge from ".";
-import Icon from "../Icon";
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
@@ -12,7 +11,7 @@ export default function BadgeExample() {
   const badgeProps = [
     { name: 'children', type: 'React.ReactNode', desc: '徽标的主要内容' },
     { name: 'content', type: 'React.ReactNode', desc: '自定义徽标内容' },
-    { name: 'isDot', type: 'boolean', default: 'false', desc: '是否为圆点样式' },
+    { name: 'isDot', type: 'boolean',  desc: '是否为圆点样式', default: 'false' },
     { name: 'count', type: 'number', desc: '徽标数值' },
     { name: 'exceedCount', type: 'number', desc: '显示的最大数值' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式' },

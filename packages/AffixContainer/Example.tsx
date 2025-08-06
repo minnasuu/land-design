@@ -13,8 +13,8 @@ const props = [
     name: "ltOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -24,8 +24,8 @@ const props = [
     name: "rtOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -35,8 +35,8 @@ const props = [
     name: "lbOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -46,8 +46,8 @@ const props = [
     name: "rbOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -57,8 +57,8 @@ const props = [
     name: "centerOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -68,8 +68,8 @@ const props = [
     name: "lcOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -79,8 +79,8 @@ const props = [
     name: "rcOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -90,8 +90,8 @@ const props = [
     name: "tcOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -101,8 +101,8 @@ const props = [
     name: "bcOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -112,8 +112,8 @@ const props = [
     name: "customOption",
     type: (
       <>
-        <Link anchor="AffixContainerItemProps-API">
-          AffixContainerItemProps
+        <Link anchor="AffixContainerItemType-API">
+          AffixContainerItemType
         </Link>
       </>
     ),
@@ -138,7 +138,7 @@ const props = [
 
 const types = [
   {
-    name: "AffixContainerItemProps",
+    name: "AffixContainerItemType",
     data: [
       { name: "content", type: "element", desc: "图钉元素内容" },
       {

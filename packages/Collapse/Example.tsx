@@ -11,8 +11,8 @@ export default function CollapseExample() {
   const collapseProps = [
     { name: 'title', type: 'string | React.ReactNode', desc: '折叠面板标题' },
     { name: 'content', type: 'string | React.ReactNode', desc: '折叠面板内容' },
-    { name: 'open', type: 'boolean', default: 'false', desc: '是否展开' },
-    { name: 'hideIcon', type: 'boolean', default: 'false', desc: '是否隐藏图标' },
+    { name: 'open', type: 'boolean',  desc: '是否展开', default: 'false' },
+    { name: 'hideIcon', type: 'boolean',  desc: '是否隐藏图标', default: 'false' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
     { name: 'className', type: 'string', desc: '自定义类名' },
   ];

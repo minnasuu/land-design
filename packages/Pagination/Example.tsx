@@ -9,9 +9,9 @@ import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 const paginationProps = [
   { name: 'current', type: 'number', desc: '当前页' },
   { name: 'total', type: 'number', desc: '总页数' },
-  { name: 'pageSize', type: 'PaginationPageSize', default: '10', desc: '每次加载的页数' },
-  { name: 'showTotal', type: 'boolean', default: 'false', desc: '是否显示总页数' },
-  { name: 'showInput', type: 'boolean', default: 'false', desc: '是否显示输入框' },
+  { name: 'pageSize', type: 'number', desc: '每次加载的页数', default: '10' },
+  { name: 'showTotal', type: 'boolean', desc: '是否显示总页数', default: 'false' },
+  { name: 'showInput', type: 'boolean', desc: '是否显示输入框', default: 'false' },
   { name: 'onChange', type: '(current: number) => void', desc: '页码变化事件回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },

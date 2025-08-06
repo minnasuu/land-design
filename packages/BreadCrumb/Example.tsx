@@ -4,14 +4,15 @@ import ComponentContentLayout from '../../example/components/ComponentContentLay
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
+import Link from '../Link';
 
 // API 文档配置
 const breadCrumbProps = [
-  { name: 'data', type: 'BreadCrumbItemType[]', desc: '面包屑数据，包含所有面包屑项的配置信息' },
+  { name: 'data', type: <><Link anchor='BreadCrumbItemType-API'>BreadCrumbItemType</Link>[]</>, desc: '面包屑数据，包含所有面包屑项的配置信息' },
   { name: 'current', type: 'string', desc: '当前激活项的值' },
-  { name: 'showMask', type: 'boolean', default: 'false', desc: '是否显示遮罩效果' },
-  { name: 'hoverPreview', type: 'boolean', default: 'false', desc: '省略时hover显示全部内容' },
-  { name: 'onChange', type: '(item: BreadCrumbItemType) => void', desc: '变化回调函数' },
+  { name: 'showMask', type: 'boolean', desc: '是否显示遮罩效果', default: 'false' },
+  { name: 'hoverPreview', type: 'boolean', desc: '省略时hover显示全部内容', default: 'false' },
+  { name: 'onChange', type: <>(item: <Link anchor='BreadCrumbItemType-API'>BreadCrumbItemType</Link>){' =>'} void</>, desc: '变化回调函数' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
   { name: 'children', type: 'ReactNode', desc: '子元素' },
@@ -19,7 +20,7 @@ const breadCrumbProps = [
 
 const breadCrumbTypes = [
   {
-    name: "BreadCrumbItemProps",
+    name: "BreadCrumbItemType",
     data: [
       { name: "key", type: "string", desc: "唯一标识" },
       { name: "label", type: "string", desc: "内容" },

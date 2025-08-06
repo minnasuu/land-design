@@ -7,16 +7,16 @@ import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 
 // API 文档配置
 const backToTopProps = [
-  { name: 'visibleHeight', type: 'number', default: '400', desc: '显示按钮的高度阈值' },
-  { name: 'fixed', type: 'boolean', default: 'true', desc: '是否使用固定定位' },
+  { name: 'visibleHeight', type: 'number', desc: '显示按钮的高度阈值', default: '400' },
+  { name: 'fixed', type: 'boolean', desc: '是否使用固定定位', default: 'true' },
   { name: 'target', type: 'HTMLElement | Window', desc: '滚动目标元素' },
-  { name: 'onClick', type: '() => void', desc: '点击事件回调' },
+  { name: 'onClick', type: '(e: MouseEvent) => void', desc: '点击事件回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
 ];
 
 export default function BackToTopExample() {
-  const [activeTab, setActiveTab] = useState('examples');
+  const [activeTab, setActiveTab] = useState<string>('examples');
   return (
     <ComponentContentLayout
       zh='回到顶部'

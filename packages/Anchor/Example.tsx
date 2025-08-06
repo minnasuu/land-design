@@ -5,14 +5,15 @@ import ComponentSectionLayout from '../../example/components/ComponentSectionLay
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import Flex from '../Flex';
+import Link from '../Link';
 
 // API 文档配置
 const anchorProps = [
-  { name: 'data', type: 'AnchorItemType[]', desc: '锚点数据，包含锚点项的结构化数据' },
-  { name: 'gap', type: 'number', default: '4', desc: '锚点项之间的间距' },
+  { name: 'data', type: <><Link anchor='AnchorItemType-API'>AnchorItemType</Link>[]</>, desc: '锚点数据，包含锚点项的结构化数据' },
+  { name: 'gap', type: 'number', desc: '锚点项之间的间距', default: '4' },
   { name: 'onChange', type: '(key: string) => void', desc: '点击锚点时的回调函数' },
-  { name: 'offsetTop', type: 'number', default: '0', desc: '滚动到目标位置时的偏移距离' },
-  { name: 'getContainer', type: '() => HTMLElement | Window', default: 'window', desc: '滚动容器选择器' },
+  { name: 'offsetTop', type: 'number', desc: '滚动到目标位置时的偏移距离', default: '0' },
+  { name: 'getContainer', type: '() => HTMLElement | Window', desc: '滚动容器选择器', default: 'window' },
   { name: 'showIndicator', type: 'boolean', default: 'true', desc: '是否显示指示器' },
   { name: 'indicatorStyle', type: 'CSSProperties', desc: '自定义指示器样式' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },

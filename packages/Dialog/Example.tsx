@@ -25,9 +25,9 @@ export default function DialogExample() {
   const dialogProps = [
     { name: 'show', type: 'boolean', desc: '控制弹窗显示状态' },
     { name: 'title', type: 'string', desc: '弹窗标题' },
-    { name: 'submitLabel', type: 'string', default: '确定', desc: '提交按钮文案' },
-    { name: 'cancelLabel', type: 'string', default: '取消', desc: '取消按钮文案' },
-    { name: 'mask', type: 'boolean', default: 'false', desc: '是否显示遮罩层' },
+    { name: 'submitLabel', type: 'string', desc: '提交按钮文案', default: '确定' },
+    { name: 'cancelLabel', type: 'string', desc: '取消按钮文案', default: '取消' },
+    { name: 'mask', type: 'boolean', desc: '是否显示遮罩层', default: 'false' },
     { name: 'headerComponent', type: 'ReactNode', desc: '自定义头部组件' },
     { name: 'headerLeftComponent', type: 'ReactNode', desc: '自定义头部左侧组件' },
     { name: 'headerRightComponent', type: 'ReactNode', desc: '自定义头部右侧组件' },

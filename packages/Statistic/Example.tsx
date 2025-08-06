@@ -11,10 +11,10 @@ export default function StatisticExample() {
   const statisticProps = [
     { name: 'value', type: 'number', desc: '数值，要显示的统计数值' },
     { name: 'unit', type: 'string', desc: '单位，显示在数值后面的单位文字' },
-    { name: 'precision', type: 'number', default: '0', desc: '精度，数值的小数位数' },
-    { name: 'animation', type: 'StatisticAnimation', desc: '动画类型：increase(增长) | decrease(减少) | random(随机滚动) | bounce(弹跳) | fade(淡入) | slide(滑动) | scale(缩放) | flip(翻转) | none(无动画)' },
+    { name: 'precision', type: 'number', desc: '精度，数值的小数位数', default: '0' },
+    { name: 'animation', type: 'StatisticAnimation (increase | decrease | random | bounce | fade | slide | scale | flip | none)', desc: '动画类型', default: 'none' },
     { name: 'animationConfig', type: 'StatisticAnimationConfig', desc: '动画配置，可以自定义持续时间、缓动函数、延迟等参数' },
-    { name: 'trendIcon', type: 'StatisticTrendIcon', desc: '趋势图标：up(上升) | down(下降) | default(默认)' },
+    { name: 'trendIcon', type: 'StatisticTrendIcon (up | down | default)', desc: '趋势图标', default: 'default' },
     { name: 'prefix', type: 'ReactNode', desc: '前缀，显示在数值前面的内容' },
     { name: 'suffix', type: 'ReactNode', desc: '后缀，显示在数值后面的内容' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义统计数值外观' },

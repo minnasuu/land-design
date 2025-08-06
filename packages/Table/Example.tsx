@@ -4,19 +4,31 @@ import CodeOperationContainer from '../../example/components/CodeOperationContai
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
+import Link from '../Link';
 
 export default function TableExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const tableProps = [
-    { name: 'titleData', type: 'Array<{title: string, value: string}>', desc: '表头数据，定义表格的列标题和对应的数据字段' },
-    { name: 'data', type: 'Array<Record<string, any>>', desc: '表格数据，每行数据的对象数组' },
-    { name: 'striped', type: 'boolean', default: 'false', desc: '是否显示隔行背景，设置为true时偶数行会有背景色' },
-    { name: 'crossHighlight', type: 'boolean', default: 'false', desc: '是否启用十字高亮，鼠标悬停时高亮当前行和列' },
-    { name: 'headFixed', type: 'boolean', default: 'false', desc: '是否固定表头，设置为true时表头会固定在顶部' },
+    { name: 'titleData', type: <Link anchor="TableTitleData-API">TableTitleData</Link>, desc: '表头数据，定义表格的列标题和对应的数据字段' },
+    { name: 'data', type: 'any[]', desc: '表格数据，每行数据的对象数组' },
+    { name: 'striped', type: 'boolean',  desc: '是否显示隔行背景，设置为true时偶数行会有背景色', default: 'false' },
+    { name: 'crossHighlight', type: 'boolean',  desc: '是否启用十字高亮，鼠标悬停时高亮当前行和列', default: 'false' },
+    { name: 'headFixed', type: 'boolean',  desc: '是否固定表头，设置为true时表头会固定在顶部', default: 'false' },
     { name: 'fixedColumns', type: 'number', desc: '固定列数，指定左侧固定的列数' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义表格外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
+  ];
+
+  const TableTypes = [
+    {
+      name: 'TableTitleData',
+      data: [
+        { name: 'title', type: 'string', desc: '列标题' },
+        { name: 'value', type: 'string', desc: '数据字段名' },
+        { name: 'antiDesc', type: 'string', desc: '反序描述' },
+      ]
+    }
   ];
 
   const basicData = [
@@ -227,7 +239,11 @@ export default function TableExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={tableProps} />
-        </div>
+          {TableTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
+        </div>  
       )}
     </ComponentContentLayout>
   );

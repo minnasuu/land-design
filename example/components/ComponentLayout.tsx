@@ -56,6 +56,7 @@ const ComponentLayout: React.FC<Props> = ({
         logo={<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 80 80" fill="none">
           <path d="M34 16C35.1046 16 36 16.8954 36 18V42C36 43.1046 36.8954 44 38 44H61C62.6569 44 64 45.3431 64 47V61C64 62.6569 62.6569 64 61 64H24C19.5817 64 16 60.4183 16 56V19C16 17.3431 17.3431 16 19 16H34ZM56 16C60.4183 16 64 19.5817 64 24V37C64 38.6569 62.6569 40 61 40H43C41.3431 40 40 38.6569 40 37V19C40 17.3431 41.3431 16 43 16H56Z" fill="currentColor" />
         </svg>}
+        name='Land Design Seeds'
         onLogoClick={() => navigate('/components')}
         menuProps={{
           data: menuData,

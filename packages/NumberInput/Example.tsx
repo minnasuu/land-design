@@ -13,7 +13,7 @@ export default function NumberInputExample() {
     { name: "value", type: "number", desc: "外部回传的数字值" },
     {
       name: "type",
-      type: "'border' | 'background'",
+      type: "NumberInputType (border | background)",
       desc: "数字输入框样式",
       default: "border",
     },
@@ -32,7 +32,7 @@ export default function NumberInputExample() {
     },
     {
       name: "onChange",
-      type: "(value: number) => void",
+      type: "(value: number, e?: React.ChangeEvent<HTMLInputElement>) => void",
       desc: "数字输入事件",
     },
   ];

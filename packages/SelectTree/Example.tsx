@@ -153,7 +153,7 @@ export default function SelectTreeExample() {
   const selectTreeProps = [
     {
       name: "data",
-      type: <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>,
+      type: <><Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>[]</>,
       desc: "数据",
     },
     {
@@ -197,7 +197,7 @@ export default function SelectTreeExample() {
     },
     {
       name: "type",
-      type: "'border' | 'background' | 'transparent' | 'text'",
+      type: "SelectTreeType (border | background | transparent | text)",
       desc: "选择器样式",
       default: "border",
     },
@@ -211,7 +211,7 @@ export default function SelectTreeExample() {
     },
     {
       name: "onChange",
-      type: "(selectedValue: SelectTreeItemType | SelectTreeItemType[], item: SelectTreeItemType) => void",
+      type: <>(selectedValue: <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link> | <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>[], item: <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>){' =>'} void</>,
       desc: "选择事件",
     },
   ];
@@ -416,9 +416,10 @@ export default function SelectTreeExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={selectTreeProps} />
-          {SelectTreeTypes.map(type => (
-            <ComponentPropsTable props={type.data} />
-          ))}
+            {SelectTreeTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
         </div>
       )}
     </ComponentContentLayout>

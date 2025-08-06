@@ -9,12 +9,12 @@ export default function AlertExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const alertProps = [
-    { name: 'type', type: 'default | error | fail | success | warn | loading', default: 'default', desc: 'Alert类型，用于表示不同的状态和语义' },
+    { name: 'type', type: 'AlertType (default | error | fail | success | warn | loading)', desc: 'Alert类型', default: 'default' },
     { name: 'title', type: 'ReactNode | string', desc: 'Alert标题内容，可以传入字符串或React节点' },
-    { name: 'direction', type: 'row | column', default: 'row', desc: 'Alert布局方向：row(水平布局) | column(垂直布局)' },
+    { name: 'direction', type: 'AlertDirection (row | column)', desc: 'Alert布局方向', default: 'row' },
     { name: 'link', type: 'string', desc: '链接文本，显示在Alert标题后的链接文字' },
     { name: 'onLinkClick', type: '(e: React.MouseEvent) => void', desc: '链接点击事件回调，当链接被点击时触发' },
-    { name: 'noBg', type: 'boolean', default: 'false', desc: '是否显示背景，设置为true时不显示背景色' },
+    { name: 'noBg', type: 'boolean', desc: '是否显示背景，设置为true时不显示背景色', default: 'false' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义Alert外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
   ];

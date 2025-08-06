@@ -19,11 +19,6 @@ export default function ColorPickerExample() {
     setColor1(currentColor);
     setHexColor(hexColor);
     setRgbaColor(rgbaColor);
-    console.log("=== ColorPicker onChange 事件测试 ===");
-    console.log("当前颜色模式色值:", currentColor);
-    console.log("HEX色值:", hexColor);
-    console.log("RGBA色值:", rgbaColor);
-    console.log("================================");
   };
 
   const colorPickerProps = [
@@ -41,7 +36,7 @@ export default function ColorPickerExample() {
     },
     {
       name: "onChange",
-      type: "(color: string, hexColor: string, rgbColor: string) => void",
+      type: "(color: string, hexColor: string, rgbaColor: string) => void",
       desc: "颜色变化事件，返回当前模式颜色值、HEX值和RGBA值",
     },
     { name: "onCardClick", type: "() => void", desc: "颜色卡片点击事件" },

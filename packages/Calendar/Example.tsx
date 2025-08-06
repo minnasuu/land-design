@@ -44,8 +44,8 @@ export default function CalendarExample() {
   };
 
   const calendarProps = [
-    { name: 'viewMode', type: 'CalendarViewMode', default: 'date', desc: '视图模式：date | week | month | quarter | year' },
-    { name: 'language', type: 'CalendarLanguage', default: 'zh', desc: '语言设置：zh | en' },
+    { name: 'viewMode', type: 'CalendarViewMode (date | week | month | quarter | year)', desc: '视图模式', default: 'date' },
+    { name: 'language', type: 'CalendarLanguage (zh | en)', desc: '语言设置', default: 'zh' },
     { name: 'minDate', type: 'DateInput', desc: '最小日期' },
     { name: 'maxDate', type: 'DateInput', desc: '最大日期' },
     { name: 'onDayChange', type: '(day: number, month: number, year: number) => void', desc: '日期选择事件' },

@@ -11,10 +11,10 @@ export default function MessageExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const messageProps = [
-    { name: 'type', type: 'info | success | fail | error | warn', default: 'info', desc: '消息类型，用于表示不同的状态和语义' },
+    { name: 'type', type: 'MessageType (info | success | fail | error | warn)', desc: '消息类型', default: 'info' },
     { name: 'text', type: 'string', desc: '消息文本内容' },
-    { name: 'simple', type: 'boolean', default: 'false', desc: '是否为简洁版样式，设置为true时显示简洁版本' },
-    { name: 'duration', type: 'number', default: '3000', desc: '消息显示时长，单位为毫秒' },
+    { name: 'simple', type: 'boolean', desc: '是否为简洁版样式，设置为true时显示简洁版本', default: 'false' },
+    { name: 'duration', type: 'number', desc: '消息显示时长，单位为毫秒', default: '3000' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义消息外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
   ];

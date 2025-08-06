@@ -8,14 +8,14 @@ import Flex from '../Flex';
 
 // API 文档配置
 const dividerProps = [
-  { name: 'direction', type: 'DividerDirection', default: 'row', desc: '分割线方向：row | column' },
+  { name: 'direction', type: 'DividerDirection (row | column)', desc: '分割线方向', default: 'row' },
   { name: 'content', type: 'ReactNode | string', desc: '分割线包含的内容' },
   { name: 'lineLength', type: 'string', desc: '分割线宽度和高度' },
   { name: 'gap', type: 'number', desc: '分割线上下或左右边距' },
-  { name: 'type', type: 'DividerType', default: 'solid', desc: '分割线类型：solid | dashed' },
+  { name: 'type', type: 'DividerType (solid | dashed)', desc: '分割线类型', default: 'solid' },
   { name: 'dashedGap', type: 'number', desc: '虚线分割线间距' },
   { name: 'dashedLength', type: 'number', desc: '虚线分割线长度' },
-  { name: 'align', type: 'DividerAlign', default: 'center', desc: '内容对齐方式：left | center | right' },
+  { name: 'align', type: 'DividerAlign (left | center | right)', desc: '内容对齐方式', default: 'center' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
 ];

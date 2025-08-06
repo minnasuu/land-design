@@ -14,7 +14,7 @@ export default function TabsExample() {
     { name: "checked", type: "string", desc: "当前选择项" },
     {
       name: "data",
-      type: <Link anchor="TabsItemType-API">TabsItemType</Link>,
+      type: <><Link anchor="TabsItemType-API">TabsItemType</Link>[]</>,
       desc: "数据",
     },
     { name: "width", type: "number | string", desc: "宽度", default: "100%" },
@@ -26,7 +26,7 @@ export default function TabsExample() {
     },
     {
       name: "onChange",
-      type: "(key: string, item: TabsItemType) => void",
+      type: <>(key: string, item: <Link anchor="TabsItemType-API">TabsItemType</Link>){' =>'} void</>,
       desc: "选择事件",
     },
     { name: "activeClassName", type: "string", desc: "选中项类名" },
@@ -219,9 +219,10 @@ export default function TabsExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={tabsProps} />
-          {tabsTypes.map(type => (
-            <ComponentPropsTable props={type.data} />
-          ))}
+          {tabsTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
         </div>
       )}
     </ComponentContentLayout>

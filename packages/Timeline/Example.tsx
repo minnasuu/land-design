@@ -10,8 +10,8 @@ export default function TimelineExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const timelineProps = [
-    { name: 'data', type: 'Array<TimelineItem>', desc: '时间轴数据，每个元素包含标题、副标题、描述和图标等信息' },
-    { name: 'direction', type: 'row | column', default: 'column', desc: '时间轴方向：row(横向) | column(纵向)' },
+    { name: 'data', type: 'TimelineItem[]', desc: '时间轴数据，每个元素包含标题、副标题、描述和图标等信息' },
+    { name: 'direction', type: 'TimelineDirection (row | column)', desc: '时间轴方向', default: 'column' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义时间轴外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
   ];

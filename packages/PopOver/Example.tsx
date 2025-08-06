@@ -12,13 +12,13 @@ export default function PopOverExample() {
 
   const popOverProps = [
     { name: 'content', type: 'ReactNode | string', desc: '气泡内容，可以是字符串或React节点' },
-    { name: 'theme', type: 'light | dark', default: 'light', desc: '气泡主题：light(白色) | dark(黑色)' },
-    { name: 'targetBody', type: 'boolean', default: 'false', desc: '是否将气泡挂载到body元素上，用于全局定位' },
-    { name: 'placement', type: 'top | bottom | left | right', default: 'top', desc: '气泡出现位置：top(上方) | bottom(下方) | left(左侧) | right(右侧)' },
-    { name: 'trigger', type: 'hover | click', default: 'hover', desc: '触发方式：hover(悬停) | click(点击)' },
+    { name: 'theme', type: 'PopOverTheme (light | dark)', desc: '气泡主题', default: 'light' },
+    { name: 'targetBody', type: 'boolean',  desc: '是否将气泡挂载到body元素上，用于全局定位', default: 'false' },
+    { name: 'placement', type: 'PopOverPlacement (top | bottom | left | right)', desc: '气泡出现位置', default: 'top' },
+    { name: 'trigger', type: 'PopOverTrigger (hover | click)', desc: '触发方式', default: 'hover' },
     { name: 'show', type: 'boolean', desc: '控制气泡显示状态，用于受控组件' },
     { name: 'onVisibleChange', type: '(visible: boolean) => void', desc: '气泡显示状态变化回调' },
-    { name: 'hideArrow', type: 'boolean', default: 'false', desc: '是否隐藏箭头' },
+    { name: 'hideArrow', type: 'boolean',  desc: '是否隐藏箭头', default: 'false' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义气泡外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
     { name: 'children', type: 'ReactNode', desc: '触发气泡的元素，通常是一个可交互的元素' },

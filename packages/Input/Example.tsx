@@ -19,7 +19,7 @@ export default function InputExample() {
   const inputProps = [
     {
       name: "type",
-      type: "'border' | 'background' | 'transparent'",
+      type: "InputType (border | background | transparent)",
       desc: "输入框样式",
       default: "border",
     },
@@ -45,15 +45,15 @@ export default function InputExample() {
     { name: "disabled", type: "boolean", desc: "是否禁用", default: "false" },
     {
       name: "textAlign",
-      type: "'left' | 'center' | 'right'",
+      type: "InputTextAlign (left | center | right)",
       desc: "输入框内容对齐方式",
       default: "left",
     },
-    { name: "onChange", type: "(e:any) => void", desc: "输入框内容变化事件" },
-    { name: "onEnter", type: "(e:any) => void", desc: "输入框回车事件" },
-    { name: "onFocus", type: "(e:any) => void", desc: "输入框聚焦事件" },
-    { name: "onBlur", type: "(e:any) => void", desc: "输入框失去焦点事件" },
-    { name: "onClear", type: "(e:any) => void", desc: "输入框清空事件" },
+    { name: "onChange", type: "(val: string, e?: React.ChangeEvent<HTMLInputElement>) => void;", desc: "输入框内容变化事件" },
+    { name: "onEnter", type: "(val: string, e?: React.KeyboardEvent<HTMLInputElement>) => void;", desc: "输入框回车事件" },
+    { name: "onFocus", type: "(e: React.FocusEvent<HTMLInputElement>) => void;", desc: "输入框聚焦事件" },
+    { name: "onBlur", type: "(e: React.FocusEvent<HTMLInputElement>) => void;", desc: "输入框失去焦点事件" },
+    { name: "onClear", type: "(e: React.MouseEvent<HTMLButtonElement>) => void;", desc: "输入框清空事件" },
   ];
 
   return (

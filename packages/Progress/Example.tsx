@@ -9,11 +9,11 @@ export default function ProgressExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const progressProps = [
-    { name: 'value', type: 'number', default: '0', desc: '进度值，范围0-1，表示完成百分比' },
-    { name: 'type', type: 'line | circle', default: 'line', desc: '进度条类型：line(线性) | circle(圆形)' },
-    { name: 'status', type: 'default | success | fail', default: 'default', desc: '进度状态：default(默认) | success(成功) | fail(失败)' },
-    { name: 'hideLabel', type: 'boolean', default: 'false', desc: '是否隐藏标签，设置为true时隐藏百分比显示' },
-    { name: 'size', type: 'small | default | large', default: 'default', desc: '进度条尺寸：small(小) | default(默认) | large(大)' },
+    { name: 'value', type: 'number', desc: '进度值，范围0-1，表示完成百分比', default: '0' },
+    { name: 'type', type: 'ProgressType (line | circle)', desc: '进度条类型：line(线性) | circle(圆形)', default: 'line' },
+    { name: 'status', type: 'ProgressStatus (default | success | fail)', desc: '进度状态：default(默认) | success(成功) | fail(失败)', default: 'default' },
+    { name: 'hideLabel', type: 'boolean', desc: '是否隐藏标签，设置为true时隐藏百分比显示', default: 'false' },
+    { name: 'size', type: 'ProgressSize (small | default | large)', desc: '进度条尺寸：small(小) | default(默认) | large(大)', default: 'default' },
     { name: 'strokeWidth', type: 'number', desc: '进度条线条宽度，仅对圆形进度条有效' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义进度条外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
@@ -37,14 +37,12 @@ export default function ProgressExample() {
             id='basic-usage'
             description='Progress 组件的基础用法，展示不同进度的线性进度条。'
           >
-            <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+            <CodeOperationContainer column>
                 <Progress />
                 <Progress value={0.3} status="default" />
                 <Progress value={0.7} status="default" />
                 <Progress value={1} status="success" />
                 <Progress value={0.3} status="fail" />
-              </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -55,13 +53,11 @@ export default function ProgressExample() {
             description='通过 type 属性可以显示圆形进度条。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-16">
                 <Progress type="circle" />
                 <Progress type="circle" value={0.3} status="default" />
                 <Progress type="circle" value={0.7} status="default" />
                 <Progress type="circle" value={1} status="success" />
                 <Progress type="circle" value={0.3} status="fail" />
-              </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -103,11 +99,9 @@ export default function ProgressExample() {
               <div className="flex flex-col gap-16">
                 <div>
                   <h4 className="mb-8">线性进度条（隐藏标签）</h4>
-                  <div className="flex gap-16">
                     <Progress hideLabel value={0.3} />
                     <Progress hideLabel value={0.7} status="success" />
                     <Progress hideLabel value={0.5} status="fail" />
-                  </div>
                 </div>
                 <div>
                   <h4 className="mb-8">圆形进度条（隐藏标签）</h4>
@@ -152,41 +146,6 @@ export default function ProgressExample() {
                 <div>
                   <h4 className="mb-8">圆形进度条动画</h4>
                   <Progress type="circle" value={0.8} status="success" />
-                </div>
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 自定义样式 */}
-          <ComponentSectionLayout
-            title='自定义样式'
-            id='progress-custom'
-            description='可以通过 style 属性自定义进度条的样式。'
-          >
-            <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
-                <div>
-                  <h4 className="mb-8">自定义线性进度条</h4>
-                  <Progress 
-                    value={0.6} 
-                    style={{
-                      '--progress-bg-color': '#f0f0f0',
-                      '--progress-active-color': '#1890ff',
-                      '--progress-text-color': '#1890ff'
-                    } as React.CSSProperties}
-                  />
-                </div>
-                <div>
-                  <h4 className="mb-8">自定义圆形进度条</h4>
-                  <Progress 
-                    type="circle" 
-                    value={0.6}
-                    style={{
-                      '--progress-circle-bg-color': '#f0f0f0',
-                      '--progress-circle-active-color': '#52c41a',
-                      '--progress-circle-text-color': '#52c41a'
-                    } as React.CSSProperties}
-                  />
                 </div>
               </div>
             </CodeOperationContainer>

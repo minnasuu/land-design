@@ -1,28 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dropdown from '.';
 import Button from '../Button';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
+import Link from '../Link';
 
 // API 文档配置
 const dropdownProps = [
-  { name: 'dropData', type: 'DropdownItemType[]', desc: '下拉选项数据' },
+    { name: 'dropData', type: <><Link anchor='DropdownItemType-API'>DropdownItemType</Link>[]</>, desc: '下拉选项数据' },
   { name: 'dropContent', type: 'ReactNode', desc: '自定义下拉内容' },
-  { name: 'trigger', type: '"hover" | "click"', default: 'hover', desc: '触发方式' },
-  { name: 'placement', type: '"top" | "bottom"', default: 'bottom', desc: '下拉框位置' },
-  { name: 'alignment', type: '"left" | "center" | "right"', default: 'left', desc: '对齐方式' },
-  { name: 'targetBody', type: 'boolean', default: 'false', desc: '是否全局定位' },
-  { name: 'disabled', type: 'boolean', default: 'false', desc: '是否禁用' },
-  { name: 'open', type: 'boolean', desc: '是否强制展开' },
-  { name: 'onChange', type: '(item: DropdownItemType) => void', desc: '选择变化回调' },
+  { name: 'trigger', type: 'DropdownTrigger (hover | click)', desc: '触发方式', default: 'hover' },
+  { name: 'placement', type: 'DropdownPlacement (top | bottom)', desc: '下拉框位置', default: 'bottom' },
+  { name: 'alignment', type: 'DropdownAlignment (left | center | right)', desc: '对齐方式', default: 'left' },
+  { name: 'targetBody', type: 'boolean', desc: '是否全局定位', default: 'false' },
+  { name: 'disabled', type: 'boolean', desc: '是否禁用', default: 'false' },
+  { name: 'open', type: 'boolean', desc: '是否强制展开', default: 'false' },
+  { name: 'onChange', type: <>(item: <Link anchor='DropdownItemType-API'>DropdownItemType</Link>){' =>'} void</>, desc: '选择变化回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
   { name: 'children', type: 'ReactNode', desc: '触发元素' },
 ];
 
-export default function DropdownExample() {
+const dropdownTypes = [
+
+  {
+    name: "DropdownItemType",
+    data: [
+      { name: "key", type: "string", desc: "选项唯一标识" },
+      { name: "label", type: "string", desc: "选项标签" },
+    ],
+  },
+];
+
+  export default function DropdownExample() {
+  const [activeTab, setActiveTab] = useState<string>('examples');
   const sampleData = [
     { key: '1', label: '选项 1' },
     { key: '2', label: '选项 2' },
@@ -36,9 +49,11 @@ export default function DropdownExample() {
       zh='下拉菜单'
       en='Dropdown'
       desc='LandDesign 的下拉菜单组件，用于显示选项列表。支持 hover/click 触发，多种对齐方式，自定义内容等功能。'
-      activeTab='examples'
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
     >
-      <div className='flex flex-col gap-24'>
+      {activeTab === 'examples' && (
+        <div className='flex flex-col gap-24'>
         {/* hover 下拉 */}
         <ComponentSectionLayout
           title='hover 下拉'
@@ -299,7 +314,17 @@ export default function DropdownExample() {
             </div>
           </CodeOperationContainer>
         </ComponentSectionLayout>
-      </div>
+          </div>
+      )}
+      {activeTab === 'props' && (
+        <div className='flex flex-col gap-12'>
+          <ComponentPropsTable props={dropdownProps} />
+          {dropdownTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
+        </div>
+      )}
     </ComponentContentLayout>
   )
 }

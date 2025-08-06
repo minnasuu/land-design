@@ -7,18 +7,19 @@ import ComponentContentLayout from '../../example/components/ComponentContentLay
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
+import Link from '../Link';
 
 // API 文档配置
 const menuProps = [
-  { name: 'data', type: 'MenuItemType[]', desc: '菜单数据，包含所有菜单项的配置信息' },
+  { name: 'data', type: <><Link anchor='MenuItemType-API'>MenuItemType</Link>[]</>, desc: '菜单数据，包含所有菜单项的配置信息' },
   { name: 'active', type: 'string', desc: '当前选中项的值' },
   { name: 'direction', type: '"row" | "column"', default: 'row', desc: '导航排列方向' },
   { name: 'titleDirection', type: '"row" | "column"', default: 'row', desc: '标题排列方向' },
   { name: 'border', type: 'boolean', default: 'false', desc: '是否显示边框' },
   { name: 'titleDeputy', type: 'boolean', default: 'false', desc: '标题是否作为副级' },
   { name: 'scrollToView', type: 'boolean', default: 'false', desc: '是否在选中项切换时滚动到视区' },
-  { name: 'onChange', type: '(item: MenuItemType) => void', desc: '菜单项切换事件回调' },
-  { name: 'onDropChange', type: '(item: MenuItemType, parentItem: MenuItemType) => void', desc: '下拉菜单切换事件回调' },
+  { name: 'onChange', type: <>(item: <Link anchor='MenuItemType-API'>MenuItemType</Link>){' =>'} void</>, desc: '菜单项切换事件回调' },
+  { name: 'onDropChange', type: <>(item: <Link anchor='MenuItemType-API'>MenuItemType</Link>, parentItem: <Link anchor='MenuItemType-API'>MenuItemType</Link>) {'=>'} void</>, desc: '下拉菜单切换事件回调' },
   { name: 'dropProps', type: 'MenuProps', desc: '二级菜单相关属性' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
@@ -28,7 +29,7 @@ const menuProps = [
 
 const menuTypes = [
   {
-    name: "MenuItem",
+    name: "MenuItemType",
     data: [
       { name: "key", type: "number", desc: "唯一标识" },
       {

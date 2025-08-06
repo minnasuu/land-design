@@ -148,6 +148,15 @@ export interface InputEventProps {
   onEnter?: (val: string, e?: React.KeyboardEvent<HTMLInputElement>) => void;
 
   /** 
+   * 聚焦事件
+  /** 
+   * 聚焦事件
+   * 当输入框获得焦点时触发
+   * @param e 原生事件对象
+   */
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+
+  /** 
    * 失焦事件
    * 当输入框失去焦点时触发
    * @param e 原生事件对象

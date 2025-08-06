@@ -33,11 +33,10 @@ export default function ButtonVariants() {
                 {buttonStatuses.map(status => (
                   <Button.ButtonChange
                     key={`${type}-${status}`}
-                    text='按钮'
                     type={type as any}
                     status={status as any}
-                    defaultSide={<Icon name='download' size={16} />}
-                    hoverSide="下载"
+                    defaultSide={<Flex gap={4} align='center'><Icon name='download' size={16} />下载</Flex>}
+                    hoverSide="通用版"
                   />
                 ))}
               </Flex>

@@ -35,7 +35,7 @@ export default function AutoContainerExample() {
           >
             <CodeOperationContainer>
               <div
-                className="flex justify-center gap-6 border p-8"
+                className="flex justify-center gap-6 bg-bg-secondary p-8 rounded-[12px]"
                 style={{ height: "400px" }}
               >
                 <AutoContainer ratio={1 / 1} className="flex items-center justify-center">

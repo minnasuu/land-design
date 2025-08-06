@@ -5,21 +5,35 @@ import ComponentContentLayout from '../../example/components/ComponentContentLay
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
+import Link from "../Link";
 
 // API 文档配置
 const stepsProps = [
-  { name: 'data', type: 'StepItemType[]', desc: '步骤数据，包含所有步骤项的配置信息' },
+  { name: 'data', type: <><Link anchor='StepItemType-API'>StepItemType</Link>[]</>, desc: '步骤数据，包含所有步骤项的配置信息' },
   { name: 'current', type: 'number | string', desc: '当前步骤' },
   { name: 'finished', type: '(number | string)[]', desc: '已完成的步骤数组' },
-  { name: 'direction', type: '"horizontal" | "vertical"', default: 'horizontal', desc: '步骤条方向' },
-  { name: 'useDivider', type: 'boolean', default: 'false', desc: '是否使用分割线' },
-  { name: 'dividerWidth', type: 'string', desc: '分割线宽度' },
-  { name: 'onClick', type: '(item: StepItemType) => void', desc: '步骤点击事件回调' },
+  { name: 'direction', type: 'StepsDirection (horizontal | vertical)', desc: '步骤条方向', default: 'horizontal' },
+  { name: 'useDivider', type: 'boolean', desc: '是否使用分割线', default: 'false' },
+  { name: 'dividerWidth', type: 'string', desc: '分割线宽度', default: '1px' },
+  { name: 'onClick', type: <>(item: <Link anchor='StepItemType-API'>StepItemType</Link>){' =>'} void</>, desc: '步骤点击事件回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
 ];
 
-export default function StepsExample() {
+const stepsTypes = [
+
+  {
+    name: "StepItemType",
+    data: [
+      { name: "key", type: "number | string", desc: "步骤唯一标识" },
+      { name: "title", type: "string", desc: "步骤标题" },
+      { name: "desc", type: "string", desc: "步骤描述" },
+      { name: "finished", type: "boolean", desc: "步骤是否已完成" },
+    ],
+  },
+];
+
+  export default function StepsExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
   const [currentStep, setCurrentStep] = useState<number | string>(1);
   const [finishedSteps, setFinishedSteps] = useState<(number | string)[]>([1]);
@@ -210,6 +224,10 @@ export default function StepsExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={stepsProps} />
+          {stepsTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <h3 className='text-sm font-bold'>{i.name}</h3>
+            <ComponentPropsTable props={i.data as any} />
+          </div>)}
         </div>
       )}
     </ComponentContentLayout>
