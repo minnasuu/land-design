@@ -98,8 +98,6 @@ const Video: React.FC<VideoProps> = ({
     // 只有在启用关键帧预览时才执行相关逻辑
     if (!useKeyImg) return;
 
-    setShowKeyImg(true);
-
     // 计算预览图片的位置
     if (left < keyImgWidth / 2) {
       setLeft(0);
@@ -561,6 +559,7 @@ const Video: React.FC<VideoProps> = ({
                     curPercentage={currentTime / duration}
                     bufferPercentage={buffered / duration}
                     onClick={handleProgressChange}
+                    onMouseEnter={useKeyImg ? (val, left, width) => {setShowKeyImg(true);handleProgressMove(val, left, width)} : undefined}
                     onMove={useKeyImg ? (val, left, width) =>
                       handleProgressMove?.(val, left, width)
                       : undefined}
@@ -568,10 +567,10 @@ const Video: React.FC<VideoProps> = ({
                     onDragStart={handleProgressDragStart}
                     onDragEnd={handleProgressDragEnd}
                   />
-                  {useKeyImg && showKeyImg && (
+                  {useKeyImg && (
                     <div
                       className="land-video-controls-keyImg-container"
-                      style={{ transform: `translateX(${left}px)` }}
+                      style={{ transform: `translateX(${left}px)`, opacity: showKeyImg ? 1 : 0 }}
                     >
                       <canvas
                         ref={KeyImgPreviewCanvasRef}

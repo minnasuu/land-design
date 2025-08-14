@@ -8,6 +8,7 @@ const VideoProgressBar: React.FC<VideoProgressBarProps> = ({
   activeBg = 'var(--color-primary-6)',
   onClick,
   onMove,
+  onMouseEnter,
   onMouseLeave,
   onDragStart,
   onDragEnd,
@@ -101,6 +102,7 @@ const VideoProgressBar: React.FC<VideoProgressBarProps> = ({
       <div
         className='land-video-progress-bar-list'
         onMouseMove={handleBarMove}
+        onMouseEnter={onMouseEnter ? (e: React.MouseEvent) => onMouseEnter(moveLeft, e.clientX - e.currentTarget.getBoundingClientRect().left, e.currentTarget.getBoundingClientRect().width, e) : undefined}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}

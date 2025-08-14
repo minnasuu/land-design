@@ -92,7 +92,7 @@ const VideoExample: React.FC = () => {
                 data={videoOptions}
                 style={{ "--land-select-width": "200px" } as React.CSSProperties}
               />
-              <ul className="color-text-secondary flex flex-col gap-4 fs-14">
+              <ul className="color-text-secondary flex flex-col gap-8 text-14">
                 <li><strong>空格键</strong> - 播放/暂停</li>
                 <li><strong>左右箭头</strong> - 快退/快进 5 秒</li>
                 <li><strong>M 键</strong> - 静音/取消静音</li>

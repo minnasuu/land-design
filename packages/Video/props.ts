@@ -219,6 +219,13 @@ export interface VideoProgressBarProps {
   onMove?: (value: number, left: number, width: number, e: MouseEvent) => void;
 
   /** 
+   * 鼠标进入事件
+   * 当鼠标进入进度条时触发
+   * @param e 事件对象
+   */
+  onMouseEnter?: (value: number, left: number, width: number, e: MouseEvent) => void;
+
+  /** 
    * 鼠标离开事件
    * 当鼠标离开进度条时触发
    * @param e 事件对象
