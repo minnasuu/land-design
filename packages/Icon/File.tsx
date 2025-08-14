@@ -521,21 +521,21 @@ export const IconEmailSuccess: React.FC<IconProps> = ({
       d="M44 24V9H24H4V24V39H24"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M31 36L36 40L44 30"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M4 9L24 24L44 9"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -562,28 +562,28 @@ export const IconEmailFail: React.FC<IconProps> = ({
       d="M44 24V9H24H4V24V39H24"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M40 31L32 39"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M32 31L40 39"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M4 9L24 24L44 9"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -610,28 +610,28 @@ export const IconFileAdd: React.FC<IconProps> = ({
       d="M40 23V14L31 4H10C8.89543 4 8 4.89543 8 6V42C8 43.1046 8.89543 44 10 44H22"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M33 29V43"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M26 36H33H40"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M30 4V14H40"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -659,28 +659,28 @@ export const IconCodeFile: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M30 4L40 14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M27 24L32 29L27 34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M21 24L16 29L21 34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -708,14 +708,14 @@ export const IconStarFile: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M30 4L40 14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
@@ -723,7 +723,7 @@ export const IconStarFile: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -751,28 +751,28 @@ export const IconTextFile: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M30 4L40 14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24 22V36"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M18 22H24L30 22"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -812,14 +812,14 @@ export const IconFolder: React.FC<IconProps> = ({
       d="M5 16V28"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M43 16V28"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -853,14 +853,14 @@ export const IconCodeFolder: React.FC<IconProps> = ({
       d="M28 22L33 27L28 32"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M20 22L15 27L20 32"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -894,14 +894,14 @@ export const IconFolderDownload: React.FC<IconProps> = ({
       d="M30 28L23.9933 34L18 28.0134"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24 20V34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -935,13 +935,13 @@ export const IconFolderAdd: React.FC<IconProps> = ({
       d="M18 27H30"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
     <path
       d="M24 21L24 33"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -974,14 +974,14 @@ export const IconFolderUpload: React.FC<IconProps> = ({
       d="M30 25.9867L24 20L18 26"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24 20V34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1011,7 +1011,7 @@ export const IconFormattingBrush: React.FC<IconProps> = ({
       height="18"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
@@ -1019,14 +1019,14 @@ export const IconFormattingBrush: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M16 32L16 42"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -1056,7 +1056,7 @@ export const IconInstruction: React.FC<IconProps> = ({
       rx="2"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
@@ -1064,27 +1064,27 @@ export const IconInstruction: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M25 23L23 34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
     <path
       d="M31 23L37 28L31 34"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M17 22.9999L11 27.9999L17 33.9999"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1115,42 +1115,42 @@ export const IconListView: React.FC<IconProps> = ({
       rx="3"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M4 14H44"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M20 24H36"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M20 32H36"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M12 24H14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M12 32H14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1177,7 +1177,7 @@ export const IconLink: React.FC<IconProps> = ({
       d="M24.7073 9.56521L9.85801 24.4145C6.34329 27.9292 6.34329 33.6277 9.85801 37.1424V37.1424C13.3727 40.6571 19.0712 40.6571 22.5859 37.1424L40.2636 19.4647C42.6067 17.1216 42.6067 13.3226 40.2636 10.9794V10.9794C37.9205 8.63628 34.1215 8.63628 31.7783 10.9794L14.1007 28.6571C12.9291 29.8287 12.9291 31.7282 14.1007 32.8997V32.8997C15.2722 34.0713 17.1717 34.0713 18.3433 32.8997L33.1925 18.0505"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1214,21 +1214,21 @@ export const IconLog: React.FC<IconProps> = ({
       d="M35 10V4H8C7.44772 4 7 4.44772 7 5V38H13"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M21 22H33"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M21 30H33"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1262,21 +1262,21 @@ export const IconEmail: React.FC<IconProps> = ({
       d="M4 9L24 24L44 9"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24 9H4V24"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M44 24V9H24"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1310,7 +1310,7 @@ export const IconEmailOpen: React.FC<IconProps> = ({
       d="M4 17.7839L24 4L44 17.7839"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1373,32 +1373,32 @@ export const IconSchedule: React.FC<IconProps> = ({
       fill="none"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M14 6V14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
     <path
       d="M25 23L14 23"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
     <path
       d="M34 31L14 31"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
     <path
       d="M34 6V14"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
     />
   </svg>
 );
@@ -1424,42 +1424,42 @@ export const IconTextScan: React.FC<IconProps> = ({
       d="M6 33V39C6 40.6569 7.34315 42 9 42H15"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M33 42H39C40.6569 42 42 40.6569 42 39V33"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M42 15V9C42 7.34315 40.6569 6 39 6H33"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M6 15V9C6 7.34315 7.34315 6 9 6H15"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M24 15V35"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M17 15H24H31"
       stroke={color}
       strokeWidth={strokeWidth}
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
@@ -1655,7 +1655,7 @@ export const IconCode: React.FC<IconProps> = ({
   className={`code ${className}`}
   onClick={onClick}
 >
-    <path d="M16 13L4 25.4322L16 37" stroke={color} stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M32 13L44 25.4322L32 37" stroke={color} stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M28 13L21 37" stroke={color} stroke-width={strokeWidth} stroke-linecap="round" />
+    <path d="M16 13L4 25.4322L16 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" stroke-linejoin="round" />
+    <path d="M32 13L44 25.4322L32 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" stroke-linejoin="round" />
+    <path d="M28 13L21 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" />
   </svg>

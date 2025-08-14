@@ -50,6 +50,9 @@ export default defineConfig({
     // },
     sourcemap: true,
     target: 'esnext',
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+    }
   },
   resolve: {
     alias: {

@@ -32,7 +32,7 @@ const State: React.FC<StateProps> = ({
           xmlns="http://www.w3.org/2000/svg"
           className="land-state-empty-icon"
         >
-          <g clip-path="url(#clip0_1578_7158)">
+          <g clipPath="url(#clip0_1578_7158)">
             <path
               d="M43 30.5L36.5788 19.4923C36.2204 18.8778 35.5626 18.5 34.8513 18.5H13.1487C12.4374 18.5 11.7796 18.8778 11.4212 19.4923L5 30.5M43 30.5V40.5C43 41.6046 42.1046 42.5 41 42.5H7C5.89543 42.5 5 41.6046 5 40.5V30.5M43 30.5H5"
               stroke="currentColor"
@@ -42,19 +42,19 @@ const State: React.FC<StateProps> = ({
               d="M24 12V6"
               stroke="currentColor"
               stroke-width="3"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
             <path
               d="M30.9995 12.7426L35.2422 8.5"
               stroke="currentColor"
               stroke-width="3"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
             <path
               d="M17.2426 12.7426L13 8.5"
               stroke="currentColor"
               stroke-width="3"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
           </g>
           <defs>
@@ -78,28 +78,28 @@ const State: React.FC<StateProps> = ({
             d="M44 18.9653C37.2253 12.545 28.1189 10.0059 19.5 11.3481"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
           <path
             d="M38 25.799C35.2866 23.0855 31.9815 21.3243 28.5 20.5154"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
           <path
             d="M10 25.799C11.3276 24.4714 12.7969 23.3717 14.3591 22.5"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
           <path
             d="M16 32.3138C17.4388 30.875 19.1686 29.9048 21 29.4031"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
           <path
@@ -112,14 +112,14 @@ const State: React.FC<StateProps> = ({
             d="M40 40L8 8"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
           <path
             d="M4 18.9652C4.5888 18.4072 5.19522 17.8785 5.81741 17.3792C6.36642 16.9385 6.92771 16.5207 7.49999 16.1257"
             stroke="currentColor"
             stroke-width="4"
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
           />
         </svg>

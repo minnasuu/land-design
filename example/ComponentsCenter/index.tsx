@@ -21,7 +21,7 @@ const CATEGORIES_DATA: CategoryData[] = [
     title: '网页基础组件',
     description: '探索更加全面的界面基础组件（React+TS+SCSS）',
     count: COMPONENTS_DATA.reduce((acc, i) => acc + (i.data?.length || 0), 0),
-    icon: <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 11L24 4L31 11L24 18L17 11Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M30 25L37 18L44 25L37 32L30 25Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M17 37L24 30L31 37L24 44L17 37Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M4 24L11 17L18 24L11 31L4 24Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>,
+    icon: <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 11L24 4L31 11L24 18L17 11Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /><path d="M30 25L37 18L44 25L37 32L30 25Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /><path d="M17 37L24 30L31 37L24 44L17 37Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /><path d="M4 24L11 17L18 24L11 31L4 24Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /></svg>,
     route: '/base-component'
   },
   {
@@ -29,7 +29,7 @@ const CATEGORIES_DATA: CategoryData[] = [
     title: '网页进阶组件',
     description: '集成于业务场景的进阶组件（React+TS+SCSS）',
     count: PRO_COMPONENTS_DATA.reduce((acc, i) => acc + (i.data?.length || 0), 0),
-    icon: <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 30H18V42H6V30Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M18 18H30V30H18V18Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><path d="M30 6H42V18H30V6Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>,
+    icon: <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 30H18V42H6V30Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /><path d="M18 18H30V30H18V18Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /><path d="M30 6H42V18H30V6Z" fill="currentColor" stroke="currentColor" stroke-width="3" strokeLinecap="round" stroke-linejoin="round" /></svg>,
     route: '/pro-component'
   },
 ]
