@@ -58,7 +58,10 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-
+  .land-audio-wave-audio{
+    opacity: 0;
+    pointer-events: none;
+  }
   &.bar {
     canvas {
       border-radius: var(--radius-s);

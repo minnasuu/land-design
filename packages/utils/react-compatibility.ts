@@ -79,6 +79,70 @@ export const createSafeRef = <T>(initialValue: T): React.MutableRefObject<T> => 
   return React.useRef<T>(initialValue);
 };
 
+// Canvas兼容性工具函数
+export const getCanvasContext = (
+  canvas: HTMLCanvasElement,
+  contextType: '2d' | 'webgl' | 'webgl2' = '2d'
+): CanvasRenderingContext2D | WebGLRenderingContext | WebGL2RenderingContext | null => {
+  try {
+    // 在React 19中，需要更安全的Canvas上下文获取
+    let ctx = canvas.getContext(contextType) as CanvasRenderingContext2D | WebGLRenderingContext | WebGL2RenderingContext | null;
+    
+    // 如果上下文获取失败，尝试重新获取
+    if (!ctx && IS_REACT_19) {
+      // 等待下一个tick再尝试
+      requestAnimationFrame(() => {
+        try {
+          const retryCtx = canvas.getContext(contextType);
+          if (retryCtx) {
+            console.log('Canvas context retry successful');
+          }
+        } catch (error) {
+          console.warn('Canvas context retry failed:', error);
+        }
+      });
+    }
+    
+    return ctx;
+  } catch (error) {
+    console.warn('Canvas getContext failed:', error);
+    return null;
+  }
+};
+
+// 安全的Canvas操作包装器
+export const safeCanvasOperation = <T>(
+  canvas: HTMLCanvasElement,
+  operation: (ctx: CanvasRenderingContext2D) => T,
+  fallback?: T
+): T | undefined => {
+  try {
+    const ctx = getCanvasContext(canvas, '2d') as CanvasRenderingContext2D;
+    if (ctx && canvas.width > 0 && canvas.height > 0) {
+      return operation(ctx);
+    }
+    
+    // 如果Canvas无效，尝试延迟重试
+    if (IS_REACT_19) {
+      setTimeout(() => {
+        try {
+          const retryCtx = getCanvasContext(canvas, '2d') as CanvasRenderingContext2D;
+          if (retryCtx && canvas.width > 0 && canvas.height > 0) {
+            operation(retryCtx);
+          }
+        } catch (retryError) {
+          console.warn('Canvas operation retry failed:', retryError);
+        }
+      }, 100);
+    }
+    
+    return fallback;
+  } catch (error) {
+    console.warn('Canvas operation failed:', error);
+    return fallback;
+  }
+};
+
 // 导出React版本信息
 export const REACT_VERSION = getReactVersion();
 export const IS_REACT_19 = REACT_VERSION === '19'; 

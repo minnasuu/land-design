@@ -12,6 +12,7 @@ import Dropdown from "../Dropdown";
 import { VideoProps } from './props';
 import './index.scss'
 import Alert from '../Alert';
+import { safeCanvasOperation } from '../utils/react-compatibility';
 
 const Video: React.FC<VideoProps> = ({
   src,
@@ -131,16 +132,16 @@ const Video: React.FC<VideoProps> = ({
       // 等待预览视频加载到指定时间点
       const loadFrame = () => {
         if (previewVideo.readyState >= 2) { // HAVE_CURRENT_DATA
-          const previewContext = previewCanvas.getContext("2d");
-          if (previewContext) {
-            previewContext.drawImage(
+          // 使用安全的Canvas操作
+          safeCanvasOperation(previewCanvas, (ctx) => {
+            ctx.drawImage(
               previewVideo,
               0,
               0,
               previewCanvas.width,
               previewCanvas.height
             );
-          }
+          });
         } else {
           // 如果还没准备好，继续等待
           requestAnimationFrame(loadFrame);

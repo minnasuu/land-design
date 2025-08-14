@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawWave } from './drawWave';
 import { drawWaveform } from './drawWaveform';
+import { safeCanvasOperation } from '../../utils/react-compatibility';
 
 interface UseAudioWaveOptions {
   audioUrl: string;
@@ -118,82 +119,82 @@ export function useAudioWave({
     defaultColor: string,
     activeColor: string
   ) => {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // 使用安全的Canvas操作
+    safeCanvasOperation(canvas, (ctx) => {
+      const width = canvas.width;
+      const height = canvas.height;
 
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // 确保canvas有尺寸
-    if (width === 0 || height === 0) {
-      console.warn('Canvas has no size for line waveform');
-      return;
-    }
-
-    const currentTime = audio.currentTime || 0;
-    const duration = audio.duration || 1;
-    const playedSamples = Math.floor((currentTime / duration) * data.length);
-
-    ctx.clearRect(0, 0, width, height);
-
-    // 确保数据不为空
-    if (data.length === 0) {
-      console.warn('No data for line waveform');
-      return;
-    }
-
-    // 计算缩放比例
-    const maxValue = Math.max(...data);
-    const scaleY = maxValue > 0 ? height * 0.6 / maxValue : 1;
-    const stepX = width / (data.length - 1);
-
-    // 绘制背景线
-    ctx.beginPath();
-    ctx.strokeStyle = defaultColor;
-    ctx.lineWidth = 1;
-    ctx.setLineDash([2, 2]);
-    ctx.moveTo(0, height / 2);
-    ctx.lineTo(width, height / 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // 绘制波形线
-    ctx.beginPath();
-    ctx.strokeStyle = defaultColor;
-    ctx.lineWidth = 2;
-
-    data.forEach((value, index) => {
-      const x = index * stepX;
-      const y = height / 2 - (value * scaleY);
-
-      if (index === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
+      // 确保canvas有尺寸
+      if (width === 0 || height === 0) {
+        console.warn('Canvas has no size for line waveform');
+        return;
       }
-    });
 
-    ctx.stroke();
+      const currentTime = audio.currentTime || 0;
+      const duration = audio.duration || 1;
+      const playedSamples = Math.floor((currentTime / duration) * data.length);
 
-    // 绘制播放进度
-    if (playedSamples > 0) {
+      ctx.clearRect(0, 0, width, height);
+
+      // 确保数据不为空
+      if (data.length === 0) {
+        console.warn('No data for line waveform');
+        return;
+      }
+
+      // 计算缩放比例
+      const maxValue = Math.max(...data);
+      const scaleY = maxValue > 0 ? height * 0.6 / maxValue : 1;
+      const stepX = width / (data.length - 1);
+
+      // 绘制背景线
       ctx.beginPath();
-      ctx.strokeStyle = activeColor;
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = defaultColor;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2]);
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-      for (let i = 0; i < Math.min(playedSamples, data.length); i++) {
-        const x = i * stepX;
-        const y = height / 2 - (data[i] * scaleY);
+      // 绘制波形线
+      ctx.beginPath();
+      ctx.strokeStyle = defaultColor;
+      ctx.lineWidth = 2;
 
-        if (i === 0) {
+      data.forEach((value, index) => {
+        const x = index * stepX;
+        const y = height / 2 - (value * scaleY);
+
+        if (index === 0) {
           ctx.moveTo(x, y);
         } else {
           ctx.lineTo(x, y);
         }
-      }
+      });
 
       ctx.stroke();
-    }
+
+      // 绘制播放进度
+      if (playedSamples > 0) {
+        ctx.beginPath();
+        ctx.strokeStyle = activeColor;
+        ctx.lineWidth = 3;
+
+        for (let i = 0; i < Math.min(playedSamples, data.length); i++) {
+          const x = i * stepX;
+          const y = height / 2 - (data[i] * scaleY);
+
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+
+        ctx.stroke();
+      }
+    });
   }, []);
 
   // 动画循环

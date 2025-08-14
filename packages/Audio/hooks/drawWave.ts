@@ -1,4 +1,5 @@
 import { mapToNewRange } from "./mapToNewRange";
+import { safeCanvasOperation } from "../../utils/react-compatibility";
 
 export function drawWave(
   data: number[],
@@ -14,69 +15,69 @@ export function drawWave(
 ) {
   console.log('drawWave', data, 'canvas size:', canvas.width, 'x', canvas.height);
 
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  // 使用安全的Canvas操作
+  safeCanvasOperation(canvas, (ctx) => {
+    let newData = data;
 
-  let newData = data;
-
-  // 确保数据不为空
-  if (newData.length === 0) {
-    console.warn('No wave data to draw');
-    return;
-  }
-
-  if (normalize) {
-    const max = Math.max(...data);
-    if (max > 0) {
-      newData = mapToNewRange(data, 0, max);
+    // 确保数据不为空
+    if (newData.length === 0) {
+      console.warn('No wave data to draw');
+      return;
     }
-  }
 
-  if (amplify) {
-    const min = Math.min(...data);
-    const max = Math.max(...data);
-    const newMin = Math.min(...data.filter((i) => i !== min));
-    newData = mapToNewRange(
-      data.filter((i) => i !== min),
-      newMin,
-      max
-    );
-  }
+    if (normalize) {
+      const max = Math.max(...data);
+      if (max > 0) {
+        newData = mapToNewRange(data, 0, max);
+      }
+    }
 
-  const width = canvas.width;
-  const height = canvas.height;
+    if (amplify) {
+      const min = Math.min(...data);
+      const max = Math.max(...data);
+      const newMin = Math.min(...data.filter((i) => i !== min));
+      newData = mapToNewRange(
+        data.filter((i) => i !== min),
+        newMin,
+        max
+      );
+    }
 
-  // 确保canvas有尺寸
-  if (width === 0 || height === 0) {
-    console.warn('Canvas has no size');
-    return;
-  }
+    const width = canvas.width;
+    const height = canvas.height;
 
-  const currentTime = audio.currentTime || 0;
-  const duration = audio.duration || 1;
-  const playedSamples = Math.floor((currentTime / duration) * samples);
+    // 确保canvas有尺寸
+    if (width === 0 || height === 0) {
+      console.warn('Canvas has no size');
+      return;
+    }
 
-  ctx.clearRect(0, 0, width, height);
+    const currentTime = audio.currentTime || 0;
+    const duration = audio.duration || 1;
+    const playedSamples = Math.floor((currentTime / duration) * samples);
 
-  // 计算总宽度和缩放比例
-  const totalBarWidth = barWidth + barGap;
-  const maxBars = Math.floor(width / totalBarWidth);
-  const actualBars = Math.min(newData.length, maxBars);
+    ctx.clearRect(0, 0, width, height);
 
-  // 计算数据缩放比例，确保条形有最小高度
-  const maxValue = Math.max(...newData);
-  const minBarHeight = 2; // 最小条形高度
-  const scale = maxValue > 0 ? Math.max(height * 0.8 / maxValue, minBarHeight / maxValue) : 1;
+    // 计算总宽度和缩放比例
+    const totalBarWidth = barWidth + barGap;
+    const maxBars = Math.floor(width / totalBarWidth);
+    const actualBars = Math.min(newData.length, maxBars);
 
-  console.log('Drawing bars:', actualBars, 'maxValue:', maxValue, 'scale:', scale);
+    // 计算数据缩放比例，确保条形有最小高度
+    const maxValue = Math.max(...newData);
+    const minBarHeight = 2; // 最小条形高度
+    const scale = maxValue > 0 ? Math.max(height * 0.8 / maxValue, minBarHeight / maxValue) : 1;
 
-  for (let i = 0; i < actualBars; i++) {
-    const value = newData[i] || 0;
-    const x = i * totalBarWidth;
-    const barHeight = Math.max(value * scale, minBarHeight);
-    const y = height - barHeight;
+    console.log('Drawing bars:', actualBars, 'maxValue:', maxValue, 'scale:', scale);
 
-    ctx.fillStyle = i < playedSamples ? activeColor : defaultColor;
-    ctx.fillRect(x, y, barWidth, barHeight);
-  }
+    for (let i = 0; i < actualBars; i++) {
+      const value = newData[i] || 0;
+      const x = i * totalBarWidth;
+      const barHeight = Math.max(value * scale, minBarHeight);
+      const y = height - barHeight;
+
+      ctx.fillStyle = i < playedSamples ? activeColor : defaultColor;
+      ctx.fillRect(x, y, barWidth, barHeight);
+    }
+  });
 }

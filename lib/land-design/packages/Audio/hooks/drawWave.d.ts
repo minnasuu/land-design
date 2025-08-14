@@ -1,0 +1,1 @@
+export declare function drawWave(data: number[], canvas: HTMLCanvasElement, audio: HTMLAudioElement, samples: number, barWidth?: number, barGap?: number, defaultColor?: string, activeColor?: string, normalize?: boolean, amplify?: boolean): void;

@@ -46,7 +46,6 @@ const AudioWave: React.FC<AudioWaveProps> = ({
 
   // 如果传入了外部canvas和audio，使用外部的
   const finalCanvasRef = canvas ? { current: canvas } : canvasRef;
-  const finalAudioRef = audio ? { current: audio } : audioRef;
 
   // 如果传入了预生成的samples数据，使用传入的数据
   const finalWaveData = samples || waveData;
@@ -102,6 +101,7 @@ const AudioWave: React.FC<AudioWaveProps> = ({
         ...style
       }}
     >
+      <audio ref={audioRef} src={audioUrl} className="land-audio-wave-audio"/>
       <canvas
         ref={finalCanvasRef}
         style={{

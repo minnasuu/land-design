@@ -59,7 +59,7 @@ const Audio: React.FC<AudioProps> & {
             amplify={waveAmplify}
           />
         )}
-        <audio ref={audioRef} src={audioUrl} />
+        {!showWave &&<audio ref={audioRef} src={audioUrl} />}
       </div>
     );
   };
