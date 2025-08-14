@@ -26,11 +26,18 @@ export default defineConfig({
     },
     outDir: 'lib',
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react', 
+        'react-dom', 
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime'
+      ],
       output: {
         globals: {
-          react: 'react',
-          'react-dom': 'ReactDom',
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'jsxRuntime',
+          'react/jsx-dev-runtime': 'jsxDevRuntime',
         },
       },
     },
