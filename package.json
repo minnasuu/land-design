@@ -1,7 +1,7 @@
 {
   "name": "@suminhan/land-design",
   "private": false,
-  "version": "0.0.87",
+  "version": "0.0.88",
   "author": {
     "name": "suminhan"
   },
@@ -39,8 +39,8 @@
     "@rollup/plugin-typescript": "8.5.0",
     "@testing-library/react": "^14.2.1",
     "@types/node": "^18.11.10",
-    "@types/react": "~18.3.12",
-    "@types/react-dom": "~18.3.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.21",
     "clsx": "^1.2.1",
