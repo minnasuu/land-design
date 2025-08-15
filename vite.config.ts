@@ -46,12 +46,20 @@ export default defineConfig({
     //   entry: resolve('packages/index.tsx'),
     //   // 组件库名称
     //   name: 'land-design',
-    //   fileName: (format) => `index.${format}.js`,
+    //   fileName: (format) => 'index.${format}.js',
     // },
     sourcemap: true,
     target: 'esnext',
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      // 对于浏览器环境，我们需要打包React依赖
+      // external: ['react', 'react-dom'],
+      output: {
+        // 确保所有依赖都被打包
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM'
+        }
+      }
     }
   },
   resolve: {
