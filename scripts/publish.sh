@@ -79,7 +79,7 @@ update_version() {
 # 构建库
 build_library() {
     log_info "构建库文件..."
-    tsc && vite build --config vite.config.lib.ts
+    npm run build:lib
     log_success "库文件构建完成"
 }
 

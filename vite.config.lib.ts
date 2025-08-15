@@ -11,6 +11,14 @@ export default defineConfig({
       '@suminhan/land-design': resolve(__dirname, './packages/index'),
     },
   },
+  css: {
+    // 启用CSS代码分割
+    modules: false,
+    // 确保CSS被正确处理
+    postcss: {
+      plugins: [],
+    },
+  },
   build: {
     // minify:'terser',
     // terserOptions:{
@@ -41,6 +49,13 @@ export default defineConfig({
         },
         // 添加更安全的UMD包装器
         extend: true,
+        // 确保CSS文件被正确输出
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') {
+            return 'style.css';
+          }
+          return assetInfo.name || 'assets/[name].[ext]';
+        },
       },
     },
     sourcemap: true,

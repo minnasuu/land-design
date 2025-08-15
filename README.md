@@ -30,10 +30,14 @@ pnpm add @suminhan/land-design
 
 ## 🚀 Quick Start
 
+### 方法1：导入样式文件（推荐）
+
 ```tsx
 import React from 'react';
 import { LandButton, LandInput, LandAlert } from '@suminhan/land-design';
-import '@suminhan/land-design/lib/styles/index.scss';
+
+// 导入样式文件
+import '@suminhan/land-design/lib/style.css';
 
 function App() {
   return (
@@ -45,6 +49,132 @@ function App() {
   );
 }
 ```
+
+### 方法2：HTML 中引入样式
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 引入样式文件 -->
+  <link rel="stylesheet" href="https://unpkg.com/@suminhan/land-design/lib/style.css">
+</head>
+<body>
+  <div id="app"></div>
+  
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/@suminhan/land-design/lib/index.umd.js"></script>
+</body>
+</html>
+```
+
+### 方法3：CDN 引入
+
+```html
+<!-- 使用最新版本 -->
+<link rel="stylesheet" href="https://unpkg.com/@suminhan/land-design@latest/lib/style.css">
+<script src="https://unpkg.com/@suminhan/land-design@latest/lib/index.umd.js"></script>
+
+<!-- 或使用特定版本 -->
+<link rel="stylesheet" href="https://unpkg.com/@suminhan/land-design@0.0.90/lib/style.css">
+<script src="https://unpkg.com/@suminhan/land-design@0.0.90/lib/index.umd.js"></script>
+```
+
+## ⚠️ 重要提示
+
+**样式文件必须单独导入！** 如果遇到样式丢失的问题，请确保：
+
+1. **样式文件已正确导入**：`import '@suminhan/land-design/lib/style.css'`
+2. **使用正确的路径**：样式文件位于 `lib/style.css`
+3. **检查版本兼容性**：确保使用的是最新版本
+
+### 常见问题解决
+
+如果遇到 `Missing "./lib/style.css" specifier` 错误：
+
+```bash
+# 重新安装最新版本
+npm install @suminhan/land-design@latest
+
+# 或者清除缓存后重新安装
+npm cache clean --force
+npm install @suminhan/land-design
+```
+
+## 🎨 样式使用
+
+### 样式文件说明
+
+Land Design 使用 SCSS 构建，最终输出为压缩的 CSS 文件。样式文件包含：
+
+- **基础样式**：重置样式、变量定义、主题配置
+- **组件样式**：所有组件的样式定义
+- **工具类**：Tailwind CSS 风格的实用工具类
+- **响应式设计**：移动端和桌面端的适配样式
+
+### 样式导入方式
+
+#### 1. ES6 模块导入（推荐）
+
+```tsx
+// 导入组件
+import { LandButton } from '@suminhan/land-design';
+
+// 导入样式文件
+import '@suminhan/land-design/lib/style.css';
+```
+
+#### 2. CommonJS 导入
+
+```javascript
+const { LandButton } = require('@suminhan/land-design');
+require('@suminhan/land-design/lib/style.css');
+```
+
+#### 3. 动态导入
+
+```tsx
+// 动态导入样式文件
+import('@suminhan/land-design/lib/style.css').then(() => {
+  // 样式加载完成后的回调
+});
+```
+
+### 样式自定义
+
+#### CSS 变量覆盖
+
+```css
+:root {
+  /* 覆盖主题色 */
+  --color-primary: #1890ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #f5222d;
+  
+  /* 覆盖字体大小 */
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-sm: 14px;
+}
+```
+
+#### 主题切换
+
+```tsx
+// 自动跟随系统主题
+// 组件库会自动检测 prefers-color-scheme
+
+// 手动切换主题
+document.documentElement.setAttribute('data-theme', 'dark');
+document.documentElement.setAttribute('data-theme', 'light');
+```
+
+### 样式文件大小
+
+- **完整样式文件**：约 155KB（压缩后）
+- **Gzip 压缩**：约 22.7KB
+- **支持 Tree Shaking**：可以按需导入特定组件的样式
 
 ## 🎨 Components
 
@@ -217,6 +347,109 @@ land-design/
 ├── lib/              # Built library files
 └── docs/             # Documentation
 ```
+
+## 🚨 故障排除
+
+### 常见问题
+
+#### 1. 样式丢失问题
+
+**症状**：组件能正常渲染但没有样式
+
+**解决方案**：
+```tsx
+// ✅ 正确方式
+import '@suminhan/land-design/lib/style.css';
+
+// ❌ 错误方式
+import '@suminhan/land-design/style.css';
+```
+
+#### 2. 模块找不到错误
+
+**错误信息**：`Missing "./lib/style.css" specifier in "@suminhan/land-design" package`
+
+**解决方案**：
+```bash
+# 重新安装最新版本
+npm install @suminhan/land-design@latest
+
+# 清除缓存后重新安装
+npm cache clean --force
+npm install @suminhan/land-design
+```
+
+#### 3. 样式文件路径错误
+
+**错误信息**：`Cannot resolve module '@suminhan/land-design/lib/style.css'`
+
+**解决方案**：
+```tsx
+// 使用完整路径
+import '@suminhan/land-design/lib/style.css';
+
+// 或者使用相对路径（如果文件在本地）
+import './node_modules/@suminhan/land-design/lib/style.css';
+```
+
+#### 4. 构建工具配置问题
+
+**Webpack 配置**：
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
+  }
+};
+```
+
+**Vite 配置**：
+```javascript
+export default defineConfig({
+  css: {
+    // 确保CSS被正确处理
+  }
+});
+```
+
+**Next.js 配置**：
+```javascript
+module.exports = {
+  transpilePackages: ['@suminhan/land-design']
+};
+```
+
+### 调试步骤
+
+1. **检查样式文件是否存在**：
+   ```bash
+   ls node_modules/@suminhan/land-design/lib/style.css
+   ```
+
+2. **检查包版本**：
+   ```bash
+   npm list @suminhan/land-design
+   ```
+
+3. **检查浏览器网络面板**：确认样式文件是否被正确加载
+
+4. **检查控制台错误**：查看是否有模块解析错误
+
+### 获取帮助
+
+如果问题仍然存在，请：
+
+1. 检查 [GitHub Issues](https://github.com/suminhan/land-design/issues)
+2. 提交新的 Issue，包含：
+   - 错误信息
+   - 复现步骤
+   - 环境信息（Node.js 版本、包管理器等）
+   - 代码示例
 
 ## 📚 Documentation
 

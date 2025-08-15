@@ -198,3 +198,6 @@ export { default as LandSwiperMediaPreview } from "../pro-packages/SwiperMediaPr
 export { default as useFormateTime } from "./hooks/useFormateTime";
 export { default as useClickOutside } from "./hooks/useClickOutside";
 export { default as useGetHighlightStr } from "./hooks/useGetHighlightStr";
+
+// 导入全局样式
+import './styles/index.scss';
