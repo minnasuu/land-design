@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawWave } from './drawWave';
 import { drawWaveform } from './drawWaveform';
-import { safeCanvasOperation } from '../../utils/react-compatibility';
 
 interface UseAudioWaveOptions {
   audioUrl: string;
@@ -119,8 +118,13 @@ export function useAudioWave({
     defaultColor: string,
     activeColor: string
   ) => {
-    // 使用安全的Canvas操作
-    safeCanvasOperation(canvas, (ctx) => {
+    try {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.warn('Failed to get canvas context');
+        return;
+      }
+
       const width = canvas.width;
       const height = canvas.height;
 
@@ -194,7 +198,9 @@ export function useAudioWave({
 
         ctx.stroke();
       }
-    });
+    } catch (error) {
+      console.warn('Canvas operation failed:', error);
+    }
   }, []);
 
   // 动画循环

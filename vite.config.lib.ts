@@ -41,15 +41,6 @@ export default defineConfig({
         },
         // 添加更安全的UMD包装器
         extend: true,
-        // 确保在React加载后再初始化库
-        intro: `
-          if (typeof React === 'undefined') {
-            throw new Error('React must be loaded before LandDesign');
-          }
-          if (typeof ReactDOM === 'undefined') {
-            throw new Error('ReactDOM must be loaded before LandDesign');
-          }
-        `,
       },
     },
     sourcemap: true,

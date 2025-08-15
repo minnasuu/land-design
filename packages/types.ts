@@ -6,24 +6,6 @@ export type CommonProps = {
   children?: React.ReactNode;
 };
 
-// React 19 兼容性类型
-export type ReactVersion = "18" | "19";
-
-// 检测React版本的辅助函数
-export const getReactVersion = (): ReactVersion => {
-  const version = React.version;
-  if (version.startsWith("19")) {
-    return "19";
-  }
-  return "18";
-};
-
-// 兼容性类型定义
-export type CompatibleReactNode = React.ReactNode;
-
-// 确保在React 18和19中都能正常工作的类型
-export type SafeReactNode = React.ReactElement | string | number | boolean | null | undefined;
-
 export enum ClickType {
   /* 当前页面切换 */
   SELF = "self",

@@ -223,7 +223,7 @@ land-design/
 - [Component Documentation](./example/) - Interactive component demos
 - [Design System](./packages/styles/README.md) - Design tokens and theming
 - [Figma Integration](./FIGMA_DEV_MODE_GUIDE.md) - Figma plugin development
-- [React 19 Upgrade](./REACT_19_UPGRADE.md) - React 19 compatibility guide
+
 
 ## 🤝 Contributing
 

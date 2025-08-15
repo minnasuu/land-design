@@ -4,10 +4,6 @@ export type CommonProps = {
     className?: string;
     children?: React.ReactNode;
 };
-export type ReactVersion = "18" | "19";
-export declare const getReactVersion: () => ReactVersion;
-export type CompatibleReactNode = React.ReactNode;
-export type SafeReactNode = React.ReactElement | string | number | boolean | null | undefined;
 export declare enum ClickType {
     SELF = "self",
     OTHERS = "others",

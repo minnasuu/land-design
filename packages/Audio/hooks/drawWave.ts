@@ -1,5 +1,4 @@
 import { mapToNewRange } from "./mapToNewRange";
-import { safeCanvasOperation } from "../../utils/react-compatibility";
 
 export function drawWave(
   data: number[],
@@ -15,8 +14,13 @@ export function drawWave(
 ) {
   console.log('drawWave', data, 'canvas size:', canvas.width, 'x', canvas.height);
 
-  // 使用安全的Canvas操作
-  safeCanvasOperation(canvas, (ctx) => {
+  try {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.warn('Failed to get canvas context');
+      return;
+    }
+
     let newData = data;
 
     // 确保数据不为空
@@ -79,5 +83,7 @@ export function drawWave(
       ctx.fillStyle = i < playedSamples ? activeColor : defaultColor;
       ctx.fillRect(x, y, barWidth, barHeight);
     }
-  });
+  } catch (error) {
+    console.warn('Canvas operation failed:', error);
+  }
 }
