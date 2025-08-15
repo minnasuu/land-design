@@ -12,7 +12,6 @@ import Dropdown from "../Dropdown";
 import { VideoProps } from './props';
 import './index.scss'
 import Alert from '../Alert';
-import { safeCanvasOperation } from '../utils/react-compatibility';
 
 const Video: React.FC<VideoProps> = ({
   src,
@@ -86,7 +85,6 @@ const Video: React.FC<VideoProps> = ({
   }, []);
 
   /** 视频进度条移动 */
-  const KeyImgPreviewCanvasRef = useRef<HTMLCanvasElement>(null);
   const [left, setLeft] = useState<number>(0);
   /** 展示关键帧图片 */
   const [showKeyImg, setShowKeyImg] = useState<boolean>(false);
@@ -96,8 +94,11 @@ const Video: React.FC<VideoProps> = ({
   }, [videoRatio, ratio]);
 
   const handleProgressMove = useCallback((val, left, width) => {
-    // 只有在启用关键帧预览时才执行相关逻辑
+   // 只有在启用关键帧预览时才执行相关逻辑
     if (!useKeyImg) return;
+    const previewVideo = previewVideoRef.current;
+    if(!previewVideo) return;
+    previewVideo.currentTime = val * duration;
 
     // 计算预览图片的位置
     if (left < keyImgWidth / 2) {
@@ -109,48 +110,8 @@ const Video: React.FC<VideoProps> = ({
         setLeft(width - keyImgWidth);
       }
     }
+  },[showKeyImg])
 
-    // 清除之前的定时器
-    if (previewTimerRef.current) {
-      clearTimeout(previewTimerRef.current);
-    }
-
-    // 使用防抖机制，避免频繁更新预览帧
-    previewTimerRef.current = setTimeout(() => {
-      // 根据进度条位置计算对应的视频时间
-      if (!videoRef.current || !duration || !previewVideoRef.current) return;
-
-      const targetTime = val * duration;
-      const previewVideo = previewVideoRef.current;
-      const previewCanvas = KeyImgPreviewCanvasRef.current;
-
-      if (!previewCanvas) return;
-
-      // 使用隐藏的预览视频元素来获取对应帧
-      previewVideo.currentTime = targetTime;
-
-      // 等待预览视频加载到指定时间点
-      const loadFrame = () => {
-        if (previewVideo.readyState >= 2) { // HAVE_CURRENT_DATA
-          // 使用安全的Canvas操作
-          safeCanvasOperation(previewCanvas, (ctx) => {
-            ctx.drawImage(
-              previewVideo,
-              0,
-              0,
-              previewCanvas.width,
-              previewCanvas.height
-            );
-          });
-        } else {
-          // 如果还没准备好，继续等待
-          requestAnimationFrame(loadFrame);
-        }
-      };
-
-      loadFrame();
-    }, 50); // 50ms 防抖延迟
-  }, [useKeyImg, keyImgWidth, videoRatio, ratio, duration]);
 
   /** 进度条拖拽开始 */
   const handleProgressDragStart = useCallback(() => {
@@ -477,22 +438,6 @@ const Video: React.FC<VideoProps> = ({
     };
   }, [checkControlsWidth]);
 
-  // 调试信息（开发环境）
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Video controls collapsed:', shouldCollapseControls);
-    }
-  }, [shouldCollapseControls]);
-
-  // 组件卸载时清理定时器
-  useEffect(() => {
-    return () => {
-      if (previewTimerRef.current) {
-        clearTimeout(previewTimerRef.current);
-      }
-    };
-  }, []);
-
   // 计算最终的视频比例
   const finalRatio = useMemo(() => {
     if (ratio) return ratio;
@@ -524,22 +469,6 @@ const Video: React.FC<VideoProps> = ({
             style={{ borderRadius: radius, aspectRatio: ratio || 'auto', objectFit: ratio ? 'cover' : 'contain', ...videoStyle }}
             className={`land-video ${videoClassName}`}
           />
-          {/* 隐藏的预览视频元素，用于关键帧预览 */}
-          {useKeyImg && (
-            <video
-              ref={previewVideoRef}
-              src={src}
-              muted={true}
-              style={{ display: 'none' }}
-              preload="metadata"
-              onLoadedMetadata={() => {
-                // 预览视频加载完成后，确保它与主视频同步
-                if (previewVideoRef.current && videoRef.current) {
-                  previewVideoRef.current.currentTime = videoRef.current.currentTime;
-                }
-              }}
-            />
-          )}
         </>
       )}
 
@@ -573,11 +502,22 @@ const Video: React.FC<VideoProps> = ({
                       className="land-video-controls-keyImg-container"
                       style={{ transform: `translateX(${left}px)`, opacity: showKeyImg ? 1 : 0 }}
                     >
-                      <canvas
-                        ref={KeyImgPreviewCanvasRef}
-                        width={keyImgWidth}
-                        height={keyImgWidth / (videoRatio || Number(ratio) || 16 / 9)}
-                      />
+                      {/* 隐藏的预览视频元素，用于关键帧预览 */}
+                      {useKeyImg && (
+                        <video
+                          ref={previewVideoRef}
+                          src={src}
+                          muted={true}
+                          preload="metadata"
+                          style={{ width: keyImgWidth, height: keyImgWidth / (videoRatio || Number(ratio) || 16 / 9), objectFit: 'cover' }}
+                          onLoadedMetadata={() => {
+                            // 预览视频加载完成后，确保它与主视频同步
+                            if (previewVideoRef.current && videoRef.current) {
+                              previewVideoRef.current.currentTime = videoRef.current.currentTime;
+                            }
+                          }}
+                        />
+                      )}
                     </div>
                   )}
                 </>
