@@ -1,12 +1,12 @@
 {
   "name": "@suminhan/land-design",
   "private": false,
-  "version": "0.0.89",
+  "version": "0.0.90",
   "author": {
     "name": "suminhan"
   },
   "main": "./lib/index.umd.js",
-  "style": "./lib/styles/index.scss",
+  "style": "./lib/style.css",
   "module": "./lib/index.es.js",
   "types": "./lib/land-design/packages/index.d.ts",
   "exports": {
@@ -26,7 +26,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lib": "bash updateVersion.sh --auto && tsc && vite build --config vite.config.lib.ts && pnpm publish --no-git-checks",
+    "build:styles": "node scripts/build-styles.js",
+    "build:lib": "npm run build:styles && tsc && vite build --config vite.config.lib.ts",
+    "lib": "bash updateVersion.sh --auto && npm run build:lib && pnpm publish --no-git-checks",
     "publish": "bash scripts/publish.sh",
     "deploy": "gh-pages -d dist",
     "test": "vitest"
