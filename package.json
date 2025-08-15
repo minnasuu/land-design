@@ -1,7 +1,7 @@
 {
   "name": "@suminhan/land-design",
   "private": false,
-  "version": "0.0.90",
+  "version": "0.0.91",
   "author": {
     "name": "suminhan"
   },
@@ -14,13 +14,18 @@
       "require": "./lib/index.umd.js",
       "import": "./lib/index.es.js",
       "types": "./lib/land-design/packages/index.d.ts"
-    }
+    },
+    "./style.css": "./lib/style.css",
+    "./lib/style.css": "./lib/style.css",
+    "./styles": "./lib/style.css",
+    "./css": "./lib/style.css"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "lib"
+    "lib",
+    "lib/style.css"
   ],
   "scripts": {
     "dev": "vite",
