@@ -115,8 +115,25 @@ export { default as LandProgress } from "./Progress";
 
 export type { RadioProps } from "./Radio/props";
 export { default as LandRadio } from "./Radio";
+
 export type { RadioGroupProps, RadioItemType } from "./RadioGroup/props";
 export { default as LandRadioGroup } from "./RadioGroup";
+
+export type {RateProps} from "./Rate/props";
+export { default as LandRate } from "./Rate";
+
+
+export type {SelectProps, SelectItemType} from "./Select/props";
+export { default as LandSelect } from "./Select";
+
+export type {SelectTreeProps, SelectTreeItemType} from "./SelectTree/props";
+export { default as LandSelectTree } from "./SelectTree";
+
+export type {SkeletonProps} from "./Skeleton/props";
+export { default as LandSkeleton } from "./Skeleton";
+
+export type { SliderProps } from "./Slider/props";
+export { default as LandSlider } from "./Slider";
 
 export type { StateProps } from "./State/props";
 export { default as LandState } from "./State";
@@ -127,14 +144,12 @@ export { default as LandStatistic } from "./Statistic";
 export type { SwiperProps } from "./Swiper/props";
 export { default as LandSwiper } from "./Swiper";
 
-export type { SliderProps } from "./Slider/props";
-export { default as LandSlider } from "./Slider";
-
 export type { StepsProps } from "./Steps/props";
 export { default as LandSteps } from "./Steps";
 
 export type { SwitchProps } from "./Switch/props";
 export { default as LandSwitch } from "./Switch";
+
 
 export type { TabsProps, TabsItemType } from "./Tabs/props";
 export { default as LandTabs } from "./Tabs";
@@ -159,6 +174,9 @@ export { default as LandUploader } from "./Uploader";
 
 export type { WatermarkProps } from "./Watermark/props";
 export { default as LandWatermark } from "./Watermark";
+
+export type {VideoProps} from "./Video/props";
+export { default as LandVideo } from "./Video";
 
 export { default as Icon } from "./Icon";
 export type { IconDefaultProps, IconProps } from "./Icon/props";
