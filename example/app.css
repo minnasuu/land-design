@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "tailwindcss";
+@import "reset.scss";
 
 /* 导入 LandDesign 样式系统 */
 @import "../packages/styles/index.scss";
