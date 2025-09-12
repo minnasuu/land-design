@@ -1,4 +1,4 @@
-import React, { useMemo, CSSProperties } from "react";
+import React, { useMemo, CSSProperties, useEffect } from "react";
 import './index.scss';
 import Icon from "../Icon";
 import Divider from "../Divider";
@@ -30,6 +30,7 @@ const Drawer: React.FC<DrawerProps> = ({
   onClose,
   onSubmit,
   onCancel,
+  enableEsc = true,
   children,
   wrapStyle,
   wrapClassName = '',
@@ -72,6 +73,23 @@ const Drawer: React.FC<DrawerProps> = ({
   }, [placement]);
 
   const showCloseDIvider = useMemo(() => (onClose && (title || headerComponent || headerLeftComponent)), [onClose, headerComponent, headerLeftComponent]);
+
+  // ESC key handling
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && enableEsc && show && onClose) {
+        onClose();
+      }
+    };
+
+    if (show && enableEsc) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [show, enableEsc, onClose]);
 
   return (
     <div

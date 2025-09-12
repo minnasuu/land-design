@@ -97,6 +97,7 @@ export { default as LandMenu } from "./Menu";
 
 export type { MessageProps } from "./Message";
 export { default as LandMessage } from "./Message";
+export { message } from "./Message/MessagePlugin";
 
 export type { NumberInputProps } from "./NumberInput/props";
 export { default as LandNumberInput } from "./NumberInput";

@@ -22,6 +22,7 @@ export default function DrawerExample() {
   const [showCustomFooter, setShowCustomFooter] = useState<boolean>(false);
   const [showMask, setShowMask] = useState<boolean>(false);
   const [showPosition, setShowPosition] = useState<boolean>(false);
+  const [showEscDisabled, setShowEscDisabled] = useState<boolean>(false);
 
   const drawerProps = [
     { name: 'show', type: 'boolean', desc: '控制侧拉窗显示状态' },
@@ -32,6 +33,7 @@ export default function DrawerExample() {
     { name: 'submitLabel', type: 'string', desc: '提交按钮文案', default: '确定' },
     { name: 'cancelLabel', type: 'string', desc: '取消按钮文案', default: '取消' },
     { name: 'mask', type: 'boolean', desc: '是否显示遮罩层', default: 'true' },
+    { name: 'enableEsc', type: 'boolean', desc: '是否启用ESC键关闭', default: 'true' },
     { name: 'headerComponent', type: 'ReactNode', desc: '自定义头部组件' },
     { name: 'headerLeftComponent', type: 'ReactNode', desc: '自定义头部左侧组件' },
     { name: 'headerRightComponent', type: 'ReactNode', desc: '自定义头部右侧组件' },
@@ -268,6 +270,45 @@ export default function DrawerExample() {
               >
                 这里是侧拉窗的具体内容
               </Drawer>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* ESC键关闭 */}
+          <ComponentSectionLayout
+            title='ESC键关闭'
+            id='drawer-esc-key'
+            description='通过 enableEsc 属性可以控制是否启用ESC键关闭侧拉窗。'
+          >
+            <CodeOperationContainer>
+              <div className="flex flex-col gap-16">
+                <div>
+                  <h4 className="mb-8">默认启用ESC键关闭（按ESC键可关闭）</h4>
+                  <Button onClick={() => setShowBasic(true)}>打开侧拉窗（默认ESC键关闭）</Button>
+                  <Drawer
+                    show={showBasic}
+                    title="ESC键关闭示例"
+                    onClose={() => setShowBasic(false)}
+                    onCancel={() => setShowBasic(false)}
+                    onSubmit={() => setShowBasic(false)}
+                  >
+                    按ESC键可以关闭此侧拉窗
+                  </Drawer>
+                </div>
+                <div>
+                  <h4 className="mb-8">禁用ESC键关闭（按ESC键无法关闭）</h4>
+                  <Button onClick={() => setShowEscDisabled(true)}>打开侧拉窗（禁用ESC键关闭）</Button>
+                  <Drawer
+                    show={showEscDisabled}
+                    title="禁用ESC键关闭"
+                    enableEsc={false}
+                    onClose={() => setShowEscDisabled(false)}
+                    onCancel={() => setShowEscDisabled(false)}
+                    onSubmit={() => setShowEscDisabled(false)}
+                  >
+                    此侧拉窗禁用了ESC键关闭功能，只能通过按钮关闭
+                  </Drawer>
+                </div>
+              </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 

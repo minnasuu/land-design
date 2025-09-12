@@ -1,4 +1,4 @@
-import React, { useMemo, CSSProperties } from "react";
+import React, { useMemo, CSSProperties, useEffect } from "react";
 import './index.scss';
 import Icon from "../Icon";
 import Divider from "../Divider";
@@ -23,6 +23,7 @@ const Dialog: React.FC<DialogProps> = ({
   onClose,
   onSubmit,
   onCancel,
+  enableEsc = true,
   children,
   wrapStyle,
   wrapClassName,
@@ -42,6 +43,23 @@ const Dialog: React.FC<DialogProps> = ({
     }
     return width;
   }, [size]);
+
+  // ESC key handling
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && enableEsc && show && onClose) {
+        onClose();
+      }
+    };
+
+    if (show && enableEsc) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [show, enableEsc, onClose]);
 
   return (
     <div

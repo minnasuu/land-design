@@ -90,6 +90,7 @@
   --color-bg-quaternary: var(--color-gray-4);
   --color-bg-disabled: var(--color-gray-3);
   --color-bg-opacity: rgba(255,255,255,0.8);
+  --color-bg-mask: rgba(0, 0, 0, 0.1);
   // 反色
   --color-bg-primary-inverse: var(--color-gray-12);
   
@@ -277,6 +278,7 @@
     --color-bg-quaternary: var(--color-gray-9);
     --color-bg-disabled: var(--color-gray-4);
     --color-bg-opacity: rgba(255,255,255,0.05);
+    --color-bg-mask: rgba(0, 0, 0, 0.1);
     // 反色
     --color-bg-primary-inverse: var(--color-gray-1);
     // 边框色 (深色模式下的边框)
@@ -285,7 +287,7 @@
     --color-border-tertiary: var(--color-gray-8);
 
     --color-bg-skeleton: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-tertiary) 37%, var(--color-bg-secondary) 63%);
-    --color-bg-mask: rgba(0, 0, 0, 0.5);
+    --color-bg-mask: rgba(0, 0, 0, 0.1);
     
     // ===== 深色模式语义化阴影系统 =====
     // 深色模式下的阴影 (更明显的阴影效果)
@@ -349,6 +351,7 @@
   --color-bg-quaternary: var(--color-gray-9);
   --color-bg-disabled: var(--color-gray-4);
   --color-bg-opacity: rgba(255,255,255,0.05);
+  --color-bg-mask: rgba(0, 0, 0, 0.5);
   // 反色
   --color-bg-primary-inverse: var(--color-gray-1);
   // 边框色 (深色模式下的边框)

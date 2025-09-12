@@ -259,6 +259,12 @@ export interface DrawerEventProps {
    * 当确定按钮被点击时触发
    */
   onSubmit?: () => void;
+
+  /** 
+   * 是否启用ESC键关闭
+   * 设置为true时按ESC键可以关闭抽屉（默认true）
+   */
+  enableEsc?: boolean;
 }
 
 /**

@@ -1,7 +1,6 @@
 import "./app.css";
 import "../packages/styles/variable.scss";
 import "../packages/styles/theme.scss";
-import "../packages/styles/reset.scss";
 import BaseComponents from "./BaseComponents";
 import { Routes, Route } from 'react-router-dom';
 import ProComponents from "./ProComponents";

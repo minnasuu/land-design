@@ -63,6 +63,7 @@ export type { ClickType, MenuItemType, MenuProps } from './Menu/props';
 export { default as LandMenu } from './Menu';
 export type { MessageProps } from './Message';
 export { default as LandMessage } from './Message';
+export { message } from './Message/MessagePlugin';
 export type { NumberInputProps } from './NumberInput/props';
 export { default as LandNumberInput } from './NumberInput';
 export type { PaginationProps } from './Pagination/props';
