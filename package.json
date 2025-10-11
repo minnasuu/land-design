@@ -36,7 +36,8 @@
     "lib": "bash updateVersion.sh --auto && npm run build:lib && pnpm publish --no-git-checks",
     "publish": "bash scripts/publish.sh",
     "deploy": "gh-pages -d dist",
-    "test": "vitest"
+    "test": "vitest",
+    "new": "node scripts/create-component.js"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",

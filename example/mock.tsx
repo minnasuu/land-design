@@ -1772,7 +1772,6 @@ export const ICON_EXAMPLE_DATA = [
     data: [
       { name: "switch-gear", },
       { name: "toggle", },
-      { name: "collapse", },
       { name: "reload", },
       { name: "undo", },
       { name: "sort", },

@@ -80,42 +80,6 @@ export const IconToggle: React.FC<IconProps> = ({
   );
 };
 
-export const IconCollapse: React.FC<IconProps> = ({
-  color = "currentcolor",
-  size = 16,
-  strokeWidth = 3,
-  style,
-  className = "",
-  onClick,
-}) => {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 48 48"
-      fill="none"
-      style={style}
-      className={`collapse ${className}`}
-      onClick={onClick}
-    >
-      <path
-        d="M44 20H28V4"
-        stroke={color}
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M4 28H20V44"
-        stroke={color}
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
 export const IconReload: React.FC<IconProps> = ({
   color = "currentcolor",
   size = 16,

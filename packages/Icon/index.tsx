@@ -112,7 +112,6 @@ import {
   IconClearFormate,
   IconClipEdit,
   IconClose,
-  IconCollapse,
   IconColorPicker,
   IconCopy,
   IconCursorMove,
@@ -335,7 +334,6 @@ const iconMap = {
   // Operate
   'switch-gear': IconSwitchGear,
   toggle: IconToggle,
-  collapse: IconCollapse,
   reload: IconReload,
   undo: IconUndo,
   sort: IconSort,

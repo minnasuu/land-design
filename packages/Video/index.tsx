@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Icon from '../Icon';
-import Slider from '../Slider';
 import VideoProgressBar from './VideoProgressBar';
 import AffixContainer from "../AffixContainer";
 import Loading from "../Loading";
@@ -12,6 +11,7 @@ import Dropdown from "../Dropdown";
 import { VideoProps } from './props';
 import './index.scss'
 import Alert from '../Alert';
+import Slider from '../Slider';
 
 const Video: React.FC<VideoProps> = ({
   src,
@@ -590,11 +590,8 @@ const Video: React.FC<VideoProps> = ({
                           }`}
                       >
                         <Slider
-                          height={4}
                           value={volume}
-                          max={100}
-                          step={1}
-                          onChange={(val: number) => handleVolumeChange(val)}
+                          // onChange={(val: number) => handleVolumeChange(val)}
                           defaultBg="rgba(255,255,255,0.68)"
                           activeBg="rgba(255,255,255,1)"
                           thumbSize={12}

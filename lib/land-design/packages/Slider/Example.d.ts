@@ -1,3 +1,1 @@
-import { default as React } from 'react';
-declare const SliderExample: React.FC;
-export default SliderExample;
+export default function SliderExample(): import("react/jsx-runtime").JSX.Element;

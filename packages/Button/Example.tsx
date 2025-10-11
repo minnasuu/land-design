@@ -141,8 +141,8 @@ export default function ButtonExample() {
             description='Button 支持图标，可以单独使用图标或与文字组合使用。'
           >
             <CodeOperationContainer>
-              <Button text='下载' type='outline' icon={<Icon name='download' />} />
-              <Button type='outline' icon={<Icon name='download' />} />
+              <Button text='下载' type='outline' icon={<Icon name='download' strokeWidth={4}/>} />
+              <Button type='outline' icon={<Icon name='download' strokeWidth={4}/>} />
               <Button text='设置' type='fill' icon={<Icon name='setting-fill' />} />
               <Button type='fill' icon={<Icon name='setting-fill' />} />
             </CodeOperationContainer>

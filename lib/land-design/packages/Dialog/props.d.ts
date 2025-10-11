@@ -168,6 +168,11 @@ export interface DialogEventProps {
      * 当确定按钮被点击时触发
      */
     onSubmit?: () => void;
+    /**
+     * 是否启用ESC键关闭
+     * 设置为true时按ESC键可以关闭对话框（默认true）
+     */
+    enableEsc?: boolean;
 }
 /**
  * Dialog组件完整属性类型

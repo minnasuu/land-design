@@ -1,8 +1,8 @@
-import React from "react";
-import { SliderProps } from "./props";
+import React from 'react';
+import './index.scss';
+import { SliderProps } from './props';
 
 const Slider: React.FC<SliderProps> = ({
-  children,
   value,
   min,
   max,
@@ -18,15 +18,25 @@ const Slider: React.FC<SliderProps> = ({
   thumbSize,
   defaultBg,
   activeBg,
+  thumbStyle,
+  thumbClassName,
+  thumbContent,
+  thumbContentStyle,
+  thumbContentClassName,
+  className = "",
   style,
-  className,
-  onChange,
-  onStart,
-  onEnd,
+  children,
+  ...props
 }) => {
-  return <div className="land-slider">
-    <div className="land-slider-track"></div>
-  </div>;
+  return (
+    <div 
+      className={`land-slider ${className}`}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default Slider;

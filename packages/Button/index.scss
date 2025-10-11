@@ -331,6 +331,9 @@ $color-themes-bg: (
      .land-button-mask-content{
       opacity: 1;
      }
+     .land-button-content-text{
+      opacity: 0;
+     }
      .land-button-icon{
        path{
         stroke-width: 5px;
@@ -340,6 +343,9 @@ $color-themes-bg: (
     
     &:active:not([disabled]) {
       color: var(--land-button-color-active, var(--color-text-primary));
+    }
+    .land-button-content-text{
+      transition: opacity var(--transition-s) linear;
     }
   }
 

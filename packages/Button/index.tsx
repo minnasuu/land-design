@@ -64,14 +64,14 @@ const Button: React.FC<ButtonProps> & {
     }, [type, status, isIconOnly, disabled, tip, className]);
 
     // 渲染按钮内容
-    const renderContent = () => (<PopOver targetBody theme='dark' content={tip} {...tipProps} >
+    const renderContent = () => (<PopOver theme='dark' content={tip} {...tipProps} >
       {icon && <div className='land-button-icon'>{icon}</div>}
       {(!isIconOnly && (text || subText)) && (
         <div className='land-button-mask-content-wrapper'>
-          <span>{text}</span>
+          <span className='land-button-content-text'>{text}</span>
           {subText && <span className="subText">{subText}</span>}
           {(hoverBold || type === 'transparent') && <div className='land-button-mask-content'>
-            <span>{text}</span>
+            <span className='land-button-mask-content-text'>{text}</span>
             {subText && <span className="subText">{subText}</span>}
           </div>}
         </div>

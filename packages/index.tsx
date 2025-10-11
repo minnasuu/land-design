@@ -133,9 +133,6 @@ export { default as LandSelectTree } from "./SelectTree";
 export type {SkeletonProps} from "./Skeleton/props";
 export { default as LandSkeleton } from "./Skeleton";
 
-export type { SliderProps } from "./Slider/props";
-export { default as LandSlider } from "./Slider";
-
 export type { StateProps } from "./State/props";
 export { default as LandState } from "./State";
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 
 import Title from "../Title";
 import AffixContainer from "../AffixContainer";
@@ -18,7 +18,7 @@ const IconProps = [
   { name: 'size', type: 'number', desc: '图标大小', default: '16' },
   { name: 'color', type: 'string', desc: '图标颜色', default: '#000000' },
   { name: 'strokeWidth', type: 'number', desc: '图标描边粗细', default: '3' },
-  { name: 'style', type: 'object', desc: '图标样式' },
+  { name: 'style', type: 'string', desc: '图标样式' },
   { name: 'className', type: 'string', desc: '图标类名' },
   { name: 'onClick', type: 'function', desc: '图标点击事件', default: '(e: React.MouseEvent<HTMLSvgElement>) => void' },
 ]
@@ -146,7 +146,7 @@ export default function IconExample() {
               >
                 {item1.data?.map((item2) => (
                   <AffixContainer
-                    className="flex flex-col items-center p-12 color-gray-4 hover:border border-gray-2 rounded-8 hover:bg-gray transition-all cursor-pointer aspect-square"
+                    className="flex flex-col items-center p-12 color-gray-4 border border-transparent hover:border-gray-2 rounded-xl hover:bg-gray transition-all cursor-pointer aspect-square"
                     key={item2.name}
                     onClick={() => handleIconCopyClick?.(item2.name)}
                     rtOption={{
@@ -159,10 +159,11 @@ export default function IconExample() {
                         ></Button>
                       ),
                       hoverShow: true,
+                      gap:4
                     }}
                     bcOption={{
                       content: (
-                        <div className="text-xs pt-8 transition-all no-wrap color-text-secondary">
+                        <div className="text-xs pt-8 transition-all no-wrap text-gray-secondary">
                           {item2.name}
                         </div>
                       ),
