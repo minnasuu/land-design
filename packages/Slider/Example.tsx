@@ -39,7 +39,7 @@ export default function SliderExample() {
 
   return (
     <ComponentContentLayout
-      zh='Slider'
+      zh='滑动输入条'
       en='Slider'
       desc='LandDesign 的 Slider 滑块组件，用于在一定范围内进行数值选择。'
       activeTab={activeTab}
@@ -187,8 +187,8 @@ export default function SliderExample() {
             <CodeOperationContainer>
               <div className="flex flex-col gap-24">
                 <Slider 
-                  value={60} 
-                  max={100} 
+                  value={60}
+                  max={100}
                   step={1}
                   height={8}
                   thumbSize={20}

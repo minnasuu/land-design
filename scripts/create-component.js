@@ -46,7 +46,6 @@ import { {{ComponentName}}Props } from './props';
 const {{ComponentName}}: React.FC<{{ComponentName}}Props> = ({
   className = "",
   style,
-  children,
   ...props
 }) => {
   return (
@@ -55,7 +54,7 @@ const {{ComponentName}}: React.FC<{{ComponentName}}Props> = ({
       style={style}
       {...props}
     >
-      {children}
+      这是一个{{ComponentName}}组件，开始创建吧
     </div>
   );
 };
