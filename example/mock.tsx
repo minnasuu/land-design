@@ -112,6 +112,8 @@ import LinkVariants from "../packages/Link/Variants";
 import AutoWidthHeightTextareaExample from "../pro-packages/AutoWidthHeightTextarea/Example";
 import BackToTopExample from "../packages/BackToTop/Example";
 import BackToTop from "../packages/BackToTop";
+import Slider from "../packages/Slider";
+import SliderExample from "../packages/Slider/Example";
 
 export const COMMON_COMPONENTS_DATA = [
   {
@@ -805,24 +807,24 @@ export const INPUT_COMPONENTS_DATA = [
     example: <SwitchExample />,
     demo: <Switch />,
   },
-  // {
-  //   id: "slider",
-  //   en: "Slider",
-  //   zh: "滑动输入条",
-  //   desc: "滑动输入条用于接收用户选择的信息。",
-  //   props: [
-  //     { name: "value", type: "number", desc: "当前值" },
-  //     { name: "step", type: "number", desc: "步数", default: "1" },
-  //     { name: "min", type: "number", desc: "最小值", default: "0" },
-  //     { name: "max", type: "number", desc: "最大值", default: "100" },
-  //     { name: "height", type: "number", desc: "高度", default: "12" },
-  //     { name: "onChange", type: "(value: number) => void", desc: "滑动事件" },
-  //     { name: "style", type: "CSSProperties", desc: "自定义样式" },
-  //     { name: "className", type: "string", desc: "自定义类名" },
-  //   ],
-  //   example: <SliderExample />,
-  //   demo: <Slider max={100} step={10} value={60} style={{ width: "148px" }} />,
-  // },
+  {
+    id: "slider",
+    en: "Slider",
+    zh: "滑动输入条",
+    desc: "滑动输入条用于接收用户选择的信息。",
+    props: [
+      { name: "value", type: "number", desc: "当前值" },
+      { name: "step", type: "number", desc: "步数", default: "1" },
+      { name: "min", type: "number", desc: "最小值", default: "0" },
+      { name: "max", type: "number", desc: "最大值", default: "100" },
+      { name: "height", type: "number", desc: "高度", default: "12" },
+      { name: "onChange", type: "(value: number) => void", desc: "滑动事件" },
+      { name: "style", type: "CSSProperties", desc: "自定义样式" },
+      { name: "className", type: "string", desc: "自定义类名" },
+    ],
+    example: <SliderExample />,
+    demo: <Slider max={100} step={10} value={60} style={{ width: "148px" }} />,
+  },
   {
     id: "rate",
     en: "Rate",

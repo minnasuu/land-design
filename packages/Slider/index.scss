@@ -1,6 +1,162 @@
+// ===== Slider 组件样式变量 =====
+// 可通过 CSS 变量自定义样式，例如：
+// --land-slider-track-radius: 4px;
+// --land-slider-thumb-border-color: var(--color-primary-6);
+// --land-slider-tooltip-bg: var(--color-gray-12);
+
+.land-slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--land-slider-gap, var(--spacing-m));
+  position: relative;
+
+  &.land-slider-disabled {
+    opacity: var(--land-slider-disabled-opacity, var(--opacity-disabled));
+    cursor: not-allowed;
+
+    .land-slider {
+      cursor: not-allowed;
+    }
+
+    .land-slider-thumb {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+.land-slider-prefix,
+.land-slider-suffix {
+  flex-shrink: 0;
+  color: var(--land-slider-prefix-color, var(--color-text-secondary));
+  font-size: var(--land-slider-prefix-font-size, var(--font-content-s));
+}
+
 .land-slider {
-  // 基础样式
-  display: block;
+  position: relative;
+  flex: 1;
+  padding: var(--land-slider-padding, var(--spacing-s) 0);
+  cursor: pointer;
+  user-select: none;
+}
+
+.land-slider-track {
+  position: relative;
+  width: 100%;
+  border-radius: var(--land-slider-track-radius, var(--radius-full));
+  overflow: visible;
+}
+
+.land-slider-track-active {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: var(--land-slider-track-radius, var(--radius-full));
+  transition: background-color var(--transition-s) ease;
+}
+
+.land-slider-divider {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--land-slider-divider-width, 2px);
+  height: var(--land-slider-divider-height, 8px);
+  background-color: var(--land-slider-divider-bg, var(--color-white));
+  border-radius: var(--land-slider-divider-radius, var(--radius-xs));
+  pointer-events: none;
+}
+
+.land-slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--land-slider-thumb-bg, var(--color-white));
+  border: var(--land-slider-thumb-border-width, 2px) solid var(--land-slider-thumb-border-color, var(--color-primary-6));
+  border-radius: var(--land-slider-thumb-radius, 50%);
+  cursor: grab;
+  transition: all var(--transition-s) ease;
+  box-shadow: var(--land-slider-thumb-shadow, var(--shadow-s));
   
-  // 自定义样式可以在这里添加
+  &:hover {
+    border-width: var(--land-slider-thumb-hover-border-width, 3px);
+    box-shadow: var(--land-slider-thumb-hover-shadow, 0 2px 8px rgba(59, 130, 246, 0.3));
+  }
+  
+  &:active,
+  &.land-slider-thumb-dragging {
+    cursor: grabbing;
+    border-width: var(--land-slider-thumb-active-border-width, 3px);
+    box-shadow: var(--land-slider-thumb-active-shadow, 0 2px 12px rgba(59, 130, 246, 0.4));
+    transform: translate(-50%, -50%) scale(var(--land-slider-thumb-active-scale, 1.1));
+  }
+}
+
+.land-slider-tooltip {
+  position: absolute;
+  padding: var(--land-slider-tooltip-padding, var(--spacing-xs) var(--spacing-s));
+  background-color: var(--land-slider-tooltip-bg, var(--color-gray-12));
+  color: var(--land-slider-tooltip-color, var(--color-white));
+  font-size: var(--land-slider-tooltip-font-size, var(--font-content-s));
+  border-radius: var(--land-slider-tooltip-radius, var(--radius-s));
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: var(--land-slider-tooltip-z-index, var(--z-index-1000));
+  
+  &::after {
+    content: '';
+    position: absolute;
+    border: var(--land-slider-tooltip-arrow-size, 4px) solid transparent;
+  }
+  
+  &.land-slider-tooltip-top {
+    bottom: calc(100% + var(--land-slider-tooltip-gap, var(--spacing-s)));
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::after {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: var(--land-slider-tooltip-bg, var(--color-gray-12));
+    }
+  }
+  
+  &.land-slider-tooltip-bottom {
+    top: calc(100% + var(--land-slider-tooltip-gap, var(--spacing-s)));
+    left: 50%;
+    transform: translateX(-50%);
+    
+    &::after {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: var(--land-slider-tooltip-bg, var(--color-gray-12));
+    }
+  }
+  
+  &.land-slider-tooltip-left {
+    right: calc(100% + var(--land-slider-tooltip-gap, var(--spacing-s)));
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::after {
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: var(--land-slider-tooltip-bg, var(--color-gray-12));
+    }
+  }
+  
+  &.land-slider-tooltip-right {
+    left: calc(100% + var(--land-slider-tooltip-gap, var(--spacing-s)));
+    top: 50%;
+    transform: translateY(-50%);
+    
+    &::after {
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: var(--land-slider-tooltip-bg, var(--color-gray-12));
+    }
+  }
 }
