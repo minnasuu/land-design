@@ -54,7 +54,7 @@ export default function LinkExample() {
             <CodeOperationContainer>
               <Flex gap={24} justify='center'>
                 <Link>常规链接</Link>
-                <Link status="primary" href="https://e.qq.com">主题链接</Link>
+                <Link status="primary" href="https://minnasuu.github.io/I-m-minna/">主题链接</Link>
                 <Link status="warning">警告链接</Link>
                 <Link status="danger">危险链接</Link>
                 <Link status="success">安全链接</Link>

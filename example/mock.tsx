@@ -1035,11 +1035,10 @@ export const DISPLAY_COMPONENTS_DATA = [
     zh: "气泡",
     desc: "气泡用于展示气泡信息。",
     anchors: [
-      { key: "basic-usage", title: "基础用法" },
-      { key: "popover-theme", title: "不同主题" },
       { key: "popover-trigger", title: "触发方式" },
       { key: "popover-placement", title: "出现位置" },
       { key: "popover-global", title: "全局定位" },
+      { key: "popover-theme", title: "不同主题" },
       { key: "popover-controlled", title: "受控模式" },
       { key: "popover-no-arrow", title: "隐藏箭头" },
     ],

@@ -387,18 +387,17 @@ $color-themes-bg: (
     @include theme-background-colors('background');
   }
 
-  &.hover-animation {
+  &.hover-animation:not(.active-animation) {
     &:hover:not([disabled]) {
       transform: var(--land-button-hover-animation-transform, scale(0.98));
     }
   }
-  &.active-animation {
+  &.active-animation:not(.hover-animation) {
     &:active:not([disabled]) {
       transform: var(--land-button-active-animation-transform, scale(0.98));
     }
   }
-  &.hover-animation,
-  &.active-animation {
+  &.hover-animation.active-animation {
     &:hover:not([disabled]){
       transform: var(--land-button-hover-animation-transform, scale(0.98));
     }

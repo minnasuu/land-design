@@ -65,7 +65,8 @@ const Link: React.FC<LinkProps> & {
       }
     }
     return (
-      <a
+      <PopOver content={tip} {...tipProps} >
+        <a
         href={href}
         target={target}
         className={`land-link hover-pop ${status} ${disabled ? "disabled" : ""} ${hoverUnderline ? 'hoverUnderline' : ''} ${underline ? 'underline' : ''} ${className}`}
@@ -82,8 +83,8 @@ const Link: React.FC<LinkProps> & {
         {renderIcon(prefixIcon, 'prefix')}
         {children}
         {renderIcon(suffixIcon, 'suffix')}
-        {tip && <PopOver content={tip} {...tipProps} />}
       </a>
+      </PopOver>
     );
   };
 

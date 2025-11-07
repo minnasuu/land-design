@@ -64,7 +64,7 @@ const Button: React.FC<ButtonProps> & {
     }, [type, status, isIconOnly, disabled, tip, className]);
 
     // 渲染按钮内容
-    const renderContent = () => (<PopOver theme='dark' content={tip} {...tipProps} >
+    const renderContent = () => (<>
       {icon && <div className='land-button-icon'>{icon}</div>}
       {(!isIconOnly && (text || subText)) && (
         <div className='land-button-mask-content-wrapper'>
@@ -77,7 +77,7 @@ const Button: React.FC<ButtonProps> & {
         </div>
       )}
       {children}
-    </PopOver>
+    </>
     );
 
     // 按钮基础属性
@@ -93,11 +93,13 @@ const Button: React.FC<ButtonProps> & {
     };
 
     return (
+      <PopOver theme='dark' content={tip} {...tipProps} >
       <button
         {...buttonProps}
       >
         {renderContent()}
       </button>
+      </PopOver>
     );
   };
 

@@ -18,6 +18,21 @@ $grayColor: (
   '#0d0d0d'
 );
 
+$grayRgbaColor: (
+  'rgba(0,0,0,0.05)',
+  'rgba(0,0,0,0.08)',
+  'rgba(0,0,0,0.12)',
+  'rgba(0,0,0,0.15)',
+  'rgba(0,0,0,0.2)',
+  'rgba(0,0,0,0.25)',
+  'rgba(0,0,0,0.36)',
+  'rgba(0,0,0,0.58)',
+  'rgba(0,0,0,0.64)',
+  'rgba(0,0,0,0.72)',
+  'rgba(0,0,0,0.85)',
+  'rgba(0,0,0,0.95)'
+);
+
 $primaryColor: (
   '#EBF9FF',
   '#D5F3FF',
@@ -241,6 +256,9 @@ $blurs: (
   // 灰度色 - 浅色模式
   @for $i from 1 through list.length($grayColor) {
     --color-gray-#{$i}: #{list.nth($grayColor, $i)};
+  }
+  @for $i from 1 through list.length($grayColor) {
+    --color-gray-rgba-#{$i}: #{list.nth($grayRgbaColor, $i)};
   }
   
   // 主色 - 浅色模式

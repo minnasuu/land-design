@@ -36,43 +36,7 @@ export default function PopOverExample() {
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
         <div className='flex flex-col gap-24'>
-          {/* 基础用法 */}
-          <ComponentSectionLayout
-            title='基础用法'
-            id='basic-usage'
-            description='PopOver 组件的基础用法，支持悬停触发。'
-          >
-            <CodeOperationContainer>
-              <div className="flex gap-16">
-                <PopOver content="我是气泡～" >
-                  <Button text="悬停显示气泡" />
-                </PopOver>
-                <PopOver content="点击显示气泡" trigger="click" >
-                  <Button text="点击显示气泡" />
-                </PopOver>
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 气泡主题 */}
-          <ComponentSectionLayout
-            title='气泡主题'
-            id='popover-theme'
-            description='支持白色和黑色两种主题风格，深色模式下两种气泡主题相反。'
-          >
-            <CodeOperationContainer>
-              <div className="flex gap-16">
-                <PopOver content="我是白色气泡～" theme="light" >
-                  <Button text="白色气泡" />
-                </PopOver>
-                <PopOver content="我是黑色气泡～" theme="dark" >
-                  <Button text="黑色气泡" />
-                </PopOver>
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 触发方式 */}
+           {/* 触发方式 */}
           <ComponentSectionLayout
             title='触发方式'
             id='popover-trigger'
@@ -89,6 +53,7 @@ export default function PopOverExample() {
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
+
 
           {/* 出现位置 */}
           <ComponentSectionLayout
@@ -146,6 +111,24 @@ export default function PopOverExample() {
                     <Button text="下方显示" />
                   </PopOver>
                 </div>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+           {/* 气泡主题 */}
+          <ComponentSectionLayout
+            title='气泡主题'
+            id='popover-theme'
+            description='支持白色和黑色两种主题风格，深色模式下两种气泡主题相反。'
+          >
+            <CodeOperationContainer>
+              <div className="flex gap-16">
+                <PopOver content="我是白色气泡～" theme="light" >
+                  <Button text="白色气泡" />
+                </PopOver>
+                <PopOver content="我是黑色气泡～" theme="dark" >
+                  <Button text="黑色气泡" />
+                </PopOver>
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
