@@ -1,0 +1,93 @@
+.land-mention-textarea {
+  display: block;
+  width: 100%;
+  color: var(--color-text-primary);
+
+  &__container {
+    position: relative;
+    width: 100%;
+  }
+
+  &__input {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    outline: none;
+    background: transparent;
+    position: relative;
+    z-index: 10;
+    font-size: var(--font-content-m);
+    color: transparent;
+    caret-color: var(--color-text-primary);
+    line-height: 22px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--radius-xs);
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-weight: 400;
+    font-family: inherit;
+    min-height: var(--input-height-xl);
+    padding: var(--padding-s) var(--padding-m);
+
+    &:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+
+    &:disabled {
+      background-color: var(--color-bg-disabled);
+      cursor: not-allowed;
+      opacity: var(--state-disabled-opacity);
+    }
+
+    &::placeholder {
+      color: var(--color-text-tertiary);
+      font-weight: 400;
+    }
+  }
+
+  &__display {
+    position: absolute;
+    top: var(--padding-s);
+    left: var(--padding-m);
+    width: calc(100% - calc(var(--padding-m) * 2));
+    height: calc(100% - calc(var(--padding-s) * 2));
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+    font-size: var(--font-content-m);
+    line-height: 22px;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-weight: 400;
+  }
+
+  &__measure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    visibility: hidden;
+    font-size: var(--font-content-m);
+    line-height: 22px;
+    word-break: break-word;
+    white-space: pre-wrap;
+    opacity: 0;
+    font-weight: 400;
+  }
+}
+
+.land-mention-item {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  user-select: none;
+  cursor: pointer;
+  transition: opacity var(--transition-fast) ease;
+
+  &:hover {
+    opacity: var(--state-hover-opacity);
+  }
+}

@@ -113,7 +113,9 @@ import AutoWidthHeightTextareaExample from "../pro-packages/AutoWidthHeightTexta
 import BackToTopExample from "../packages/BackToTop/Example";
 import BackToTop from "../packages/BackToTop";
 import Slider from "../packages/Slider";
+import MentionTextarea from "../pro-packages/MentionTextarea";
 import SliderExample from "../packages/Slider/Example";
+import MentionTextareaExample from "../pro-packages/MentionTextarea/Example";
 
 export const COMMON_COMPONENTS_DATA = [
   {
@@ -1598,6 +1600,17 @@ export const PRO_INPUT_COMPONENTS_DATA = [
     desc: "宽度高度自适应输入框",
     example: <AutoWidthHeightTextareaExample />,
   },
+  {
+    id: "mentionTextarea",
+    en: "MentionTextarea",
+    zh: "@输入框",
+    desc: "@唤起列表，一键输入提及信息",
+    anchors: [
+      { key: "basic-usage", title: "基础用法" },
+    ],
+    example: <MentionTextareaExample />,
+    demo: <MentionTextarea>示例内容</MentionTextarea>,
+  },,
 ];
 
 export const PRO_DISPLAY_COMPONENTS_DATA = [
