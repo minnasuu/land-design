@@ -1665,6 +1665,11 @@ export const ICON_EXAMPLE_DATA = [
     data: [{ name: "home", }, { name: "home-fill", }, { name: "application", }, { name: "more", }, { name: "more-line", }],
   },
   {
+    id: 'arrow',
+    title: "箭头类",
+    data: [{ name: "arrow-line", }, { name: "arrow-double", }, { name: "arrow", }, { name: "arrow-triangle", }, { name: "arrow-to", }, { name: "arrow-nav", }],
+  },
+  {
     id: 'interface',
     title: "用户界面类",
     data: [
