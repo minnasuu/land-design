@@ -2,7 +2,6 @@ import { default as React } from 'react';
 import { IconProps } from './props';
 export declare const IconSwitchGear: React.FC<IconProps>;
 export declare const IconToggle: React.FC<IconProps>;
-export declare const IconCollapse: React.FC<IconProps>;
 export declare const IconReload: React.FC<IconProps>;
 export declare const IconUndo: React.FC<IconProps>;
 export declare const IconSort: React.FC<IconProps>;

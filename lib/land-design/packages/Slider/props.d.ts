@@ -4,11 +4,6 @@ import { default as React, CSSProperties } from 'react';
  */
 export interface SliderProps {
     /**
-     * 输入值
-     * 支持单个值或范围值 [min, max]
-     */
-    value?: number | [number, number];
-    /**
      * 自定义类名
      * 可以传入额外的CSS类名
      */
@@ -19,10 +14,10 @@ export interface SliderProps {
      */
     style?: CSSProperties;
     /**
-     * 子元素
-     * 可以传入React节点作为组件内容
+     * 输入值
+     * 支持单个值或范围值 [min, max]
      */
-    children?: React.ReactNode;
+    value?: number | [number, number];
     /**
      * 最小值
      * 设置滑块的最小值
@@ -104,18 +99,18 @@ export interface SliderProps {
      */
     thumbClassName?: string;
     /**
-     * 滑块内容
-     * 设置滑块的内容
+     * 值变化回调
+     * 当滑块值变化时触发
      */
-    thumbContent?: React.ReactNode;
+    onChange?: (value: number | [number, number]) => void;
     /**
-     * 滑块内容样式
-     * 设置滑块内容的样式
+     * 拖拽结束回调
+     * 当拖拽结束时触发
      */
-    thumbContentStyle?: CSSProperties;
+    onAfterChange?: (value: number | [number, number]) => void;
     /**
-     * 滑块内容类名
-     * 设置滑块内容的类名
+     * 是否禁用
+     * 设置为true时禁用滑块
      */
-    thumbContentClassName?: string;
+    disabled?: boolean;
 }
