@@ -108,6 +108,8 @@ export type { TimelineProps } from './Timeline/props';
 export { default as LandTimeline } from './Timeline';
 export type { TitleProps } from './Title/props';
 export { default as LandTitle } from './Title';
+export type { TextareaProps } from './Textarea/props';
+export { default as LandTextarea } from './Textarea';
 export type { UploaderProps } from './Uploader/props';
 export { default as LandUploader } from './Uploader';
 export type { WatermarkProps } from './Watermark/props';

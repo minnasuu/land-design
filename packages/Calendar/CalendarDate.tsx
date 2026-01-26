@@ -4,7 +4,7 @@ import CalendarHeader from './CalendarHeader';
 import WeekdaysRow from './WeekdaysRow';
 import CalendarCell from './CalendarCell';
 import Button from '../Button';
-import { DateInput, getYearRange, shouldShowYearSelector } from './utils/dateRange';
+import { DateInput, getYearRange, shouldShowYearSelector, isMonthInRange } from './utils/dateRange';
 import { getMonthDaysGrid, getHolidays, CalendarDay } from './utils/calendarUtils';
 
 interface CalendarDateProps {
@@ -60,44 +60,89 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
   }, [minDate, maxDate]);
 
   /** 月份切换禁用 */
-  const monthPrevDisabled = useMemo(
-    () => !showYearSelector && month <= 0,
-    [month, showYearSelector]
-  );
-  const monthNextDisabled = useMemo(
-    () => !showYearSelector && month >= 11,
-    [month, showYearSelector]
-  );
+  const monthPrevDisabled = useMemo(() => {
+    // 如果没有日期限制，允许自由切换
+    if (!minDate && !maxDate) {
+      return false;
+    }
+    
+    // 有日期限制时，检查上个月是否在允许范围内
+    const prevMonth = month <= 0 ? 11 : month - 1;
+    const prevYear = month <= 0 ? year - 1 : year;
+    return !isMonthInRange(prevYear, prevMonth, minDate, maxDate);
+  }, [month, year, minDate, maxDate]);
+
+  const monthNextDisabled = useMemo(() => {
+    // 如果没有日期限制，允许自由切换
+    if (!minDate && !maxDate) {
+      return false;
+    }
+    
+    // 有日期限制时，检查下个月是否在允许范围内
+    const nextMonth = month >= 11 ? 0 : month + 1;
+    const nextYear = month >= 11 ? year + 1 : year;
+    return !isMonthInRange(nextYear, nextMonth, minDate, maxDate);
+  }, [month, year, minDate, maxDate]);
 
   /** 切换月份 */
   const handlePrevMonth = () => {
-    if (month <= 0) {
-      setInputYear(inputYear - 1);
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    // 计算上一个月的年份和月份
+    let prevMonth, prevYear;
+    if (currentMonth === 0) {
+      // 从1月切换到上一年的12月
+      prevMonth = 11;
+      prevYear = currentYear - 1;
+    } else {
+      // 正常的月份减1
+      prevMonth = currentMonth - 1;
+      prevYear = currentYear;
     }
-    if (month - 1 === curMonth) {
+    
+    // 更新inputYear状态
+    setInputYear(prevYear);
+    
+    // 更新选中状态
+    if (prevMonth === curMonth && prevYear === curYear) {
       setSelected(curDay);
     } else {
       setSelected(undefined);
     }
-    setCurrentDate((prevDate) => {
-      const prevMonth = prevDate.getMonth() - 1;
-      return new Date(prevDate.getFullYear(), prevMonth, 1);
-    });
+    
+    // 更新当前日期
+    setCurrentDate(new Date(prevYear, prevMonth, 1));
   };
 
   const handleNextMonth = () => {
-    if (month >= 11) {
-      setInputYear(inputYear + 1);
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    // 计算下一个月的年份和月份
+    let nextMonth, nextYear;
+    if (currentMonth === 11) {
+      // 从12月切换到下一年的1月
+      nextMonth = 0;
+      nextYear = currentYear + 1;
+    } else {
+      // 正常的月份加1
+      nextMonth = currentMonth + 1;
+      nextYear = currentYear;
     }
-    if (month + 1 === curMonth) {
+    
+    // 更新inputYear状态
+    setInputYear(nextYear);
+    
+    // 更新选中状态
+    if (nextMonth === curMonth && nextYear === curYear) {
       setSelected(curDay);
     } else {
       setSelected(undefined);
     }
-    setCurrentDate((prevDate) => {
-      const nextMonth = prevDate.getMonth() + 1;
-      return new Date(prevDate.getFullYear(), nextMonth, 1);
-    });
+    
+    // 更新当前日期
+    setCurrentDate(new Date(nextYear, nextMonth, 1));
   };
 
   const handleBackToDate = () => {
@@ -108,9 +153,23 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
   };
 
   const handleMonthChange = (month: number) => {
-    setCurrentDate((prevDate) => {
-      return new Date(prevDate.getFullYear(), month, 1);
-    });
+    const currentYear = currentDate.getFullYear();
+    
+    // 创建新日期，让JavaScript自动处理跨年
+    const newDate = new Date(currentYear, month, 1);
+    const actualYear = newDate.getFullYear();
+    const actualMonth = newDate.getMonth();
+    
+    // 更新状态
+    setCurrentDate(newDate);
+    setInputYear(actualYear);
+    
+    // 更新选中状态
+    if (actualMonth === curMonth && actualYear === curYear) {
+      setSelected(curDay);
+    } else {
+      setSelected(undefined);
+    }
   };
 
   const handleYearChange = (year: number) => {

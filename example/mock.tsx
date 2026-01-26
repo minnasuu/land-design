@@ -114,8 +114,10 @@ import BackToTopExample from "../packages/BackToTop/Example";
 import BackToTop from "../packages/BackToTop";
 import Slider from "../packages/Slider";
 import MentionTextarea from "../pro-packages/MentionTextarea";
+import Textarea from "../packages/Textarea";
 import SliderExample from "../packages/Slider/Example";
 import MentionTextareaExample from "../pro-packages/MentionTextarea/Example";
+import TextareaExample from "../packages/Textarea/Example";
 
 export const COMMON_COMPONENTS_DATA = [
   {
@@ -886,6 +888,17 @@ export const INPUT_COMPONENTS_DATA = [
     example: <DatePickerExample />,
     demo: <DatePicker />,
   },
+  {
+    id: "textarea",
+    en: "Textarea",
+    zh: "多行文本输入框",
+    desc: "Textarea组件用于展示内容",
+    anchors: [
+      { key: "basic-usage", title: "基础用法" },
+    ],
+    example: <TextareaExample />,
+    demo: <Textarea>示例内容</Textarea>,
+  },,
 ];
 
 export const DISPLAY_COMPONENTS_DATA = [

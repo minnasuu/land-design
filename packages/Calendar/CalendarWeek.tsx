@@ -4,7 +4,7 @@ import Select from '../Select';
 import CalendarHeader from './CalendarHeader';
 import WeekdaysRow from './WeekdaysRow';
 import Button from '../Button';
-import { DateInput, getYearRange, shouldShowYearSelector } from './utils/dateRange';
+import { DateInput, getYearRange, shouldShowYearSelector, isMonthInRange } from './utils/dateRange';
 import { getMonthWeeks, CalendarWeek as WeekData } from './utils/calendarUtils';
 
 interface CalendarWeekProps {
@@ -66,6 +66,33 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
       shouldShowYearSelector: shouldShow
     };
   }, [minDate, maxDate]);
+
+  /** 月份切换禁用 */
+  const monthPrevDisabled = useMemo(() => {
+    // 如果没有日期限制，允许自由切换
+    if (!minDate && !maxDate) {
+      return false;
+    }
+    
+    // 有日期限制时，检查上个月是否在允许范围内
+    const currentMonth = currentDate.getMonth();
+    const prevMonth = currentMonth <= 0 ? 11 : currentMonth - 1;
+    const prevYear = currentMonth <= 0 ? year - 1 : year;
+    return !isMonthInRange(prevYear, prevMonth, minDate, maxDate);
+  }, [currentDate, year, minDate, maxDate]);
+
+  const monthNextDisabled = useMemo(() => {
+    // 如果没有日期限制，允许自由切换
+    if (!minDate && !maxDate) {
+      return false;
+    }
+    
+    // 有日期限制时，检查下个月是否在允许范围内
+    const currentMonth = currentDate.getMonth();
+    const nextMonth = currentMonth >= 11 ? 0 : currentMonth + 1;
+    const nextYear = currentMonth >= 11 ? year + 1 : year;
+    return !isMonthInRange(nextYear, nextMonth, minDate, maxDate);
+  }, [currentDate, year, minDate, maxDate]);
 
   const handlePrevMonth = () => {
     const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
@@ -182,6 +209,8 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
         viewMode="week"
         shouldShowYearSelector={showYearSelector}
         yearRange={yearRange}
+        monthPrevDisabled={monthPrevDisabled}
+        monthNextDisabled={monthNextDisabled}
         onMonthChange={(month) => {
           // 周视图中，月份变化对应月份的变化
           // 处理边界情况：从12月到1月，或从1月到12月

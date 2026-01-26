@@ -19,6 +19,9 @@ const Dialog: React.FC<DialogProps> = ({
   useFooterDivider,
   cancelLabel = '取消',
   submitLabel = '确定',
+  submitDisabled,
+  cancelButtonProps,
+  submitButtonProps,
   size = 'medium',
   onClose,
   onSubmit,
@@ -132,7 +135,7 @@ const Dialog: React.FC<DialogProps> = ({
                 ((cancelLabel || submitLabel || onCancel || onSubmit) && (
                   <div className="land-dialog-footer-btn">
                     {onCancel && (
-                      <Button type="fill" status="default" onClick={onCancel}>
+                      <Button type="fill" status="default" onClick={onCancel} {...cancelButtonProps}>
                         {cancelLabel}
                       </Button>
                     )}
@@ -141,6 +144,8 @@ const Dialog: React.FC<DialogProps> = ({
                         type="background"
                         status="primary"
                         onClick={onSubmit}
+                        disabled={submitDisabled}
+                        {...submitButtonProps}
                       >
                         {submitLabel}
                       </Button>

@@ -198,7 +198,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
       case "date":
       default:
         const [day, monthVal, yearVal] = args;
-        selectedDate = new Date(yearVal, monthVal - 1, day);
+        // 修复：Calendar组件传递的月份已经是0-11的索引，不需要再减1
+        selectedDate = new Date(yearVal, monthVal, day);
         break;
     }
 

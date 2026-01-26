@@ -106,6 +106,10 @@ export interface DialogFooterProps {
      * 可以传入字符串或React节点作为确定按钮文本
      */
     submitLabel?: string | ReactNode;
+    /**
+     * 确定按钮是否禁用
+     */
+    submitDisabled?: boolean;
 }
 /**
  * Dialog样式属性
