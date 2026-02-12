@@ -1,440 +1,401 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useImperativeHandle, forwardRef, useMemo } from 'react';
 import './index.scss';
-import { MentionTextareaProps, MentionItem, MentionChangeDetail } from './props';
+import type { MentionTextareaProps, MentionItem, MentionChangeDetail, TriggerParams, MentionTextareaRef } from './props';
 
-const leftMentionSpaceStr = '    ';
-const rightMentionSpaceStr = '    ';
+const prefixCls = 'land-mention-textarea';
 
-const MentionTextarea: React.FC<MentionTextareaProps> = ({
-  className = "",
-  style,
-  value = '',
-  mentions = [],
-  autoFocus = false,
-  onChange,
-  onFocus,
-  onBlur,
-  onAtTrigger,
-  placeholder,
-  disabled = false,
-  maxLength,
-  maxMentions = 10,
-  children,
-}) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const displayLayerRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
-  const [isComposing, setIsComposing] = useState(false);
-  const [editingMention, setEditingMention] = useState<MentionItem | null>(null);
+const DEFAULT_MENTION_SPACE = { left: '    ', right: '    ' };
 
-  // 将显示值转换为真实值（去掉空格，使用完整商品名）
-  const convertToRealValue = useCallback((displayValue: string, mentionsList: MentionItem[]) => {
-    if (mentionsList.length === 0) {
-      return displayValue;
-    }
-    let result = '';
-    let lastIndex = 0;
+const closeTriggerParams: TriggerParams = {
+  left: -1,
+  top: -1,
+  textareaWidth: 0,
+  startIndex: -1,
+  trigger: 'close',
+  keyword: '',
+};
 
-    mentionsList.forEach(mention => {
-      // 添加mention前的文本
-      result += displayValue.slice(lastIndex, mention.startIndex);
-      // 添加完整的商品名（不带空格）
-      result += `@${mention.name}`;
-      lastIndex = mention.endIndex;
-    });
+/** 将 trigger prop 归一化为数组 */
+const normalizeTriggers = (trigger?: string | string[]): string[] => {
+  if (!trigger) return ['@'];
+  return Array.isArray(trigger) ? trigger : [trigger];
+};
 
-    // 添加最后剩余的文本
-    result += displayValue.slice(lastIndex);
-    return result;
-  }, []);
+/**
+ * 构造匹配触发符号的正则：
+ * 匹配行首或非空白字符后的触发符号 + 后续关键词（非空白、非触发符）
+ */
+const buildTriggerRegex = (triggers: string[]): RegExp => {
+  const escaped = triggers.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  // 匹配任一触发符号，后面跟非空白非触发符的字符
+  const triggerGroup = escaped.join('|');
+  const excludeChars = escaped.join('');
+  return new RegExp(`(${triggerGroup})([^\\s${excludeChars}]*)$`);
+};
 
-  // 触发onChange通知外部
-  const notifyChange = useCallback((newDisplayValue: string, newMentions: MentionItem[], detail?: MentionChangeDetail) => {
-    const realValue = convertToRealValue(newDisplayValue, newMentions);
-    onChange?.(newDisplayValue, realValue, newMentions, detail);
-  }, [onChange, convertToRealValue]);
+const MentionTextarea = forwardRef<MentionTextareaRef, MentionTextareaProps>(
+  (
+    {
+      className = '',
+      style,
+      value = '',
+      mentions = [],
+      autoFocus = false,
+      onChange,
+      onFocus,
+      onBlur,
+      onKeyDown,
+      onTrigger,
+      placeholder,
+      disabled = false,
+      readOnly = false,
+      maxMentions = 10,
+      trigger,
+      mentionSpace = DEFAULT_MENTION_SPACE,
+      renderMention,
+      children,
+    },
+    ref,
+  ) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const displayLayerRef = useRef<HTMLDivElement>(null);
+    const measureRef = useRef<HTMLDivElement>(null);
+    const [isComposing, setIsComposing] = useState(false);
+    const [editingMention, setEditingMention] = useState<MentionItem | null>(null);
 
-  // 计算@符号的像素位置
-  const calculateAtPixelPosition = useCallback((atIndex: number) => {
-    if (!measureRef.current) return 0;
+    const triggers = useMemo(() => normalizeTriggers(trigger), [trigger]);
+    const triggerRegex = useMemo(() => buildTriggerRegex(triggers), [triggers]);
 
-    const textBeforeAt = value.substring(0, atIndex);
-    const lines = textBeforeAt.split('\n');
-    const lastLine = lines[lines.length - 1];
+    // ref 转发
+    useImperativeHandle(ref, () => ({
+      getTextarea: () => textareaRef.current,
+      focus: () => textareaRef.current?.focus(),
+      blur: () => textareaRef.current?.blur(),
+    }));
 
-    measureRef.current.textContent = lastLine;
-    const width = measureRef.current.offsetWidth;
-    return width;
-  }, [value]);
-
-  // 处理textarea点击事件 - 检测是否点击了mention
-  const handleTextareaClick = useCallback(async () => {
-    if (!textareaRef.current) return;
-
-    const cursorPos = textareaRef.current.selectionStart;
-
-    // 检查点击位置是否在某个mention内
-    const clickedMention = mentions.find(m =>
-      cursorPos > m.startIndex && cursorPos <= m.endIndex
+    /** 从 mention 的 displayValue 中推断它使用的触发符号 */
+    const getTriggerCharForMention = useCallback(
+      (mention: MentionItem): string => {
+        // 查看 mention 占据的文本片段，提取触发符
+        const mentionText = value.slice(mention.startIndex, mention.endIndex);
+        // 跳过左侧空格找到触发符
+        const trimmed = mentionText.trimStart();
+        for (const t of triggers) {
+          if (trimmed.startsWith(t)) return t;
+        }
+        return triggers[0];
+      },
+      [value, triggers],
     );
 
-    if (clickedMention) {
-      // 点击了mention，进入编辑模式
-      setEditingMention(clickedMention);
+    /** 将显示值转换为真实值 */
+    const convertToRealValue = useCallback(
+      (displayValue: string, mentionsList: MentionItem[]) => {
+        if (mentionsList.length === 0) return displayValue;
+        let result = '';
+        let lastIndex = 0;
+        mentionsList.forEach((mention) => {
+          result += displayValue.slice(lastIndex, mention.startIndex);
+          const triggerChar = getTriggerCharForMention(mention);
+          result += `${triggerChar}${mention.name}`;
+          lastIndex = mention.endIndex;
+        });
+        result += displayValue.slice(lastIndex);
+        return result;
+      },
+      [getTriggerCharForMention],
+    );
 
-      // 计算mention的像素位置
-      setTimeout(() => {
-        const pixelPos = calculateAtPixelPosition(clickedMention.startIndex);
+    /** 触发 onChange */
+    const notifyChange = useCallback(
+      (newDisplayValue: string, newMentions: MentionItem[], detail?: MentionChangeDetail) => {
+        const realValue = convertToRealValue(newDisplayValue, newMentions);
+        onChange?.(newDisplayValue, realValue, newMentions, detail);
+      },
+      [onChange, convertToRealValue],
+    );
 
-        if (textareaRef.current) {
-          const textareaWidth = textareaRef.current.clientWidth;
-          onAtTrigger?.({
-            left: pixelPos,
-            top: 0,
-            textareaWidth,
-            startIndex: clickedMention.startIndex,
-            trigger: 'click',
-            mention: clickedMention
-          });
-        }
-      }, 0);
-    } else {
-      // 没有点击mention，清除编辑状态
-      if (editingMention) {
-        setEditingMention(null);
+    /** 计算触发符号的像素位置 (left, top) */
+    const calculateTriggerPosition = useCallback(
+      (triggerIndex: number): { left: number; top: number } => {
+        if (!measureRef.current || !textareaRef.current) return { left: 0, top: 0 };
 
-        if (textareaRef.current) {
-          onAtTrigger?.({
-            left: -1,
-            top: -1,
-            textareaWidth: textareaRef.current.clientWidth,
-            startIndex: -1,
-            trigger: 'close'
-          });
-        }
-      }
-    }
-  }, [mentions, calculateAtPixelPosition, editingMention, onAtTrigger]);
+        const textBefore = value.substring(0, triggerIndex);
+        const lines = textBefore.split('\n');
+        const lastLine = lines[lines.length - 1];
+        const lineIndex = lines.length - 1;
 
-  // 处理输入变化
-  const handleInputChange = useCallback(async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    const cursorPos = e.target.selectionStart;
-    const oldValue = value;
+        // 计算 left
+        measureRef.current.textContent = lastLine;
+        const left = measureRef.current.offsetWidth;
 
-    // 如果新值为空，清空所有mentions和相关状态
-    if (newValue === '') {
-      notifyChange('', [], { type: 'input' });
+        // 计算 top：行数 * 行高
+        const computedStyle = window.getComputedStyle(textareaRef.current);
+        const lineHeight = parseFloat(computedStyle.lineHeight) || 22;
+        const top = lineIndex * lineHeight;
+
+        return { left, top };
+      },
+      [value],
+    );
+
+    /** 发送关闭触发 */
+    const closeTrigger = useCallback(() => {
       setEditingMention(null);
-
-      onAtTrigger?.({
-        left: -1,
-        top: -1,
-        textareaWidth: 0,
-        startIndex: -1,
-        trigger: 'close'
-      });
-      return;
-    }
-
-    // 如果在编辑模式下输入，清除编辑状态
-    if (editingMention) {
-      setEditingMention(null);
-
       if (textareaRef.current) {
-        onAtTrigger?.({
-          left: -1,
-          top: -1,
-          textareaWidth: textareaRef.current.clientWidth,
-          startIndex: -1,
-          trigger: 'close'
-        });
+        onTrigger?.({ ...closeTriggerParams, textareaWidth: textareaRef.current.clientWidth });
+      } else {
+        onTrigger?.(closeTriggerParams);
       }
-    }
+    }, [onTrigger]);
 
-    // 更新mentions位置
-    const lengthDiff = newValue.length - oldValue.length;
-    const changeStartPos = lengthDiff < 0 ? cursorPos : cursorPos - lengthDiff;
-
-    const updatedMentions = mentions
-      .map(m => {
-        if (m.endIndex <= changeStartPos) {
-          return m;
-        }
-        if (m.startIndex >= changeStartPos + Math.abs(Math.min(0, lengthDiff))) {
-          return {
-            ...m,
-            startIndex: m.startIndex + lengthDiff,
-            endIndex: m.endIndex + lengthDiff
-          };
-        }
-        return null;
-      })
-      .filter((m): m is MentionItem => m !== null);
-
-    // 检测是否有mention被删除
-    const deletedMentions = mentions.filter(m => !updatedMentions.find(um => um.id === m.id));
-    const changeDetail: MentionChangeDetail = deletedMentions.length > 0
-      ? { type: 'delete', oldMention: deletedMentions[0] }
-      : { type: 'input' };
-
-    notifyChange(newValue, updatedMentions, changeDetail);
-
-    // 如果正在使用输入法，不触发搜索
-    if (isComposing) {
-      return;
-    }
-
-    // 检查是否输入了@符号
-    const beforeCursor = newValue.slice(0, cursorPos);
-    const atMatch = beforeCursor.match(/@([^@\s]*)$/);
-
-    if (atMatch) {
-      // 检查是否达到最大 mention 数量
-      if (maxMentions !== undefined && updatedMentions.length >= maxMentions) {
-        return;
-      }
-
-      const keyword = atMatch[1];
-      const atPos = cursorPos - keyword.length - 1;
-
-      // 计算@符号的像素位置
-      setTimeout(() => {
-        const pixelPos = calculateAtPixelPosition(atPos);
-
-        if (textareaRef.current) {
-          const textareaWidth = textareaRef.current.clientWidth;
-          onAtTrigger?.({
-            left: pixelPos,
-            top: 0,
-            textareaWidth,
-            startIndex: atPos,
-            trigger: 'input'
-          });
-        }
-      }, 0);
-    } else {
-      // 只有在非编辑模式下才清除弹窗
-      if (!editingMention) {
-        onAtTrigger?.({
-          left: -1,
-          top: -1,
-          textareaWidth: 0,
-          startIndex: -1,
-          trigger: 'close'
-        });
-      }
-    }
-  }, [notifyChange, value, mentions, isComposing, maxMentions, calculateAtPixelPosition, editingMention, onAtTrigger]);
-
-  // 处理键盘事件
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Backspace' || e.key === 'Delete') {
-      const cursorPos = textareaRef.current?.selectionStart || 0;
-      const selectionEnd = textareaRef.current?.selectionEnd || 0;
-
-      if (cursorPos !== selectionEnd) {
-        return;
-      }
-
-      let mentionToDelete: MentionItem | null = null;
-
-      if (e.key === 'Backspace') {
-        mentionToDelete = mentions.find(m =>
-          cursorPos > m.startIndex && cursorPos <= m.endIndex
-        ) || null;
-      } else if (e.key === 'Delete') {
-        mentionToDelete = mentions.find(m =>
-          cursorPos >= m.startIndex && cursorPos < m.endIndex
-        ) || null;
-      }
-
-      if (mentionToDelete) {
-        e.preventDefault();
-
-        const beforeMention = value.slice(0, mentionToDelete.startIndex);
-        const afterMention = value.slice(mentionToDelete.endIndex);
-        const newValue = beforeMention + afterMention;
-        const newCursorPos = mentionToDelete.startIndex;
-
-        const offset = mentionToDelete.endIndex - mentionToDelete.startIndex;
-        const newMentions = mentions
-          .filter(m => m.startIndex !== mentionToDelete.startIndex)
-          .map(m => {
-            if (m.startIndex > mentionToDelete.endIndex) {
-              return {
-                ...m,
-                startIndex: m.startIndex - offset,
-                endIndex: m.endIndex - offset
-              };
-            }
-            return m;
-          });
-
-        notifyChange(newValue, newMentions, {
-          type: 'delete',
-          oldMention: mentionToDelete,
-          cursorPos: newCursorPos
-        });
-
+    /** 发送打开/输入触发 */
+    const fireTrigger = useCallback(
+      (triggerIndex: number, keyword: string, type: 'input' | 'click', mention?: MentionItem) => {
         setTimeout(() => {
+          const pos = calculateTriggerPosition(triggerIndex);
           if (textareaRef.current) {
-            textareaRef.current.setSelectionRange(newCursorPos, newCursorPos);
+            onTrigger?.({
+              left: pos.left,
+              top: pos.top,
+              textareaWidth: textareaRef.current.clientWidth,
+              startIndex: triggerIndex,
+              trigger: type,
+              keyword,
+              mention,
+            });
           }
         }, 0);
+      },
+      [calculateTriggerPosition, onTrigger],
+    );
+
+    /** 处理 textarea 点击 - 检测是否点击了 mention */
+    const handleTextareaClick = useCallback(() => {
+      if (!textareaRef.current) return;
+      const cursorPos = textareaRef.current.selectionStart;
+
+      const clickedMention = mentions.find((m) => cursorPos > m.startIndex && cursorPos <= m.endIndex);
+
+      if (clickedMention) {
+        setEditingMention(clickedMention);
+        fireTrigger(clickedMention.startIndex, '', 'click', clickedMention);
+      } else if (editingMention) {
+        closeTrigger();
       }
-    }
-  }, [mentions, value, notifyChange]);
+    }, [mentions, editingMention, fireTrigger, closeTrigger]);
 
-  // 渲染富文本内容
-  const renderContent = useCallback(() => {
-    if (!value) return null;
+    /** 在 beforeCursor 文本中匹配触发符 + 关键词 */
+    const matchTrigger = useCallback(
+      (beforeCursor: string): { triggerChar: string; keyword: string; atPos: number } | null => {
+        const match = beforeCursor.match(triggerRegex);
+        if (!match) return null;
+        const triggerChar = match[1];
+        const keyword = match[2];
+        const atPos = beforeCursor.length - match[0].length;
+        return { triggerChar, keyword, atPos };
+      },
+      [triggerRegex],
+    );
 
-    const parts = [];
-    let lastIndex = 0;
+    /** 处理输入变化 */
+    const handleInputChange = useCallback(
+      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newValue = e.target.value;
+        const cursorPos = e.target.selectionStart;
+        const oldValue = value;
 
-    mentions.forEach((mention, index) => {
-      if (mention.startIndex > lastIndex) {
-        const textBeforeMention = value.slice(lastIndex, mention.startIndex);
-        parts.push(
-          <span key={`text-${index}`}>
-            {textBeforeMention}
-          </span>
-        );
-      }
-
-      const needLeftSpace = mention.startIndex > 0;
-      const leftSpaceInMention = needLeftSpace ? leftMentionSpaceStr : '';
-      const rightSpaceInMention = rightMentionSpaceStr;
-
-      parts.push(
-        <span key={`mention-${mention.id}`}>
-          <span style={{ display: 'inline' }}>{leftSpaceInMention}</span>
-          <span
-            className="land-mention-item"
-            style={{
-              userSelect: 'none',
-              fontWeight: 600,
-              display: 'inline',
-              cursor: 'pointer',
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '0.7';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '1';
-            }}
-          >
-            @{mention.displayName}
-          </span>
-          <span style={{ display: 'inline' }}>{rightSpaceInMention}</span>
-        </span>
-      );
-
-      lastIndex = mention.endIndex;
-    });
-
-    if (lastIndex < value.length) {
-      const textAfterMention = value.slice(lastIndex);
-      parts.push(
-        <span key="text-end">
-          {textAfterMention}
-        </span>
-      );
-    }
-
-    return parts;
-  }, [value, mentions]);
-
-  // 处理输入法开始
-  const handleCompositionStart = useCallback(() => {
-    setIsComposing(true);
-  }, []);
-
-  // 处理输入法结束
-  const handleCompositionEnd = useCallback(async (e: React.CompositionEvent<HTMLTextAreaElement>) => {
-    setIsComposing(false);
-
-    const target = e.target as HTMLTextAreaElement;
-    const cursorPos = target.selectionStart;
-    const newValue = target.value;
-
-    const beforeCursor = newValue.slice(0, cursorPos);
-    const atMatch = beforeCursor.match(/@([^@\s]*)$/);
-
-    if (atMatch) {
-      if (maxMentions !== undefined && mentions.length >= maxMentions) {
-        return;
-      }
-
-      const keyword = atMatch[1];
-      const atPos = cursorPos - keyword.length - 1;
-
-      setTimeout(() => {
-        const pixelPos = calculateAtPixelPosition(atPos);
-
-        if (textareaRef.current) {
-          const textareaWidth = textareaRef.current.clientWidth;
-          onAtTrigger?.({
-            left: pixelPos,
-            top: 0,
-            textareaWidth,
-            startIndex: atPos,
-            trigger: 'input'
-          });
+        if (newValue === '') {
+          notifyChange('', [], { type: 'input' });
+          closeTrigger();
+          return;
         }
-      }, 0);
-    }
-  }, [maxMentions, mentions, calculateAtPixelPosition, onAtTrigger]);
 
-  // 处理滚动同步
-  const handleScroll = useCallback(() => {
-    if (displayLayerRef.current && textareaRef.current) {
-      displayLayerRef.current.scrollTop = textareaRef.current.scrollTop;
-      displayLayerRef.current.scrollLeft = textareaRef.current.scrollLeft;
-    }
-  }, []);
+        if (editingMention) {
+          closeTrigger();
+        }
 
-  return (
-    <div className={`land-mention-textarea ${className}`} style={style}>
-      <div className="land-mention-textarea__container">
-        {/* textarea */}
-        <textarea
-          ref={textareaRef}
-          value={value}
-          autoFocus={autoFocus}
-          onChange={handleInputChange}
-          onClick={handleTextareaClick}
-          onKeyDown={handleKeyDown}
-          onCompositionStart={handleCompositionStart}
-          onCompositionEnd={handleCompositionEnd}
-          onScroll={handleScroll}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          disabled={disabled}
-          maxLength={maxLength}
-          className="land-mention-textarea__input"
-          placeholder={placeholder}
-        />
+        // 更新 mentions 位置
+        const lengthDiff = newValue.length - oldValue.length;
+        const changeStartPos = lengthDiff < 0 ? cursorPos : cursorPos - lengthDiff;
 
-        {/* 显示层 - 富文本渲染 */}
-        <div
-          ref={displayLayerRef}
-          className="land-mention-textarea__display"
-        >
-          {renderContent()}
+        const updatedMentions = mentions
+          .map((m) => {
+            if (m.endIndex <= changeStartPos) return m;
+            if (m.startIndex >= changeStartPos + Math.abs(Math.min(0, lengthDiff))) {
+              return { ...m, startIndex: m.startIndex + lengthDiff, endIndex: m.endIndex + lengthDiff };
+            }
+            return null;
+          })
+          .filter((m): m is MentionItem => m !== null);
+
+        const deletedMentions = mentions.filter((m) => !updatedMentions.find((um) => um.id === m.id));
+        const changeDetail: MentionChangeDetail =
+          deletedMentions.length > 0 ? { type: 'delete', oldMention: deletedMentions[0] } : { type: 'input' };
+
+        notifyChange(newValue, updatedMentions, changeDetail);
+
+        if (isComposing) return;
+
+        // 检查触发符号
+        const beforeCursor = newValue.slice(0, cursorPos);
+        const triggerMatch = matchTrigger(beforeCursor);
+
+        if (triggerMatch) {
+          if (maxMentions !== undefined && updatedMentions.length >= maxMentions) return;
+          fireTrigger(triggerMatch.atPos, triggerMatch.keyword, 'input');
+        } else if (!editingMention) {
+          onTrigger?.(closeTriggerParams);
+        }
+      },
+      [notifyChange, value, mentions, isComposing, maxMentions, matchTrigger, editingMention, onTrigger, closeTrigger, fireTrigger],
+    );
+
+    /** 处理键盘事件 */
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+          const cursorPos = textareaRef.current?.selectionStart || 0;
+          const selectionEnd = textareaRef.current?.selectionEnd || 0;
+
+          if (cursorPos === selectionEnd) {
+            let mentionToDelete: MentionItem | null = null;
+            if (e.key === 'Backspace') {
+              mentionToDelete = mentions.find((m) => cursorPos > m.startIndex && cursorPos <= m.endIndex) || null;
+            } else {
+              mentionToDelete = mentions.find((m) => cursorPos >= m.startIndex && cursorPos < m.endIndex) || null;
+            }
+
+            if (mentionToDelete) {
+              e.preventDefault();
+
+              const beforeMention = value.slice(0, mentionToDelete.startIndex);
+              const afterMention = value.slice(mentionToDelete.endIndex);
+              const newValue = beforeMention + afterMention;
+              const newCursorPos = mentionToDelete.startIndex;
+              const offset = mentionToDelete.endIndex - mentionToDelete.startIndex;
+
+              const newMentions = mentions
+                .filter((m) => m.startIndex !== mentionToDelete!.startIndex)
+                .map((m) =>
+                  m.startIndex > mentionToDelete!.endIndex
+                    ? { ...m, startIndex: m.startIndex - offset, endIndex: m.endIndex - offset }
+                    : m,
+                );
+
+              notifyChange(newValue, newMentions, {
+                type: 'delete',
+                oldMention: mentionToDelete,
+                cursorPos: newCursorPos,
+              });
+
+              setTimeout(() => {
+                textareaRef.current?.setSelectionRange(newCursorPos, newCursorPos);
+              }, 0);
+            }
+          }
+        }
+
+        onKeyDown?.(e);
+      },
+      [mentions, value, notifyChange, onKeyDown],
+    );
+
+    /** 渲染显示层内容 */
+    const renderContent = useCallback(() => {
+      if (!value) return null;
+      const parts: React.ReactNode[] = [];
+      let lastIndex = 0;
+
+      mentions.forEach((mention, index) => {
+        if (mention.startIndex > lastIndex) {
+          parts.push(<span key={`text-${index}`}>{value.slice(lastIndex, mention.startIndex)}</span>);
+        }
+
+        const needLeftSpace = mention.startIndex > 0;
+        const triggerChar = getTriggerCharForMention(mention);
+
+        parts.push(
+          <span key={`mention-${mention.id}`}>
+            {needLeftSpace && <span>{mentionSpace.left}</span>}
+            {renderMention ? (
+              renderMention(mention, triggerChar)
+            ) : (
+              <span className={`${prefixCls}__mention`}>
+                {triggerChar}
+                {mention.displayName}
+              </span>
+            )}
+            <span>{mentionSpace.right}</span>
+          </span>,
+        );
+        lastIndex = mention.endIndex;
+      });
+
+      if (lastIndex < value.length) {
+        parts.push(<span key="text-end">{value.slice(lastIndex)}</span>);
+      }
+      return parts;
+    }, [value, mentions, mentionSpace, renderMention, getTriggerCharForMention]);
+
+    const handleCompositionStart = useCallback(() => setIsComposing(true), []);
+
+    const handleCompositionEnd = useCallback(
+      (e: React.CompositionEvent<HTMLTextAreaElement>) => {
+        setIsComposing(false);
+        const target = e.target as HTMLTextAreaElement;
+        const cursorPos = target.selectionStart;
+        const newValue = target.value;
+        const beforeCursor = newValue.slice(0, cursorPos);
+        const triggerMatch = matchTrigger(beforeCursor);
+
+        if (triggerMatch) {
+          if (maxMentions !== undefined && mentions.length >= maxMentions) return;
+          fireTrigger(triggerMatch.atPos, triggerMatch.keyword, 'input');
+        }
+      },
+      [maxMentions, mentions, matchTrigger, fireTrigger],
+    );
+
+    /** 滚动同步 */
+    const handleScroll = useCallback(() => {
+      if (displayLayerRef.current && textareaRef.current) {
+        displayLayerRef.current.scrollTop = textareaRef.current.scrollTop;
+        displayLayerRef.current.scrollLeft = textareaRef.current.scrollLeft;
+      }
+    }, []);
+
+    return (
+      <div className={`${prefixCls} ${className}`} style={style}>
+        <div className={`${prefixCls}__container`}>
+          <textarea
+            ref={textareaRef}
+            value={value}
+            autoFocus={autoFocus}
+            onChange={handleInputChange}
+            onClick={handleTextareaClick}
+            onKeyDown={handleKeyDown}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            onScroll={handleScroll}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            disabled={disabled}
+            readOnly={readOnly}
+            className={`${prefixCls}__input`}
+            placeholder={placeholder}
+          />
+          <div ref={displayLayerRef} className={`${prefixCls}__display`}>
+            {renderContent()}
+          </div>
+          <div ref={measureRef} className={`${prefixCls}__measure`} />
         </div>
-
-        {/* 测量元素 - 用于计算@符号的像素位置 */}
-        <div
-          ref={measureRef}
-          className="land-mention-textarea__measure"
-        />
+        {children}
       </div>
-      {children}
-    </div>
-  );
-};
+    );
+  },
+);
+
+MentionTextarea.displayName = 'MentionTextarea';
 
 export default MentionTextarea;
