@@ -1,58 +1,52 @@
-.land-auto-width-height-textarea{
+.land-auto-textarea {
   position: relative;
   display: inline-flex;
-  padding: var(--padding-s) var(--padding-l);
-  margin: var(--padding-xs);
-  transition: background-color 0.3s ease;
-  overflow: hidden;
   flex-shrink: 0;
   width: fit-content;
-  background-color: var(--color-bg-secondary);
-  border-radius: var(--radius-8);
-  &:hover{
-    background-color: var(--color-bg-tertiary);
-  }
-}
-.land-auto-width-height-textarea-input{
-  position: absolute;
-  appearance: none;
-  padding: 0;
-  left: 12px;
-  top: 5px;
-  resize: none;
-  border: none;
-  background-color: transparent;
-  font-size: var(--font-content-m);
-  color: var(--color-text-primary);
-  line-height: 22px;
-  overflow: auto;
-  max-height: 80px;
-  font-family: inherit;
-  caret-color: var(--color-primary);
-  &:focus,
-  &:focus-visible{
-    border: none;
-    outline: none;
-  }
-  &::placeholder{
-    color: var(--color-text-tertiary);
-    line-height: 22px;
-  }
-  &::-webkit-scrollbar{
-    display: none;
-  }
-}
 
-.land-auto-width-height-textarea-holder {
-  font-size: var(--font-content-m);
-  line-height: 22px;
-  letter-spacing: normal;
-  color: var(--color-text-quaternary);
-  opacity: 0;
-  width: fit-content;
-  word-spacing: normal;
-  text-rendering: auto;
-  text-transform: none;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
+  &__input {
+    position: absolute;
+    appearance: none;
+    padding: 0;
+    left: 12px;
+    top: 5px;
+    resize: none;
+    border: none;
+    background-color: transparent;
+    font-size: var(--font-content-m);
+    color: var(--color-text-primary);
+    line-height: 22px;
+    overflow: auto;
+    max-height: 80px;
+    font-family: inherit;
+
+    &:focus,
+    &:focus-visible {
+      border: none;
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--color-text-tertiary);
+      line-height: 22px;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__holder {
+    font-size: var(--font-content-m);
+    line-height: 22px;
+    letter-spacing: normal;
+    color: var(--color-text-quaternary);
+    opacity: 0;
+    width: fit-content;
+    word-spacing: normal;
+    text-rendering: auto;
+    text-transform: none;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
 }

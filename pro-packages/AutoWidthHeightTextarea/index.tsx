@@ -1,29 +1,38 @@
+import React, { useEffect, useRef, useState } from 'react';
+import './index.scss';
+import { AutoWidthHeightTextareaProps } from './props';
 
-import React, { useEffect, useRef, useState } from "react";
-import './index.scss'
-import { AutoWidthHeightTextareaProps } from "./props";
+const prefixCls = 'land-auto-textarea';
 
 const AutoWidthHeightTextarea: React.FC<AutoWidthHeightTextareaProps> = ({
   placeholder = '请输入',
   value,
   onChange,
   maxHeight = 80,
+  className = '',
+  style,
 }) => {
   const [width, setWidth] = useState(40);
   const [height, setHeight] = useState(32);
-  const textContainerRef = useRef<HTMLDivElement>(null);
+  const holderRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (textContainerRef.current) {
-      setWidth(textContainerRef.current.offsetWidth + 2);
-      if (textContainerRef.current.offsetHeight <= maxHeight) setHeight(textContainerRef.current.offsetHeight);
+    if (holderRef.current) {
+      setWidth(holderRef.current.offsetWidth + 2);
+      if (holderRef.current.offsetHeight <= maxHeight) {
+        setHeight(holderRef.current.offsetHeight);
+      }
     }
-  }, [placeholder, value]);
+  }, [placeholder, value, maxHeight]);
+
   return (
-    <div className='land-auto-width-height-textarea' style={{ maxHeight: `${maxHeight}px` }}>
-      <div ref={textContainerRef} className='land-auto-width-height-textarea-holder'>{value?.trimEnd() || placeholder?.trimEnd()}</div>
+    <div className={`${prefixCls} ${className}`} style={{ maxHeight: `${maxHeight}px`, ...style }}>
+      <div ref={holderRef} className={`${prefixCls}__holder`}>
+        {value?.trimEnd() || placeholder?.trimEnd()}
+      </div>
       <textarea
         style={{ width, height }}
-        className='land-auto-width-height-textarea-input'
+        className={`${prefixCls}__input`}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange?.(e.target.value, e)}
@@ -31,4 +40,5 @@ const AutoWidthHeightTextarea: React.FC<AutoWidthHeightTextareaProps> = ({
     </div>
   );
 };
+
 export default AutoWidthHeightTextarea;
