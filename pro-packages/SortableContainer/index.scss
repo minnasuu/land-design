@@ -1,0 +1,46 @@
+.land-sortable-container {
+  display: block;
+  width: 100%;
+  position: relative;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+
+    &--horizontal {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    &--sorting {
+      .land-sortable-container__item {
+        transition: transform var(--transition-normal) ease;
+      }
+    }
+  }
+
+  &__item {
+    position: relative;
+    flex-shrink: 0;
+    z-index: 1;
+
+    &--dragging {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__ghost {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+  }
+}

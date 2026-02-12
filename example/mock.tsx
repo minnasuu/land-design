@@ -115,9 +115,11 @@ import BackToTop from "../packages/BackToTop";
 import Slider from "../packages/Slider";
 import MentionTextarea from "../pro-packages/MentionTextarea";
 import Textarea from "../packages/Textarea";
+import SortableContainer from "../pro-packages/SortableContainer";
 import SliderExample from "../packages/Slider/Example";
 import MentionTextareaExample from "../pro-packages/MentionTextarea/Example";
 import TextareaExample from "../packages/Textarea/Example";
+import SortableContainerExample from "../pro-packages/SortableContainer/Example";
 
 export const COMMON_COMPONENTS_DATA = [
   {
@@ -1645,6 +1647,17 @@ export const PRO_LAYOUT_COMPONENTS_DATA = [
     example: <GridTemplateExample />,
     demo: <GridTemplate />,
   },
+  {
+    id: "sortableContainer",
+    en: "SortableContainer",
+    zh: "拖拽排序容器",
+    desc: "SortableContainer组件用于展示内容",
+    anchors: [
+      { key: "basic-usage", title: "基础用法" },
+    ],
+    example: <SortableContainerExample />,
+    demo: <SortableContainer>示例内容</SortableContainer>,
+  },,
 ];
 
 // 进阶组件数据汇总
