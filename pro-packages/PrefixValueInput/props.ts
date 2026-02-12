@@ -1,7 +1,12 @@
-import { HighlightTextareaProps } from "../HighlightTextarea/props";
+import { TextareaHTMLAttributes } from 'react';
 
-export type PrefixValueInputProps = {
-  value?: string;
-  /** 前缀 */
+export interface PrefixValueInputProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'value'> {
+  /** 前缀文本 */
   prefix?: string;
-} & HighlightTextareaProps;
+  /** 当前值 */
+  value?: string;
+  /** 是否自动调整高度 */
+  autoResize?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+}

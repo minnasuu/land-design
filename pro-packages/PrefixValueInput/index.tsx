@@ -1,58 +1,85 @@
-import React, { useEffect, useRef, useState } from 'react';
-import HighlightTextarea from '../HighlightTextarea';
-import { PrefixValueInputProps } from './props';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './index.scss';
+import { PrefixValueInputProps } from './props';
 
+const prefixCls = 'land-prefix-value-input';
 
 const PrefixValueInput: React.FC<PrefixValueInputProps> = ({
-  value,
+  value = '',
   prefix,
+  onChange,
+  onScroll,
+  autoResize,
+  placeholder,
+  className = '',
+  style,
   ...restProps
 }) => {
-  const textAreaPrefixRef = useRef<any>(null);
-  const [prefixWidth, setPrefixWidth] = useState<number>(0);
-  const prefixContainerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const mirrorRef = useRef<HTMLDivElement>(null);
+  const prefixRef = useRef<HTMLSpanElement>(null);
+  const [prefixWidth, setPrefixWidth] = useState(0);
+
   useEffect(() => {
-    textAreaPrefixRef.current?.clientWidth ? setPrefixWidth(textAreaPrefixRef.current?.clientWidth) : setPrefixWidth(0);
+    setPrefixWidth(prefixRef.current?.offsetWidth ?? 0);
   }, [prefix]);
-  useEffect(() => {
-    const textarea = document.querySelector('.land-prefix-input .prefix-textarea');
-    if (textAreaPrefixRef.current && textarea) {
-      const textAreaPrefixTop = (e: any) => {
-        textAreaPrefixRef.current.style = `top: ${1 - Number(e.target.scrollTop)}px`;
-      };
-      textarea?.addEventListener('scroll', textAreaPrefixTop);
-      return () => {
-        textarea?.removeEventListener('scroll', textAreaPrefixTop);
-      };
+
+  const syncScroll = useCallback(() => {
+    if (mirrorRef.current && textareaRef.current) {
+      mirrorRef.current.scrollTop = textareaRef.current.scrollTop;
     }
-  }, [prefix]);
-  useEffect(() => {
-    if (prefixContainerRef.current) {
-      setContainerWidth(prefixContainerRef.current.clientWidth);
-    }
-  }, [prefixContainerRef]);
+  }, []);
+
+  const autoResizeTextarea = useCallback(() => {
+    if (!textareaRef.current) return;
+    textareaRef.current.style.height = 'auto';
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+  }, []);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onChange?.(e);
+      if (autoResize) {
+        autoResizeTextarea();
+      } else {
+        syncScroll();
+      }
+    },
+    [onChange, autoResize]
+  );
+
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLTextAreaElement>) => {
+      onScroll?.(e);
+      syncScroll();
+    },
+    [onScroll]
+  );
+
   return (
-    <div ref={prefixContainerRef} className="land-prefix-input">
-      <div
-        ref={textAreaPrefixRef}
-        style={{ width: prefix ? '' : '0px' }}
-        className={`land-prefix-value-input-prefix ${prefix ? 'withPrefix' : ''}`}
-      >
-        [<p className="land-prefix-value-input-prefix-text">{prefix}</p>]
+    <div className={`${prefixCls} ${className}`} style={style}>
+      <div ref={mirrorRef} className={`${prefixCls}__mirror`}>
+        {prefix && (
+          <span ref={prefixRef} className={`${prefixCls}__prefix`}>
+            [<span className={`${prefixCls}__prefix-text`}>{prefix}</span>]
+          </span>
+        )}
+        <span className={`${prefixCls}__mirror-value`}>
+          {value || <span className={`${prefixCls}__placeholder`}>{placeholder}</span>}
+        </span>
       </div>
-      <HighlightTextarea
-        style={{
-          textIndent: prefixWidth <= containerWidth ? `${prefixWidth + 4}px` : '0px',
-        }}
-        className='prefix-textarea'
+      <textarea
+        ref={textareaRef}
+        className={`${prefixCls}__textarea`}
+        style={prefixWidth ? { textIndent: `${prefixWidth + 4}px` } : undefined}
         value={value}
+        placeholder={placeholder}
+        onChange={handleChange}
+        onScroll={autoResize ? undefined : handleScroll}
         {...restProps}
       />
     </div>
   );
-}
-
+};
 
 export default PrefixValueInput;
