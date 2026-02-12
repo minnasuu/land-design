@@ -1,26 +1,17 @@
-import { CSSProperties, ReactNode } from "react";
-import { TextareaHTMLAttributes } from "react";
-import { CommonProps } from "../../packages/types";
+import { TextareaHTMLAttributes } from 'react';
+import { ReactNode } from 'react';
 
 export type HighlightTextareaProps = {
   /** 当前值 */
   value?: string;
-  /**  */
+  /** textarea 引用 */
   textAreaRef?: React.RefObject<HTMLTextAreaElement>;
   /** 高亮文案 */
   highlightString?: string[];
-  highlightBg?: string;
-  highlightColor?: string;
-  /** 禁止输入 */
-  disabled?: boolean;
-  autoResize?: boolean
-  /**
-   * 格式化高亮文案
-   * @description 可以自定义添加标签包裹，增加文案事件颜色等，但是请不要使用 margin、padding 等影响布局的样式
-   */
-  contentClassName?: string;
-  contentStyle?: CSSProperties;
-  inputClassName?: string;
-  inputStyle?: CSSProperties;
+  /** 是否自动调整高度 */
+  autoResize?: boolean;
+  /** 自定义高亮格式化函数 */
   formatHighlightString?: (val: string) => ReactNode;
-} & CommonProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'value'>;
+  className?: string;
+  style?: React.CSSProperties;
+} & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'value'>;

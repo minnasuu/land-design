@@ -7,59 +7,68 @@ import {
   useImperativeHandle,
 } from 'react';
 import './index.scss';
+import useGetHightString from '../../packages/hooks/useGetHighlightStr';
 import { HighlightTextareaProps } from './props';
 
-const DEFAULT_ARR: any[] = [];
-/**
- * 支持错误文案高亮的输入框
- */
-export type useImperativeHandleProps = {
+const prefixCls = 'land-highlight-textarea';
+
+export type HighlightTextareaRef = {
   focus: () => void;
-}
-const HighlightTextarea = forwardRef<
-  useImperativeHandleProps,
-  HighlightTextareaProps
->(
+};
+
+const HighlightTextarea = forwardRef<HighlightTextareaRef, HighlightTextareaProps>(
   (
     {
-      highlightString = DEFAULT_ARR,
-      highlightBg = "var(--color-error-light)",
-      highlightColor = "var(--color-error)",
+      value = '',
+      highlightString = [],
       formatHighlightString,
-      className,
+      className = '',
       style,
-      inputClassName,
-      inputStyle,
-      contentClassName,
-      contentStyle,
-      value = "",
-      onScroll,
       onChange,
+      onScroll,
       textAreaRef,
-      placeholder = "请输入",
-      disabled,
+      placeholder,
       autoResize,
-      ...resetProps
+      ...restProps
     },
     ref
   ) => {
-    /** 同步滚动条位置 */
     const boxRef = useRef<HTMLDivElement>(null);
     const currentTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
+    const showValueList = useMemo(() => {
+      const result = useGetHightString(value, highlightString);
+      const newResult = result.map((i) =>
+        i.msg?.includes('\n')
+          ? Object.assign(i, { msg: <>{i.msg}</> })
+          : i
+      );
+      if (value.endsWith('\n')) {
+        newResult.push({ type: 'default', msg: <br /> } as any);
+      }
+      return newResult;
+    }, [value, highlightString]);
+
     const unifiedScrollTop = useCallback(() => {
       if (!boxRef.current || !currentTextAreaRef.current) return;
       boxRef.current.scrollTop = currentTextAreaRef.current.scrollTop;
     }, []);
-    const handlerScroll = useCallback(
-      (e: React.UIEvent<HTMLTextAreaElement>) => {
-        console.log(1);
 
+    const handleScroll = useCallback(
+      (e: React.UIEvent<HTMLTextAreaElement>) => {
         onScroll?.(e);
         unifiedScrollTop();
       },
       [onScroll]
     );
-    const handlerChange = useCallback(
+
+    const autoResizeTextarea = () => {
+      if (!currentTextAreaRef.current) return;
+      currentTextAreaRef.current.style.height = 'auto';
+      currentTextAreaRef.current.style.height = `${currentTextAreaRef.current.scrollHeight}px`;
+    };
+
+    const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
         if (autoResize) {
@@ -70,13 +79,11 @@ const HighlightTextarea = forwardRef<
       },
       [onChange]
     );
+
     useImperativeHandle(ref, () => ({
       focus: () => {
-        if (currentTextAreaRef?.current) {
-          currentTextAreaRef.current.focus();
-        }
+        currentTextAreaRef.current?.focus();
       },
-      // 你可以在这里添加更多的属性或方法
     }));
 
     useEffect(() => {
@@ -85,97 +92,36 @@ const HighlightTextarea = forwardRef<
       textAreaRef.current = currentTextAreaRef.current;
     }, []);
 
-    const autoResizeTextarea = () => {
-      if (!currentTextAreaRef.current) return;
-      currentTextAreaRef.current.style.height = "auto";
-      currentTextAreaRef.current.style.height = `${currentTextAreaRef.current.scrollHeight}px`;
-    };
-
-    /** 当前展示的 value */
-    const showValueList = useMemo(() => {
-      const result: any[] = [];
-      let currentStr = "";
-      let currentType = "default";
-      let currentIdx = 0;
-      for (let i = 0; i < value.length; i++) {
-        currentStr += value[i];
-        result[currentIdx] = {
-          type: currentType,
-          msg: currentStr,
-        };
-        /** 切换其他类型 */
-        const switchType = highlightString.some((item) => {
-          if (!currentStr.includes(item)) return false;
-          currentType = item;
-          return true;
-        });
-        if (switchType) {
-          result[currentIdx].msg = currentStr.split(currentType)[0];
-          result.push({
-            type: currentType,
-            msg: currentType,
-          });
-          currentIdx += 2;
-          currentStr = "";
-          currentType = "default";
-        }
-      }
-      const newResult = result.map((i) =>
-        i.msg?.includes("\n")
-          ? Object.assign(i, {
-              msg: <>{i.msg}</>,
-            })
-          : i
-      );
-      // 要在最末尾，并且换行的时候才变成 <br/>
-      if (value.endsWith("\n")) {
-        newResult.push({ type: "default", msg: <br /> });
-      }
-      return newResult;
-    }, [value, highlightString]);
     return (
-      <div className={`land-highlight-textarea ${className}`} style={style}>
-        <div
-          className={`land-highlight-textarea-content ${contentClassName}`}
-          style={contentStyle}
-          ref={boxRef}
-        >
+      <div className={`${prefixCls} ${className}`} style={style}>
+        <div className={`${prefixCls}__content`} ref={boxRef}>
           {showValueList.length > 0 ? (
             showValueList.map((item, idx) => {
-              if (item.type === "default") return item.msg;
-              if (formatHighlightString) return formatHighlightString(item.msg);
+              if (item.type === 'default') return item.msg;
+              if (formatHighlightString) return formatHighlightString(item.msg as string);
               return (
                 <span
-                  className="radius-4"
-                  style={{
-                    color: highlightColor,
-                    backgroundColor: highlightBg,
-                  }}
-                  key={item.msg + idx}
+                  className={`${prefixCls}__highlight-item`}
+                  key={(item.msg as string) + idx}
                 >
                   {item.msg}
                 </span>
               );
             })
           ) : (
-            <span className="land-highlight-textarea-placeholder">
+            <span className={`${prefixCls}__placeholder`}>
               {placeholder}
             </span>
           )}
-          {/* ps：为了让 div scrollHeight 高度一定超过 textarea scrollHeight */}
-          {/* <Frame h={200} /> */}
         </div>
         <textarea
-          id="land-highlight-textarea"
-          {...resetProps}
-          className={`land-highlight-textarea-input ${inputClassName}`}
-          style={inputStyle}
+          {...restProps}
+          className={`${prefixCls}__input`}
           value={value}
-          onScroll={autoResize ? undefined : handlerScroll}
-          onChange={handlerChange}
+          onScroll={autoResize ? undefined : handleScroll}
+          onChange={handleChange}
           ref={currentTextAreaRef}
           placeholder={placeholder}
-          disabled={disabled}
         />
       </div>
     );
