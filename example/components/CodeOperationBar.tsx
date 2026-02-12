@@ -15,7 +15,7 @@ const codeTransformData = [
   },
 ]
 
-export default function CodeOperationBar({ reactTsxCodeStr, reactScssCodeStr }: { reactTsxCodeStr: string, reactScssCodeStr: string }) {
+export default function CodeOperationBar({label='组件源码', reactTsxCodeStr, reactScssCodeStr }: {label?:string; reactTsxCodeStr: string, reactScssCodeStr?: string }) {
   const [showCodeTransform, setShowCodeTransform] = useState(false);
   const [active, setActive] = useState<string>('react');
   return (
@@ -34,7 +34,7 @@ export default function CodeOperationBar({ reactTsxCodeStr, reactScssCodeStr }: 
             setShowCodeTransform(!showCodeTransform);
           }}
         >
-          <div className='flex items-center gap-4 flex-shrink-0 px-16 text-14'><Icon name="code" size={16} />组件源码</div>
+          <div className='flex items-center gap-4 flex-shrink-0 px-16 text-14'><Icon name="code" size={16} />{label}</div>
           <Flex className='h-full' justify='end' gap={0} style={{ opacity: showCodeTransform ? 1 : 0, pointerEvents: showCodeTransform ? 'auto' : 'none' }}>
             {codeTransformData.map((item) => (
               <Button

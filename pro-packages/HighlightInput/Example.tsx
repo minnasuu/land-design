@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import HighlightInput from '.';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
-import { reactScssCodeStr, reactTsxCodeStr } from './codes';
+import { reactTsxCodeStr } from './codes';
 import CodeOperationBar from '../../example/components/CodeOperationBar';
 
 export default function HighlightInputExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
   const [value, setValue] = useState<string>('这是一个支持输入高亮文字的input输入框');
-  const [value2, setValue2] = useState<string>('支持多个关键词高亮的输入框');
-  const [value3, setValue3] = useState<string>('');
+  const [value2, setValue2] = useState<string>('支持多个关键词高亮的输入框，比如不好');
 
   const highlightInputProps = [
     { name: 'value', type: 'string', desc: '输入框的值' },
-    { name: 'showNum', type: 'boolean', desc: '是否展示字数统计' },
-    { name: 'maxLength', type: 'number', desc: '最大输入字符数' },
-    { name: 'fail', type: 'string', desc: '失败信息提示' },
-    { name: 'disabledInput', type: 'boolean', desc: '是否禁用输入' },
     { name: 'onChange', type: '(e: React.ChangeEvent<HTMLInputElement>) => void', desc: '值变化时的回调函数' },
     { name: 'onFocus', type: '() => void', desc: '获得焦点时的回调函数' },
     { name: 'onBlur', type: '() => void', desc: '失去焦点时的回调函数' },
@@ -36,8 +31,8 @@ export default function HighlightInputExample() {
       onTabChange={setActiveTab}
     >
       <CodeOperationBar
+      label='关键代码'
         reactTsxCodeStr={reactTsxCodeStr}
-        reactScssCodeStr={reactScssCodeStr}
       />
 
       {/* 标签页内容 */}
@@ -68,41 +63,7 @@ export default function HighlightInputExample() {
               <HighlightInput
                 value={value2}
                 onChange={e => setValue2(e.target.value)}
-                highlightString={['支持', '多个', '关键词', '高亮']}
-              />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 字数统计 */}
-          <ComponentSectionLayout
-            title='字数统计'
-            id='character-count'
-            description='可以显示字数统计和最大输入限制。'
-          >
-            <CodeOperationContainer>
-              <HighlightInput
-                value={value3}
-                onChange={e => setValue3(e.target.value)}
-                highlightString={['重要', '关键词']}
-                showNum={true}
-                maxLength={100}
-                placeholder="请输入内容，支持字数统计..."
-              />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 禁用状态 */}
-          <ComponentSectionLayout
-            title='禁用状态'
-            id='disabled-state'
-            description='可以通过 disabledInput 属性禁用输入框。'
-          >
-            <CodeOperationContainer>
-              <HighlightInput
-                value="禁用的输入框"
-                onChange={e => { }}
-                highlightString={['禁用']}
-                disabledInput={true}
+                highlightString={['高亮','不好']}
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
