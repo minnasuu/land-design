@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
-import './index.scss'
+import React, { useState, useRef, useEffect } from 'react';
+import './index.scss';
 import { DoubleClickInputProps } from './props';
 
+const prefixCls = 'land-double-click-input';
 
 const DoubleClickInput: React.FC<DoubleClickInputProps> = ({
   type = 'input',
@@ -56,19 +57,19 @@ const DoubleClickInput: React.FC<DoubleClickInputProps> = ({
   };
 
   const getTextareaStyle = () => {
-    const style: React.CSSProperties = {};
+    const s: React.CSSProperties = {};
     if (height !== 'auto') {
-      style.height = `${height}px`;
+      s.height = `${height}px`;
     }
     if (maxHeight) {
-      style.maxHeight = `${maxHeight}px`;
+      s.maxHeight = `${maxHeight}px`;
     }
-    return style;
+    return s;
   };
 
   return (
     <div
-      className={`double-click-input ${className}`}
+      className={`${prefixCls} ${className}`}
       onDoubleClick={handleDoubleClick}
       style={style}
     >
@@ -77,6 +78,7 @@ const DoubleClickInput: React.FC<DoubleClickInputProps> = ({
           <input
             ref={inputRef as React.RefObject<HTMLInputElement>}
             type="text"
+            className={`${prefixCls}__input`}
             value={inputValue}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -86,6 +88,7 @@ const DoubleClickInput: React.FC<DoubleClickInputProps> = ({
         ) : (
           <textarea
             ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+            className={`${prefixCls}__textarea`}
             value={inputValue}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -95,12 +98,15 @@ const DoubleClickInput: React.FC<DoubleClickInputProps> = ({
           />
         )
       ) : (
-        <div className={`display-text ${type} ${inputValue ? '' : 'placeholder'}`} style={type === 'textarea' ? getTextareaStyle() : {}}>
+        <div
+          className={`${prefixCls}__display ${type === 'input' ? `${prefixCls}__display--input` : `${prefixCls}__display--textarea`} ${inputValue ? '' : `${prefixCls}__display--placeholder`}`}
+          style={type === 'textarea' ? getTextareaStyle() : {}}
+        >
           {inputValue || placeholder}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default DoubleClickInput;
