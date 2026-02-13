@@ -147,7 +147,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
             <div>HTML</div>
             <Button
               icon={<Icon name="copy" size={12} />}
-              type="transparent"
+              variant="transparent"
               size="small"
               onClick={() => copyCode(htmlResult.html, 'HTML')}
             />
@@ -168,7 +168,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
               <div>CSS</div>
               <Button
                 icon={<Icon name="copy" size={12} />}
-                type="transparent"
+                variant="transparent"
                 size="small"
                 onClick={() => copyCode(htmlResult.css, 'CSS')}
               />
@@ -186,7 +186,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
               <div>JavaScript</div>
               <Button
                 icon={<Icon name="copy" size={12} />}
-                type="transparent"
+                variant="transparent"
                 size="small"
                 onClick={() => copyCode(htmlResult.js, 'JavaScript')}
               />
@@ -218,7 +218,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
           {tabs.map((tab) => (
             <Button
               key={tab.key}
-              type={activeTab === tab.key ? 'background' : 'text'}
+              variant={activeTab === tab.key ? 'background' : 'text'}
               size="small"
               onClick={() => setActiveTab(tab.key as 'preview' | 'code')}
               style={{

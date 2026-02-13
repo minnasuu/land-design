@@ -93,7 +93,7 @@ export { default as LandLink } from "./Link";
 export type { LoadingProps } from "./Loading/props";
 export { default as LandLoading } from "./Loading";
 
-export type { ClickType, MenuItemType, MenuProps } from "./Menu/props";
+export type { ClickType, MenuItem, MenuProps } from "./Menu/props";
 export { default as LandMenu } from "./Menu";
 
 export type { MessageProps } from "./Message";

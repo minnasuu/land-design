@@ -342,10 +342,10 @@ const CodeOperationContainer: React.FC<{
       </Flex>
       <details className="w-full flex flex-col justify-between border-box" style={{ marginTop: '-1px' }} open={showCode}>
         <summary className="flex items-center justify-end gap-8 p-8">
-          <Button icon={<Icon name="copy" />} type='text' size='small' onClick={handleCopy} />
+          <Button icon={<Icon name="copy" />} variant='text' size='small' onClick={handleCopy} />
           <Button
             icon={<Icon className={showCode ? "rotate-180" : ""} name={showCode ? "arrow-double" : "code"} size={16} />}
-            type='text'
+            variant='text'
             size='small'
             tip={showCode ? "收起" : "显示组件代码"}
             onClick={(e) => {

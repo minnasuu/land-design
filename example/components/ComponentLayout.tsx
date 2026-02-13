@@ -1,6 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
 import Header from '../../packages/Header';
-import { ClickType, MenuItemType } from '../../packages/Menu/props';
+import { ClickType, MenuItem } from '../../packages/Menu/props';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Switch from '../../packages/Switch';
@@ -21,7 +21,7 @@ export const debounce = (func: Function, wait: number) => {
 type Props = {
   active?: string;
   children?: React.ReactNode;
-  menuData?: MenuItemType[];
+  menuData?: MenuItem[];
 }
 const ComponentLayout: React.FC<Props> = ({
   active,
@@ -59,7 +59,7 @@ const ComponentLayout: React.FC<Props> = ({
         name='Land Design Seeds'
         onLogoClick={() => navigate('/components')}
         menuProps={{
-          data: menuData,
+          items: menuData,
           active: page,
           onChange: (item) => {
             setPage(item.key);

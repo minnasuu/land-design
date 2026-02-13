@@ -69,7 +69,7 @@ export default function HeaderExample() {
             <CodeOperationContainer>
               <div className="flex justify-center gap-24 bg-gray p-32">
                 <Header logo={<>🌷🌷🌷</>} name='Web Site' menuProps={{
-                  data: [
+                  items: [
                     {
                       key: 'home',
                       label: '首页',
@@ -101,7 +101,7 @@ export default function HeaderExample() {
                   logo={<>🌷🌷🌷</>}
                   name='Web Site'
                   menuProps={{
-                    data: [
+                    items: [
                       {
                         key: 'home',
                         label: '首页',
@@ -136,7 +136,7 @@ export default function HeaderExample() {
             <CodeOperationContainer>
               <div className="flex justify-center gap-24 p-32" style={{ backgroundColor: 'var(--color-bg-3)' }}>
                 <Header logo={<>🌷🌷🌷</>} name='Web Site' menuProps={{
-                  data: [
+                  items: [
                     {
                       key: 'home',
                       label: '首页',

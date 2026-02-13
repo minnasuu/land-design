@@ -38,7 +38,7 @@ export default function Design() {
   return (
     <ComponentLayout active="design">
       <Menu
-        data={menuItems}
+        items={menuItems}
         active={active}
         onChange={(item) => setActive(item.key)}
         direction="column"

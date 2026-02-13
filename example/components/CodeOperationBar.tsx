@@ -39,7 +39,7 @@ export default function CodeOperationBar({label='组件源码', reactTsxCodeStr,
             {codeTransformData.map((item) => (
               <Button
                 key={item.key}
-                type={active === item.key ? 'background' : 'text'}
+                variant={active === item.key ? 'background' : 'text'}
                 size='small'
                 onClick={(e) => {
                   e.stopPropagation();

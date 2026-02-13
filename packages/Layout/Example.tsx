@@ -45,7 +45,7 @@ export default function LayoutExample() {
                     name={<Title title="Web Site" type="h2" />}
                     menuProps={{
                       active: '1',
-                      data: [
+                      items: [
                         { key: '1', label: "设计", clickType: ClickType.SELF },
                         { key: '2', label: "组件", clickType: ClickType.SELF },
                         { key: '3', label: "文档", clickType: ClickType.SELF },

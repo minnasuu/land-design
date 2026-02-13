@@ -73,7 +73,7 @@ export default function ComponentsCenter() {
               <div className='text-xs text-gray-9'>{category.description}</div>
               <Button
                 text="了解更多"
-                type="background"
+                variant="background"
                 status='primary'
                 onClick={() => handleCategoryClick(category.route)}
               />

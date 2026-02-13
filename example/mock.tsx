@@ -380,7 +380,7 @@ export const NAV_COMPONENTS_DATA = [
     example: <AnchorExample />,
     demo: (
       <Anchor
-        data={[
+        items={[
           { key: "组件预览", title: "组件预览" },
           { key: "API", title: "API" },
           { key: "Type", title: "Type" },

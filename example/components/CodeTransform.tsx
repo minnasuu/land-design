@@ -116,7 +116,7 @@ const CodeTransform: React.FC<Props> = ({
         <div className='flex-1 flex flex-col' style={{ width: '1%' }}>
           <Flex justify='space-between' align='center' className='pl-16 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
             <div>TSX</div>
-            <Button icon={<Icon name="copy" size={12} />} type='transparent' size='small' onClick={() => copyToClipboard(reactTsxCodeStr || '', 'TSX')} />
+            <Button icon={<Icon name="copy" size={12} />} variant='transparent' size='small' onClick={() => copyToClipboard(reactTsxCodeStr || '', 'TSX')} />
           </Flex>
           <CodeHighlightContainer className='border-r border-border-primary' language='tsx' codeStr={reactTsxCodeStr} style={{ padding: '16px 12px 16px 0px' }} />
         </div>
@@ -124,7 +124,7 @@ const CodeTransform: React.FC<Props> = ({
         <div className='flex-1' style={{ width: '1%' }}>
           <Flex justify='space-between' align='center' className='pl-16 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
             <div>SCSS</div>
-            <Button icon={<Icon name="copy" size={12} />} type='transparent' size='small' onClick={() => copyToClipboard(reactScssCodeStr || '', 'SCSS')} />
+            <Button icon={<Icon name="copy" size={12} />} variant='transparent' size='small' onClick={() => copyToClipboard(reactScssCodeStr || '', 'SCSS')} />
           </Flex>
           <CodeHighlightContainer language='scss' codeStr={reactScssCodeStr} style={{ padding: '16px 12px 16px 0px' }} />
         </div>

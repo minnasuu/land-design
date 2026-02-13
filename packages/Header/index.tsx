@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
         <div className="land-header-right">{rightComponent}</div>
       )}
       {/* 移动端展开按钮 */}
-      {menuProps && menuProps.data && menuProps.data?.length > 0 && (
+      {menuProps && menuProps.items && menuProps.items?.length > 0 && (
         <Button
           className="land-mobile-toggle-button"
           icon={<Icon name="more-line" />}

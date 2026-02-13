@@ -101,11 +101,11 @@ const ComponentExplorer: React.FC<ComponentExplorerProps> = ({ componentsData = 
         </div>
         <Menu
           scrollToView
-          data={componentsData.map((item) => ({
+          items={componentsData.map((item) => ({
             key: item.id,
             label: item.title,
             open: true,
-            dropData: item.data
+            children: item.data
               ? item.data.map((itm) => ({
                 key: itm.id,
                 label: itm.en,
@@ -174,7 +174,7 @@ const ComponentExplorer: React.FC<ComponentExplorerProps> = ({ componentsData = 
                       style={{ right: 0, top: 48 }}
                     >
                       <Anchor
-                        data={curItem?.anchors}
+                        items={curItem?.anchors}
                         getContainer={() =>
                           document.getElementById(
                             "components-scroller"
