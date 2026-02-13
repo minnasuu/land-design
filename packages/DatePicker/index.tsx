@@ -235,19 +235,20 @@ const DatePicker: React.FC<DatePickerProps> = ({
     setOpen(false);
   }, [value, disabled]);
 
-  // 处理下拉框关闭
-  const handleDropdownClose = useCallback((isOpen: boolean) => {
-    // 优化：在禁用状态下强制关闭
+  const handleDropdownOpen = useCallback(() => {
+    if (disabled) return;
+    setOpen(true);
+  }, [disabled]);
+
+  const handleDropdownClose = useCallback(() => {
     if (disabled) {
       setOpen(false);
       return;
     }
-
-    if (!isOpen && showConfirmButton) {
-      // 如果关闭下拉框且需要确认按钮，恢复原来的值
+    if (showConfirmButton) {
       setTempValue(value ? new Date(value) : null);
     }
-    setOpen(isOpen);
+    setOpen(false);
   }, [showConfirmButton, value, disabled]);
 
   // 处理输入框清除
@@ -381,8 +382,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
         open={open}
         disabled={disabled}
         trigger="click"
-        onOpen={handleDropdownClose}
-        dropContent={
+        onOpen={handleDropdownOpen}
+        onClose={handleDropdownClose}
+        content={
           <div className="land-date-picker-dropdown-content">
             <Calendar
               viewMode={calendarViewMode}
@@ -393,13 +395,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
               <div className="land-date-picker-dropdown-actions">
                 <Button
                   text="取消"
-                  type="outline"
+                  variant="outline"
                   className="land-date-picker-dropdown-cancel-button"
                   onClick={handleCancel}
                 />
                 <Button
                   text="确定"
-                  type="background"
+                  variant="background"
                   className="land-date-picker-dropdown-confirm-button"
                   onClick={handleConfirm}
                 />

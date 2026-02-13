@@ -244,7 +244,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
         disabled={disabled}
         trigger='click'
         onClose={handleDropdownClose}
-        dropContent={
+        content={
           <div className='land-select-tree-drop'>
             <TreeList
               data={currentLevelData}

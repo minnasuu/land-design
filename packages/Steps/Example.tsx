@@ -1,87 +1,78 @@
-import React, { useState } from "react";
-import Steps from ".";
-import Button from "../Button";
+import { useState } from 'react';
+import Steps from '.';
+import { StepItem } from './props';
+import Button from '../Button';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
-import Link from "../Link";
+import Link from '../Link';
 
-// API 文档配置
+const StepItemLink = <Link anchor="StepItem-API">StepItem</Link>;
+
 const stepsProps = [
-  { name: 'data', type: <><Link anchor='StepItemType-API'>StepItemType</Link>[]</>, desc: '步骤数据，包含所有步骤项的配置信息' },
-  { name: 'current', type: 'number | string', desc: '当前步骤' },
-  { name: 'finished', type: '(number | string)[]', desc: '已完成的步骤数组' },
-  { name: 'direction', type: 'StepsDirection (horizontal | vertical)', desc: '步骤条方向', default: 'horizontal' },
-  { name: 'useDivider', type: 'boolean', desc: '是否使用分割线', default: 'false' },
-  { name: 'dividerWidth', type: 'string', desc: '分割线宽度', default: '1px' },
-  { name: 'onClick', type: <>(item: <Link anchor='StepItemType-API'>StepItemType</Link>){' =>'} void</>, desc: '步骤点击事件回调' },
+  { name: 'items', type: <>{StepItemLink}[]</>, desc: '步骤数据' },
+  { name: 'current', type: 'number | string', desc: '当前步骤的 key' },
+  { name: 'finished', type: '(number | string)[]', desc: '已完成步骤的 key 数组' },
+  { name: 'direction', type: '"horizontal" | "vertical"', default: '"horizontal"', desc: '排列方向' },
+  { name: 'useDivider', type: 'boolean', default: 'true', desc: '是否显示分割线' },
+  { name: 'dividerWidth', type: 'string', default: '"32px"', desc: '分割线宽度' },
+  { name: 'onClick', type: <>(item: {StepItemLink}){' =>'} void</>, desc: '步骤点击回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
 ];
 
 const stepsTypes = [
-
   {
-    name: "StepItemType",
+    name: 'StepItem',
     data: [
-      { name: "key", type: "number | string", desc: "步骤唯一标识" },
-      { name: "title", type: "string", desc: "步骤标题" },
-      { name: "desc", type: "string", desc: "步骤描述" },
-      { name: "finished", type: "boolean", desc: "步骤是否已完成" },
+      { name: 'key', type: 'number | string', desc: '唯一标识' },
+      { name: 'title', type: 'string', desc: '步骤标题' },
+      { name: 'desc', type: 'string', desc: '步骤描述' },
+      { name: 'finished', type: 'boolean', desc: '是否已完成（优先级高于全局 finished）' },
     ],
   },
 ];
 
-  export default function StepsExample() {
+export default function StepsExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
   const [currentStep, setCurrentStep] = useState<number | string>(1);
   const [finishedSteps, setFinishedSteps] = useState<(number | string)[]>([1]);
 
-  // 使用data中的finished字段的示例数据
-  const stepsDataWithFinished = [
+  const stepsDataWithFinished: StepItem[] = [
     { key: 1, title: '步骤1', desc: '这是第一个步骤的描述文字', finished: true },
     { key: 2, title: '步骤2', desc: '这是第二个步骤的描述文字', finished: false },
     { key: 3, title: '步骤3', desc: '这是第三个步骤的描述文字', finished: true },
-    { key: 4, title: '步骤4', desc: '这是第四个步骤的描述文字', finished: false }
+    { key: 4, title: '步骤4', desc: '这是第四个步骤的描述文字', finished: false },
   ];
 
-  // 传统方式的数据（使用全局finished数组）
-  const stepsData = [
+  const stepsData: StepItem[] = [
     { key: 1, title: '步骤1', desc: '这是第一个步骤的描述文字' },
     { key: 2, title: '步骤2', desc: '这是第二个步骤的描述文字' },
     { key: 3, title: '步骤3', desc: '这是第三个步骤的描述文字' },
-    { key: 4, title: '步骤4', desc: '这是第四个步骤的描述文字' }
+    { key: 4, title: '步骤4', desc: '这是第四个步骤的描述文字' },
   ];
 
-  const handleStepClick = (item: any) => {
+  const handleStepClick = (item: StepItem) => {
     setCurrentStep(item.key);
-
-    // 自动标记之前的步骤为已完成
     const newFinished = stepsData
-      .filter(step => step.key < item.key)
-      .map(step => step.key);
+      .filter((step) => step.key < item.key)
+      .map((step) => step.key);
     setFinishedSteps(newFinished);
   };
 
   const handleNext = () => {
-    const currentIndex = stepsData.findIndex(step => step.key === currentStep);
-    if (currentIndex < stepsData.length - 1) {
-      const nextStep = stepsData[currentIndex + 1];
-      handleStepClick(nextStep);
-    }
+    const idx = stepsData.findIndex((s) => s.key === currentStep);
+    if (idx < stepsData.length - 1) handleStepClick(stepsData[idx + 1]);
   };
 
   const handlePrev = () => {
-    const currentIndex = stepsData.findIndex(step => step.key === currentStep);
-    if (currentIndex > 0) {
-      const prevStep = stepsData[currentIndex - 1];
-      handleStepClick(prevStep);
-    }
+    const idx = stepsData.findIndex((s) => s.key === currentStep);
+    if (idx > 0) handleStepClick(stepsData[idx - 1]);
   };
 
   const handleFinish = () => {
-    setFinishedSteps(stepsData.map(step => step.key));
+    setFinishedSteps(stepsData.map((s) => s.key));
     setCurrentStep(stepsData[stepsData.length - 1].key);
   };
 
@@ -100,32 +91,31 @@ const stepsTypes = [
     >
       {activeTab === 'examples' && (
         <div className='flex flex-col gap-24'>
-          {/* 使用data中finished字段的步骤条 */}
+          {/* 使用 item.finished 字段 */}
           <ComponentSectionLayout
-            title='使用data中finished字段的步骤条'
+            title='使用 item.finished 字段'
             id='steps-data-finished'
-            description='这个示例中，步骤1和步骤3在data中设置了finished: true，所以显示为已完成状态。步骤2和步骤4设置了finished: false，所以显示为未完成状态。'
+            description='步骤项的 finished 字段优先级高于全局 finished 数组，步骤1和步骤3设置了 finished: true。'
           >
             <CodeOperationContainer>
               <Steps
-                data={stepsDataWithFinished}
+                items={stepsDataWithFinished}
                 current={currentStep}
                 onClick={(item) => setCurrentStep(item.key)}
-                // 注意：当data中有finished字段时，全局finished数组会被忽略
                 finished={finishedSteps}
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 传统方式（使用全局finished数组） */}
+          {/* 全局 finished 数组 */}
           <ComponentSectionLayout
-            title='传统方式（使用全局finished数组）'
+            title='全局 finished 数组'
             id='steps-global-finished'
             description='使用全局 finished 数组来控制步骤的完成状态。'
           >
             <CodeOperationContainer>
               <Steps
-                data={stepsData}
+                items={stepsData}
                 current={currentStep}
                 onClick={handleStepClick}
                 finished={finishedSteps}
@@ -133,89 +123,43 @@ const stepsTypes = [
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 垂直布局示例 */}
+          {/* 垂直布局 */}
           <ComponentSectionLayout
-            title='垂直布局示例'
+            title='垂直布局'
             id='steps-vertical'
             description='通过 direction="vertical" 可以创建垂直布局的步骤条。'
           >
             <CodeOperationContainer>
               <Steps
-                data={stepsDataWithFinished}
+                items={stepsDataWithFinished}
                 current={currentStep}
                 onClick={(item) => setCurrentStep(item.key)}
                 direction="vertical"
-                useDivider={true}
                 dividerWidth="24px"
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 自定义样式 */}
-          <ComponentSectionLayout
-            title='自定义样式'
-            id='steps-custom-style'
-            description='可以通过 style 属性自定义步骤条的样式。'
-          >
-            <CodeOperationContainer>
-              <div className='overflow-auto scrollbar-none'>
-                <Steps
-                  data={stepsDataWithFinished}
-                  current={currentStep}
-                  onClick={(item) => setCurrentStep(item.key)}
-                  style={{
-                    '--land-steps-gap': '24px',
-                    '--land-steps-num-width': '24px',
-                    '--land-steps-num-height': '24px',
-                    '--land-steps-num-font-size': '14px',
-                    '--land-steps-title-font-size': '16px',
-                    '--land-steps-desc-font-size': '14px',
-                  } as React.CSSProperties}
-                  className="custom-steps"
-                />
-              </div>
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
           <div className='flex gap-12 justify-center'>
-                <Button
-                  onClick={handlePrev}
-                  disabled={currentStep === 1}
-                  className="btn btn-primary"
-                >
-                  上一步
-                </Button>
-                <Button
-                  onClick={handleNext}
-                  disabled={currentStep === stepsData.length}
-                  className="btn btn-primary"
-                >
-                  下一步
-                </Button>
-                <Button
-                  onClick={handleFinish}
-                  className="btn btn-success"
-                >
-                  完成所有
-                </Button>
-                <Button
-                  onClick={handleReset}
-                  className="btn btn-secondary"
-                >
-                  重置
-                </Button>
-              </div>
+            <Button onClick={handlePrev} disabled={currentStep === 1}>上一步</Button>
+            <Button onClick={handleNext} disabled={currentStep === stepsData.length}>下一步</Button>
+            <Button onClick={handleFinish}>完成所有</Button>
+            <Button onClick={handleReset}>重置</Button>
+          </div>
         </div>
       )}
 
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={stepsProps} />
-          {stepsTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
-            <h3 className='text-sm font-bold'>{i.name}</h3>
-            <ComponentPropsTable props={i.data as any} />
-          </div>)}
+          {stepsTypes.map((i) => (
+            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+              <h3 className='text-sm font-bold'>{i.name}</h3>
+              <ComponentPropsTable props={i.data} />
+            </div>
+          ))}
         </div>
       )}
     </ComponentContentLayout>
-  )
+  );
 }

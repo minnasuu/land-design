@@ -59,7 +59,7 @@ export { default as LandDivider } from "./Divider";
 export type { DrawerProps } from "./Drawer/props";
 export { default as LandDrawer } from "./Drawer";
 
-export type { DropdownProps } from "./Dropdown/props";
+export type { DropdownProps, DropdownItem } from "./Dropdown/props";
 export { default as LandDropdown } from "./Dropdown";
 
 export type { EllipsisProps } from "./Ellipsis/props";
@@ -143,7 +143,7 @@ export { default as LandStatistic } from "./Statistic";
 export type { SwiperProps } from "./Swiper/props";
 export { default as LandSwiper } from "./Swiper";
 
-export type { StepsProps } from "./Steps/props";
+export type { StepsProps, StepItem } from "./Steps/props";
 export { default as LandSteps } from "./Steps";
 
 export type { SwitchProps } from "./Switch/props";

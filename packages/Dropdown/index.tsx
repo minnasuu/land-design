@@ -1,14 +1,24 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import useClickOutside from "../hooks/useClickOutside";
-import { DropdownProps } from "./props";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { DropdownItem, DropdownProps } from "./props";
 import './index.scss';
-import { useCallback } from "react";
+
+/** 解析 attach 属性，返回挂载的 DOM 节点，无效时返回 null */
+function resolveAttach(attach?: string | HTMLElement): HTMLElement | null {
+  if (!attach) return null;
+  if (attach instanceof HTMLElement) return attach;
+  try {
+    return document.querySelector<HTMLElement>(attach);
+  } catch {
+    return null;
+  }
+}
 
 const Dropdown: React.FC<DropdownProps> = ({
   trigger = "hover",
-  targetBody = false,
-  dropData,
-  dropContent,
+  attach,
+  items,
+  content,
   children,
   placement = "bottom",
   alignment = "left",
@@ -16,147 +26,119 @@ const Dropdown: React.FC<DropdownProps> = ({
   onChange,
   onOpen,
   onClose,
-  toggleClassName = "",
+  toggleClassName,
   toggleStyle,
-  dropClassName = "",
-  dropStyle,
+  contentClassName,
+  contentStyle,
   open = false,
+  className,
+  style,
 }) => {
   const toggleRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [newOpen, setNewOpen] = useState<boolean>(open);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [innerOpen, setInnerOpen] = useState(open);
 
-  // 优化：在禁用状态下强制关闭下拉菜单
+  // 解析挂载容器
+  const attachNode = useMemo(() => resolveAttach(attach), [attach]);
+  const isPortal = !!attachNode;
+
   useEffect(() => {
-    if (disabled && newOpen) {
-      setNewOpen(false);
+    if (disabled && innerOpen) {
+      setInnerOpen(false);
     }
-  }, [disabled, newOpen]);
+  }, [disabled, innerOpen]);
 
   useEffect(() => {
-    // 只有在非禁用状态下才响应open prop的变化
     if (!disabled) {
-      setNewOpen(open);
+      setInnerOpen(open);
     }
   }, [open, disabled]);
 
-  const [position, setPosition] = useState<{ top: number; left: number }>({
-    top: 0,
-    left: 0,
-  });
-  const [actualPlacement, setActualPlacement] = useState<"top" | "bottom">(
-    placement
-  );
-  const [actualAlignment, setActualAlignment] = useState<
-    "left" | "right" | "center"
-  >(alignment);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [actualPlacement, setActualPlacement] = useState<"top" | "bottom">(placement);
+  const [actualAlignment, setActualAlignment] = useState<"left" | "right" | "center">(alignment);
 
-  // 使用 useCallback 优化计算最佳位置函数
   const calculatePosition = useCallback(() => {
     if (!toggleRef.current) return;
 
     const toggleRect = toggleRef.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-    // 估算下拉菜单的尺寸（用于空间检测）
-    const estimatedDropdownWidth = 200; // 默认宽度
-    const estimatedDropdownHeight = 150; // 默认高度
-    const gap = 0; // 间距
+    const panelNode = panelRef.current;
+    const panelWidth = panelNode?.offsetWidth || 200;
+    const panelHeight = panelNode?.offsetHeight || 150;
 
-    let newTop = 0;
-    let newLeft = 0;
     let newPlacement = placement;
     let newAlignment = alignment;
 
-    // 确定垂直位置（自动调整placement）
-    const spaceBelow = viewportHeight - toggleRect.bottom - gap;
-    const spaceAbove = toggleRect.top - gap;
+    // 自动翻转方向
+    const spaceBelow = viewportHeight - toggleRect.bottom;
+    const spaceAbove = toggleRect.top;
 
-    if (
-      placement === "bottom" &&
-      spaceBelow < estimatedDropdownHeight &&
-      spaceAbove > estimatedDropdownHeight
-    ) {
+    if (placement === "bottom" && spaceBelow < panelHeight && spaceAbove > panelHeight) {
       newPlacement = "top";
-    } else if (
-      placement === "top" &&
-      spaceAbove < estimatedDropdownHeight &&
-      spaceBelow > estimatedDropdownHeight
-    ) {
+    } else if (placement === "top" && spaceAbove < panelHeight && spaceBelow > panelHeight) {
       newPlacement = "bottom";
     }
 
-    if (targetBody) {
-      // targetBody模式下需要精确计算位置
-      if (!dropdownRef.current) return;
+    if (isPortal) {
+      // 读取 CSS 变量 --land-dropdown-gap，保证 portal/非 portal 间距一致
+      const gap = parseFloat(
+        getComputedStyle(toggleRef.current).getPropertyValue("--land-dropdown-gap")
+      ) || parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--padding-s")
+      ) || 0;
 
-      const dropdownRect = dropdownRef.current.getBoundingClientRect();
-      const dropdownWidth = dropdownRect.width || estimatedDropdownWidth;
-      const dropdownHeight = dropdownRect.height || estimatedDropdownHeight;
-
-      if (newPlacement === "bottom") {
-        newTop = toggleRect.bottom + gap + scrollY;
-      } else {
-        newTop = toggleRect.top - dropdownHeight - gap + scrollY;
-      }
-
-      // 确定水平位置
-      let toggleCenter = toggleRect.left + toggleRect.width / 2;
-      let toggleLeft = toggleRect.left;
-      let toggleRight = toggleRect.right;
+      // fixed 定位：直接使用视口坐标 + gap
+      let newTop = newPlacement === "bottom"
+        ? toggleRect.bottom + gap
+        : toggleRect.top - panelHeight - gap;
+      let newLeft: number;
 
       switch (alignment) {
         case "center":
-          newLeft = toggleCenter - dropdownWidth / 2;
+          newLeft = toggleRect.left + toggleRect.width / 2 - panelWidth / 2;
           break;
         case "right":
-          newLeft = toggleRight - dropdownWidth;
+          newLeft = toggleRect.right - panelWidth;
           break;
-        default: // left
-          newLeft = toggleLeft;
+        default:
+          newLeft = toggleRect.left;
           break;
       }
 
-      // 边界检测和调整
-      if (newLeft < scrollX) {
-        newLeft = scrollX + gap;
+      // 边界检测
+      if (newLeft < 0) {
+        newLeft = 0;
         newAlignment = "left";
-      } else if (newLeft + dropdownWidth > scrollX + viewportWidth) {
-        newLeft = scrollX + viewportWidth - dropdownWidth - gap;
+      } else if (newLeft + panelWidth > viewportWidth) {
+        newLeft = viewportWidth - panelWidth;
         newAlignment = "right";
       }
 
-      // 确保不超出视口
-      if (newTop < scrollY) {
-        newTop = scrollY + gap;
-      } else if (newTop + dropdownHeight > scrollY + viewportHeight) {
-        newTop = scrollY + viewportHeight - dropdownHeight - gap;
+      if (newTop < 0) {
+        newTop = 0;
+      } else if (newTop + panelHeight > viewportHeight) {
+        newTop = viewportHeight - panelHeight;
       }
-    } else {
-      // 非targetBody模式下，使用CSS定位，只需要更新对齐方式
-      newAlignment = alignment;
+
+      setPosition({ top: newTop, left: newLeft });
     }
 
-    setPosition({ top: newTop, left: newLeft });
     setActualPlacement(newPlacement);
     setActualAlignment(newAlignment);
-  }, [placement, alignment, targetBody]);
+  }, [placement, alignment, isPortal]);
 
   useEffect(() => {
-    // 只有在非禁用状态下才计算位置
-    if (newOpen && !disabled) {
-      // 延迟计算以确保DOM已更新
+    if (innerOpen && !disabled) {
       const timer = setTimeout(calculatePosition, 0);
       return () => clearTimeout(timer);
     }
-  }, [newOpen, disabled, calculatePosition]);
+  }, [innerOpen, disabled, calculatePosition]);
 
-  // 监听窗口大小变化和滚动
   useEffect(() => {
-    if (newOpen && !disabled) {
+    if (innerOpen && !disabled) {
       const handleResize = () => calculatePosition();
       const handleScroll = () => calculatePosition();
 
@@ -170,112 +152,123 @@ const Dropdown: React.FC<DropdownProps> = ({
         document.removeEventListener("scroll", handleScroll, true);
       };
     }
-  }, [newOpen, disabled, calculatePosition]);
+  }, [innerOpen, disabled, calculatePosition]);
 
-  // 监听面板状态变化，触发onOpen和onClose事件
   useEffect(() => {
-    if (newOpen) {
-      onOpen?.(newOpen);
+    if (innerOpen) {
+      onOpen?.();
     } else {
-      onClose?.(newOpen);
+      onClose?.();
     }
-  }, [newOpen, onOpen, onClose]);
+  }, [innerOpen, onOpen, onClose]);
 
-  // 优化：处理下拉项点击事件
-  const handleItemClick = (item: any) => {
-    // 在禁用状态下阻止选择
+  // 点击外部关闭（同时排除 toggle 和 portal 面板）
+  useEffect(() => {
+    if (!innerOpen || disabled) return;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (toggleRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      setInnerOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => document.removeEventListener("mousedown", handleMouseDown);
+  }, [innerOpen, disabled]);
+
+  const handleItemClick = useCallback((item: DropdownItem) => {
     if (disabled) return;
-
     onChange?.(item);
     if (trigger === "click") {
-      setNewOpen(false);
+      setInnerOpen(false);
     }
-  };
+  }, [disabled, onChange, trigger]);
 
-  const dropContentEl = (
+  const rootCls = useMemo(() => {
+    return [
+      "land-dropdown",
+      innerOpen && "land-dropdown--open",
+      disabled && "land-dropdown--disabled",
+      toggleClassName,
+      className,
+    ].filter(Boolean).join(" ");
+  }, [innerOpen, disabled, toggleClassName, className]);
+
+  const panelCls = useMemo(() => {
+    return [
+      "land-dropdown__panel",
+      innerOpen && "land-dropdown__panel--open",
+      isPortal && "land-dropdown__panel--portal",
+      `land-dropdown__panel--${actualAlignment}`,
+      `land-dropdown__panel--${actualPlacement}`,
+    ].filter(Boolean).join(" ");
+  }, [innerOpen, isPortal, actualAlignment, actualPlacement]);
+
+  const handleToggleClick = useCallback(() => {
+    if (disabled) return;
+    if (trigger === "click") setInnerOpen((v) => !v);
+  }, [disabled, trigger]);
+
+  const handleMouseEnter = useCallback(() => {
+    if (disabled || trigger !== "hover") return;
+    setInnerOpen(true);
+  }, [disabled, trigger]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (trigger !== "hover") return;
+    setInnerOpen(false);
+  }, [trigger]);
+
+  const panelEl = (
     <div
-      ref={dropdownRef}
-      className={`land-dropdown-results ${
-        newOpen ? "show" : ""
-      } ${actualAlignment} ${actualPlacement}`}
+      ref={panelRef}
+      className={panelCls}
       style={
-        targetBody
-          ? {
-              position: "fixed",
-              top: position.top,
-              left: position.left,
-              transform: "none",
-            }
+        isPortal
+          ? { top: position.top, left: position.left }
           : undefined
       }
-      data-debug={`alignment: ${actualAlignment}, placement: ${actualPlacement}, targetBody: ${targetBody}`}
       onClick={(e) => e.stopPropagation()}
+      onMouseEnter={isPortal ? handleMouseEnter : undefined}
+      onMouseLeave={isPortal ? handleMouseLeave : undefined}
     >
-      <div className={`land-dropdown-drop ${dropClassName}`} style={dropStyle}>
-        {dropData && !dropContent && (
-          <ul className="land-dropdown-drop-list">
-            {dropData?.map((item) => (
-              <div
-                className="land-dropdown-drop-item"
+      <div className={["land-dropdown__content", contentClassName].filter(Boolean).join(" ")} style={contentStyle}>
+        {items && !content && (
+          <ul className="land-dropdown__list">
+            {items.map((item) => (
+              <li
+                className="land-dropdown__item"
                 key={item.key}
                 onClick={() => handleItemClick(item)}
               >
                 {item.label}
-              </div>
+              </li>
             ))}
           </ul>
         )}
-        {dropContent}
+        {content}
       </div>
     </div>
   );
-
-  // 优化：在禁用状态下不监听点击外部事件
-  useClickOutside(toggleRef, () => {
-    if (newOpen && !disabled) {
-      setNewOpen(false);
-    }
-  });
-
-  // 优化：处理触发事件
-  const handleToggleClick = () => {
-    if (disabled) return;
-    trigger === "click" && setNewOpen(!newOpen);
-  };
-
-  const handleToggleMouseEnter = () => {
-    if (disabled) return;
-    if (trigger === "hover") {
-      setNewOpen(true);
-    }
-  };
-
-  const handleToggleMouseLeave = () => {
-    if (trigger === "hover") {
-      setNewOpen(false);
-    }
-  };
 
   return (
     <Fragment>
       <div
         ref={toggleRef}
-        className={`land-dropdown-toggle ${
-          newOpen ? "show" : ""
-        } ${toggleClassName} ${disabled ? "disabled" : ""}`}
-        style={toggleStyle}
+        className={rootCls}
+        style={{ ...style, ...toggleStyle }}
         onClick={handleToggleClick}
-        onMouseEnter={handleToggleMouseEnter}
-        onMouseLeave={handleToggleMouseLeave}
-        // 优化：添加aria属性以提升无障碍性
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         aria-disabled={disabled}
-        aria-expanded={newOpen}
+        aria-expanded={innerOpen}
         aria-haspopup="true"
       >
         {children}
-        {!targetBody && dropContentEl}
+        {!isPortal && panelEl}
       </div>
-      {targetBody && newOpen && !disabled && dropContentEl}
+      {isPortal && innerOpen && !disabled && createPortal(panelEl, attachNode)}
     </Fragment>
   );
 };

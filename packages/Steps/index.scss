@@ -3,123 +3,79 @@
   gap: var(--land-steps-gap, var(--gap-s));
   justify-content: space-between;
   width: 100%;
-  position: relative;
 
   // 垂直布局
-  &.vertical {
+  &--vertical {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--land-steps-vertical-gap, var(--gap-m));
   }
 
-  // 响应式设计
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--land-steps-mobile-gap, var(--gap-m));
-    
-    &.vertical {
-      gap: var(--land-steps-mobile-vertical-gap, var(--gap-l));
-    }
-  }
-
-  .land-steps-item {
+  // 步骤项
+  &__item {
     flex-shrink: 0;
     display: flex;
     gap: var(--land-steps-item-gap, var(--gap-s));
     cursor: pointer;
-    transition: all var(--transition-s) ease;
-    border-radius: var(--land-steps-item-border-radius, 4px);
+    transition: background-color var(--transition-s) ease;
+    border-radius: var(--land-steps-item-radius, 4px);
     padding: var(--land-steps-item-padding, 4px);
-    position: relative;
 
-    // 焦点状态
     &:focus-visible {
       outline: 2px solid var(--land-steps-focus-color, var(--color-primary));
       outline-offset: 2px;
     }
 
-    // 悬停状态
     &:hover:not(:focus-visible) {
-      background-color: var(--land-steps-hover-bg, var(--color-bg-secondary));
-      transform: translateY(-1px);
+      background-color: var(--land-steps-item-hover-bg, var(--color-bg-secondary));
     }
 
     // 激活状态
-    &.active {
-      .land-steps-num {
+    &--active {
+      .land-steps__num {
         background-color: var(--land-steps-num-active-bg, var(--color-primary));
-        border-color: var(--land-steps-num-active-border, var(--color-primary));
+        border-color: var(--land-steps-num-active-border-color, var(--color-primary));
         color: var(--land-steps-num-active-color, var(--color-white));
-        box-shadow: 0 2px 8px rgba(var(--color-primary-6-rgb), 0.3);
       }
-      
-      .land-steps-title {
+
+      .land-steps__title {
         color: var(--land-steps-title-active-color, var(--color-text-primary));
-        font-size: var(--land-steps-title-active-font-size, 14px);
       }
     }
 
     // 已完成状态
-    &.finished:not(.active) {
-      .land-steps-num {
+    &--finished:not(.land-steps__item--active) {
+      .land-steps__num {
         background-color: var(--land-steps-num-finished-bg, var(--color-primary));
-        border-color: var(--land-steps-num-finished-border, var(--color-primary));
+        border-color: var(--land-steps-num-finished-border-color, var(--color-primary));
         color: var(--land-steps-num-finished-color, var(--color-white));
       }
-      
-      .land-steps-title {
-        color: var(--land-steps-title-finished-color, var(--color-text-primary));
-      }
-    }
 
-    // 禁用状态
-    &:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-      
-      &:hover {
-        background-color: transparent;
-        transform: none;
+      .land-steps__title {
+        color: var(--land-steps-title-finished-color, var(--color-text-primary));
       }
     }
   }
 
-  .land-steps-num {
+  // 步骤编号
+  &__num {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: var(--land-steps-num-margin-top, 2px);
-    width: var(--land-steps-num-width, 16px);
-    height: var(--land-steps-num-height, 16px);
-    text-align: center;
-    line-height: var(--land-steps-num-line-height, 16px);
+    width: var(--land-steps-num-size, 18px);
+    height: var(--land-steps-num-size, 18px);
     font-size: var(--land-steps-num-font-size, 12px);
     font-weight: var(--land-steps-num-font-weight, 500);
     color: var(--land-steps-num-color, var(--color-text-primary));
-    border: 1px solid var(--land-steps-num-border, var(--color-border-primary));
+    background-color: var(--land-steps-num-background-color, var(--color-bg-secondary));
     border-radius: 50%;
     transition: all var(--transition-s) ease;
-    position: relative;
-
-    // 图标样式
-    svg {
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-    }
-
-    // 响应式调整
-    @media (max-width: 768px) {
-      width: var(--land-steps-num-mobile-width, 20px);
-      height: var(--land-steps-num-mobile-height, 20px);
-      font-size: var(--land-steps-num-mobile-font-size, 14px);
-      line-height: var(--land-steps-num-mobile-line-height, 20px);
-    }
   }
 
-  .land-steps-title {
+  // 标题
+  &__title {
     display: flex;
     flex-direction: column;
     gap: var(--land-steps-title-gap, var(--gap-4));
@@ -127,59 +83,13 @@
     color: var(--land-steps-title-color, var(--color-text-primary));
     line-height: var(--land-steps-title-line-height, 1.4);
     transition: color var(--transition-s) ease;
-
-    // 响应式调整
-    @media (max-width: 768px) {
-      font-size: var(--land-steps-title-mobile-font-size, 16px);
-    }
   }
 
-  .land-steps-desc {
+  // 描述
+  &__desc {
     font-size: var(--land-steps-desc-font-size, 12px);
     color: var(--land-steps-desc-color, var(--color-text-secondary));
     line-height: var(--land-steps-desc-line-height, 1.4);
     margin-top: var(--land-steps-desc-margin-top, 2px);
-
-    // 响应式调整
-    @media (max-width: 768px) {
-      font-size: var(--land-steps-desc-mobile-font-size, 14px);
-    }
-  }
-
-  // 动画效果
-  .land-steps-item {
-    animation: fadeInUp 0.3s ease-out;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  // 高对比度模式支持
-  @media (prefers-contrast: high) {
-    .land-steps-item {
-      border: 1px solid var(--color-border-primary);
-      
-      &.active {
-        border-color: var(--color-primary);
-      }
-    }
-  }
-
-  // 减少动画模式支持
-  @media (prefers-reduced-motion: reduce) {
-    .land-steps-item,
-    .land-steps-num,
-    .land-steps-title {
-      transition: none;
-      animation: none;
-    }
   }
 }

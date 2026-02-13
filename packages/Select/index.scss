@@ -4,8 +4,8 @@
   flex-direction: column;
   gap: 8px;
   width: var(--land-select-width,fit-content);
-  .land-dropdown-toggle{
-    &.show{
+  .land-dropdown{
+    &.land-dropdown--open{
       .land-select-value-arrow{
         transform: rotate(180deg);
       }

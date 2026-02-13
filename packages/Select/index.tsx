@@ -239,7 +239,7 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <div className={`land-select ${className}`} style={style}>
-      <Dropdown trigger="click" disabled={disabled} dropContent={dropContent} {...restProps}>
+      <Dropdown trigger="click" disabled={disabled} content={dropContent} {...restProps}>
         <div
           className={`land-select-input ${type} ${disabled ? "disabled" : ""
             }`}
