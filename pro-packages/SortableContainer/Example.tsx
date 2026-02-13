@@ -80,10 +80,10 @@ export default function SortableContainerExample() {
           opacity: state.isDragging ? 0.4 : 1,
         }}
       >
+        <span style={{ fontSize: 'var(--font-content-m)' }}>{String(item.label ?? '')}</span>
         <span {...dragHandleProps} style={{ ...dragHandleProps.style, fontSize: 16, color: 'var(--color-text-tertiary)' }}>
           ⠿
         </span>
-        <span style={{ fontSize: 'var(--font-content-m)' }}>{String(item.label ?? '')}</span>
       </div>
     ),
     [],
@@ -154,9 +154,6 @@ export default function SortableContainerExample() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span {...dragHandleProps} style={{ ...dragHandleProps.style, fontSize: 18, color: 'var(--color-text-tertiary)' }}>
-              ⠿
-            </span>
             <span style={{ fontWeight: 500 }}>
               {state.index + 1}. {item.title}
             </span>
@@ -172,6 +169,9 @@ export default function SortableContainerExample() {
           >
             {status.label}
           </span>
+          <span {...dragHandleProps} style={{ ...dragHandleProps.style, fontSize: 18, color: 'var(--color-text-tertiary)' }}>
+              ⠿
+            </span>
         </div>
       );
     },
