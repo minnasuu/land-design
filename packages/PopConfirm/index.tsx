@@ -52,8 +52,8 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
     >
       <div className='land-popConfirm-content'>{content}</div>
       <div className='land-popConfirm-btn'>
-        <Button type='fill' size='small' onClick={onCancel} {...cancelButtonProps}>{cancelLabel}</Button>
-        <Button type='background' size='small' onClick={onSubmit} {...submitButtonProps}>{submitLabel}</Button>
+        <Button variant='fill' size='small' onClick={onCancel} {...cancelButtonProps}>{cancelLabel}</Button>
+        <Button variant='background' size='small' onClick={onSubmit} {...submitButtonProps}>{submitLabel}</Button>
       </div>
       {!hideArrow && <div
         className="land-popConfirm-arrow"

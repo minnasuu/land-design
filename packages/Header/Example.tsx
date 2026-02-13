@@ -118,8 +118,8 @@ export default function HeaderExample() {
                     active: 'home',
                   }}
                   rightComponent={<div className="flex gap-12">
-                    <Button text="登陆" type="fill" />
-                    <Button text="注册" type="background" />
+                    <Button text="登陆" variant="fill" />
+                    <Button text="注册" variant="background" />
                   </div>}
                   mobileSize={400}
                 />

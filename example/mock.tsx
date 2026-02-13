@@ -149,7 +149,7 @@ export const COMMON_COMPONENTS_DATA = [
       { key: "button-animation", title: "按钮动画" },
     ],
     example: <ButtonExample />,
-    demo: <Button text="按钮" type="background" status="default"></Button>,
+    demo: <Button text="按钮" variant="background" status="default"></Button>,
     variants: <ButtonVariants />,
     especial: true,
   },
@@ -186,7 +186,7 @@ export const COMMON_COMPONENTS_DATA = [
     demo: (
       <Flex column gap={8} style={{ width: "50%", height: "50%" }}>
         <div className="flex-1 w-full rounded-[8px] bg-bg-secondary"></div>
-        <Divider gap={8} />
+        <Divider spacing={8} />
         <div className="flex-1 w-full rounded-[8px] bg-bg-secondary"></div>
       </Flex>
     ),
@@ -209,7 +209,7 @@ export const LAYOUT_COMPONENTS_DATA = [
     demo: (
       <Flex column gap={8} style={{ width: "50%", height: "50%" }}>
         <div className="flex-1 w-full rounded-[8px] bg-bg-secondary"></div>
-        <Divider gap={8} />
+        <Divider spacing={8} />
         <div className="flex-1 w-full rounded-[8px] bg-bg-secondary"></div>
       </Flex>
     ),
@@ -398,9 +398,9 @@ export const NAV_COMPONENTS_DATA = [
     demo: (
       <div className="flex gap-8" style={{ width: "90%", height: "20px" }}>
         <div className="flex-1 height-100 bg-bg-secondary"></div>
-        <Divider direction="column" style={{ transform: "skew(-20deg)" }} />
+        <Divider direction="vertical" style={{ transform: "skew(-20deg)" }} />
         <div className="flex-1 height-100 bg-bg-secondary"></div>
-        <Divider direction="column" style={{ transform: "skew(-20deg)" }} />
+        <Divider direction="vertical" style={{ transform: "skew(-20deg)" }} />
         <div
           className="flex-1 height-100"
           style={{ backgroundColor: "var(--color-primary)" }}

@@ -16,7 +16,7 @@ const ButtonArrow: React.FC<ButtonProps> = ({
         ...style
       }}
       {...restProps}
-      nativeEvent={{
+      htmlProps={{
         onMouseEnter: () => setIsHover(true),
         onMouseLeave: () => setIsHover(false),
       }}

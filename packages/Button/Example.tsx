@@ -10,17 +10,17 @@ import ComponentSectionLayout from '../../example/components/ComponentSectionLay
 import Flex from '../Flex';
 
 // 按钮类型和状态定义
-const buttonTypes = ['text', 'fill', 'background', 'outline', 'dashed', 'transparent'];
+const buttonVariants = ['text', 'fill', 'background', 'outline', 'dashed', 'transparent'];
 const buttonStatuses = ['default', 'primary', 'warning', 'danger', 'success'];
-const buttonSizes = ['mini', 'small', 'default', 'large'];
+const buttonSizes = ['small', 'default', 'large'];
 
 export default function ButtonExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const buttonProps = [
-    { name: 'type', type: 'ButtonType (text | fill | background | outline | dashed | transparent)', desc: '按钮类型', default: 'outline' },
-    { name: 'status', type: 'ButtonStatus (default | primary | warning | danger | success)', desc: '按钮状态', default: 'default' },
-    { name: 'size', type: 'ButtonSize (mini | small | default | large)', desc: '按钮尺寸', default: 'default' },
+    { name: 'variant', type: 'ButtonVariant (text | fill | background | outline | dashed | transparent)', desc: '按钮外观变体', default: 'outline' },
+    { name: 'status', type: 'ButtonStatus (default | primary | warning | danger | success)', desc: '按钮语义状态', default: 'default' },
+    { name: 'size', type: 'ButtonSize (small | default | large)', desc: '按钮尺寸', default: 'default' },
     { name: 'text', type: 'string', desc: '按钮主要文案' },
     { name: 'subText', type: 'string', desc: '按钮次要文案' },
     { name: 'icon', type: 'ReactNode', desc: '按钮图标' },
@@ -32,7 +32,9 @@ export default function ButtonExample() {
     { name: 'hoverAnimation', type: 'boolean', desc: '是否启用悬停动画', default: 'false' },
     { name: 'activeAnimation', type: 'boolean', desc: '是否启用点击动画', default: 'false' },
     { name: 'tip', type: 'ReactNode | string', desc: '气泡提示内容' },
-    { name: 'onClick', type: '(e: React.MouseEvent) => void', desc: '点击事件回调' },
+    { name: 'popoverProps', type: 'PopOverProps', desc: '气泡提示配置，透传 PopOver 属性' },
+    { name: 'htmlProps', type: 'ButtonHTMLAttributes', desc: '原生 button HTML 属性透传' },
+    { name: 'onClick', type: '(e: MouseEvent) => void', desc: '点击事件回调' },
   ];
 
   return (
@@ -56,22 +58,22 @@ export default function ButtonExample() {
           >
             <CodeOperationContainer>
               <Button text='默认按钮' />
-              <Button text='主要按钮' type='fill' status='primary' />
-              <Button text='成功按钮' type='fill' status='success' />
-              <Button text='警告按钮' type='fill' status='warning' />
-              <Button text='危险按钮' type='fill' status='danger' />
+              <Button text='主要按钮' variant='fill' status='primary' />
+              <Button text='成功按钮' variant='fill' status='success' />
+              <Button text='警告按钮' variant='fill' status='warning' />
+              <Button text='危险按钮' variant='fill' status='danger' />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
           {/* 按钮类型 */}
           <ComponentSectionLayout
             title='按钮类型'
-            id='button-type'
-            description='Button 支持 6 种不同的类型，每种类型都有独特的视觉效果。'
+            id='button-variant'
+            description='Button 支持 6 种不同的外观变体，每种都有独特的视觉效果。'
           >
             <CodeOperationContainer>
-              {buttonTypes.map(type => (
-                <Button key={type} text={type} type={type as any} />
+              {buttonVariants.map(v => (
+                <Button key={v} text={v} variant={v as any} />
               ))}
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -80,17 +82,17 @@ export default function ButtonExample() {
           <ComponentSectionLayout
             title='按钮状态'
             id='button-status'
-            description='每种按钮类型都支持 5 种不同的状态，用于表达不同的语义。'
+            description='每种按钮变体都支持 5 种不同的状态，用于表达不同的语义。'
           >
             <CodeOperationContainer>
               <Flex gap={12} column justify='center'>
-                {buttonTypes.map(type => (
-                  <Flex key={type} gap={12} justify='center'>
+                {buttonVariants.map(v => (
+                  <Flex key={v} gap={12} justify='center'>
                     {buttonStatuses.map(status => (
                       <Button
-                        key={`${type}-${status}`}
+                        key={`${v}-${status}`}
                         text={status}
-                        type={type as any}
+                        variant={v as any}
                         status={status as any}
                       />
                     ))}
@@ -104,7 +106,7 @@ export default function ButtonExample() {
           <ComponentSectionLayout
             title='按钮尺寸'
             id='button-size'
-            description='Button 支持 4 种不同的尺寸，适应不同的使用场景。'
+            description='Button 支持 3 种不同的尺寸，适应不同的使用场景。'
           >
             <CodeOperationContainer>
               <Flex gap={12} justify='center'>
@@ -113,7 +115,7 @@ export default function ButtonExample() {
                     <Button
                       key={size}
                       text={size}
-                      type='outline'
+                      variant='outline'
                       status='default'
                       size={size as any}
                     />
@@ -124,7 +126,7 @@ export default function ButtonExample() {
                     <Button
                       key={`icon-${size}`}
                       icon={<Icon name='download' />}
-                      type='outline'
+                      variant='outline'
                       status='default'
                       size={size as any}
                     />
@@ -141,10 +143,10 @@ export default function ButtonExample() {
             description='Button 支持图标，可以单独使用图标或与文字组合使用。'
           >
             <CodeOperationContainer>
-              <Button text='下载' type='outline' icon={<Icon name='download' strokeWidth={4}/>} />
-              <Button type='outline' icon={<Icon name='download' strokeWidth={4}/>} />
-              <Button text='设置' type='fill' icon={<Icon name='setting-fill' />} />
-              <Button type='fill' icon={<Icon name='setting-fill' />} />
+              <Button text='下载' variant='outline' icon={<Icon name='download' strokeWidth={4}/>} />
+              <Button variant='outline' icon={<Icon name='download' strokeWidth={4}/>} />
+              <Button text='设置' variant='fill' icon={<Icon name='setting-fill' />} />
+              <Button variant='fill' icon={<Icon name='setting-fill' />} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -156,13 +158,13 @@ export default function ButtonExample() {
           >
             <CodeOperationContainer>
               <Flex gap={12} column justify='center'>
-                {buttonTypes.map(type => (
-                  <Flex key={type} gap={12} justify='center'>
+                {buttonVariants.map(v => (
+                  <Flex key={v} gap={12} justify='center'>
                     {buttonStatuses.map(status => (
                       <Button
-                        key={`${type}-${status}`}
+                        key={`${v}-${status}`}
                         text='禁用'
-                        type={type as any}
+                        variant={v as any}
                         status={status as any}
                         disabled
                       />
@@ -180,8 +182,8 @@ export default function ButtonExample() {
             description='通过 Loading 组件可以实现按钮的加载状态效果。'
           >
             <CodeOperationContainer>
-              <Button text='保存中' type='outline' disabled icon={<Loading />} />
-              <Button type='outline' disabled icon={<Loading />} />
+              <Button text='保存中' variant='outline' disabled icon={<Loading />} />
+              <Button variant='outline' disabled icon={<Loading />} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -192,7 +194,7 @@ export default function ButtonExample() {
             description='通过 block 属性可以让按钮占满父容器的宽度。'
           >
             <CodeOperationContainer>
-              <Button text='块级按钮' type='fill' block />
+              <Button text='块级按钮' variant='fill' block />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -203,8 +205,8 @@ export default function ButtonExample() {
             description='支持文字加粗和悬停加粗效果。'
           >
             <CodeOperationContainer>
-              <Button text='加粗文字' type='fill' bold />
-              <Button text='悬停加粗' type='fill' hoverBold />
+              <Button text='加粗文字' variant='fill' bold />
+              <Button text='悬停加粗' variant='fill' hoverBold />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -216,13 +218,13 @@ export default function ButtonExample() {
           >
             <CodeOperationContainer>
               <Flex gap={12} column justify='center'>
-                {buttonTypes.map(type => (
-                  <Flex key={type} gap={12} justify='center'>
+                {buttonVariants.map(v => (
+                  <Flex key={v} gap={12} justify='center'>
                     {buttonStatuses.map(status => (
                       <Button
-                        key={`${type}-${status}`}
+                        key={`${v}-${status}`}
                         text='胶囊'
-                        type={type as any}
+                        variant={v as any}
                         status={status as any}
                         capsule
                       />
@@ -253,9 +255,9 @@ export default function ButtonExample() {
             description='支持悬停动画和点击动画效果。'
           >
             <CodeOperationContainer>
-              <Button text='悬停动画' type='fill' hoverAnimation />
-              <Button text='点击动画' type='fill' activeAnimation />
-              <Button text='双重动画' type='fill' hoverAnimation activeAnimation />
+              <Button text='悬停动画' variant='fill' hoverAnimation />
+              <Button text='点击动画' variant='fill' activeAnimation />
+              <Button text='双重动画' variant='fill' hoverAnimation activeAnimation />
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </div>

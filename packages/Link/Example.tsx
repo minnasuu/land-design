@@ -20,10 +20,10 @@ const linkProps = [
   { name: 'status', type: 'LinkStatus (default | primary | warning | danger | success)', desc: '链接状态', default: 'default' },
   { name: 'size', type: 'LinkSize (small | default | large)', desc: '链接尺寸', default: 'default' },
   { name: 'underline', type: "LinkUnderline ('none' | 'always' | 'hover')", desc: '下划线模式', default: "'hover'" },
-  { name: 'prefixIcon', type: 'boolean | ReactNode', desc: '前缀图标' },
-  { name: 'suffixIcon', type: 'boolean | ReactNode', desc: '后缀图标' },
+  { name: 'startIcon', type: 'boolean | ReactNode', desc: '起始图标，true 时自动识别内/外链' },
+  { name: 'endIcon', type: 'boolean | ReactNode', desc: '末尾图标，true 时自动识别内/外链' },
   { name: 'tip', type: 'ReactNode | string', desc: '气泡提示内容' },
-  { name: 'tipProps', type: 'PopOverProps', desc: '气泡提示配置' },
+  { name: 'popoverProps', type: 'PopOverProps', desc: '气泡提示配置，透传 PopOver 属性' },
   { name: 'onClick', type: '(e: MouseEvent<HTMLAnchorElement>) => void', desc: '点击事件回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
@@ -119,12 +119,12 @@ export default function LinkExample() {
             <CodeOperationContainer>
               <Flex gap={24} column justify='center'>
                 <Flex gap={24} justify='center'>
-                  <Link prefixIcon>内链前缀图标</Link>
-                  <Link suffixIcon>内链后缀图标</Link>
+                  <Link startIcon>内链起始图标</Link>
+                  <Link endIcon>内链末尾图标</Link>
                 </Flex>
                 <Flex gap={24} justify='center'>
-                  <Link prefixIcon target="_blank">外链前缀图标</Link>
-                  <Link suffixIcon target="_blank">外链后缀图标</Link>
+                  <Link startIcon target="_blank">外链起始图标</Link>
+                  <Link endIcon target="_blank">外链末尾图标</Link>
                 </Flex>
               </Flex>
             </CodeOperationContainer>
@@ -156,7 +156,7 @@ export default function LinkExample() {
             <CodeOperationContainer>
               <Flex gap={24} justify='center'>
                 <Link tip="链接提示">包含提示的链接</Link>
-                <Link tip="链接提示" tipProps={{ theme: 'dark' }}>包含提示的链接</Link>
+                <Link tip="链接提示" popoverProps={{ theme: 'dark' }}>包含提示的链接</Link>
               </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>

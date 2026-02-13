@@ -139,7 +139,7 @@ const Drawer: React.FC<DrawerProps> = ({
               </div>
             )}
             {showCloseDIvider && (
-              <Divider direction="column" lineLength="36px" gap={12} />
+              <Divider direction="vertical" length="36px" spacing={12} />
             )}
             {headerComponent ||
               (title ||

@@ -116,7 +116,7 @@ const MsPreviewSwiperLayout: React.FC<SwiperMediaPreviewProps> = ({
           >
             {i.mediaData?.map((j, jdx) => (
               <Fragment key={j.id ?? jdx}>
-                {jdx !== 0 && <Divider gap={8} />}
+                {jdx !== 0 && <Divider spacing={8} />}
                 <div
                   className={`land-swiper-media-preview-item ${value === j.id ? 'active' : ''}`}
                   onClick={() => {

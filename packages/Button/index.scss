@@ -65,7 +65,7 @@ $color-themes-bg: (
 // 混入：生成主题颜色样式
 @mixin theme-colors($type) {
   @each $theme, $color in $color-themes {
-    &.#{$theme} {
+    &.land-button--#{$theme} {
       color: $color;
       &:hover:not([disabled]) {
         color: map-get($color-themes-hover, $theme);
@@ -80,7 +80,7 @@ $color-themes-bg: (
 // 混入：生成outline/dashed主题样式
 @mixin theme-outline-colors($type) {
   @each $theme, $color in $color-themes {
-    &.#{$theme} {
+    &.land-button--#{$theme} {
       color: $color;
       border-color: map-get($color-themes-border, $theme);
       &:hover:not([disabled]) {
@@ -100,7 +100,7 @@ $color-themes-bg: (
 // 混入：生成background主题样式
 @mixin theme-background-colors($type) {
   @each $theme, $color in $color-themes-bg {
-    &.#{$theme} {
+    &.land-button--#{$theme} {
       background-color: $color;
       &:hover:not([disabled]) {
         background-color: map-get($color-themes-hover, $theme);
@@ -140,51 +140,43 @@ $color-themes-bg: (
   user-select: var(--land-button-user-select, none);
   height: var(--land-button-default-height, 36px);
 
-  // 尺寸变体
-      &.size-small,
-      &.default.size-small,
-  &.outline.size-small,
-  &.dashed.size-small,
-  &.transparent.size-small {
+  // ─── 尺寸变体 ───
+  &--small {
     height: var(--land-button-small-height, 28px);
     font-size: var(--land-button-small-font-size, var(--font-content-s));
     padding-inline: var(--land-button-small-padding-inline, 14px);
   }
 
-  &.size-large,
-  &.default.size-large,
-  &.outline.size-large,
-  &.dashed.size-large,
-  &.transparent.size-large {
+  &--large {
     height: var(--land-button-large-height, 40px);
     font-size: var(--land-button-large-font-size, var(--font-content-l));
     padding-inline: var(--land-button-large-padding-inline, 22px);
   }
 
-  // 形状变体
-  &.capsule {
+  // ─── 形状变体 ───
+  &--capsule {
     border-radius: var(--land-button-capsule-radius, var(--radius-full));
   }
 
-  &.bold {
+  &--bold {
     font-weight: var(--land-button-bold-font-weight, bold);
   }
 
-  &.block {
+  &--block {
     width: var(--land-button-block-width, 100%);
   }
 
-  // 遮罩内容
-  .land-button-mask-content-wrapper {
+  // ─── 内部元素 ───
+  .land-button__content-wrapper {
     position: var(--land-button-mask-wrapper-position, relative);
-    .land-button-icon{
-      path{
+    .land-button__icon {
+      path {
         transition: stroke-width var(--transition-s) linear;
       }
     }
   }
 
-  .land-button-mask-content {
+  .land-button__mask-content {
     position: var(--land-button-mask-position, absolute);
     top: var(--land-button-mask-top, 0);
     left: var(--land-button-mask-left, 0);
@@ -200,23 +192,23 @@ $color-themes-bg: (
     transition: var(--land-button-mask-transition, opacity var(--transition-s) linear);
   }
 
-  &.hover-bold {
+  &--hover-bold {
     &:hover:not([disabled]) {
-      .land-button-mask-content {
+      .land-button__mask-content {
         opacity: 1;
       }
     }
   }
 
-  .subText {
+  .land-button__sub-text {
     margin-left: var(--land-button-subtext-margin-left, 4px);
     font-size: var(--land-button-subtext-font-size, var(--font-content-s));
     opacity: var(--land-button-subtext-opacity, var(--opacity-disabled));
   }
 
-  // 基础样式变体
-  &.text,
-  &.transparent {
+  // ─── 外观变体 ───
+  &--text,
+  &--transparent {
     border: var(--land-button-text-border, none);
     background-color: var(--land-button-text-bg, transparent);
     
@@ -229,8 +221,8 @@ $color-themes-bg: (
     }
   }
 
-  &.text,
-  &.outline.default {
+  &--text,
+  &--outline.land-button--default {
     &:hover:not([disabled]) {
       background-color: var(--land-button-fill-background-color-hover, var(--color-bg-secondary));
     }
@@ -241,12 +233,12 @@ $color-themes-bg: (
   }
 
   // Fill 样式
-  &.fill {
+  &--fill {
     border: var(--land-button-fill-border, none);
     color: var(--land-button-color, var(--color-text-primary));
     background-color: var(--land-button-fill-background-color, var(--color-bg-secondary));
 
-    &.default {
+    &.land-button--default {
       color: var(--land-button-fill-default-color, var(--color-text-primary));
       background-color: var(--land-button-fill-background-color, var(--color-bg-secondary));
     }
@@ -261,11 +253,11 @@ $color-themes-bg: (
   }
 
   // Background 样式
-  &.background {
+  &--background {
     border: var(--land-button-background-border, none);
     color: var(--land-button-background-color, var(--color-text-primary));
 
-    &.default {
+    &.land-button--default {
       color: var(--land-button-background-default-color, var(--color-white));
       background-color: var(--land-button-background-bg, var(--color-gray-12));
     }
@@ -280,12 +272,12 @@ $color-themes-bg: (
   }
 
   // Outline 样式
-  &.outline {
+  &--outline {
     background-color: var(--land-button-outline-bg, transparent);
     padding: var(--land-button-outline-padding, 8px 16px);
     border: var(--land-button-outline-border, 1px solid var(--land-button-border-color, var(--color-border-primary)));
 
-    &.default {
+    &.land-button--default {
       border-color: var(--land-button-border-color, var(--color-border-primary));
     }
 
@@ -299,13 +291,13 @@ $color-themes-bg: (
   }
 
   // Dashed 样式
-  &.dashed {
+  &--dashed {
     border: var(--land-button-dashed-border, 1px dashed transparent);
     padding: var(--land-button-dashed-padding, 8px 16px);
     border-color: var(--land-button-border-color, var(--color-border-secondary));
     background-color: var(--land-button-dashed-bg, transparent);
 
-    &.default {
+    &.land-button--default {
       border-color: var(--land-button-border-color, var(--color-border-secondary));
     }
 
@@ -319,7 +311,7 @@ $color-themes-bg: (
   }
 
   // Transparent 样式
-  &.transparent {
+  &--transparent {
     border: var(--land-button-transparent-border, none);
     padding: var(--land-button-transparent-padding, 0);
     background-color: var(--land-button-transparent-bg, transparent);
@@ -328,14 +320,14 @@ $color-themes-bg: (
     
     &:hover:not([disabled]) {
       color: var(--land-button-color-hover, var(--color-text-primary));
-     .land-button-mask-content{
+     .land-button__mask-content {
       opacity: 1;
      }
-     .land-button-content-text{
+     .land-button__text {
       opacity: 0;
      }
-     .land-button-icon{
-       path{
+     .land-button__icon {
+       path {
         stroke-width: 5px;
        }
      }
@@ -344,60 +336,63 @@ $color-themes-bg: (
     &:active:not([disabled]) {
       color: var(--land-button-color-active, var(--color-text-primary));
     }
-    .land-button-content-text{
+    .land-button__text {
       transition: opacity var(--transition-s) linear;
     }
   }
 
   // Icon only 样式
-  &.default.iconOnly,
-  &.outline.iconOnly,
-  &.dashed.iconOnly,
-  &.transparent.iconOnly {
-    padding: var(--land-button-icon-padding, 0);
-    aspect-ratio: var(--land-button-icon-aspect-ratio, 1);
-    height: var(--land-button-height, 36px);
-    &.small{
-      height: var(--land-button-small-height, 28px);
-    }
-    &.large{
-      height: var(--land-button-large-height, 40px);
+  &--icon-only {
+    &.land-button--default,
+    &.land-button--outline,
+    &.land-button--dashed,
+    &.land-button--transparent {
+      padding: var(--land-button-icon-padding, 0);
+      aspect-ratio: var(--land-button-icon-aspect-ratio, 1);
+      height: var(--land-button-height, 36px);
+      &.land-button--small {
+        height: var(--land-button-small-height, 28px);
+      }
+      &.land-button--large {
+        height: var(--land-button-large-height, 40px);
+      }
     }
   }
 
-  // 禁用状态
+  // ─── 禁用状态 ───
   &[disabled] {
     cursor: var(--land-button-disabled-cursor, not-allowed);
     opacity: var(--land-button-disabled-opacity, var(--opacity-disabled));
   }
 
-  // 主题颜色应用
-  &.text,
-  &.transparent,
-  &.fill {
+  // ─── 主题颜色应用 ───
+  &--text,
+  &--transparent,
+  &--fill {
     @include theme-colors('text');
   }
 
-  &.outline,
-  &.dashed {
+  &--outline,
+  &--dashed {
     @include theme-outline-colors('outline');
   }
 
-  &.background {
+  &--background {
     @include theme-background-colors('background');
   }
 
-  &.hover-animation:not(.active-animation) {
+  // ─── 动画 ───
+  &--hover-animation:not(.land-button--active-animation) {
     &:hover:not([disabled]) {
       transform: var(--land-button-hover-animation-transform, scale(0.98));
     }
   }
-  &.active-animation:not(.hover-animation) {
+  &--active-animation:not(.land-button--hover-animation) {
     &:active:not([disabled]) {
       transform: var(--land-button-active-animation-transform, scale(0.98));
     }
   }
-  &.hover-animation.active-animation {
+  &--hover-animation.land-button--active-animation {
     &:hover:not([disabled]){
       transform: var(--land-button-hover-animation-transform, scale(0.98));
     }
@@ -455,6 +450,3 @@ $color-themes-bg: (
     }
   }
 }
-
-
-

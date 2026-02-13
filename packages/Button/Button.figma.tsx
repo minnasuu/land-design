@@ -6,7 +6,7 @@ figma.connect(
   'https://www.figma.com/design/PisstaAoQkRKPaFMopVgYt/Land-Design-DS?node-id=2-3&m=dev',
   {
     props: {
-      type: figma.enum("Type", {
+      variant: figma.enum("Type", {
         text: "text",
         fill: "fill",
         background: "background",
@@ -27,7 +27,7 @@ figma.connect(
     example: (props) => {
       // 提供基本的代码示例
       return (
-        <Button type={props.type} status={props.status} disabled={props.disabled} text="按钮" capsule={props.capsule} />
+        <Button variant={props.variant} status={props.status} disabled={props.disabled} text="按钮" capsule={props.capsule} />
       );
     }
   }

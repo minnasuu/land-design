@@ -122,7 +122,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
           >
             <Icon name="arrow" size={16} />
           </div>
-          {type === "border" && <Divider gap={0} lineLength="32px" />}
+          {type === "border" && <Divider spacing={0} length="32px" />}
           <div
             className={`land-numberInput-dec ${newValue === min || disabled ? "disabled" : ""
               }`}

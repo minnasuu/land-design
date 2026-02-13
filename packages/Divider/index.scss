@@ -1,44 +1,104 @@
 .land-divider {
   display: flex;
   align-items: center;
-  &.column {
+
+  // ─── 方向 ───
+  &--horizontal {
+    flex-direction: row;
+  }
+
+  &--vertical {
     flex-direction: column;
-    .land-divider-content{
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-    }
-    .land-divider-line{
+
+    .land-divider__line {
       width: 1px;
       height: 100%;
     }
+
+    .land-divider__content {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
   }
-  .land-divider-line{
+
+  // ─── 线条 ───
+  &__line {
+    flex: 1;
     height: 1px;
-    width: 100%;
-    background-color: var(--land-divider-line-color, var(--color-border-primary));
+    background-color: var(--land-divider-color, var(--color-border-primary));
   }
-  &.width-content {
+
+  // ─── 虚线 ───
+  &--dashed {
+    .land-divider__line {
+      background-color: transparent;
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--land-divider-color, var(--color-border-primary)) 0,
+        var(--land-divider-color, var(--color-border-primary)) var(--land-divider-dash-gap, 5px),
+        transparent var(--land-divider-dash-gap, 5px),
+        transparent calc(var(--land-divider-dash-gap, 5px) + var(--land-divider-dash-length, 10px))
+      );
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+    }
+
+    &.land-divider--vertical .land-divider__line {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        var(--land-divider-color, var(--color-border-primary)) 0,
+        var(--land-divider-color, var(--color-border-primary)) var(--land-divider-dash-gap, 5px),
+        transparent var(--land-divider-dash-gap, 5px),
+        transparent calc(var(--land-divider-dash-gap, 5px) + var(--land-divider-dash-length, 10px))
+      );
+      background-size: 1px 100%;
+    }
+  }
+
+  // ─── 带内容 ───
+  &--with-content {
     gap: var(--land-divider-content-gap, var(--gap-m));
-    .land-divider-line{
-      width: auto;
+
+    .land-divider__line {
       flex: 1;
     }
-    &.left{
-      .land-divider-line:not(.land-divider-line-right){
-        flex: unset;
-        width: var(--land-divider-pre-line-width, 10%);
-      }
-    }
-    &.right{
-      .land-divider-line.land-divider-line-right{
-        flex: unset;
-        width: var(--land-divider-pre-line-width, 10%);
-      }
+  }
+
+  // ─── 内容 ───
+  &__content {
+    flex-shrink: 0;
+    font-size: var(--font-content-m);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  // ─── 对齐 ───
+  &--align-start {
+    .land-divider__line:first-child {
+      flex: none;
+      width: var(--land-divider-aside-length, 10%);
     }
   }
-  &.dashed{
-    .land-divider-line{
-      background: repeating-linear-gradient(to right, var(--land-divider-line-color, var(--color-gray-5)) 0 var(--land-divider-dashed-gap, 5px), transparent var(--land-divider-dashed-gap, 5px) var(--land-divider-dashed-length, 10px));
+
+  &--align-end {
+    .land-divider__line:last-child {
+      flex: none;
+      width: var(--land-divider-aside-length, 10%);
+    }
+  }
+
+  // 垂直方向的对齐
+  &--vertical.land-divider--align-start {
+    .land-divider__line:first-child {
+      width: 1px;
+      height: var(--land-divider-aside-length, 10%);
+    }
+  }
+
+  &--vertical.land-divider--align-end {
+    .land-divider__line:last-child {
+      width: 1px;
+      height: var(--land-divider-aside-length, 10%);
     }
   }
 }

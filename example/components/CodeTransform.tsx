@@ -120,7 +120,7 @@ const CodeTransform: React.FC<Props> = ({
           </Flex>
           <CodeHighlightContainer className='border-r border-border-primary' language='tsx' codeStr={reactTsxCodeStr} style={{ padding: '16px 12px 16px 0px' }} />
         </div>
-        <Divider direction='column' style={{ height: '100%', width: '1px' }} className='flex-shrink-0' />
+        <Divider direction='vertical' style={{ height: '100%', width: '1px' }} className='flex-shrink-0' />
         <div className='flex-1' style={{ width: '1%' }}>
           <Flex justify='space-between' align='center' className='pl-16 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
             <div>SCSS</div>

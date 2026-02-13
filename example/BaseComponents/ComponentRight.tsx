@@ -23,7 +23,7 @@ const ComponentRight: React.FC<Props> = ({
     <>
       <Title title={`${zh} ${en}`} type="h1" />
       {desc && <div className="text-sm text-gray-500">{desc}</div>}
-      <Divider gap={20} />
+      <Divider spacing={20} />
       <Title title="1. 组件预览" type="h2" className="mb-16" />
       {example}
       <Title title="2. API" type="h2" className="my-16" />

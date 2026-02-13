@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
           </button>
         )}
         {typeof logo === "string" ? <img src={logo} /> : logo}
-        {divider && logo && name && <Divider direction="column" lineLength="24px" />}
+        {divider && logo && name && <Divider direction="vertical" length="24px" />}
         {name}
       </div>
       <div

@@ -5,13 +5,14 @@ import ButtonArrow from './ButtonArrow';
 import ButtonChange from './ButtonChange';
 import { ButtonProps } from './props';
 
+const prefixCls = 'land-button';
+
 const Button: React.FC<ButtonProps> & {
   ButtonArrow: typeof ButtonArrow,
   ButtonChange: typeof ButtonChange
 } = ({
-  // 基础属性
-  type = "outline",
-  status = "default",
+  variant = 'outline',
+  status = 'default',
   size = 'default',
   disabled = false,
   block = false,
@@ -20,59 +21,50 @@ const Button: React.FC<ButtonProps> & {
   hoverAnimation = false,
   activeAnimation,
   style,
-  className = "",
+  className = '',
   onClick,
   children,
-
-  // 内容属性
   text,
   subText,
   icon,
-
-  // 尺寸属性
   capsule,
-  // 气泡属性
   tip,
-  tipProps,
-
-  // 原生事件
-  nativeEvent,
+  popoverProps,
+  htmlProps,
 }) => {
-    // 判断是否为纯图标按钮
     const isIconOnly = useMemo(() => {
       return Boolean(icon && !text && !subText);
     }, [icon, text, subText]);
-    // 构建按钮类名
+
     const buttonClassName = useMemo(() => {
       return [
-        "land-button",
-        type,
-        status,
-        isIconOnly && "iconOnly",
-        tip && "hover-pop",
-        block && "block",
-        bold && "bold",
-        hoverBold && "hover-bold",
-        capsule && "capsule",
-        hoverAnimation && "hover-animation",
-        activeAnimation && "active-animation",
-        size && `size-${size}`,
+        prefixCls,
+        `${prefixCls}--${variant}`,
+        `${prefixCls}--${status}`,
+        `${prefixCls}--${size}`,
+        isIconOnly && `${prefixCls}--icon-only`,
+        tip && `${prefixCls}--has-tip`,
+        block && `${prefixCls}--block`,
+        bold && `${prefixCls}--bold`,
+        hoverBold && `${prefixCls}--hover-bold`,
+        capsule && `${prefixCls}--capsule`,
+        hoverAnimation && `${prefixCls}--hover-animation`,
+        activeAnimation && `${prefixCls}--active-animation`,
         className,
       ]
         .filter(Boolean)
-        .join(" ");
-    }, [type, status, isIconOnly, disabled, tip, className]);
+        .join(' ');
+    }, [variant, status, size, isIconOnly, disabled, tip, block, bold, hoverBold, capsule, hoverAnimation, activeAnimation, className]);
 
-    // 渲染按钮内容
     const renderContent = () => (<>
-      {icon && <div className='land-button-icon'>{icon}</div>}
+      {icon && <div className={`${prefixCls}__icon`}>{icon}</div>}
       {(!isIconOnly && (text || subText)) && (
-        <div className='land-button-mask-content-wrapper'>
-          <span className='land-button-content-text'>{text}</span>
-          {subText && <span className="subText">{subText}</span>}
-          {(hoverBold || type === 'transparent') && <div className='land-button-mask-content'>
-            <span className='land-button-mask-content-text'>{text}</span>
-            {subText && <span className="subText">{subText}</span>}
+        <div className={`${prefixCls}__content-wrapper`}>
+          <span className={`${prefixCls}__text`}>{text}</span>
+          {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
+          {(hoverBold || variant === 'transparent') && <div className={`${prefixCls}__mask-content`}>
+            <span className={`${prefixCls}__mask-text`}>{text}</span>
+            {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
           </div>}
         </div>
       )}
@@ -80,20 +72,19 @@ const Button: React.FC<ButtonProps> & {
     </>
     );
 
-    // 按钮基础属性
     const buttonProps = {
       style,
       className: buttonClassName,
       disabled,
-      onClick: (e: React.MouseEvent) => {
+      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
         if (disabled) return;
         onClick?.(e);
       },
-      ...nativeEvent, // 原生事件
+      ...htmlProps,
     };
 
     return (
-      <PopOver theme='dark' content={tip} {...tipProps} >
+      <PopOver theme='dark' content={tip} {...popoverProps} >
       <button
         {...buttonProps}
       >

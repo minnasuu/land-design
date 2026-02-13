@@ -159,7 +159,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
           />
         </div>
 
-        <Divider direction="row" style={{ width: '100%', height: '1px' }} className="flex-shrink-0" />
+        <Divider direction="horizontal" style={{ width: '100%', height: '1px' }} className="flex-shrink-0" />
 
         {/* CSS和JS代码 */}
         <Flex className="w-full" gap={0}>
@@ -180,7 +180,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
               style={{ padding: '16px 12px 16px 0px' }}
             />
           </div>
-          <Divider direction="column" style={{ height: '100%', width: '1px' }} className="flex-shrink-0" />
+          <Divider direction="vertical" style={{ height: '100%', width: '1px' }} className="flex-shrink-0" />
           <div className="flex-1" style={{ width: '1%' }}>
             <Flex justify="space-between" align="center" className="pl-16 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
               <div>JavaScript</div>

@@ -12,7 +12,7 @@ const ButtonChange: React.FC<{ defaultSide: string | React.ReactNode; hoverSide:
   return (
     <Button
       {...restProps}
-      nativeEvent={{
+      htmlProps={{
         onMouseEnter: () => setIsHover(true),
         onMouseLeave: () => setIsHover(false),
       }}

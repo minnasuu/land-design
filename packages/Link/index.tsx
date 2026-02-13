@@ -27,9 +27,9 @@ const Link: React.FC<LinkProps> & {
   disabled = false,
   underline = 'hover',
   tip,
-  tipProps,
-  prefixIcon,
-  suffixIcon,
+  popoverProps,
+  startIcon,
+  endIcon,
   children,
   onClick,
   style,
@@ -79,7 +79,7 @@ const Link: React.FC<LinkProps> & {
     onClick?.(e);
   };
 
-  const renderIcon = (icon: boolean | React.ReactNode, position: 'prefix' | 'suffix') => {
+  const renderIcon = (icon: boolean | React.ReactNode, position: 'start' | 'end') => {
     if (!icon) return null;
     const iconContent =
       typeof icon === 'boolean'
@@ -99,9 +99,9 @@ const Link: React.FC<LinkProps> & {
       onClick={handleClick}
       aria-disabled={disabled}
     >
-      {renderIcon(prefixIcon, 'prefix')}
+      {renderIcon(startIcon, 'start')}
       {children}
-      {renderIcon(suffixIcon, 'suffix')}
+      {renderIcon(endIcon, 'end')}
     </a>
   );
 
@@ -114,7 +114,7 @@ const Link: React.FC<LinkProps> & {
   );
 
   return (
-    <PopOver content={tip} {...tipProps}>
+    <PopOver content={tip} {...popoverProps}>
       {wrappedNode}
     </PopOver>
   );

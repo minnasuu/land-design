@@ -121,9 +121,9 @@ const Steps: React.FC<StepsProps> = ({
         <Fragment key={item.key}>
           {useDivider && index !== 0 && (
             <Divider
-              lineLength={dividerWidth}
+              length={dividerWidth}
               style={direction === 'horizontal' ? { marginTop: '12px' } : { marginLeft: '8px' }}
-              direction={direction === 'vertical' ? 'column' : 'row'}
+              direction={direction === 'vertical' ? 'vertical' : 'horizontal'}
             />
           )}
           <StepsItem

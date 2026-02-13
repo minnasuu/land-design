@@ -11,7 +11,7 @@ const Timeline: React.FC<TimelineProps> = ({ data, direction = "column", icon })
         data?.map((item, index) => <div key={index} className={`land-timeline-item ${direction === 'row' ? 'row' : ''}`}>
           <div className="land-timeline-indicator-wrapper">
             {item.icon || icon || <div className="land-timeline-indicator"></div>}
-            {index !== data?.length - 1 && <Divider direction={direction} />}
+            {index !== data?.length - 1 && <Divider direction={direction === 'row' ? 'horizontal' : 'vertical'} />}
           </div>
           <div className="land-timeline-content">
             {item.title && <div className="land-timeline-title">{item.title}</div>}

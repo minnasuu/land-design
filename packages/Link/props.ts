@@ -1,4 +1,4 @@
-import React, { MouseEvent, CSSProperties } from 'react';
+import { CSSProperties, MouseEvent, ReactNode } from 'react';
 import { PopOverProps } from '../PopOver/props';
 
 // ==================== 基础类型定义 ====================
@@ -6,21 +6,19 @@ import { PopOverProps } from '../PopOver/props';
 /** 链接状态 */
 export type LinkStatus = 'default' | 'primary' | 'success' | 'danger' | 'warning';
 
-/** 链接目标 */
+/** 链接打开方式 */
 export type LinkTarget = '_self' | '_blank' | '_parent' | '_top';
 
 /** 链接尺寸 */
-export type LinkSize =  'small' | 'default' | 'large';
+export type LinkSize = 'small' | 'default' | 'large';
 
 /** 下划线模式 */
 export type LinkUnderline = 'none' | 'always' | 'hover';
 
 // ==================== 属性接口定义 ====================
 
-/**
- * Link 基础属性
- */
-export interface LinkBaseProps {
+/** Link 组件属性 */
+export interface LinkProps {
   /** 链接地址 */
   href?: string;
   /**
@@ -28,18 +26,6 @@ export interface LinkBaseProps {
    * @default '_self'
    */
   target?: LinkTarget;
-  /** 锚点 ID，点击后平滑滚动到对应元素 */
-  anchor?: string;
-  /** 是否禁用 */
-  disabled?: boolean;
-  /** 子元素 */
-  children?: React.ReactNode;
-}
-
-/**
- * Link 样式属性
- */
-export interface LinkStyleProps {
   /**
    * 链接状态
    * @default 'default'
@@ -52,66 +38,41 @@ export interface LinkStyleProps {
   size?: LinkSize;
   /**
    * 下划线模式
-   * - 'none': 不显示下划线
-   * - 'always': 始终显示下划线
-   * - 'hover': 悬停时显示下划线
    * @default 'hover'
    */
   underline?: LinkUnderline;
-  /** 自定义样式 */
-  style?: CSSProperties;
-  /** 自定义类名 */
-  className?: string;
-}
-
-/**
- * Link 图标属性
- */
-export interface LinkIconProps {
+  /** 锚点 ID，点击后平滑滚动到对应元素 */
+  anchor?: string;
+  /** 是否禁用 */
+  disabled?: boolean;
   /**
-   * 前缀图标
-   * true 时根据 target 自动显示内/外链图标，或传入自定义 ReactNode
+   * 起始图标，true 时根据 target 自动显示内/外链图标
    */
-  prefixIcon?: boolean | React.ReactNode;
+  startIcon?: boolean | ReactNode;
   /**
-   * 后缀图标
-   * true 时根据 target 自动显示内/外链图标，或传入自定义 ReactNode
+   * 末尾图标，true 时根据 target 自动显示内/外链图标
    */
-  suffixIcon?: boolean | React.ReactNode;
-}
-
-/**
- * Link 气泡属性
- */
-export interface LinkTipProps {
-  /** 气泡内容 */
-  tip?: React.ReactNode | string;
-  /** 气泡配置，透传 PopOver 属性 */
-  tipProps?: PopOverProps;
-}
-
-/**
- * Link 事件属性
- */
-export interface LinkEventProps {
+  endIcon?: boolean | ReactNode;
+  /** 气泡提示内容 */
+  tip?: ReactNode | string;
+  /** 气泡提示配置，透传 PopOver 属性 */
+  popoverProps?: PopOverProps;
   /** 点击事件 */
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
+  /** 子元素 */
+  children?: ReactNode;
+  /** 自定义类名 */
+  className?: string;
+  /** 自定义样式 */
+  style?: CSSProperties;
 }
 
-/**
- * Link 组件完整属性
- */
-export type LinkProps = LinkBaseProps &
-  LinkStyleProps &
-  LinkIconProps &
-  LinkTipProps &
-  LinkEventProps;
-
-/**
- * LinkWave 组件属性
- */
+/** LinkWave 组件属性 */
 export interface LinkWaveProps extends LinkProps {
-  /** 是否启用波浪动画 */
+  /**
+   * 是否启用波浪动画
+   * @default true
+   */
   animation?: boolean;
   /** 是否启用 hover 直线→波浪变换效果 */
   transform?: boolean;

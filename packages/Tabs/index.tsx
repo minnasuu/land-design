@@ -25,9 +25,9 @@ function Tabs({
         <Fragment key={item.key}>
           {useDivider && index !== 0 && (
             <Divider
-              direction="column"
-              gap={0}
-              lineLength="14px"
+              direction="vertical"
+              spacing={0}
+              length="14px"
               className={`land-tabs-divider ${checked !== item.key && checked !== (data[index - 1]?.key as string)
                 ? ""
                 : "hidden"

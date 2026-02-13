@@ -135,13 +135,13 @@ const Dialog: React.FC<DialogProps> = ({
                 ((cancelLabel || submitLabel || onCancel || onSubmit) && (
                   <div className="land-dialog-footer-btn">
                     {onCancel && (
-                      <Button type="fill" status="default" onClick={onCancel} {...cancelButtonProps}>
+                      <Button variant="fill" status="default" onClick={onCancel} {...cancelButtonProps}>
                         {cancelLabel}
                       </Button>
                     )}
                     {onSubmit && (
                       <Button
-                        type="background"
+                        variant="background"
                         status="primary"
                         onClick={onSubmit}
                         disabled={submitDisabled}

@@ -1,38 +1,61 @@
-import React, { CSSProperties } from "react";
-import { DividerProps } from "./props";
-import "./index.scss";
+import React, { useMemo } from 'react';
+import { DividerProps } from './props';
+import './index.scss';
+
+const prefixCls = 'land-divider';
 
 const Divider: React.FC<DividerProps> = ({
-  direction = "row",
-  lineLength = "100%",
-  gap = 0,
-  type = "solid",
+  direction = 'horizontal',
+  variant = 'solid',
+  align = 'center',
   content,
-  align = "center",
+  length = '100%',
+  spacing = 0,
+  dashLength = 10,
+  dashGap = 5,
+  className = '',
   style,
-  className = "",
-  dashedGap = 5,
-  dashedLength = 10,
 }) => {
-  return (
-    <div
-      className={`land-divider ${direction} ${type} ${content ? "width-content" : ""} ${align} ${className}`}
-      style={{
-        width: direction === "row" ? `${lineLength}` : "1px",
-        height: direction === "column" ? `${lineLength}` : "1px",
-        margin: direction === "row" ? `${gap}px 0` : `0 ${gap}px`,
-        "--land-divider-dashed-gap": `${dashedGap}px`,
-        "--land-divider-dashed-length": `${dashedLength}px`,
+  const isVertical = direction === 'vertical';
+  const hasContent = content != null;
+
+  const dividerClassName = useMemo(
+    () =>
+      [
+        prefixCls,
+        `${prefixCls}--${direction}`,
+        `${prefixCls}--${variant}`,
+        hasContent && `${prefixCls}--with-content`,
+        hasContent && `${prefixCls}--align-${align}`,
+        className,
+      ]
+        .filter(Boolean)
+        .join(' '),
+    [direction, variant, hasContent, align, className],
+  );
+
+  const cssVars = useMemo(
+    () =>
+      ({
+        '--land-divider-length': length,
+        '--land-divider-spacing': `${spacing}px`,
+        '--land-divider-dash-length': `${dashLength}px`,
+        '--land-divider-dash-gap': `${dashGap}px`,
+        ...(isVertical
+          ? { height: length, margin: `0 ${spacing}px` }
+          : { width: length, margin: `${spacing}px 0` }),
         ...style,
-      } as CSSProperties}
-    >
-      <div className="land-divider-line"></div>
-      {content && (
+      }) as React.CSSProperties,
+    [length, spacing, dashLength, dashGap, isVertical, style],
+  );
+
+  return (
+    <div className={dividerClassName} style={cssVars}>
+      <div className={`${prefixCls}__line`} />
+      {hasContent && (
         <>
-          <div className="land-divider-content">
-            {content}
-          </div>
-          <div className="land-divider-line land-divider-line-right"></div>
+          <div className={`${prefixCls}__content`}>{content}</div>
+          <div className={`${prefixCls}__line`} />
         </>
       )}
     </div>
@@ -40,3 +63,4 @@ const Divider: React.FC<DividerProps> = ({
 };
 
 export default Divider;
+export * from './props';
