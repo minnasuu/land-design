@@ -1,61 +1,87 @@
-.land-breadCrumb{
+.land-bread-crumb {
+  --land-bread-crumb-mask-width: 32px;
+  --land-bread-crumb-item-font-size: var(--font-content-m);
+  --land-bread-crumb-item-color: var(--color-text-secondary);
+  --land-bread-crumb-item-hover-color: var(--color-text-primary);
+  --land-bread-crumb-item-active-color: var(--color-text-primary);
+  --land-bread-crumb-arrow-margin: 4px;
+  --land-bread-crumb-arrow-color: var(--color-text-tertiary);
+
   position: relative;
-  .land-breadCrumb-container{
+
+  // ─── 滚动容器 ───
+  &__container {
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
     overflow-x: auto;
     scrollbar-width: none;
-    &::-webkit-scrollbar{
+
+    &::-webkit-scrollbar {
       display: none;
     }
   }
-  .land-breadCrumb-prefixMask,
-  .land-breadCrumb-suffixMask{
+
+  // ─── 溢出遮罩 ───
+  &__mask {
     position: absolute;
     top: 0;
     height: 100%;
-    width: var(--land-breadCrumb-mask-width, 32px);
+    width: var(--land-bread-crumb-mask-width);
     z-index: 1;
     pointer-events: none;
-    transition: opacity var(--transition-s) linear;  
-    &.hidden{
+    transition: opacity var(--transition-s) linear;
+
+    &--start {
+      left: 0;
+      background: linear-gradient(to right, var(--color-bg-primary), rgba(255, 255, 255, 0));
+    }
+
+    &--end {
+      right: 0;
+      background: linear-gradient(to left, var(--color-bg-primary), rgba(255, 255, 255, 0));
+    }
+
+    &--hidden {
       opacity: 0;
     }
-  } 
-  .land-breadCrumb-prefixMask{
-    left: 0;
-    background: var(--land-breadCrumb-prefixMask-background-left, linear-gradient(to right, var(--color-bg-primary), rgba(255,255,255,0)));
   }
-  .land-breadCrumb-suffixMask{
-    right: 0;
-    background: var(--land-breadCrumb-suffixMask-background-right, linear-gradient(to left, var(--color-bg-primary), rgba(255,255,255,0)));
-  }
-  .land-breadCrumb-item{
+
+  // ─── 面包屑项 ───
+  &__item {
     position: relative;
     display: flex;
     align-items: center;
-    &.active{
-      .land-breadcrumb-label{
-        color: var(--land-breadCrumb-item-active-color, var(--color-text-primary));
+
+    &--active {
+      .land-bread-crumb__label {
+        color: var(--land-bread-crumb-item-active-color);
       }
     }
-    .land-breadcrumb-label{
-      font-size: var(--land-breadCrumb-item-font-size, var(--font-content-m));
-      color: var(--land-breadCrumb-item-color, var(--color-text-secondary));
-      white-space: nowrap;
+  }
+
+  // ─── 标签文字 ───
+  &__label {
+    font-size: var(--land-bread-crumb-item-font-size);
+    color: var(--land-bread-crumb-item-color);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--transition-s) linear;
+
+    &:hover {
+      color: var(--land-bread-crumb-item-hover-color);
+    }
+
+    &--ellipsis {
       text-overflow: ellipsis;
       overflow: hidden;
-      cursor: pointer;
-      transition: all var(--transition-s) linear;
-      &:hover{
-        color: var(--land-breadCrumb-item-hover-color, var(--color-text-primary));
-      }
     }
-    .land-breadCrumb-item-arrow{
-      margin: 0 var(--land-breadCrumb-item-arrow-margin, 4px);
-      color: var(--land-breadCrumb-item-arrow-color, var(--color-text-tertiary));
-      transform: rotate(-90deg);
-    }
-  }  
+  }
+
+  // ─── 箭头分隔符 ───
+  &__arrow {
+    margin: 0 var(--land-bread-crumb-arrow-margin);
+    color: var(--land-bread-crumb-arrow-color);
+    transform: rotate(-90deg);
+  }
 }

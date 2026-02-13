@@ -20,7 +20,7 @@ export { default as LandAudio } from "./Audio";
 export type { BadgeProps } from "./Badge/props";
 export { default as LandBadge } from "./Badge";
 
-export type { BreadCrumbProps } from "./BreadCrumb/props";
+export type { BreadCrumbProps, BreadCrumbItem } from "./BreadCrumb/props";
 export { default as LandBreadCrumb } from "./BreadCrumb";
 
 export type { ButtonProps } from "./Button/props";
@@ -218,6 +218,7 @@ export { default as LandSwiperMediaPreview } from "../pro-packages/SwiperMediaPr
 export { default as useFormateTime } from "./hooks/useFormateTime";
 export { default as useClickOutside } from "./hooks/useClickOutside";
 export { default as useGetHighlightStr } from "./hooks/useGetHighlightStr";
+export { default as useTextOverflow } from "./hooks/useTextOverflow";
 
 // 导入全局样式
 import './styles/index.scss';

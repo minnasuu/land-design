@@ -1,50 +1,62 @@
-import React, { useEffect, useRef, useState } from "react";
-import BreadCrumbItem from "./BreadCrumbItem";
-import { BreadCrumbProps, BreadCrumbItemType } from "./props";
-import './index.scss'
+import { useEffect, useRef, useState, useMemo } from 'react';
+import BreadCrumbItem from './BreadCrumbItem';
+import { BreadCrumbProps } from './props';
+import './index.scss';
+
+const prefixCls = 'land-bread-crumb';
 
 const BreadCrumb: React.FC<BreadCrumbProps> = ({
-  data = [],
+  items = [],
   current,
   showMask = false,
   hoverPreview = false,
   onChange,
   style,
-  className = ''
+  className,
 }) => {
-  const breadCrumbContainerRef = useRef<HTMLDivElement>(null);
-  const [isLeft, setIsLeft] = useState<boolean>(false);
-  const [isRight, setIsRight] = useState<boolean>(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isLeft, setIsLeft] = useState(false);
+  const [isRight, setIsRight] = useState(true);
+
   useEffect(() => {
-    if (!showMask || !breadCrumbContainerRef.current) return;
+    if (!showMask || !containerRef.current) return;
+    const el = containerRef.current;
 
     const handleScroll = () => {
-      if (breadCrumbContainerRef.current) {
-        setIsLeft(breadCrumbContainerRef.current.scrollLeft <= breadCrumbContainerRef.current.clientWidth - breadCrumbContainerRef.current.scrollWidth);
-        setIsRight(breadCrumbContainerRef.current.scrollLeft >= 0);
-      }
+      setIsLeft(el.scrollLeft <= el.clientWidth - el.scrollWidth);
+      setIsRight(el.scrollLeft >= 0);
     };
 
-    breadCrumbContainerRef.current.addEventListener('scroll', handleScroll);
-    return () => {
-      breadCrumbContainerRef.current?.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  return <div className={`land-breadCrumb  ${className}`} style={style}>
-    {showMask && <div className={`land-breadCrumb-prefixMask ${isLeft ? 'hidden' : ''}`}></div>}
-    <div ref={breadCrumbContainerRef} className="land-breadCrumb-container">
-      {Array.from(data)?.reverse().map((item, index) => <BreadCrumbItem
-        key={item.value}
-        index={index}
-        item={item}
-        active={current === item.value}
-        hoverPreview={hoverPreview}
-        onChange={() => onChange?.(item)}
-      />)}
+    el.addEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [showMask]);
+
+  const rootClassName = useMemo(() => {
+    return [prefixCls, className].filter(Boolean).join(' ');
+  }, [className]);
+
+  return (
+    <div className={rootClassName} style={style}>
+      {showMask && (
+        <div className={`${prefixCls}__mask ${prefixCls}__mask--start${isLeft ? ` ${prefixCls}__mask--hidden` : ''}`} />
+      )}
+      <div ref={containerRef} className={`${prefixCls}__container`}>
+        {[...items].reverse().map((item, index) => (
+          <BreadCrumbItem
+            key={item.value}
+            index={index}
+            item={item}
+            active={current === item.value}
+            hoverPreview={hoverPreview}
+            onChange={() => onChange?.(item)}
+          />
+        ))}
+      </div>
+      {showMask && (
+        <div className={`${prefixCls}__mask ${prefixCls}__mask--end${isRight ? ` ${prefixCls}__mask--hidden` : ''}`} />
+      )}
     </div>
-    {showMask && <div className={`land-breadCrumb-suffixMask ${isRight ? 'hidden' : ''}`}></div>}
-  </div>;
+  );
 };
-
 
 export default BreadCrumb;

@@ -1,31 +1,33 @@
-import React, { useState } from 'react'
-import BreadCrumb from ".";
+import { useState } from 'react';
+import BreadCrumb from '.';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import Link from '../Link';
 
-// API 文档配置
+const BreadCrumbItemLink = (
+  <Link anchor="BreadCrumbItem-API">BreadCrumbItem</Link>
+);
+
 const breadCrumbProps = [
-  { name: 'data', type: <><Link anchor='BreadCrumbItemType-API'>BreadCrumbItemType</Link>[]</>, desc: '面包屑数据，包含所有面包屑项的配置信息' },
-  { name: 'current', type: 'string', desc: '当前激活项的值' },
-  { name: 'showMask', type: 'boolean', desc: '是否显示遮罩效果', default: 'false' },
-  { name: 'hoverPreview', type: 'boolean', desc: '省略时hover显示全部内容', default: 'false' },
-  { name: 'onChange', type: <>(item: <Link anchor='BreadCrumbItemType-API'>BreadCrumbItemType</Link>){' =>'} void</>, desc: '变化回调函数' },
+  { name: 'items', type: <>{BreadCrumbItemLink}[]</>, desc: '面包屑数据' },
+  { name: 'current', type: 'string', desc: '当前激活项的 value' },
+  { name: 'showMask', type: 'boolean', desc: '是否显示溢出遮罩', default: 'false' },
+  { name: 'hoverPreview', type: 'boolean', desc: '省略时 hover 显示完整内容', default: 'false' },
+  { name: 'onChange', type: <>(item: {BreadCrumbItemLink}){' =>'} void</>, desc: '面包屑项点击回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
-  { name: 'children', type: 'ReactNode', desc: '子元素' },
 ];
 
-const breadCrumbTypes = [
+const itemTypes = [
   {
-    name: "BreadCrumbItemType",
+    name: 'BreadCrumbItem',
     data: [
-      { name: "key", type: "string", desc: "唯一标识" },
-      { name: "label", type: "string", desc: "内容" },
-      { name: "tip", type: "string", desc: "提示内容" },
-      { name: "maxWidth", type: "string", desc: "最大宽度" },
+      { name: 'value', type: 'string', desc: '唯一标识' },
+      { name: 'label', type: 'ReactNode', desc: '显示内容' },
+      { name: 'tip', type: 'string', desc: '提示信息' },
+      { name: 'maxWidth', type: 'number', desc: '最大宽度（px）' },
     ],
   },
 ];
@@ -51,10 +53,10 @@ export default function BreadCrumbExample() {
           >
             <CodeOperationContainer>
               <BreadCrumb
-                data={[
-                  { value: "1", label: '页面1' },
-                  { value: "2", label: '页面页面页面页面1-1' },
-                  { value: "3", label: '页面页面页面页面1-1-2' },
+                items={[
+                  { value: '1', label: '页面1' },
+                  { value: '2', label: '页面页面页面页面1-1' },
+                  { value: '3', label: '页面页面页面页面1-1-2' },
                 ]}
                 current="3"
               />
@@ -69,10 +71,10 @@ export default function BreadCrumbExample() {
           >
             <CodeOperationContainer>
               <BreadCrumb
-                data={[
-                  { value: "1", label: '页面1' },
-                  { value: "2", label: '页面页面页面页面1-1' },
-                  { value: "3", label: '页面页面页面页面1-1-2' },
+                items={[
+                  { value: '1', label: '页面1' },
+                  { value: '2', label: '页面页面页面页面1-1' },
+                  { value: '3', label: '页面页面页面页面1-1-2' },
                 ]}
                 current="3"
                 showMask
@@ -89,10 +91,10 @@ export default function BreadCrumbExample() {
           >
             <CodeOperationContainer>
               <BreadCrumb
-                data={[
-                  { value: "1", label: '页面1' },
-                  { value: "2", label: '页面页面页面页面1-1' },
-                  { value: "3", label: '页面页面页面页面1-1-2', maxWidth: 100 },
+                items={[
+                  { value: '1', label: '页面1' },
+                  { value: '2', label: '页面页面页面页面1-1' },
+                  { value: '3', label: '页面页面页面页面1-1-2', maxWidth: 100 },
                 ]}
                 current="3"
               />
@@ -107,10 +109,10 @@ export default function BreadCrumbExample() {
           >
             <CodeOperationContainer>
               <BreadCrumb
-                data={[
-                  { value: "1", label: '页面1' },
-                  { value: "2", label: '页面页面页面页面1-1' },
-                  { value: "3", label: '页面页面页面页面1-1-2', maxWidth: 100 },
+                items={[
+                  { value: '1', label: '页面1' },
+                  { value: '2', label: '页面页面页面页面1-1' },
+                  { value: '3', label: '页面页面页面页面1-1-2', maxWidth: 100 },
                 ]}
                 current="3"
                 hoverPreview
@@ -126,10 +128,10 @@ export default function BreadCrumbExample() {
           >
             <CodeOperationContainer>
               <BreadCrumb
-                data={[
-                  { value: "1", label: '页面1', tip: '页面1的提示内容' },
-                  { value: "2", label: '页面页面页面页面1-1', tip: '页面页面页面页面1-1的提示内容' },
-                  { value: "3", label: '页面页面页面页面1-1-2', tip: '页面页面页面页面1-1-2的提示内容' },
+                items={[
+                  { value: '1', label: '页面1', tip: '页面1的提示内容' },
+                  { value: '2', label: '页面页面页面页面1-1', tip: '页面页面页面页面1-1的提示内容' },
+                  { value: '3', label: '页面页面页面页面1-1-2', tip: '页面页面页面页面1-1-2的提示内容' },
                 ]}
                 current="3"
               />
@@ -141,12 +143,14 @@ export default function BreadCrumbExample() {
       {activeTab === 'props' && (
         <div className='flex flex-col gap-12'>
           <ComponentPropsTable props={breadCrumbProps} />
-          {breadCrumbTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
-            <h3 className='text-sm font-bold'>{i.name}</h3>
-            <ComponentPropsTable props={i.data} />
-          </div>)}
+          {itemTypes.map(i => (
+            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+              <h3 className='text-sm font-bold'>{i.name}</h3>
+              <ComponentPropsTable props={i.data} />
+            </div>
+          ))}
         </div>
       )}
     </ComponentContentLayout>
-  )
+  );
 }
