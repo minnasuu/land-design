@@ -19,7 +19,7 @@ const ComponentPreview: React.FC<Props> = ({ onClick }) => {
   return (
     <ComponentContentLayout zh='组件概览' en='Component Overview' >
       <div className="fixed bg-bg-primary z-[101]" style={{ right: 0, top: 48 }} >
-        <Anchor data={anchorData} getContainer={() => document.getElementById('components-scroller') as HTMLElement} />
+        <Anchor items={anchorData} getContainer={() => document.getElementById('components-scroller') as HTMLElement} />
       </div>
       {data?.map((item) => (
         <div key={item.id} className={'flex flex-col gap-[8px]'} id={item.id}>

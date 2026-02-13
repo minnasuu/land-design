@@ -8,7 +8,7 @@ export { default as LandAffixContainer } from "./AffixContainer";
 export type { AlertProps } from "./Alert/props";
 export { default as LandAlert } from "./Alert";
 
-export type { AnchorProps } from "./Anchor/props";
+export type { AnchorProps, AnchorItem } from "./Anchor/props";
 export { default as LandAnchor } from "./Anchor";
 
 export type { AutoContainerProps } from "./AutoContainer/props";

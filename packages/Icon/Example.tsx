@@ -106,7 +106,7 @@ export default function IconExample() {
         className="fixed bg-bg-primary z-[101]"
         style={{ right: 0, top: 48 }}
       >
-        <Anchor data={anchorData} />
+        <Anchor items={anchorData} />
       </div>
       {activeTab === 'examples' && <Flex gap={24} column className="w-full">
         <Flex gap={12} align="center">
