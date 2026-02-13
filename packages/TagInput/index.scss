@@ -30,7 +30,7 @@
     &:focus-within,
     &:hover{
       background-color: var(--land-tag-input-hover-bg-color, var(--color-bg-secondary));
-      .land-input-clear-icon{
+      .land-input__clear{
         opacity: 1;
         pointer-events: auto;
       }
@@ -40,7 +40,7 @@
       height: 28px;
       min-width: 80px;
     }
-    .land-input-clear-icon{
+    .land-input__clear{
       width: var(--land-tag-input-clear-icon-size, 16px);
       height: var(--land-tag-input-clear-icon-size, 16px);
       display: flex;

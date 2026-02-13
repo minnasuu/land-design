@@ -1,92 +1,111 @@
-.land-input{
+.land-input {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--land-input-gap, var(--gap-m));
   padding: var(--land-input-padding, 0 var(--gap-m));
   height: var(--land-input-height, 36px);
-  border-radius: var(--land-input-border-radius, var(--radius-m));
+  border-radius: var(--land-input-radius, var(--radius-m));
   transition: background-color var(--transition-s) linear;
   box-sizing: border-box;
-  &.transparent{
-    padding: 0;
-    border-radius: 0px;
-    &.land-input{
-      background-color: transparent;
-    }
-  }
-  &.border{
+
+  // ==================== Type ====================
+  &--border {
     border: 1px solid var(--land-input-border-color, var(--color-border-primary));
-    &:hover:not(.disabled){
-    background-color: var(--land-input-hover-bg-color, var(--color-bg-secondary));
+
+    &:hover:not(.land-input--disabled) {
+      background-color: var(--land-input-hover-bg, var(--color-bg-secondary));
     }
-    &:active:not(.disabled){
-      background-color: var(--land-input-active-bg-color, var(--color-bg-secondary));
-    }
-  }
-  &.background{
-    background-color: var(--land-input-bg-color, var(--color-bg-secondary));
-    &:hover:not(.disabled){
-    background-color: var(--land-input-hover-bg-color, var(--color-bg-secondary));
-    }
-    &:active:not(.disabled){
-      background-color: var(--land-input-active-bg-color, var(--color-bg-secondary));
+
+    &:active:not(.land-input--disabled) {
+      background-color: var(--land-input-active-bg, var(--color-bg-secondary));
     }
   }
-  &.text-center{
-    input{
+
+  &--background {
+    background-color: var(--land-input-bg, var(--color-bg-secondary));
+
+    &:hover:not(.land-input--disabled) {
+      background-color: var(--land-input-hover-bg, var(--color-bg-secondary));
+    }
+
+    &:active:not(.land-input--disabled) {
+      background-color: var(--land-input-active-bg, var(--color-bg-secondary));
+    }
+  }
+
+  &--transparent {
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  // ==================== Align ====================
+  &--align-left input {
+    text-align: left;
+  }
+
+  &--align-center {
+    input {
       text-align: center;
     }
-    .input-prefix-content,
-    .input-suffix-content{
+
+    .land-input__prefix-ghost,
+    .land-input__suffix-ghost {
       left: 50%;
       transform: translateX(-50%);
     }
   }
-  &.text-right{
-    input{ 
+
+  &--align-right {
+    input {
       text-align: right;
     }
-    .input-prefix-content,
-    .input-suffix-content{
+
+    .land-input__prefix-ghost,
+    .land-input__suffix-ghost {
       left: auto;
       right: 0;
     }
   }
-  &.text-left input{ 
-    text-align: left;
-}
-  &.disabled{
+
+  // ==================== Disabled ====================
+  &--disabled {
     opacity: var(--land-input-disabled-opacity, var(--opacity-disabled));
-    background-color: var(--land-input-disabled-bg-color, var(--color-bg-secondary));
+    background-color: var(--land-input-disabled-bg, var(--color-bg-secondary));
     cursor: not-allowed;
     pointer-events: none;
-    input{
+
+    input {
       cursor: not-allowed;
     }
   }
-  
-  .land-input-content{
+
+  // ==================== Body ====================
+  &__body {
     position: relative;
     flex: 1;
+    height: 100%;
     display: flex;
     align-items: center;
   }
-  
+
+  // ==================== Native Input ====================
   input {
-    padding: 0;
-    // width: 100%;
     flex: 1;
+    width: 1%;
+    flex-shrink: 0;
+    padding: 0;
     height: 100%;
-    background-color: transparent;
-    appearance: none;
-    -moz-appearance: none;
     border: none;
     outline: none;
-    font-size: 14px;
+    appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+    font-size: var(--land-input-font-size, var(--font-content-m));
     color: var(--land-input-color, var(--color-text-primary));
     caret-color: var(--land-input-caret-color, var(--color-primary));
-    flex-shrink: 0;
+
     &:focus-within,
     &:focus,
     &:focus-visible,
@@ -95,108 +114,145 @@
     &:-webkit-autofill {
       border: none;
       box-shadow: none;
+      -webkit-box-shadow: none;
       background-color: transparent;
-      box-shadow: none;
-      -webkit-box-shadow:none;
     }
+
     &::selection {
-      background-color: var(--land-input-selection-bg-color, var(--color-primary));
+      background-color: var(--land-input-selection-bg, var(--color-primary));
     }
-    &::placeholder{
+
+    &::placeholder {
       color: var(--land-input-placeholder-color, var(--color-text-secondary));
     }
   }
-  .land-input-clear-icon{
-    width: var(--land-input-clear-icon-size, 16px);
-    height: var(--land-input-clear-icon-size, 16px);
-    flex-shrink: 0;
-    opacity: 0;
-    transition: opacity 0.2s linear;
-    pointer-events: none;
-    color: var(--land-input-clear-icon-color, var(--color-text-secondary));
-    transition: color var(--transition-s) linear;
-    svg{
-      width: var(--land-input-clear-icon-size, 16px);
-      height: var(--land-input-clear-icon-size, 16px);
-    }
-    &:hover{
-      color: var(--land-input-clear-icon-hover-color, var(--color-text-primary));
-    }
-    &.show{
-      opacity: 1;
-      pointer-events:auto;
-    }
-  }
-  .input-beforeContent{
+
+  // ==================== Before / After ====================
+  &__before,
+  &__after {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
-  .input-prefix-content,
-  .input-suffix-content{
+
+  // ==================== Prefix / Suffix Ghost ====================
+  &__prefix-ghost,
+  &__suffix-ghost {
+    position: absolute;
     left: 0;
     top: 0;
-    position: absolute;
     width: fit-content;
     max-width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: var(--land-input-suffix-content-font-size, var(--font-content-m));
+    font-size: var(--land-input-affix-font-size, var(--font-content-m));
     white-space: nowrap;
     pointer-events: none;
-    .suffix-value,
-    .prefix-value {
-      color: transparent;
+  }
+
+  &__affix-value {
+    color: transparent;
+  }
+
+  &__affix-label {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: var(--land-input-affix-label-font-size, var(--font-content-s));
+    color: var(--land-input-affix-label-color, var(--color-text-secondary));
+    pointer-events: none;
+    user-select: none;
+
+    &--suffix {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translate(4px, -50%);
+      color: var(--land-input-affix-suffix-color, var(--color-text-secondary));
     }
   }
-  .input-prefix{
+
+  &__affix-spacer {
     height: 100%;
     display: flex;
     align-items: center;
-    font-size: var(--land-input-suffix-font-size, var(--font-content-s));
-    color: var(--color-text-secondary);
-    pointer-events: none;
-    user-select: none;
-  }
-  .input-suffix{
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translate(4px,-50%);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    font-size: var(--land-input-suffix-font-size, var(--font-content-s));
-    color: var(--color-gray-8);
-    pointer-events: none;
-    user-select: none;
-  }
-  .input-prefix-empty{
-    margin-right: 4px;
-  }
-  .input-prefix-empty,
-  .input-suffix-empty{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    font-size: var(--land-input-suffix-font-size, var(--font-content-s));
-    color: var(--color-gray-8);
+    font-size: var(--land-input-affix-label-font-size, var(--font-content-s));
     pointer-events: none;
     user-select: none;
     opacity: 0;
     flex-shrink: 0;
-  }
-  .input-placeholder{
-    padding-left: var(--land-input-placeholder-padding-left, 4px);
-    font-size: var(--land-input-placeholder-font-size, var(--font-content-m));
-  }
-  &:hover{
-    .land-input-clear-icon:not(.hide){
-      opacity: 1;
-      pointer-events: auto;
+
+    &:not(&--suffix) {
+      margin-right: 4px;
     }
+  }
+
+  // ==================== Auto Width ====================
+  &--auto-width {
+    width: auto;
+    display: inline-flex;
+
+    .land-input__body {
+      flex: 0 0 auto;
+      position: relative;
+    }
+
+    input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      flex: none;
+    }
+  }
+
+  &__mirror {
+    display: inline-block;
+    visibility: hidden;
+    white-space: pre;
+    min-width: 1px;
+    height: 0;
+    font-size: var(--land-input-font-size, var(--font-content-m));
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    padding-right: 1px;
+    pointer-events: none;
+  }
+
+  // ==================== Clear ====================
+  &__clear {
+    width: var(--land-input-clear-size, 16px);
+    height: var(--land-input-clear-size, 16px);
+    flex-shrink: 0;
+    opacity: 0;
+    pointer-events: none;
+    color: var(--land-input-clear-color, var(--color-text-secondary));
+    transition: opacity var(--transition-s) linear, color var(--transition-s) linear;
+    cursor: pointer;
+
+    svg {
+      width: var(--land-input-clear-size, 16px);
+      height: var(--land-input-clear-size, 16px);
+    }
+
+    &:hover {
+      color: var(--land-input-clear-hover-color, var(--color-text-primary));
+    }
+
+    &--active {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &:hover &__clear--active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
