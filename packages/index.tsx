@@ -17,6 +17,9 @@ export { default as LandAutoContainer } from "./AutoContainer";
 export type { AudioProps } from "./Audio";
 export { default as LandAudio } from "./Audio";
 
+export type { BackToTopProps } from "./BackToTop/props";
+export { default as LandBackToTop } from "./BackToTop";
+
 export type { BadgeProps } from "./Badge/props";
 export { default as LandBadge } from "./Badge";
 

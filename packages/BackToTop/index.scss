@@ -1,28 +1,44 @@
-.land-back-to-top{
+.land-back-to-top {
   position: absolute;
-  width: var(--land-back-to-top-width, 40px);
-  height: var(--land-back-to-top-height, 40px);
   display: grid;
   place-content: center;
-  border-radius: 100%;
+  width: var(--land-back-to-top-width, 40px);
+  height: var(--land-back-to-top-height, 40px);
+  border-radius: var(--land-back-to-top-radius, 50%);
   border: 1px solid var(--land-back-to-top-border, var(--color-border-primary));
   color: var(--land-back-to-top-color, var(--color-text-primary));
-  transition: transform 0.2s linear, opacity 0.2s linear;
   background-color: var(--land-back-to-top-bg, var(--color-bg-primary));
-  box-shadow: var(--land-back-to-top-box-shadow, var(--box-shadow-s));
-  cursor: pointer;
+  box-shadow: var(--land-back-to-top-shadow, var(--shadow-s));
   z-index: var(--land-back-to-top-z-index, var(--z-index-1000));
+  cursor: pointer;
   flex-shrink: 0;
-  .land-back-to-top-icon{
-    transform: scaleY(-1);
-  }
-  &:active{
-    transform: scale(0.9);
-  }
-  &.fixed{
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-s) ease,
+    transform var(--transition-s) ease;
+
+  &--fixed {
     position: fixed;
   }
-  &.hide{
-    opacity: 0;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &--disabled {
+    opacity: var(--land-back-to-top-disabled-opacity, var(--opacity-disabled));
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  // ==================== Icon ====================
+  &__icon {
+    transform: scaleY(-1);
   }
 }
