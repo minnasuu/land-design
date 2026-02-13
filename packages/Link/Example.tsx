@@ -9,7 +9,7 @@ import LinkVariants from './Variants';
 
 // Link 状态和尺寸定义
 const linkStatuses = ['default', 'primary', 'warning', 'danger', 'success'];
-const linkSizes = ['mini', 'small', 'default', 'large'];
+const linkSizes = [ 'small', 'default', 'large'];
 
 // API 文档配置
 const linkProps = [
@@ -18,9 +18,8 @@ const linkProps = [
   { name: 'anchor', type: 'string', desc: '链接锚点' },
   { name: 'disabled', type: 'boolean', desc: '是否禁用链接', default: 'false' },
   { name: 'status', type: 'LinkStatus (default | primary | warning | danger | success)', desc: '链接状态', default: 'default' },
-  { name: 'size', type: 'LinkSize (mini | small | default | large)', desc: '链接尺寸', default: 'default' },
-  { name: 'underline', type: 'boolean', desc: '是否显示下划线', default: 'false' },
-  { name: 'hoverUnderline', type: 'boolean', desc: '悬停时是否显示下划线', default: 'false' },
+  { name: 'size', type: 'LinkSize (small | default | large)', desc: '链接尺寸', default: 'default' },
+  { name: 'underline', type: "LinkUnderline ('none' | 'always' | 'hover')", desc: '下划线模式', default: "'hover'" },
   { name: 'prefixIcon', type: 'boolean | ReactNode', desc: '前缀图标' },
   { name: 'suffixIcon', type: 'boolean | ReactNode', desc: '后缀图标' },
   { name: 'tip', type: 'ReactNode | string', desc: '气泡提示内容' },
@@ -104,9 +103,9 @@ export default function LinkExample() {
           >
             <CodeOperationContainer>
               <Flex gap={24} justify='center'>
-                <Link underline>显示下划线链接</Link>
-                <Link hoverUnderline>悬浮下划线链接</Link>
-                <Link hoverUnderline={false}>不显示下划线链接</Link>
+                <Link underline="always">始终下划线</Link>
+                <Link underline="hover">悬浮下划线</Link>
+                <Link underline="none">无下划线</Link>
               </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>

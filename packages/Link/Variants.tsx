@@ -15,7 +15,7 @@ export default function LinkVariants() {
             <Link.LinkWave
               key={index}
               status={statusItem as LinkStatus}
-              underline
+              underline="always"
               animation
             >
               波浪线链接
@@ -45,7 +45,7 @@ export default function LinkVariants() {
               key={index}
               status={statusItem as LinkStatus}
               animation={false}
-              underline
+              underline="always"
             >
               波浪线链接
             </Link.LinkWave>

@@ -1,34 +1,40 @@
-.land-link{
+.land-link {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   width: fit-content;
-  font-size: 14px;
   color: var(--land-link-color);
   cursor: pointer;
   text-decoration: none;
   transition: color var(--transition-s) ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  .land-link-prefix-icon,
-  .land-link-suffix-icon {
+
+  // ─── 尺寸 ───
+  &--size-small {
+    font-size: var(--font-content-s);
+  }
+
+  &--size-default {
+    font-size: var(--font-content-m);
+  }
+
+  &--size-large {
+    font-size: var(--font-content-l);
+  }
+
+  // ─── 图标 ───
+  &__icon {
     display: inline-flex;
     align-items: center;
     font-size: inherit;
   }
-  &.hoverUnderline{
-    &:hover {
-      color: var(--land-link-hover-color);
-      &::before {
-        opacity: 1;
-        background-color: var(--land-link-hover-color);
-      }
-    }
-  }
+
+  // ─── 下划线（伪元素） ───
   &::before {
     content: '';
     display: block;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 1px;
@@ -36,48 +42,93 @@
     opacity: 0;
     transition: all var(--transition-s) ease-in-out;
   }
-  &.underline::before{
+
+  // ─── 下划线模式 ───
+  &--underline-always::before {
     opacity: 1;
   }
 
+  &--underline-hover:hover {
+    color: var(--land-link-hover-color);
+
+    &::before {
+      opacity: 1;
+      background-color: var(--land-link-hover-color);
+    }
+  }
+
+  // ─── 交互状态 ───
   &:active,
   &:visited {
     color: var(--land-link-active-color);
+
     &::before {
       background-color: var(--land-link-active-color);
     }
   }
 
-  &.disabled {
-    cursor: not-allowed;
+  // ─── 禁用 ───
+  &--disabled {
     color: var(--land-link-disabled-color);
     pointer-events: none;
-    
+
     &:hover::before {
       opacity: 0;
     }
   }
 }
 
-.land-link.link-wave{
+// 禁用包裹层：承载 not-allowed 鼠标样式，不影响 PopOver hover
+.land-link-disabled-wrapper {
+  display: inline-flex;
+  cursor: not-allowed;
+}
+
+// ─── LinkWave 变体 ───
+.land-link.land-link-wave {
   position: relative;
-  &::before{
+
+  &::before {
     display: none;
   }
-  
-  &.hoverUnderline:hover .land-link-wave {
+
+  &.land-link--underline-hover:hover .land-link-wave__line {
     opacity: 1;
   }
 
-  &.underline .land-link-wave {
+  &.land-link--underline-always .land-link-wave__line {
     opacity: 1;
   }
-  &.animation .land-link-wave{
-    animation: waveFlow 1s infinite linear;
+
+  &.land-link-wave--animation .land-link-wave__line {
+    animation: landLinkWaveFlow 1s infinite linear;
   }
 }
 
-.land-link-wave{
+// Wave 变换（直线 → 波浪）
+.land-link.land-link-wave.land-link-wave--transform {
+  &.land-link--underline-always::before {
+    display: block;
+    opacity: 1;
+  }
+
+  .land-link-wave__line {
+    opacity: 0;
+  }
+
+  &:hover {
+    .land-link-wave__line {
+      opacity: 1;
+    }
+
+    &::before {
+      opacity: 0;
+    }
+  }
+}
+
+// ─── Wave 线条 ───
+.land-link-wave__line {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -85,32 +136,20 @@
   width: 100%;
   height: var(--land-link-wave-height, 20px);
   opacity: 0;
-  background: radial-gradient(circle at 10px -7px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x,
-  radial-gradient(circle at 10px 27px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x;
+  background:
+    radial-gradient(circle at 10px -7px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x,
+    radial-gradient(circle at 10px 27px, transparent 8px, var(--land-link-color) 8px, var(--land-link-color) 9px, transparent 9px) repeat-x;
   background-size: var(--land-link-wave-size, 20px) var(--land-link-wave-size, 20px);
   background-position: -10px calc(100% + 16px), 0 calc(100% - 4px);
   transition: opacity var(--transition-s) ease-in-out;
 }
-@keyframes waveFlow {
-  from { background-position-x: -10px, 0; }
-  to { background-position-x: -30px, -20px; }
-}
 
+@keyframes landLinkWaveFlow {
+  from {
+    background-position-x: -10px, 0;
+  }
 
-.land-link.link-wave.underline.transform{
-  &::before{
-    opacity: 1;
-    display: block;
-  }
-  .land-link-wave{
-    opacity: 0;
-  }
-  &:hover{
-    .land-link-wave{
-      opacity: 1;
-    }
-    &::before{
-      opacity: 0;
-    }
+  to {
+    background-position-x: -30px, -20px;
   }
 }
