@@ -1,18 +1,23 @@
-.land-affix-container{
+.land-affix-container {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  &.disabled{
+
+  // ─── 禁用 ───
+  &--disabled {
     pointer-events: none;
     cursor: not-allowed;
   }
-}
 
-.land-affix-container-item{
-  transition: opacity var(--transition-s) linear;
-  box-sizing: border-box;
-  &.hoverShow{
-    opacity: 0;
+  // ─── 图钉项 ───
+  &__item {
+    position: absolute;
+    transition: opacity var(--transition-s) linear;
+    box-sizing: border-box;
+
+    &--hover-show {
+      opacity: 0;
+    }
   }
 }

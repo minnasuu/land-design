@@ -325,38 +325,44 @@ export const NAV_COMPONENTS_DATA = [
       <AffixContainer
         className="aspect-square border border-border-primary rounded-[8px]"
         style={{ width: "60%" }}
-        rtOption={{
-          content: (
-            <div
-              className="rounded-[4px] bg-bg-secondary"
-              style={{ width: "20px", height: "20px" }}
-            ></div>
-          ),
-        }}
-        ltOption={{
-          content: (
-            <div
-              className="rounded-[4px] bg-bg-secondary"
-              style={{ width: "20px", height: "20px" }}
-            ></div>
-          ),
-        }}
-        rbOption={{
-          content: (
-            <div
-              className="rounded-[4px] bg-bg-secondary"
-              style={{ width: "20px", height: "20px" }}
-            ></div>
-          ),
-        }}
-        lbOption={{
-          content: (
-            <div
-              className="rounded-[4px] bg-bg-secondary"
-              style={{ width: "20px", height: "20px" }}
-            ></div>
-          ),
-        }}
+        items={[
+          {
+            placement: 'topEnd',
+            content: (
+              <div
+                className="rounded-[4px] bg-bg-secondary"
+                style={{ width: "20px", height: "20px" }}
+              ></div>
+            ),
+          },
+          {
+            placement: 'topStart',
+            content: (
+              <div
+                className="rounded-[4px] bg-bg-secondary"
+                style={{ width: "20px", height: "20px" }}
+              ></div>
+            ),
+          },
+          {
+            placement: 'bottomEnd',
+            content: (
+              <div
+                className="rounded-[4px] bg-bg-secondary"
+                style={{ width: "20px", height: "20px" }}
+              ></div>
+            ),
+          },
+          {
+            placement: 'bottomStart',
+            content: (
+              <div
+                className="rounded-[4px] bg-bg-secondary"
+                style={{ width: "20px", height: "20px" }}
+              ></div>
+            ),
+          },
+        ]}
       />
     ),
     especial: true,

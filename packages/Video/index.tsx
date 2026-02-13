@@ -476,7 +476,9 @@ const Video: React.FC<VideoProps> = ({
         <AffixContainer
           onClick={handlePlay}
           className="land-video-affix-container"
-          bcOption={showControls ? {
+          items={[
+            ...(showControls ? [{
+              placement: 'bottomCenter' as const,
             content: (
               <div
                 className={`land-video-controls ${showControls ? "show" : ""
@@ -763,10 +765,11 @@ const Video: React.FC<VideoProps> = ({
                 </div>
               </div>
             ),
-            gap: 0,
-            hoverShow: true,
-          } : null}
-          centerOption={{
+            offset: 0,
+            display: 'hoverShow',
+          }] : []),
+          {
+            placement: 'center',
             content:
               loss && !isInitialLoad ? (
                 <Loading size={32} color="white" strokeSize={4} />
@@ -784,8 +787,9 @@ const Video: React.FC<VideoProps> = ({
                 showCenterPlay || loss || !isPlaying ? 1 : 0,
               pointerEvents: "none",
             },
-          }}
-          lcOption={{
+          },
+          {
+            placement: 'startCenter',
             content: (
               <div className="land-video-tags-container">
                 <Icon name="arrow-double" className="back" size={28} />
@@ -793,8 +797,9 @@ const Video: React.FC<VideoProps> = ({
               </div>
             ),
             style: { opacity: showBack ? 1 : 0 },
-          }}
-          rcOption={{
+          },
+          {
+            placement: 'endCenter',
             content: (
               <div className="land-video-tags-container">
                 <Icon name="arrow-double" className="front" size={28} />
@@ -802,7 +807,8 @@ const Video: React.FC<VideoProps> = ({
               </div>
             ),
             style: { opacity: showFront ? 1 : 0 },
-          }}
+          },
+        ]}
         ></AffixContainer>
       )}
     </div>

@@ -1,6 +1,7 @@
 export type {
   AffixContainerProps,
-  AffixContainerItemProps,
+  AffixItemProps,
+  AffixPlacement,
 } from "./AffixContainer/props";
 export { default as LandAffixContainer } from "./AffixContainer";
 

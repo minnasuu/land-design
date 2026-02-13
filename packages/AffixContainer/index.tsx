@@ -1,183 +1,133 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import './index.scss'
-import { AffixContainerProps, AffixContainerItemProps } from './props';
+import './index.scss';
+import { AffixContainerProps, AffixItemProps, AffixPlacement } from './props';
+
+const prefixCls = 'land-affix-container';
+
+const PLACEMENT_CSS_MAP: Record<AffixPlacement, string> = {
+  topStart: 'top-start',
+  topEnd: 'top-end',
+  topCenter: 'top-center',
+  bottomStart: 'bottom-start',
+  bottomEnd: 'bottom-end',
+  bottomCenter: 'bottom-center',
+  startCenter: 'start-center',
+  endCenter: 'end-center',
+  center: 'center',
+  custom: 'custom',
+};
+
+const DEFAULT_OFFSET = 'var(--padding-m)';
+
+const getPosition = (placement: AffixPlacement, item: AffixItemProps) => {
+  const gap = item.offset !== undefined ? item.offset : DEFAULT_OFFSET;
+  const cssPlacement = PLACEMENT_CSS_MAP[placement];
+
+  const isStart = cssPlacement.includes('start');
+  const isEnd = cssPlacement.includes('end');
+  const isTop = cssPlacement.startsWith('top');
+  const isBottom = cssPlacement.startsWith('bottom');
+  const isHCenter = placement === 'topCenter' || placement === 'bottomCenter' || placement === 'center';
+  const isVCenter = placement === 'startCenter' || placement === 'endCenter' || placement === 'center';
+  const isCustom = placement === 'custom';
+
+  const left = isCustom ? item.left : isStart ? gap : isHCenter ? '50%' : 'auto';
+  const right = isEnd ? gap : 'auto';
+  const top = isCustom ? item.top : isTop ? gap : isVCenter ? '50%' : 'auto';
+  const bottom = isBottom ? gap : 'auto';
+
+  let transform = '';
+  if (isHCenter && isVCenter) transform = 'translate(-50%, -50%)';
+  else if (isHCenter) transform = 'translateX(-50%)';
+  else if (isVCenter) transform = 'translateY(-50%)';
+
+  return { left, right, top, bottom, transform };
+};
+
+const normalizeItems = (items?: AffixItemProps | AffixItemProps[]): AffixItemProps[] => {
+  if (!items) return [];
+  return Array.isArray(items) ? items : [items];
+};
+
 const AffixContainer: React.FC<AffixContainerProps> = ({
-  ltOption,
-  rtOption,
-  rtOption2,
-  lbOption,
-  rbOption,
-  tcOption,
-  bcOption,
-  centerOption,
-  lcOption,
-  rcOption,
-  customOption,
+  items,
   disabled,
   onClick,
   children,
-  className,
+  className = '',
   style,
-  ...restProps
+  htmlProps,
 }) => {
-  const data = useMemo(
-    () => [
-      { option: ltOption, placement: 'lt' },
-      { option: rtOption, placement: 'rt' },
-      { option: rtOption2, placement: 'rt' },
-      { option: lbOption, placement: 'lb' },
-      { option: rbOption, placement: 'rb' },
-      { option: lcOption, placement: 'lc' },
-      { option: rcOption, placement: 'rc' },
-      { option: tcOption, placement: 'tc' },
-      { option: bcOption, placement: 'bc' },
-      { option: centerOption, placement: 'center' },
-      { option: customOption, placement: 'custom' },
-    ],
-    [ltOption, rtOption, lbOption, rbOption, lcOption, rcOption, tcOption, bcOption, centerOption, customOption],
-  );
-  const [show, setShow] = useState<boolean>(false);
-  const [hide, setHide] = useState<boolean>(false);
-  const getOpacity = (option: AffixContainerItemProps) => {
-    if (option.hoverShow) {
-      return show ? 1 : 0;
-    }
-    if (option.hoverHide) {
-      return hide ? 0 : 1;
-    }
+  const itemList = useMemo(() => normalizeItems(items), [items]);
+
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    const onWheel = () => setHovered(false);
+    document.body.addEventListener('wheel', onWheel);
+    return () => document.body.removeEventListener('wheel', onWheel);
+  }, []);
+
+  const getOpacity = (item: AffixItemProps) => {
+    const mode = item.display ?? 'always';
+    if (mode === 'hoverShow') return hovered ? 1 : 0;
+    if (mode === 'hoverHide') return hovered ? 0 : 1;
     return 1;
   };
-  useEffect(() => {
-    const wheel = (e: MouseEvent) => {
-      setShow(false);
-      setHide(false);
-      e.stopPropagation();
-    }
-    document.body.addEventListener('wheel', wheel);
-    return () => {
-      document.body.removeEventListener('wheel', wheel);
-    }
-  }, []);
-  const defaultGap = 'var(--padding-m)';
-  const getLeft = (placement: string, gap: number, left?: number | string) => {
-    const newGap = gap !== undefined ? gap : defaultGap;
-    switch (placement) {
-      case 'lt':
-      case 'lb':
-      case 'lc': return newGap; break;
-      case 'rt':
-      case 'rb':
-      case 'rc': return 'auto'; break;
-      case 'tc':
-      case 'bc':
-      case 'center': return '50%'; break;
-      case 'custom': return left; break;
-      default: return 'auto'; break;
-    }
-  };
-  const getRight = (placement: string, gap: number) => {
-    const newGap = gap !== undefined ? gap : defaultGap;
-    switch (placement) {
-      case 'lt':
-      case 'lb':
-      case 'lc':
-      case 'tc':
-      case 'bc':
-      case 'center': return 'auto'; break;
-      case 'rt':
-      case 'rb':
-      case 'rc': return newGap; break;
-      default: return 'auto'; break;
-    }
-  };
-  const getTop = (placement: string, gap: number, top?: number | string) => {
-    const newGap = gap !== undefined ? gap : defaultGap;
-    switch (placement) {
-      case 'lt':
-      case 'rt':
-      case 'tc': return newGap; break;
-      case 'lb':
-      case 'rb':
-      case 'bc': return 'auto'; break;
-      case 'lc':
-      case 'rc':
-      case 'center': return '50%'; break;
-      case 'custom': return top; break;
-      default: return 'auto'; break;
-    }
-  };
-  const getBottom = (placement: string, gap: number) => {
-    const newGap = gap !== undefined ? gap : defaultGap;
-    switch (placement) {
-      case 'lt':
-      case 'rt':
-      case 'tc':
-      case 'lc':
-      case 'rc':
-      case 'center': return 'auto'; break;
-      case 'lb':
-      case 'rb':
-      case 'bc': return newGap; break;
-      default: return 'auto'; break;
-    }
-  };
-  const getTransform = (placement: string) => {
-    switch (placement) {
-      case 'lt':
-      case 'rt':
-      case 'lb':
-      case 'rb': return ''; break;
-      case 'tc':
-      case 'bc': return 'translateX(-50%)'; break;
-      case 'lc':
-      case 'rc': return 'translateY(-50%)'; break;
-      case 'center': return 'translate(-50%,-50%)'; break;
-      default: return ''; break;
-    }
-  };
+
+  const containerClassName = useMemo(() => {
+    return [
+      prefixCls,
+      disabled && `${prefixCls}--disabled`,
+      className,
+    ].filter(Boolean).join(' ');
+  }, [disabled, className]);
+
   return (
     <div
-      className={`land-affix-container ${disabled ? 'disabled' : ''} ${className}`}
+      className={containerClassName}
       style={style}
       onClick={e => onClick?.(e)}
-      onMouseOver={() => {
-        if (disabled) return;
-        setShow(true);
-        setHide(true);
-      }}
-      onMouseLeave={() => {
-        setShow(false);
-        setHide(false);
-      }}
+      onMouseOver={() => { if (!disabled) setHovered(true); }}
+      onMouseLeave={() => setHovered(false)}
       onWheel={e => e.stopPropagation()}
-      {...restProps}
+      {...htmlProps}
     >
       {children}
-      {data?.map((i, idx) =>
-        i.option ? (
+      {itemList.map((item, idx) => {
+        const placement = item.placement ?? 'center';
+        const cssPlacement = PLACEMENT_CSS_MAP[placement];
+        const pos = getPosition(placement, item);
+        const opacity = getOpacity(item);
+        const isHoverShow = (item.display ?? 'always') === 'hoverShow';
+
+        const itemClassName = [
+          `${prefixCls}__item`,
+          `${prefixCls}__item--${cssPlacement}`,
+          isHoverShow && `${prefixCls}__item--hover-show`,
+          item.className,
+        ].filter(Boolean).join(' ');
+
+        return (
           <div
-            key={idx}
+            key={`${placement}-${idx}`}
+            className={itemClassName}
             style={{
-              left: getLeft(i.placement, i.option.gap, i.option.left || 0),
-              right: getRight(i.placement, i.option.gap),
-              top: getTop(i.placement, i.option.gap, i.option.top || 0),
-              bottom: getBottom(i.placement, i.option.gap),
-              transform: getTransform(i.placement),
-              opacity: getOpacity(i.option),
-              zIndex: i.option.zIndex || 2,
-              animation: (i.option.hoverShow && show) ? i.option.showAnimation : 'none',
-              ...i.option.style,
+              ...pos,
+              opacity,
+              zIndex: item.zIndex ?? 2,
+              animation: (isHoverShow && hovered) ? item.animation : 'none',
+              ...item.style,
             }}
-            className={`land-affix-container-item ${i.option.hoverShow ? 'hoverShow' : ''} ${i.placement} absolute ${i.option.className ?? ''}`}
-            onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+            onClick={(e) => {
               e.stopPropagation();
-              i.option?.onClick?.(e);
+              item.onClick?.(e);
             }}
           >
-            {i.option?.content}
+            {item.content}
           </div>
-        ) : null,
-      )}
+        );
+      })}
     </div>
   );
 };

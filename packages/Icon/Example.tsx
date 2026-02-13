@@ -149,28 +149,32 @@ export default function IconExample() {
                     className="flex flex-col items-center p-12 color-gray-4 border border-transparent hover:border-gray-2 rounded-xl hover:bg-gray transition-all cursor-pointer aspect-square"
                     key={item2.name}
                     onClick={() => handleIconCopyClick?.(item2.name)}
-                    rtOption={{
-                      content: (
-                        <Button
-                          onClick={() => handleIconCopyClick?.(item2.name)}
-                          icon={<Icon name="copy" />}
-                          className="relative hover-pop"
-                          type="text"
-                        ></Button>
-                      ),
-                      hoverShow: true,
-                      gap:4
-                    }}
-                    bcOption={{
-                      content: (
-                        <div className="text-xs pt-8 transition-all no-wrap text-gray-secondary">
-                          {item2.name}
-                        </div>
-                      ),
-                      gap: 12,
-                      hoverShow: true,
-                      showAnimation: "icon-text-slide-in-bottom 0.2s ease-in-out forwards",
-                    }}
+                    items={[
+                      {
+                        placement: 'topEnd',
+                        content: (
+                          <Button
+                            onClick={() => handleIconCopyClick?.(item2.name)}
+                            icon={<Icon name="copy" />}
+                            className="relative hover-pop"
+                            variant="text"
+                          ></Button>
+                        ),
+                        display: 'hoverShow',
+                        offset: 4,
+                      },
+                      {
+                        placement: 'bottomCenter',
+                        content: (
+                          <div className="text-xs pt-8 transition-all no-wrap text-gray-secondary">
+                            {item2.name}
+                          </div>
+                        ),
+                        offset: 12,
+                        display: 'hoverShow',
+                        animation: "icon-text-slide-in-bottom 0.2s ease-in-out forwards",
+                      },
+                    ]}
                   >
                     <Icon
                       name={item2.name}
