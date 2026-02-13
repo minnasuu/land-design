@@ -1,108 +1,129 @@
-.land-pagination{
+.land-pagination {
   display: flex;
   align-items: center;
-  gap: var(--land-pagination-element-gap, var(--gap-m));
+  gap: var(--land-pagination-gap, var(--gap-m));
   font-size: var(--land-pagination-font-size, var(--font-content-m));
-  .land-pagination-total {
+
+  // 总页数
+  &__total {
     flex-shrink: 0;
     color: var(--land-pagination-total-color, var(--color-text-secondary));
   }
-  .land-pagination-page{
+
+  // 页码容器
+  &__page {
     flex: 1;
     display: flex;
     justify-content: space-between;
-    gap: var(--land-pagination-num-gap, var(--gap-s));
+    gap: var(--land-pagination-item-gap, var(--gap-s));
     height: fit-content;
   }
-  .land-pagination-num-item,
-  .land-pagination-arrow-double-prev,
-  .land-pagination-arrow-double-next{
+
+  // 页码项 & 省略号共用基础样式
+  &__item,
+  &__ellipsis {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--land-pagination-num-item-width, 32px);
-    height: var(--land-pagination-num-item-height, 32px);
-    font-size: var(--land-pagination-num-item-font-size, var(--font-content-m));
-    color: var(--land-pagination-num-item-color, var(--color-text-primary));
-    border-radius: var(--land-pagination-num-item-border-radius, var(--radius-m));
-    border: 1px solid var(--land-pagination-num-item-border-color, var(--color-border-primary));
+    width: var(--land-pagination-item-size, 32px);
+    height: var(--land-pagination-item-size, 32px);
+    font-size: var(--land-pagination-item-font-size, var(--font-content-m));
+    color: var(--land-pagination-item-color, var(--color-text-primary));
+    border-radius: var(--land-pagination-item-radius, var(--radius-m));
+    border: 1px solid var(--land-pagination-item-border-color, var(--color-border-primary));
     box-sizing: border-box;
     cursor: pointer;
     transition: background-color var(--transition-s) linear;
     user-select: none;
-    &:hover{
-      background-color: var(--land-pagination-num-item-hover-bg, var(--color-gray-3));
+
+    &:hover:not(&--active) {
+      background-color: var(--land-pagination-item-hover-bg, var(--color-gray-3));
     }
-    &:active{
-      background-color: var(--land-pagination-num-item-active-bg, var(--color-gray-4));
+
+    &:active {
+      background-color: var(--land-pagination-item-press-bg, var(--color-gray-4));
     }
-    &.active{
-      background-color: var(--land-pagination-num-item-active-bg, var(--color-primary-6));
-      color: var(--land-pagination-num-item-active-color, var(--color-gray-1));
-      border-color: var(--land-pagination-num-item-active-border-color, var(--color-primary-6));
+
+    &--active {
+      background-color: var(--land-pagination-item-active-bg, var(--color-primary-6));
+      color: var(--land-pagination-item-active-color, var(--color-gray-1));
+      border-color: var(--land-pagination-item-active-border-color, var(--color-primary-6));
     }
   }
-  .land-pagination-arrow-prev,
-  .land-pagination-arrow-next{
+
+  // 前后翻页箭头
+  &__arrow {
     flex-shrink: 0;
-    color: var(--land-pagination-arrow-color, var(--color-text-tertiary));
+    color: var(--land-pagination-arrow-color, var(--color-text-secondary));
     cursor: pointer;
     transition: color var(--transition-s) linear;
-    &:hover:not(.disabled){
+
+    &:hover:not(&--disabled) {
       color: var(--land-pagination-arrow-hover-color, var(--color-text-primary));
     }
-    &:active:not(.disabled){
-      color: var(--land-pagination-arrow-active-color, var(--color-gray-12));
+
+    &:active:not(&--disabled) {
+      color: var(--land-pagination-arrow-press-color, var(--color-gray-12));
     }
-    &.disabled{
+
+    &--disabled {
       cursor: not-allowed;
     }
-    .land-pagination-arrow-prev-icon{
+  }
+
+  &__arrow-icon {
+    &--prev {
       transform: rotate(90deg);
     }
-    .land-pagination-arrow-next-icon{
+
+    &--next {
       transform: rotate(-90deg);
     }
   }
-  .land-pagination-arrow-double-prev,
-  .land-pagination-arrow-double-next{
+
+  // 省略号（快速跳转）
+  &__ellipsis {
     position: relative;
     transition: opacity var(--transition-ms) linear;
-    .land-pagination-arrow-double-prev-icon{
-      transform: rotate(90deg);
+  }
+
+  &__ellipsis-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: inherit;
+    opacity: 0;
+    transition: opacity var(--transition-ms) linear;
+
+    &--prev {
+      transform: translate(-50%, -50%) rotate(90deg);
     }
-    .land-pagination-arrow-double-next-icon{
-      transform: rotate(-90deg);
-    }
-    .land-pagination-arrow-double-prev-icon,
-    .land-pagination-arrow-double-next-icon{
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      background: inherit;
-      opacity: 0;
-      transition: opacity var(--transition-ms) linear;
-    }
-    &:hover{
-      .land-pagination-arrow-double-prev-icon,
-      .land-pagination-arrow-double-next-icon{
-          opacity: 1;
-      }
+
+    &--next {
+      transform: translate(-50%, -50%) rotate(-90deg);
     }
   }
-  .land-pagination-input{
+
+  &__ellipsis:hover &__ellipsis-icon {
+    opacity: 1;
+  }
+
+  // 页码输入
+  &__input {
     display: flex;
     align-items: center;
     gap: var(--land-pagination-input-gap, var(--gap-s));
     color: var(--land-pagination-input-color, var(--color-text-secondary));
     white-space: nowrap;
     flex-shrink: 0;
-    .land-pagination-page-input{
-      display: flex;
-      height: var(--land-pagination-num-item-height, 32px);
-      width: var(--land-pagination-input-width, 32px);
-      padding: 0;
-    }
+  }
+
+  &__input-field {
+    display: flex;
+    height: var(--land-pagination-item-size, 32px);
+    width: var(--land-pagination-input-width, 32px);
+    padding: 0;
   }
 }

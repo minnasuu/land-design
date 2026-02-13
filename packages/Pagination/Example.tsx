@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
-import Pagination from ".";
+import { useState } from 'react';
+import Pagination from '.';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 
-// API 文档配置
 const paginationProps = [
-  { name: 'current', type: 'number', desc: '当前页' },
-  { name: 'total', type: 'number', desc: '总页数' },
-  { name: 'pageSize', type: 'number', desc: '每次加载的页数', default: '10' },
-  { name: 'showTotal', type: 'boolean', desc: '是否显示总页数', default: 'false' },
-  { name: 'showInput', type: 'boolean', desc: '是否显示输入框', default: 'false' },
-  { name: 'onChange', type: '(current: number) => void', desc: '页码变化事件回调' },
+  { name: 'current', type: 'number', default: '1', desc: '当前页码' },
+  { name: 'total', type: 'number', default: '1', desc: '总页数' },
+  { name: 'pageSize', type: 'number', default: '5', desc: '每次可见的页码数量' },
+  { name: 'showTotal', type: 'boolean', default: 'false', desc: '是否显示总页数' },
+  { name: 'showInput', type: 'boolean', default: 'false', desc: '是否显示页码输入框' },
+  { name: 'onChange', type: '(current: number) => void', desc: '页码变化回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
 ];
@@ -125,5 +124,5 @@ export default function PaginationExample() {
         </div>
       )}
     </ComponentContentLayout>
-  )
+  );
 }

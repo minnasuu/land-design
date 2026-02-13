@@ -1,201 +1,162 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import './index.scss';
-import Icon from "../Icon";
-import { PaginationProps } from "./props";
-import NumberInput from "../NumberInput";
+import Icon from '../Icon';
+import { PaginationProps } from './props';
+import NumberInput from '../NumberInput';
+
+const prefixCls = 'land-pagination';
 
 const Pagination: React.FC<PaginationProps> = ({
   current = 1,
-  pageSize = 1,
+  pageSize = 5,
   total = 1,
   showTotal = false,
   showInput = false,
   onChange,
   style,
-  className = '',
+  className,
 }) => {
-  const [newCurrent, setNewCurrent] = useState<number>(current);
+  const [innerCurrent, setInnerCurrent] = useState(current);
 
-  // 同步外部current变化
   useEffect(() => {
-    setNewCurrent(current);
+    setInnerCurrent(current);
   }, [current]);
 
   // 计算当前显示的页码范围
   const { pageData, curStart, isStartPreOut, isStartNextOut } = useMemo(() => {
-    const maxVisiblePages = pageSize;
+    const maxVisible = pageSize;
     let start = 2;
 
-    // 计算当前应该显示的起始页码
-    if (newCurrent > maxVisiblePages + 1) {
-      start = Math.max(2, newCurrent - Math.floor(maxVisiblePages / 2));
+    if (innerCurrent > maxVisible + 1) {
+      start = Math.max(2, innerCurrent - Math.floor(maxVisible / 2));
     }
-
-    // 确保不超过总页数
-    if (start + maxVisiblePages > total) {
-      start = Math.max(2, total - maxVisiblePages + 1);
+    if (start + maxVisible > total) {
+      start = Math.max(2, total - maxVisible + 1);
     }
 
     const pageData = Array.from({ length: total })
       .map((_, idx) => ({ id: idx + 1 }))
-      .filter(item => item.id > 1 && item.id < total)
-      .filter(item => item.id >= start && item.id < start + maxVisiblePages);
+      .filter((item) => item.id > 1 && item.id < total)
+      .filter((item) => item.id >= start && item.id < start + maxVisible);
 
-    const isStartPreOut = start <= maxVisiblePages * 2;
-    const isStartNextOut = total - start < maxVisiblePages * 2;
+    return {
+      pageData,
+      curStart: start,
+      isStartPreOut: start <= maxVisible * 2,
+      isStartNextOut: total - start < maxVisible * 2,
+    };
+  }, [total, pageSize, innerCurrent]);
 
-    return { pageData, curStart: start, isStartPreOut, isStartNextOut };
-  }, [total, pageSize, newCurrent]);
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (page >= 1 && page <= total && page !== innerCurrent) {
+        setInnerCurrent(page);
+        onChange?.(page);
+      }
+    },
+    [innerCurrent, total, onChange],
+  );
 
-  // 统一的事件处理函数
-  const handlePageChange = useCallback((page: number) => {
-    if (page >= 1 && page <= total && page !== newCurrent) {
-      setNewCurrent(page);
-      onChange?.(page);
-    }
-  }, [newCurrent, total, onChange]);
+  const handleQuickJump = useCallback(
+    (direction: 'prev' | 'next') => {
+      if (direction === 'prev' && !isStartPreOut) {
+        handlePageChange(Math.max(1, curStart - pageSize));
+      } else if (direction === 'next' && !isStartNextOut) {
+        handlePageChange(Math.min(total, curStart + pageSize));
+      }
+    },
+    [curStart, pageSize, isStartPreOut, isStartNextOut, total, handlePageChange],
+  );
 
-  // 处理上一页
-  const handlePrevPage = useCallback(() => {
-    if (newCurrent > 1) {
-      handlePageChange(newCurrent - 1);
-    }
-  }, [newCurrent, handlePageChange]);
+  const handleInputChange = useCallback(
+    (value: number) => {
+      if (!isNaN(value) && value >= 1 && value <= total) {
+        setInnerCurrent(value);
+        handlePageChange(value);
+      }
+    },
+    [total, handlePageChange],
+  );
 
-  // 处理下一页
-  const handleNextPage = useCallback(() => {
-    if (newCurrent < total) {
-      handlePageChange(newCurrent + 1);
-    }
-  }, [newCurrent, total, handlePageChange]);
-
-  // 处理快速跳转
-  const handleQuickJump = useCallback((direction: 'prev' | 'next') => {
-    if (direction === 'prev' && !isStartPreOut) {
-      const targetPage = Math.max(1, curStart - pageSize);
-      handlePageChange(targetPage);
-    } else if (direction === 'next' && !isStartNextOut) {
-      const targetPage = Math.min(total, curStart + pageSize);
-      handlePageChange(targetPage);
-    }
-  }, [curStart, pageSize, isStartPreOut, isStartNextOut, total, handlePageChange]);
-
-  // 处理输入框变化和确认
-  const handleInputChange = useCallback((value: number) => {
-    const page = value;
-    if (!isNaN(page) && page >= 1 && page <= total) {
-      setNewCurrent(page);
-      // 自动切换到对应页面
-      handlePageChange(page);
-    }
-  }, [total, handlePageChange]);
-
-  // 阻止事件冒泡的通用处理
-  const stopPropagation = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-  }, []);
+  const rootClassName = useMemo(
+    () => [prefixCls, className].filter(Boolean).join(' '),
+    [className],
+  );
 
   return (
-    <div className={`land-pagination ${className}`} style={style}>
-      {showTotal && <div className="land-pagination-total">共{total}页</div>}
+    <div className={rootClassName} style={style}>
+      {showTotal && <div className={`${prefixCls}__total`}>共{total}页</div>}
 
-      {/* 上一页箭头 */}
+      {/* 上一页 */}
       <div
-        onClick={(e) => {
-          stopPropagation(e);
-          handlePrevPage();
-        }}
-        className={`land-pagination-arrow-prev ${newCurrent === 1 ? "disabled" : ""}`}
+        className={`${prefixCls}__arrow${innerCurrent === 1 ? ` ${prefixCls}__arrow--disabled` : ''}`}
+        onClick={() => innerCurrent > 1 && handlePageChange(innerCurrent - 1)}
       >
-        <Icon name="arrow" className="land-pagination-arrow-prev-icon" strokeWidth={4} />
+        <Icon name="arrow" className={`${prefixCls}__arrow-icon ${prefixCls}__arrow-icon--prev`} strokeWidth={4} />
       </div>
 
-      <div className="land-pagination-page">
+      <div className={`${prefixCls}__page`}>
         {/* 第一页 */}
         <div
-          className={`land-pagination-num-item ${newCurrent === 1 ? "active" : ""}`}
-          onClick={(e) => {
-            stopPropagation(e);
-            handlePageChange(1);
-          }}
+          className={`${prefixCls}__item${innerCurrent === 1 ? ` ${prefixCls}__item--active` : ''}`}
+          onClick={() => handlePageChange(1)}
         >
           1
         </div>
 
         {/* 前省略号 */}
         {pageData[0]?.id > 2 && (
-          <div
-            onClick={(e) => {
-              stopPropagation(e);
-              handleQuickJump('prev');
-            }}
-            className="land-pagination-arrow-double-prev"
-          >
+          <div className={`${prefixCls}__ellipsis`} onClick={() => handleQuickJump('prev')}>
             <Icon name="more" size={16} />
-            <Icon name="arrow-double" className="land-pagination-arrow-double-prev-icon" size={24} />
+            <Icon name="arrow-double" className={`${prefixCls}__ellipsis-icon ${prefixCls}__ellipsis-icon--prev`} size={16} />
           </div>
         )}
 
         {/* 中间页码 */}
-        {pageData?.map((item) => (
+        {pageData.map((item) => (
           <div
             key={item.id}
-            className={`land-pagination-num-item ${newCurrent === item.id ? "active" : ""}`}
-            onClick={(e) => {
-              stopPropagation(e);
-              handlePageChange(item.id);
-            }}
+            className={`${prefixCls}__item${innerCurrent === item.id ? ` ${prefixCls}__item--active` : ''}`}
+            onClick={() => handlePageChange(item.id)}
           >
             {item.id}
           </div>
         ))}
 
         {/* 后省略号 */}
-        {pageData[pageData?.length - 1]?.id < total - 1 && (
-          <div
-            onClick={(e) => {
-              stopPropagation(e);
-              handleQuickJump('next');
-            }}
-            className="land-pagination-arrow-double-next"
-          >
+        {pageData[pageData.length - 1]?.id < total - 1 && (
+          <div className={`${prefixCls}__ellipsis`} onClick={() => handleQuickJump('next')}>
             <Icon name="more" size={16} />
-            <Icon name="arrow-double" className="land-pagination-arrow-double-next-icon" size={24} />
+            <Icon name="arrow-double" className={`${prefixCls}__ellipsis-icon ${prefixCls}__ellipsis-icon--next`} size={16} />
           </div>
         )}
 
         {/* 最后一页 */}
         <div
-          className={`land-pagination-num-item ${newCurrent === total ? "active" : ""}`}
-          onClick={(e) => {
-            stopPropagation(e);
-            handlePageChange(total);
-          }}
+          className={`${prefixCls}__item${innerCurrent === total ? ` ${prefixCls}__item--active` : ''}`}
+          onClick={() => handlePageChange(total)}
         >
           {total}
         </div>
       </div>
 
-      {/* 下一页箭头 */}
+      {/* 下一页 */}
       <div
-        onClick={(e) => {
-          stopPropagation(e);
-          handleNextPage();
-        }}
-        className={`land-pagination-arrow-next ${newCurrent === total ? "disabled" : ""}`}
+        className={`${prefixCls}__arrow${innerCurrent === total ? ` ${prefixCls}__arrow--disabled` : ''}`}
+        onClick={() => innerCurrent < total && handlePageChange(innerCurrent + 1)}
       >
-        <Icon name="arrow" className="land-pagination-arrow-next-icon" strokeWidth={4} />
+        <Icon name="arrow" className={`${prefixCls}__arrow-icon ${prefixCls}__arrow-icon--next`} strokeWidth={4} />
       </div>
 
-      {/* 自定义页码输入 */}
+      {/* 页码输入 */}
       {showInput && (
-        <div className="land-pagination-input">
+        <div className={`${prefixCls}__input`}>
           跳转至
           <NumberInput
             hideArrowButton
-            value={newCurrent}
+            value={innerCurrent}
             onChange={handleInputChange}
-            className="land-pagination-page-input"
+            className={`${prefixCls}__input-field`}
             textAlign="center"
           />
           / {total} 页
