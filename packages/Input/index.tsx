@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../Icon';
 import { InputProps } from './props';
+import InputHighlight from './InputHighlight';
 import './index.scss';
 
 const prefixCls = 'land-input';
 
-const Input: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> & {
+  InputHighlight: typeof InputHighlight;
+} = ({
   variant = 'outline',
   status = 'default',
   size = 'default',
@@ -171,5 +174,7 @@ const Input: React.FC<InputProps> = ({
     </div>
   );
 };
+
+Input.InputHighlight = InputHighlight;
 
 export default Input;

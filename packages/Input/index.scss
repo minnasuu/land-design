@@ -63,6 +63,10 @@ $input-clear-hover-color: var(--land-input-clear-hover-color, var(--color-text-p
 // ─── 块级变量 ───
 $input-block-width: var(--land-input-block-width, 100%);
 
+// ─── 高亮变体变量 ───
+$input-highlight-color: var(--land-input-highlight-color, var(--color-error));
+$input-highlight-bg: var(--land-input-highlight-bg, var(--color-error-light));
+
 // ==================== 颜色主题映射 ====================
 
 $input-color-themes: (
@@ -444,5 +448,100 @@ display: flex;
   &:hover &__clear--active {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  // ==================== 高亮变体样式 ====================
+
+  &--highlight {
+    .land-input__body--highlight {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .land-input__input--transparent {
+      flex: 1;
+      width: 1%;
+      flex-shrink: 0;
+      padding: 0;
+      height: 100%;
+      border: none;
+      outline: none;
+      appearance: none;
+      -moz-appearance: none;
+      background-color: transparent;
+      font-size: $input-font-size;
+      color: transparent;
+      caret-color: $input-caret-color;
+      -webkit-text-fill-color: transparent;
+
+      &:focus-within,
+      &:focus,
+      &:focus-visible,
+      &:active,
+      &:target,
+      &:-webkit-autofill {
+        border: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        background-color: transparent;
+      }
+
+      &::selection {
+        background-color: $input-selection-bg;
+      }
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  &__highlight-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    font-size: $input-font-size;
+    color: $input-color;
+    line-height: normal;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    &--disabled {
+      color: var(--color-text-tertiary);
+
+      .land-input__highlight-item {
+        opacity: $input-disabled-opacity;
+      }
+    }
+  }
+
+  &__highlight-placeholder {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: $input-placeholder-color;
+    pointer-events: none;
+    line-height: normal;
+  }
+
+  &__highlight-item {
+    color: $input-highlight-color;
+    background-color: $input-highlight-bg;
+    border-radius: 2px;
   }
 }

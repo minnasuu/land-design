@@ -120,6 +120,7 @@ import SliderExample from "../packages/Slider/Example";
 import MentionTextareaExample from "../pro-packages/MentionTextarea/Example";
 import TextareaExample from "../packages/Textarea/Example";
 import SortableContainerExample from "../pro-packages/SortableContainer/Example";
+import InputVariants from "../packages/Input/Variants";
 
 export const COMMON_COMPONENTS_DATA = [
   {
@@ -499,7 +500,7 @@ export const NAV_COMPONENTS_DATA = [
     example: <StepsExample />,
     demo: (
       <Steps
-        data={[
+        items={[
           { key: 1, title: "步骤1", desc: "描述文字" },
           { key: 2, title: "步骤2", desc: "描述文字" },
         ]}
@@ -528,7 +529,7 @@ export const NAV_COMPONENTS_DATA = [
     demo: (
       <Dropdown
         open={true}
-        dropContent={
+        content={
           <div
             className="rounded-[6px]"
             style={{
@@ -624,7 +625,8 @@ export const INPUT_COMPONENTS_DATA = [
       { key: "input-html-type", title: "输入框不同输入类型" },
     ],
     example: <InputExample />,
-    demo: <Input value="" width="70%" />,
+    demo: <Input value="" />,
+    variants: <InputVariants/>
   },
   {
     id: "tagInput",
@@ -639,7 +641,7 @@ export const INPUT_COMPONENTS_DATA = [
     ],
     example: <TagInputExample />,
     demo: (
-      <TagInput tagData={["标签1"]} placeholder="请输入" showNumber={false} width="70%" />
+      <TagInput tagData={["标签1"]} placeholder="请输入" width="70%" />
     ),
   },
   {
@@ -1662,7 +1664,11 @@ export const PRO_LAYOUT_COMPONENTS_DATA = [
       { key: "basic-usage", title: "基础用法" },
     ],
     example: <SortableContainerExample />,
-    demo: <SortableContainer>示例内容</SortableContainer>,
+    demo: <SortableContainer 
+    items={[{id:'1'}, {id:'2'}, {id:'3'}]}
+    renderItem={(item) => <div>{item.id}</div>}
+    >
+    </SortableContainer>,
   },,
 ];
 

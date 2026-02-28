@@ -29,6 +29,23 @@ export type InputAlign = 'left' | 'center' | 'right';
 /** HTML 原生输入类型 */
 export type InputHtmlType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
 
+// ==================== 高亮项配置 ====================
+
+/**
+ * 高亮项配置
+ * 用于 InputHighlight 组件的高亮文本配置
+ */
+export interface HighlightItem {
+  /** 需要高亮的文本 */
+  text: string;
+  /** 高亮文本颜色 */
+  color?: string;
+  /** 高亮背景颜色 */
+  backgroundColor?: string;
+  /** 自定义类名 */
+  className?: string;
+}
+
 // ==================== 属性接口定义 ====================
 
 /** Input 组件属性 */
@@ -100,4 +117,26 @@ export interface InputProps {
   style?: CSSProperties;
   /** 原生 input HTML 属性透传 */
   htmlProps?: InputHTMLAttributes<HTMLInputElement>;
+}
+
+// ==================== InputHighlight 属性定义 ====================
+
+/**
+ * InputHighlight 组件属性
+ * 继承自 InputProps，移除不兼容的 prefix/suffix/autoWidth 属性
+ */
+export interface InputHighlightProps extends Omit<InputProps, 'prefix' | 'suffix' | 'autoWidth'> {
+  /**
+   * 高亮文本数组
+   * - 可以是字符串数组（使用默认样式）
+   * - 或 HighlightItem 数组（自定义每项样式）
+   */
+  highlights?: (string | HighlightItem)[];
+  /**
+   * 自定义高亮文本渲染
+   * @param text 高亮文本
+   * @param item 高亮配置项（如果是字符串则为 undefined）
+   * @returns 自定义渲染节点
+   */
+  renderHighlight?: (text: string, item?: HighlightItem) => ReactNode;
 }

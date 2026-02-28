@@ -7,6 +7,7 @@ import CodeOperationContainer from '../../example/components/CodeOperationContai
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
+import InputVariants from './Variants';
 
 const inputVariants = ['outline', 'fill', 'transparent'] as const;
 const inputStatuses = ['default', 'primary', 'warning', 'danger', 'success'] as const;
@@ -49,6 +50,7 @@ export default function InputExample() {
       desc='LandDesign 的输入框组件，提供丰富的外观变体、语义状态和尺寸选择。支持前后缀、自适应宽度、清除等高级功能。'
       activeTab={activeTab}
       onTabChange={setActiveTab}
+      hasVariants
     >
       {activeTab === 'examples' && (
         <div className='flex flex-col gap-24'>
@@ -197,6 +199,7 @@ export default function InputExample() {
           <ComponentPropsTable props={inputProps} />
         </div>
       )}
+      {activeTab === 'variants' && (<InputVariants />)}
     </ComponentContentLayout>
   );
 }
