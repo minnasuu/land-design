@@ -413,7 +413,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       >
         <div className={`land-date-picker-input ${displayValue ? "" : "empty"} ${isInputMode ? "input-mode" : ""} `}>
           <Input
-            type="transparent"
+            variant="transparent"
             className="land-date-picker-input-value"
             placeholder={newPlaceholder}
             value={isInputMode ? inputValue : displayValue}

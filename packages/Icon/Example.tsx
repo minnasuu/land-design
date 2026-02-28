@@ -24,7 +24,7 @@ const IconProps = [
 ]
 
 export default function IconExample() {
-  const [color, setColor] = useState<string>("#000000");
+  const [color, setColor] = useState<string>("#202020");
   const [size, setSize] = useState<number>(20);
   const [stroke, setStroke] = useState<number>(3);
 
@@ -32,7 +32,7 @@ export default function IconExample() {
   useEffect(() => {
     // 检查颜色是否为初始值（#000000 或 #FFFFFF）
     const isInitialColor =
-      color === "#000000" || color === "#FFFFFF" || color === "#ffffff";
+      color === "#202020" || color === "#FFFFFF" || color === "#ffffff";
 
     if (!isInitialColor) {
       return; // 如果颜色已被用户改变，不再监听主题切换
@@ -44,7 +44,7 @@ export default function IconExample() {
         window.matchMedia("(prefers-color-scheme: dark)").matches;
 
       // 根据主题设置对应的初始颜色
-      setColor(isDarkMode ? "#FFFFFF" : "#000000");
+      setColor(isDarkMode ? "#FFFFFF" : "#202020");
     };
 
     // 监听系统主题变化

@@ -1,46 +1,226 @@
-.land-input {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--land-input-gap, var(--gap-m));
-  padding: var(--land-input-padding, 0 var(--gap-m));
-  height: var(--land-input-height, 36px);
-  border-radius: var(--land-input-radius, var(--radius-m));
-  transition: background-color var(--transition-s) linear;
-  box-sizing: border-box;
+// ==================== CSS 变量定义 ====================
+// 以下变量可通过外部覆盖实现主题定制
 
-  // ==================== Type ====================
-  &--border {
-    border: 1px solid var(--land-input-border-color, var(--color-border-primary));
+// ─── 基础变量 ───
+$input-gap: var(--land-input-gap, var(--gap-m));
+$input-padding: var(--land-input-padding, 0 var(--gap-m));
+$input-width: var(--land-input-width);
+$input-height: var(--land-input-height, 36px);
+$input-radius: var(--land-input-radius, var(--radius-m));
+$input-border: var(--land-input-border, none);
+$input-transition: all var(--transition-s) linear;
 
-    &:hover:not(.land-input--disabled) {
-      background-color: var(--land-input-hover-bg, var(--color-bg-secondary));
+// ─── 尺寸变量 ───
+$input-small-height: var(--land-input-small-height, 28px);
+$input-small-padding: var(--land-input-small-padding, 0 var(--gap-s));
+$input-small-gap: var(--land-input-small-gap, var(--gap-s));
+$input-small-font-size: var(--land-input-small-font-size, var(--font-content-s));
+
+$input-large-height: var(--land-input-large-height, 40px);
+$input-large-padding: var(--land-input-large-padding, 0 var(--gap-l));
+$input-large-gap: var(--land-input-large-gap, var(--gap-l));
+$input-large-font-size: var(--land-input-large-font-size, var(--font-content-l));
+
+// ─── 外观变量 ───
+$input-outline-bg: var(--land-input-outline-bg, transparent);
+$input-outline-border: var(--land-input-outline-border, 1px solid var(--land-input-border-color, var(--color-border-primary)));
+$input-border-color: var(--land-input-border-color, var(--color-border-primary));
+$input-hover-bg: var(--land-input-hover-bg, var(--color-bg-secondary));
+$input-focus-border-color: var(--land-input-focus-border-color, var(--color-primary-6));
+
+$input-fill-border: var(--land-input-fill-border, none);
+$input-fill-bg: var(--land-input-fill-bg, var(--color-bg-secondary));
+$input-fill-hover-bg: var(--land-input-fill-hover-bg, var(--color-bg-tertiary));
+$input-fill-focus-bg: var(--land-input-fill-focus-bg, var(--color-bg-tertiary));
+
+$input-transparent-border: var(--land-input-transparent-border, none);
+$input-transparent-padding: var(--land-input-transparent-padding, 0);
+$input-transparent-radius: var(--land-input-transparent-radius, 0);
+$input-transparent-bg: var(--land-input-transparent-bg, transparent);
+
+// ─── 文本变量 ───
+$input-font-size: var(--land-input-font-size, var(--font-content-m));
+$input-color: var(--land-input-color, var(--color-text-primary));
+$input-caret-color: var(--land-input-caret-color, var(--color-primary));
+$input-selection-bg: var(--land-input-selection-bg, var(--color-primary));
+$input-placeholder-color: var(--land-input-placeholder-color, var(--color-text-secondary));
+
+// ─── 禁用状态变量 ───
+$input-disabled-opacity: var(--land-input-disabled-opacity, var(--opacity-disabled));
+$input-disabled-bg: var(--land-input-disabled-bg, var(--color-bg-secondary));
+
+// ─── 前后缀变量 ───
+$input-affix-font-size: var(--land-input-affix-font-size, var(--font-content-m));
+$input-affix-label-font-size: var(--land-input-affix-label-font-size, var(--font-content-s));
+$input-affix-label-color: var(--land-input-affix-label-color, var(--color-text-secondary));
+$input-affix-suffix-color: var(--land-input-affix-suffix-color, var(--color-text-secondary));
+
+// ─── 清除按钮变量 ───
+$input-clear-size: var(--land-input-clear-size, 16px);
+$input-clear-color: var(--land-input-clear-color, var(--color-text-secondary));
+$input-clear-hover-color: var(--land-input-clear-hover-color, var(--color-text-primary));
+
+// ─── 块级变量 ───
+$input-block-width: var(--land-input-block-width, 100%);
+
+// ==================== 颜色主题映射 ====================
+
+$input-color-themes: (
+  primary: var(--land-input-primary-color, var(--color-primary-6)),
+  warning: var(--land-input-warning-color, var(--color-orange-6)),
+  danger: var(--land-input-danger-color, var(--color-red-6)),
+  success: var(--land-input-success-color, var(--color-green-6))
+);
+
+$input-color-themes-border: (
+  primary: var(--land-input-primary-border-color, var(--color-primary-3)),
+  warning: var(--land-input-warning-border-color, var(--color-orange-3)),
+  danger: var(--land-input-danger-border-color, var(--color-red-3)),
+  success: var(--land-input-success-border-color, var(--color-green-3))
+);
+
+$input-color-themes-border-hover: (
+  primary: var(--land-input-primary-border-hover, var(--color-primary-4)),
+  warning: var(--land-input-warning-border-hover, var(--color-orange-4)),
+  danger: var(--land-input-danger-border-hover, var(--color-red-4)),
+  success: var(--land-input-success-border-hover, var(--color-green-4))
+);
+
+$input-color-themes-bg-hover: (
+  primary: var(--land-input-primary-bg-hover, var(--color-primary-1)),
+  warning: var(--land-input-warning-bg-hover, var(--color-orange-1)),
+  danger: var(--land-input-danger-bg-hover, var(--color-red-1)),
+  success: var(--land-input-success-bg-hover, var(--color-green-1))
+);
+
+// ==================== Mixins ====================
+
+// 混入：生成 outline 主题样式
+@mixin input-theme-outline-colors() {
+  @each $theme, $color in $input-color-themes {
+    &.land-input--#{$theme} {
+      border-color: map-get($input-color-themes-border, $theme);
+
+      input {
+        caret-color: $color;
+      }
+
+      &:hover:not(.land-input--disabled) {
+        border-color: map-get($input-color-themes-border-hover, $theme);
+        background-color: map-get($input-color-themes-bg-hover, $theme);
+      }
+
+      &:focus-within:not(.land-input--disabled) {
+        border-color: $color;
+      }
     }
+  }
+}
 
-    &:active:not(.land-input--disabled) {
-      background-color: var(--land-input-active-bg, var(--color-bg-secondary));
+// 混入：生成 fill 主题样式
+@mixin input-theme-fill-colors() {
+  @each $theme, $color in $input-color-themes {
+    &.land-input--#{$theme} {
+      input {
+        caret-color: $color;
+      }
+
+      &:hover:not(.land-input--disabled) {
+        background-color: map-get($input-color-themes-bg-hover, $theme);
+      }
+
+      &:focus-within:not(.land-input--disabled) {
+        background-color: map-get($input-color-themes-bg-hover, $theme);
+      }
+    }
+  }
+}
+
+// ==================== 根容器 ====================
+
+.land-input {
+    position: relative;
+  width: $input-width;
+  height: $input-height;
+  border-radius: $input-radius;
+  border: $input-border;
+  box-sizing: border-box;
+  transition: $input-transition;
+
+  &__content{
+padding: $input-padding;
+display: flex;
+  align-items: center;
+  gap: $input-gap;
+  width: 100%;
+  height: 100%;
+  }
+
+  // ─── 尺寸变体 ───
+  &--small {
+    height: $input-small-height;
+    padding: $input-small-padding;
+    gap: $input-small-gap;
+
+    input {
+      font-size: $input-small-font-size;
     }
   }
 
-  &--background {
-    background-color: var(--land-input-bg, var(--color-bg-secondary));
+  &--large {
+    height: $input-large-height;
+    padding: $input-large-padding;
+    gap: $input-large-gap;
 
-    &:hover:not(.land-input--disabled) {
-      background-color: var(--land-input-hover-bg, var(--color-bg-secondary));
+    input {
+      font-size: $input-large-font-size;
+    }
+  }
+
+  // ─── 外观变体 ───
+  &--outline {
+    background-color: $input-outline-bg;
+    border: $input-outline-border;
+
+    &.land-input--default {
+      border-color: $input-border-color;
     }
 
-    &:active:not(.land-input--disabled) {
-      background-color: var(--land-input-active-bg, var(--color-bg-secondary));
+    &:hover:not(.land-input--disabled) {
+      background-color: $input-hover-bg;
+    }
+
+    &:focus-within:not(.land-input--disabled) {
+      border-color: $input-focus-border-color;
+    }
+  }
+
+  &--fill {
+    border: $input-fill-border;
+    background-color: $input-fill-bg;
+
+    &:hover:not(.land-input--disabled) {
+      background-color: $input-fill-hover-bg;
+    }
+
+    &:focus-within:not(.land-input--disabled) {
+      background-color: $input-fill-focus-bg;
     }
   }
 
   &--transparent {
-    padding: 0;
-    border-radius: 0;
-    background-color: transparent;
+    border: $input-transparent-border;
+    padding: $input-transparent-padding;
+    border-radius: $input-transparent-radius;
+    background-color: $input-transparent-bg;
   }
 
-  // ==================== Align ====================
+  // ─── 块级 ───
+  &--block {
+    width: $input-block-width;
+  }
+
+  // ─── 文字对齐 ───
   &--align-left input {
     text-align: left;
   }
@@ -69,19 +249,29 @@
     }
   }
 
-  // ==================== Disabled ====================
+  // ─── 禁用状态 ───
   &--disabled {
-    opacity: var(--land-input-disabled-opacity, var(--opacity-disabled));
-    background-color: var(--land-input-disabled-bg, var(--color-bg-secondary));
     cursor: not-allowed;
-    pointer-events: none;
+    opacity: $input-disabled-opacity;
+    .land-input__content{
+      pointer-events: none;
+    }
 
-    input {
-      cursor: not-allowed;
+    &:not(.land-input--transparent){
+      background-color: $input-disabled-bg;
     }
   }
 
-  // ==================== Body ====================
+  // ─── 主题颜色应用 ───
+  &--outline {
+    @include input-theme-outline-colors();
+  }
+
+  &--fill {
+    @include input-theme-fill-colors();
+  }
+
+  // ─── 内部元素：Body ───
   &__body {
     position: relative;
     flex: 1;
@@ -90,7 +280,7 @@
     align-items: center;
   }
 
-  // ==================== Native Input ====================
+  // ─── 内部元素：原生 Input ───
   input {
     flex: 1;
     width: 1%;
@@ -102,9 +292,9 @@
     appearance: none;
     -moz-appearance: none;
     background-color: transparent;
-    font-size: var(--land-input-font-size, var(--font-content-m));
-    color: var(--land-input-color, var(--color-text-primary));
-    caret-color: var(--land-input-caret-color, var(--color-primary));
+    font-size: $input-font-size;
+    color: $input-color;
+    caret-color: $input-caret-color;
 
     &:focus-within,
     &:focus,
@@ -119,15 +309,15 @@
     }
 
     &::selection {
-      background-color: var(--land-input-selection-bg, var(--color-primary));
+      background-color: $input-selection-bg;
     }
 
     &::placeholder {
-      color: var(--land-input-placeholder-color, var(--color-text-secondary));
+      color: $input-placeholder-color;
     }
   }
 
-  // ==================== Before / After ====================
+  // ─── 内部元素：Before / After ───
   &__before,
   &__after {
     height: 100%;
@@ -137,7 +327,7 @@
     flex-shrink: 0;
   }
 
-  // ==================== Prefix / Suffix Ghost ====================
+  // ─── 内部元素：Prefix / Suffix Ghost ───
   &__prefix-ghost,
   &__suffix-ghost {
     position: absolute;
@@ -149,7 +339,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: var(--land-input-affix-font-size, var(--font-content-m));
+    font-size: $input-affix-font-size;
     white-space: nowrap;
     pointer-events: none;
   }
@@ -162,8 +352,8 @@
     height: 100%;
     display: flex;
     align-items: center;
-    font-size: var(--land-input-affix-label-font-size, var(--font-content-s));
-    color: var(--land-input-affix-label-color, var(--color-text-secondary));
+    font-size: $input-affix-label-font-size;
+    color: $input-affix-label-color;
     pointer-events: none;
     user-select: none;
 
@@ -172,7 +362,7 @@
       left: 100%;
       top: 50%;
       transform: translate(4px, -50%);
-      color: var(--land-input-affix-suffix-color, var(--color-text-secondary));
+      color: $input-affix-suffix-color;
     }
   }
 
@@ -180,7 +370,7 @@
     height: 100%;
     display: flex;
     align-items: center;
-    font-size: var(--land-input-affix-label-font-size, var(--font-content-s));
+    font-size: $input-affix-label-font-size;
     pointer-events: none;
     user-select: none;
     opacity: 0;
@@ -191,7 +381,7 @@
     }
   }
 
-  // ==================== Auto Width ====================
+  // ─── 内部元素：Auto Width ───
   &--auto-width {
     width: auto;
     display: inline-flex;
@@ -217,7 +407,7 @@
     white-space: pre;
     min-width: 1px;
     height: 0;
-    font-size: var(--land-input-font-size, var(--font-content-m));
+    font-size: $input-font-size;
     font-family: inherit;
     font-weight: inherit;
     letter-spacing: inherit;
@@ -225,24 +415,24 @@
     pointer-events: none;
   }
 
-  // ==================== Clear ====================
+  // ─── 内部元素：Clear 按钮 ───
   &__clear {
-    width: var(--land-input-clear-size, 16px);
-    height: var(--land-input-clear-size, 16px);
+    width: $input-clear-size;
+    height: $input-clear-size;
     flex-shrink: 0;
     opacity: 0;
     pointer-events: none;
-    color: var(--land-input-clear-color, var(--color-text-secondary));
+    color: $input-clear-color;
     transition: opacity var(--transition-s) linear, color var(--transition-s) linear;
     cursor: pointer;
 
     svg {
-      width: var(--land-input-clear-size, 16px);
-      height: var(--land-input-clear-size, 16px);
+      width: $input-clear-size;
+      height: $input-clear-size;
     }
 
     &:hover {
-      color: var(--land-input-clear-hover-color, var(--color-text-primary));
+      color: $input-clear-hover-color;
     }
 
     &--active {

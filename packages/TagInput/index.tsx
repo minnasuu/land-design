@@ -54,7 +54,7 @@ const TagInput: React.FC<TagInputProps> = ({
       <div className="land-tag-input-container">
         {tags?.map((item, index) => <Tag key={index} className={`land-tag-input-tag ${tagClassName}`} canDelete onDelete={() => { setTags(tags.filter(itm => itm !== item)); onDelete?.(item) }} style={tagStyle}>{item}</Tag>)}
         <Input
-          type="transparent"
+          variant="transparent"
           value={newValue}
           placeholder={placeholder}
           onEnter={(val, e) => { addTag?.(val); onEnter?.(tags, e); }}
@@ -62,8 +62,6 @@ const TagInput: React.FC<TagInputProps> = ({
           onChange={(val, e) => { setNewValue(val); onChange?.(tags, e) }}
           className="land-tag-input-input"
           onFocus={onFocus}
-          highlightStr={highlightStr}
-          highlightStyle={highlightStyle}
         />
       </div>
       {showClear && tags?.length > 0 && <div className='land-input-clear-icon' onClick={() => { setTags([]); onClear?.() }}><Icon name="error-fill" /></div>}

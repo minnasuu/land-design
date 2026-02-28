@@ -91,7 +91,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
       >
         <Input
           className="land-number-input-input"
-          type={type}
+          variant={type === 'border' ? 'outline' : type === 'background' ? 'fill' : 'outline'}
           inputType="number"
           value={String(newValue)}
           disabled={disabled}
