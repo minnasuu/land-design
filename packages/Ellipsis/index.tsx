@@ -174,7 +174,7 @@ const Ellipsis: React.FC<EllipsisProps> = ({
   // 如果文本被省略，使用PopOver包装以提供hover提示
   return (
     <PopOver
-      targetBody
+      attach="body"
       placement="bottom"
       hideArrow
       content={displayText}

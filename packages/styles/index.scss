@@ -1,13 +1,3 @@
 @import './variable.scss';
 @import './theme.scss';
 @import './tailwind-utilities.scss';
-
-.hover-pop{
-  position: relative;
-  &:hover{
-    .land-pop{
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-}

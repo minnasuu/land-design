@@ -83,7 +83,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
       onWheel={handleWheel}
     >
       <PopOver
-        targetBody
+        attach="body"
         className="land-number-input-wheel-popover"
         content={enableWheelScroll ? "滚动鼠标滚轮调整数值" : ""}
         placement="top"

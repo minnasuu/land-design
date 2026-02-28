@@ -1,410 +1,477 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { PopOverProps, PopOverPlacement } from './props';
-import './index.scss'
+import './index.scss';
+
+const prefixCls = 'land-popover';
 
 const PopOver: React.FC<PopOverProps> = ({
   show,
   content,
-  theme = "light",
-  placement = "top",
-  hideArrow = false,
-  targetBody = false,
   trigger = "hover",
   onVisibleChange,
-  popoverStyle,
-  popoverClassName,
+  theme = 'light',
+  placement = 'top',
+  hideArrow = false,
+  attach = 'parent',
+  className = '',
   style,
-  className = "",
+  popoverClassName = '',
+  popoverStyle,
   children
 }) => {
-  const [isVisible, setIsVisible] = useState(show);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const [popoverSize, setPopoverSize] = useState({ width: 0, height: 0 });
+  // ─── 状态 ───
+  const [isVisible, setIsVisible] = useState(show ?? false);
+  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+  const [bubbleSize, setBubbleSize] = useState({ width: 0, height: 0 });
   const [actualPlacement, setActualPlacement] = useState<PopOverPlacement>(placement);
-  const targetRef = useRef<HTMLDivElement>(null);
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const [isPositioned, setIsPositioned] = useState(false); // 标记位置是否已计算完成
 
-  // 控制显示状态
+  // ─── Refs ───
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+
+  // ─── 常量 ───
+  const OFFSET = 8; // 气泡与触发元素的间距
+  const VIEWPORT_PADDING = 8; // 视口边界安全距离
+  const ARROW_MIN_DISTANCE = 12; // 箭头距气泡边缘最小距离
+
+  // ─── 计算模式 ───
+  const isBodyAttach = attach === 'body';
+
+  // ─── 受控模式同步 ───
   useEffect(() => {
     if (show !== undefined) {
       setIsVisible(show);
     }
   }, [show]);
 
-  // 触发onVisibleChange回调
+  // ─── 隐藏时重置位置状态（body 模式）───
+  useEffect(() => {
+    if (!isVisible && isBodyAttach) {
+      // 延迟重置，等待动画完成
+      const timer = setTimeout(() => {
+        setIsPositioned(false);
+        setPosition(null);
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, isBodyAttach]);
+
+  // ─── 触发回调 ───
   useEffect(() => {
     onVisibleChange?.(isVisible);
   }, [isVisible, onVisibleChange]);
 
-  const threshold = 8;
-  const arrowSize = 8; // 箭头大小
+  // ─── 计算 body 模式下的位置 ───
+  const calculateBodyPosition = useCallback(() => {
+    if (!triggerRef.current || !isBodyAttach || bubbleSize.width === 0 || bubbleSize.height === 0) {
+      return;
+    }
 
-  // 计算位置（仅用于targetBody模式）
-  const calculatePosition = useCallback(() => {
-    if (!targetRef.current || !targetBody || popoverSize.width === 0 || popoverSize.height === 0) return;
-
-    const targetRect = targetRef.current.getBoundingClientRect();
+    const triggerRect = triggerRef.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let top = 0;
-    let left = 0;
-    let currentPlacement: PopOverPlacement = placement;
-
-    // 计算首选位置
-    const calculatePreferredPosition = (preferredPlacement: PopOverPlacement): { top: number; left: number; placement: PopOverPlacement } => {
-      switch (preferredPlacement) {
+    // 计算指定方向的位置
+    const getPositionByPlacement = (targetPlacement: PopOverPlacement) => {
+      switch (targetPlacement) {
         case 'top':
           return {
-            top: targetRect.top - targetRect.height - threshold,
-            left: targetRect.left + (targetRect.width / 2 - popoverSize.width / 2),
-            placement: 'top' as PopOverPlacement
+            top: triggerRect.top - bubbleSize.height - OFFSET,
+            left: triggerRect.left + (triggerRect.width - bubbleSize.width) / 2,
           };
         case 'bottom':
           return {
-            top: targetRect.top + targetRect.height + threshold,
-            left: targetRect.left + (targetRect.width / 2 - popoverSize.width / 2),
-            placement: 'bottom' as PopOverPlacement
+            top: triggerRect.bottom + OFFSET,
+            left: triggerRect.left + (triggerRect.width - bubbleSize.width) / 2,
           };
         case 'left':
           return {
-            top: targetRect.top + (targetRect.height / 2 - popoverSize.height / 2),
-            left: targetRect.left - popoverSize.width - threshold,
-            placement: 'left' as PopOverPlacement
+            top: triggerRect.top + (triggerRect.height - bubbleSize.height) / 2,
+            left: triggerRect.left - bubbleSize.width - OFFSET,
           };
         case 'right':
           return {
-            top: targetRect.top + (targetRect.height / 2 - popoverSize.height / 2),
-            left: targetRect.right + threshold,
-            placement: 'right' as PopOverPlacement
-          };
-        default:
-          return {
-            top: targetRect.bottom + threshold,
-            left: targetRect.left + targetRect.width / 2 - popoverSize.width / 2,
-            placement: 'bottom' as PopOverPlacement
+            top: triggerRect.top + (triggerRect.height - bubbleSize.height) / 2,
+            left: triggerRect.right + OFFSET,
           };
       }
+    };
+
+    // 检测位置是否在视口内
+    const isInViewport = (pos: { top: number; left: number }, targetPlacement: PopOverPlacement) => {
+      const { top, left } = pos;
+      const bottom = top + bubbleSize.height;
+      const right = left + bubbleSize.width;
+
+      if (targetPlacement === 'top' || targetPlacement === 'bottom') {
+        return top >= VIEWPORT_PADDING && bottom <= viewportHeight - VIEWPORT_PADDING;
+      }
+      return left >= VIEWPORT_PADDING && right <= viewportWidth - VIEWPORT_PADDING;
+    };
+
+    // 获取对立方向
+    const getOppositePlacement = (p: PopOverPlacement): PopOverPlacement => {
+      const opposites: Record<PopOverPlacement, PopOverPlacement> = {
+        top: 'bottom',
+        bottom: 'top',
+        left: 'right',
+        right: 'left',
+      };
+      return opposites[p];
     };
 
     // 尝试首选位置
-    let pos = calculatePreferredPosition(currentPlacement);
-    top = pos.top;
-    left = pos.left;
-    currentPlacement = pos.placement as PopOverPlacement;
+    let currentPlacement = placement;
+    let pos = getPositionByPlacement(currentPlacement);
 
-    // 边界检测和自动调整
-    const adjustPosition = () => {
-      // 水平边界检测
-      if (left < threshold) {
-        left = threshold;
-      }
-      if (left + popoverSize.width > viewportWidth - threshold) {
-        left = viewportWidth - popoverSize.width - threshold;
-      }
+    // 边界检测：如果首选位置溢出，尝试对立方向
+    if (!isInViewport(pos, currentPlacement)) {
+      const oppositePlacement = getOppositePlacement(currentPlacement);
+      const oppositePos = getPositionByPlacement(oppositePlacement);
 
-      // 垂直边界检测和自动调整placement
-      if (top < threshold) {
-        // 上方空间不足，尝试下方
-        if (currentPlacement === 'top') {
-          const bottomPos = calculatePreferredPosition('bottom' as PopOverPlacement);
-          if (bottomPos.top + popoverSize.height <= viewportHeight - threshold) {
-            top = bottomPos.top;
-            left = bottomPos.left;
-            currentPlacement = 'bottom';
-          } else {
-            // 如果下方也不行，就强制显示在上方
-            top = threshold;
-          }
-        }
-      } else if (top + popoverSize.height > viewportHeight - threshold) {
-        // 下方空间不足，尝试上方
-        if (currentPlacement === 'bottom') {
-          const topPos = calculatePreferredPosition('top' as PopOverPlacement);
-          if (topPos.top >= threshold) {
-            top = topPos.top;
-            left = topPos.left;
-            currentPlacement = 'top';
-          } else {
-            // 如果上方也不行，就强制显示在下方
-            top = viewportHeight - popoverSize.height - threshold;
-          }
-        }
+      if (isInViewport(oppositePos, oppositePlacement)) {
+        currentPlacement = oppositePlacement;
+        pos = oppositePos;
       }
+    }
 
-      // 如果水平空间不足，尝试左右位置
-      if (left < threshold || left + popoverSize.width > viewportWidth - threshold) {
-        if (currentPlacement === 'top' || currentPlacement === 'bottom') {
-          // 尝试左侧
-          const leftPos = calculatePreferredPosition('left' as PopOverPlacement);
-          if (leftPos.left >= threshold) {
-            top = leftPos.top;
-            left = leftPos.left;
-            currentPlacement = 'left';
-          } else {
-            // 尝试右侧
-            const rightPos = calculatePreferredPosition('right' as PopOverPlacement);
-            if (rightPos.left + popoverSize.width <= viewportWidth - threshold) {
-              top = rightPos.top;
-              left = rightPos.left;
-              currentPlacement = 'right';
-            }
-          }
-        }
-      }
-    };
-
-    adjustPosition();
+    // 边界修正：确保不超出视口
+    let { top, left } = pos;
+    top = Math.max(VIEWPORT_PADDING, Math.min(viewportHeight - bubbleSize.height - VIEWPORT_PADDING, top));
+    left = Math.max(VIEWPORT_PADDING, Math.min(viewportWidth - bubbleSize.width - VIEWPORT_PADDING, left));
 
     setPosition({ top, left });
     setActualPlacement(currentPlacement);
-  }, [placement, targetBody, popoverSize]);
+    setIsPositioned(true);
+  }, [placement, isBodyAttach, bubbleSize, OFFSET, VIEWPORT_PADDING]);
 
-  // 监听窗口大小变化和滚动（仅用于targetBody模式）
+  // ─── 监听窗口变化（body 模式）───
   useEffect(() => {
-    if (!targetBody) return;
+    if (!isBodyAttach) return;
 
-    const handleResize = () => {
-      calculatePosition();
-    };
+    const handleUpdate = () => calculateBodyPosition();
 
-    const handleScroll = () => {
-      calculatePosition();
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener('resize', handleUpdate);
+    window.addEventListener('scroll', handleUpdate, true);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('resize', handleUpdate);
+      window.removeEventListener('scroll', handleUpdate, true);
     };
-  }, [calculatePosition, targetBody]);
+  }, [calculateBodyPosition, isBodyAttach]);
 
-  // 监听popover尺寸变化（仅用于targetBody模式）
+  // ─── 监听气泡尺寸变化（body 模式）───
   useEffect(() => {
-    if (popoverRef.current && isVisible && targetBody) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          const { width, height } = entry.target.getBoundingClientRect();
+    if (!bubbleRef.current || !isVisible || !isBodyAttach) return;
 
-          setPopoverSize({ width, height });
-        }
-      });
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.target.getBoundingClientRect();
+        setBubbleSize({ width, height });
+      }
+    });
 
-      resizeObserver.observe(popoverRef.current);
+    resizeObserver.observe(bubbleRef.current);
+    return () => resizeObserver.disconnect();
+  }, [isVisible, isBodyAttach]);
 
-      return () => {
-        resizeObserver.disconnect();
-      };
-    }
-  }, [isVisible, targetBody]);
-
-  // 位置更新（仅用于targetBody模式）
+  // ─── 位置更新（body 模式）───
   useEffect(() => {
-    if (isVisible && targetBody && popoverSize.width > 0 && popoverSize.height > 0) {
-      calculatePosition();
+    if (isVisible && isBodyAttach && bubbleSize.width > 0 && bubbleSize.height > 0) {
+      calculateBodyPosition();
     }
-  }, [isVisible, targetBody, popoverSize, calculatePosition]);
+  }, [isVisible, isBodyAttach, bubbleSize, calculateBodyPosition]);
 
-  // 点击外部关闭
+  // ─── 点击外部关闭 ───
   useEffect(() => {
-    if (trigger === 'click' && isVisible) {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (targetRef.current && !targetRef.current.contains(event.target as Node)) {
-          setIsVisible(false);
-        }
-      };
+    if (trigger !== 'click' || !isVisible) return;
 
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }
+    const handleClickOutside = (event: MouseEvent) => {
+      if (triggerRef.current && !triggerRef.current.contains(event.target as Node)) {
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [trigger, isVisible]);
 
-  // 鼠标事件处理
-  const handleMouseEnter = () => {
+  // ─── 事件处理 ───
+  const handleMouseEnter = useCallback(() => {
     if (trigger === 'hover' && show === undefined) {
       setIsVisible(true);
     }
-  };
+  }, [trigger, show]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (trigger === 'hover' && show === undefined) {
       setIsVisible(false);
     }
-  };
+  }, [trigger, show]);
 
-  // 点击事件处理
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (trigger === 'click' && show === undefined) {
-      setIsVisible(!isVisible);
+      setIsVisible((prev) => !prev);
     }
-  };
+  }, [trigger, show]);
 
-  if (!content) return <>{children}</>;
+  // ─── 计算 parent 模式下的定位样式 ───
+  const parentPositionStyle = useMemo(() => {
+    const styles: Record<PopOverPlacement, React.CSSProperties> = {
+      top: {
+        bottom: '100%',
+        left: '50%',
+        marginBottom: `${OFFSET}px`,
+      },
+      bottom: {
+        top: '100%',
+        left: '50%',
+        marginTop: `${OFFSET}px`,
+      },
+      left: {
+        right: '100%',
+        top: '50%',
+        marginRight: `${OFFSET}px`,
+      },
+      right: {
+        left: '100%',
+        top: '50%',
+        marginLeft: `${OFFSET}px`,
+      },
+    };
+    return styles[placement];
+  }, [placement, OFFSET]);
 
-  // 非全局气泡的CSS定位样式
-  const getAbsolutePositionStyle = () => {
-    switch (placement) {
-      case 'top':
-        return {
-          bottom: '100%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          marginBottom: '8px',
-        };
-      case 'bottom':
-        return {
-          top: '100%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          marginTop: '8px',
-        };
-      case 'left':
-        return {
-          right: '100%',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          marginRight: '8px',
-        };
-      case 'right':
-        return {
-          left: '100%',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          marginLeft: '8px',
-        };
-      default:
-        return {};
-    }
-  };
-
-  // 计算箭头位置（全局定位模式）
-  const getArrowPosition = () => {
-    if (!targetRef.current || !targetBody || popoverSize.width === 0 || popoverSize.height === 0) return {};
-
-    const targetRect = targetRef.current.getBoundingClientRect();
-    const minArrowDistance = 12; // 箭头距离气泡边缘的最小距离
-
-    // 计算目标元素中心点相对于气泡的位置
-    const targetCenterX = targetRect.left + targetRect.width / 2;
-    const targetCenterY = targetRect.top + targetRect.height / 2;
-
-    // 计算气泡的边界
-    const popoverLeft = position.left;
-    const popoverTop = position.top;
-
-    // 计算目标元素相对于气泡的偏移
-    const targetOffsetX = targetCenterX - popoverLeft;
-    const targetOffsetY = targetCenterY - popoverTop;
-
-    // 智能箭头位置计算
-    const calculateArrowPosition = (isHorizontal: boolean, targetOffset: number, containerSize: number) => {
-      // 如果目标元素完全在气泡内部，将箭头放在中心
-      if (targetOffset >= 0 && targetOffset <= containerSize) {
-        return Math.max(minArrowDistance, Math.min(containerSize - minArrowDistance, targetOffset));
-      }
-
-      // 如果目标元素在气泡外部，将箭头放在最近的边界
-      if (targetOffset < 0) {
-        return minArrowDistance;
-      } else {
-        return containerSize - minArrowDistance;
-      }
+  // ─── 计算箭头样式 ───
+  const arrowStyle = useMemo(() => {
+    const rotations: Record<PopOverPlacement, number> = {
+      top: 45,
+      bottom: -135,
+      left: -45,
+      right: 135,
     };
 
+    // parent 模式：箭头居中
+    if (!isBodyAttach) {
+      const positions: Record<PopOverPlacement, React.CSSProperties> = {
+        top: { left: '50%', top: '100%' },
+        bottom: { left: '50%', top: '0' },
+        left: { left: '100%', top: '50%' },
+        right: { left: '0', top: '50%' },
+      };
+      return {
+        ...positions[placement],
+        transform: `translate(-50%, -50%) rotate(${rotations[placement]}deg)`,
+      };
+    }
+
+    // body 模式：箭头指向触发元素
+    if (!triggerRef.current || bubbleSize.width === 0 || bubbleSize.height === 0 || !position) {
+      return {};
+    }
+
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+    const triggerCenterY = triggerRect.top + triggerRect.height / 2;
+
+    const clampArrowPosition = (offset: number, containerSize: number) => {
+      return Math.max(ARROW_MIN_DISTANCE, Math.min(containerSize - ARROW_MIN_DISTANCE, offset));
+    };
+
+    const currentRotation = rotations[actualPlacement];
+
     switch (actualPlacement) {
-      case 'top':
-        // 箭头在气泡底部，指向目标元素
-        const arrowXTop = calculateArrowPosition(true, targetOffsetX, popoverSize.width);
+      case 'top': {
+        const arrowX = clampArrowPosition(triggerCenterX - position.left, bubbleSize.width);
         return {
-          left: `${(arrowXTop / popoverSize.width) * 100}%`,
+          left: `${(arrowX / bubbleSize.width) * 100}%`,
           top: '100%',
-          transform: 'translate(-50%,-50%) rotate(45deg)',
+          transform: `translate(-50%, -50%) rotate(${currentRotation}deg)`,
         };
-
-      case 'bottom':
-        // 箭头在气泡顶部，指向目标元素
-        const arrowXBottom = calculateArrowPosition(true, targetOffsetX, popoverSize.width);
+      }
+      case 'bottom': {
+        const arrowX = clampArrowPosition(triggerCenterX - position.left, bubbleSize.width);
         return {
-          left: `${(arrowXBottom / popoverSize.width) * 100}%`,
+          left: `${(arrowX / bubbleSize.width) * 100}%`,
           top: '0',
-          transform: 'translate(-50%,-50%) rotate(-135deg)',
+          transform: `translate(-50%, -50%) rotate(${currentRotation}deg)`,
         };
-
-      case 'left':
-        // 箭头在气泡右侧，指向目标元素
-        const arrowYLeft = calculateArrowPosition(false, targetOffsetY, popoverSize.height);
+      }
+      case 'left': {
+        const arrowY = clampArrowPosition(triggerCenterY - position.top, bubbleSize.height);
         return {
           left: '100%',
-          top: `${(arrowYLeft / popoverSize.height) * 100}%`,
-          transform: 'translate(-50%,-50%) rotate(-45deg)',
+          top: `${(arrowY / bubbleSize.height) * 100}%`,
+          transform: `translate(-50%, -50%) rotate(${currentRotation}deg)`,
         };
-
-      case 'right':
-        // 箭头在气泡左侧，指向目标元素
-        const arrowYRight = calculateArrowPosition(false, targetOffsetY, popoverSize.height);
+      }
+      case 'right': {
+        const arrowY = clampArrowPosition(triggerCenterY - position.top, bubbleSize.height);
         return {
           left: '0',
-          top: `${(arrowYRight / popoverSize.height) * 100}%`,
-          transform: 'translate(-50%,-50%) rotate(135deg)',
+          top: `${(arrowY / bubbleSize.height) * 100}%`,
+          transform: `translate(-50%, -50%) rotate(${currentRotation}deg)`,
         };
-
-      default:
-        return {};
+      }
     }
-  };
+  }, [isBodyAttach, placement, actualPlacement, position, bubbleSize, ARROW_MIN_DISTANCE]);
 
-  const popContent = (
+  // ─── 根容器类名 ───
+  const rootClassName = useMemo(() => {
+    return [prefixCls, className].filter(Boolean).join(' ');
+  }, [className]);
+
+  // ─── 气泡类名 ───
+  const bubbleClassName = useMemo(() => {
+    return [
+      `${prefixCls}__bubble`,
+      `${prefixCls}__bubble--${theme}`,
+      isVisible && `${prefixCls}__bubble--visible`,
+      hideArrow && `${prefixCls}__bubble--no-arrow`,
+      popoverClassName,
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }, [theme, isVisible, hideArrow, popoverClassName]);
+
+  // ─── 气泡样式 ───
+  const bubbleStyle = useMemo<React.CSSProperties>(() => {
+    const baseStyle: React.CSSProperties = {
+      zIndex: isBodyAttach ? 1000 : 100,
+      pointerEvents: isVisible ? 'auto' : 'none',
+      ...popoverStyle,
+    };
+
+    if (isBodyAttach) {
+      // body 模式：位置未计算完成时隐藏气泡
+      if (!position || !isPositioned) {
+        return {
+          ...baseStyle,
+          position: 'fixed',
+          visibility: 'hidden',
+          opacity: 0,
+        };
+      }
+      return {
+        ...baseStyle,
+        position: 'fixed',
+        top: position.top,
+        left: position.left,
+      };
+    }
+
+    // parent 模式：使用 CSS 定位
+    return {
+      ...baseStyle,
+      position: 'absolute',
+      ...parentPositionStyle,
+    };
+  }, [isBodyAttach, position, parentPositionStyle, isVisible, popoverStyle, isPositioned]);
+
+  // ─── 无内容时直接返回子元素 ───
+  if (!content) {
+    return <>{children}</>;
+  }
+
+  // ─── 判断是否应该显示气泡 ───
+  const shouldShowBubble = useMemo(() => {
+    if (!isBodyAttach) return isVisible;
+    // body 模式下，需要等待位置计算完成
+    return isVisible && isPositioned;
+  }, [isBodyAttach, isVisible, isPositioned]);
+
+  // ─── 动画配置 ───
+  // parent 模式需要将 translate 居中偏移合并到动画中
+  const getMotionVariants = useCallback(() => {
+    const currentPlacement = isBodyAttach ? actualPlacement : placement;
+
+    if (isBodyAttach) {
+      // body 模式：使用 scale + 轻微位移
+      const offsetMap: Record<PopOverPlacement, { x?: number; y?: number }> = {
+        top: { y: 4 },
+        bottom: { y: -4 },
+        left: { x: 4 },
+        right: { x: -4 },
+      };
+      const offset = offsetMap[currentPlacement];
+
+      return {
+        hidden: {
+          opacity: 0,
+          scale: 0.96,
+          x: offset.x ?? 0,
+          y: offset.y ?? 0,
+        },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          y: 0,
+        },
+      };
+    }
+
+    // parent 模式：将 translate 居中和动画偏移合并
+    // top/bottom 需要 translateX(-50%) 水平居中
+    // left/right 需要 translateY(-50%) 垂直居中
+    const variantsMap = {
+      top: {
+        hidden: { opacity: 0, x: '-50%', y: 0 },
+        visible: { opacity: 1, x: '-50%', y: -4 },
+      },
+      bottom: {
+        hidden: { opacity: 0, x: '-50%', y: 0 },
+        visible: { opacity: 1, x: '-50%', y: 4 },
+      },
+      left: {
+        hidden: { opacity: 0, x: 0, y: '-50%' },
+        visible: { opacity: 1, x: -4, y: '-50%' },
+      },
+      right: {
+        hidden: { opacity: 0, x: 0, y: '-50%' },
+        visible: { opacity: 1, x: 4, y: '-50%' },
+      },
+    } as const;
+
+    return variantsMap[currentPlacement];
+  }, [isBodyAttach, actualPlacement, placement]);
+
+  const motionTransition = useMemo(() => ({
+    duration: 0.15,
+    delay: 0.15,
+    ease: [0.65,0.05,0.36,1] as const, // Material Design 标准缓动曲线
+  }), []);
+  // ─── 渲染气泡 ───
+  const renderBubble = () => (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: 0.2, type: 'spring' }}
-      ref={popoverRef}
-      className={`land-pop ${isVisible ? 'show' : ''} ${hideArrow ? 'hide-arrow' : ''} ${theme} ${popoverClassName ?? ''}`}
-      style={{
-        position: targetBody ? 'fixed' : 'absolute',
-        ...(targetBody ? {
-          top: position.top,
-          left: position.left,
-        } : getAbsolutePositionStyle()),
-        zIndex: targetBody ? 1000 : 100,
-        opacity: isVisible ? 1 : 0,
-        pointerEvents: isVisible ? 'auto' : 'none',
-        transition: 'opacity 0.2s ease-in-out',
-        ...popoverStyle,
-      }}
+      ref={bubbleRef}
+      className={bubbleClassName}
+      style={bubbleStyle}
+      variants={getMotionVariants()}
+      initial="hidden"
+      animate={shouldShowBubble ? 'visible' : 'hidden'}
+      transition={motionTransition}
     >
       {content}
-      {!hideArrow && (
-        <div
-          className="land-pop-arrow"
-          style={targetBody ? getArrowPosition() : {
-            left: placement === "left" ? "100%" : placement === "right" ? "0" : "50%",
-            top: placement === "top" ? "100%" : placement === "bottom" ? "0" : "50%",
-            transform: `translate(${placement === "left" || placement === "right" ? "-50%" : "-50%"}, ${placement === "top" || placement === "bottom" ? "-50%" : "-50%"}) rotate(${placement === 'top' ? '45' : placement === 'bottom' ? '-135' : placement === 'right' ? '135' : '-45'}deg)`,
-          }}
-        />
-      )}
+      {!hideArrow && <div className={`${prefixCls}__arrow`} style={arrowStyle} />}
     </motion.div>
   );
 
   return (
     <div
-      ref={targetRef}
-      className={`land-pop-target ${className ?? ''}`}
+      ref={triggerRef}
+      className={rootClassName}
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
       {children}
-      {popContent}
+      {renderBubble()}
     </div>
   );
 };
 
-export default PopOver; 
+export default PopOver;

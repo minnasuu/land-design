@@ -17,7 +17,7 @@ const BreadCrumbItem: React.FC<BreadCrumbItemProps> = ({
   const ellipsis = useTextOverflow(labelRef, { deps: [item] });
 
   return (
-    <PopOver targetBody content={item.tip || (hoverPreview && ellipsis ? item.label : '')}>
+    <PopOver attach="body" content={item.tip || (hoverPreview && ellipsis ? item.label : '')}>
       <div
         className={`${prefixCls}__item hover-pop${active ? ` ${prefixCls}__item--active` : ''}`}
         onClick={() => onChange?.()}

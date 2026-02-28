@@ -261,7 +261,7 @@ const Select: React.FC<SelectProps> = ({
             className="land-select-value-arrow"
             size={16}
           />
-          {tip && <PopOver targetBody content={tip} theme="dark" {...tipProps} />}
+          {tip && <PopOver attach="body" content={tip} theme="dark" {...tipProps} />}
         </div>
       </Dropdown>
     </div>
