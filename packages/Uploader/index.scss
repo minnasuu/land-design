@@ -1,38 +1,403 @@
-.land-uploader{
-  position: relative;
+// ==================== Uploader 组件样式 ====================
+// 上传组件，支持拖拽上传、文件列表、多种变体等功能
+
+// ─── 变量定义 ───
+$uploader-border-color: var(--color-border-secondary);
+$uploader-border-color-hover: var(--color-primary);
+$uploader-border-color-dragging: var(--color-primary);
+$uploader-bg: var(--color-bg-container);
+$uploader-bg-hover: var(--color-fill-quaternary);
+$uploader-bg-dragging: var(--color-primary-bg);
+$uploader-border-radius: var(--radius-m);
+$uploader-transition: var(--transition-normal);
+
+$uploader-icon-size: 32px;
+$uploader-icon-color: var(--color-text-tertiary);
+$uploader-title-color: var(--color-text-primary);
+$uploader-hint-color: var(--color-text-secondary);
+
+// 文件列表
+$file-item-height: 40px;
+$file-thumb-size: 48px;
+$file-icon-size: 20px;
+
+// ==================== 根容器 ====================
+
+.land-uploader {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--land-uploader-gap, var(--gap-m));
-  padding: var(--land-uploader-padding, var(--padding-m));
-  background-color: var(--land-uploader-background-color, var(--color-bg-secondary));
-  border-radius: var(--land-uploader-border-radius, var(--radius-m));
-  transition: background-color var(--transition-s) linear;
-  cursor: pointer;
-  &.drag,
-  &:hover {
-    background-color: var(--land-uploader-hover-background-color, var(--color-bg-tertiary));
-  }
-  &:active {
-    background-color: var(--land-uploader-active-background-color, var(--color-bg-quaternary));
-  }
-  .land-uploader-icon {
-    color: var(--land-uploader-icon-color, var(--color-text-secondary));
-    svg{
-      width: var(--land-uploader-icon-size, var(--icon-size-l));
-      height: var(--land-uploader-icon-size, var(--icon-size-l));
-    }
-  }
-  .land-uploader-desc {
-    font-size: var(--land-uploader-desc-font-size, var(--font-content-m));
-    color: var(--land-uploader-desc-color, var(--color-text-secondary));
-    transition: all var(--transition-s) linear;
-  }
-  .land-uploader-input{
+  gap: 12px;
+  width: 100%;
+
+  // ─── 隐藏的文件输入 ───
+  &__input {
     position: absolute;
     width: 0;
     height: 0;
     opacity: 0;
+    pointer-events: none;
+  }
+
+  // ==================== 上传区域 ====================
+
+  &__dropzone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 120px;
+    padding: 24px;
+    background-color: $uploader-bg;
+    border: 1px dashed $uploader-border-color;
+    border-radius: $uploader-border-radius;
+    cursor: pointer;
+    transition: all $uploader-transition;
+    outline: none;
+
+    // 悬停效果
+    &:hover {
+      border-color: $uploader-border-color-hover;
+      background-color: $uploader-bg-hover;
+    }
+
+    // 聚焦效果
+    &:focus-visible {
+      border-color: $uploader-border-color-hover;
+      box-shadow: 0 0 0 2px var(--color-primary-bg);
+    }
+
+    // 拖拽中
+    &--dragging {
+      border-color: $uploader-border-color-dragging;
+      background-color: $uploader-bg-dragging;
+      border-style: solid;
+    }
+  }
+
+  // ─── 上传图标 ───
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $uploader-icon-size;
+    height: $uploader-icon-size;
+    color: $uploader-icon-color;
+    transition: color $uploader-transition;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .land-uploader__dropzone:hover & {
+      color: var(--color-primary);
+    }
+  }
+
+  // ─── 标题 ───
+  &__title {
+    font-size: var(--font-content-m);
+    font-weight: 500;
+    color: $uploader-title-color;
+    text-align: center;
+  }
+
+  // ─── 提示文案 ───
+  &__hint {
+    font-size: var(--font-content-s);
+    color: $uploader-hint-color;
+    text-align: center;
+  }
+
+  // ==================== 文件列表 ====================
+
+  &__file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    // 卡片式图片列表
+    &--picture-card {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .land-uploader__file-item {
+        width: $file-thumb-size * 2;
+        height: $file-thumb-size * 2;
+        flex-direction: column;
+        padding: 8px;
+        border-radius: $uploader-border-radius;
+        border: 1px solid $uploader-border-color;
+
+        &:hover {
+          border-color: var(--color-primary);
+        }
+      }
+
+      .land-uploader__file-thumb {
+        width: 100%;
+        height: 60%;
+        border-radius: calc($uploader-border-radius - 2px);
+      }
+
+      .land-uploader__file-info {
+        width: 100%;
+        text-align: center;
+      }
+
+      .land-uploader__file-name {
+        font-size: var(--font-content-xs);
+      }
+
+      .land-uploader__file-actions {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+      }
+    }
+
+    // 图片列表
+    &--picture {
+      .land-uploader__file-thumb {
+        width: $file-thumb-size;
+        height: $file-thumb-size;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  // ─── 文件项 ───
+  &__file-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background-color: var(--color-bg-container);
+    border-radius: var(--radius-s);
+    transition: background-color $uploader-transition;
+
+    &:hover {
+      background-color: var(--color-fill-quaternary);
+    }
+
+    // 上传中状态
+    &--uploading {
+      .land-uploader__file-icon {
+        color: var(--color-primary);
+      }
+    }
+
+    // 成功状态
+    &--done {
+      .land-uploader__file-icon {
+        color: var(--color-success);
+      }
+    }
+
+    // 错误状态
+    &--error {
+      background-color: var(--color-error-bg);
+
+      .land-uploader__file-icon {
+        color: var(--color-error);
+      }
+
+      &:hover {
+        background-color: var(--color-error-bg-hover);
+      }
+    }
+  }
+
+  // ─── 文件缩略图 ───
+  &__file-thumb {
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 4px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // ─── 文件图标 ───
+  &__file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: $file-icon-size;
+    height: $file-icon-size;
+    color: var(--color-text-tertiary);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // ─── 文件信息 ───
+  &__file-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  // ─── 文件名 ───
+  &__file-name {
+    font-size: var(--font-content-s);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // ─── 文件大小 ───
+  &__file-size {
+    font-size: var(--font-content-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  // ─── 上传进度 ───
+  &__file-progress {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-fill-secondary);
+    border-radius: 2px;
+    overflow: hidden;
+
+    &-bar {
+      height: 100%;
+      background-color: var(--color-primary);
+      border-radius: 2px;
+      transition: width 0.2s ease;
+    }
+  }
+
+  // ─── 错误信息 ───
+  &__file-error {
+    font-size: var(--font-content-xs);
+    color: var(--color-error);
+  }
+
+  // ─── 文件操作 ───
+  &__file-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  &__file-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-s);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all $uploader-transition;
+
+    &:hover {
+      background-color: var(--color-fill-secondary);
+      color: var(--color-text-secondary);
+    }
+
+    &--remove:hover {
+      background-color: var(--color-error-bg);
+      color: var(--color-error);
+    }
+  }
+
+  // ==================== 变体样式 ====================
+
+  // ─── 按钮变体 ───
+  &--button {
+    .land-uploader__dropzone {
+      flex-direction: row;
+      min-height: auto;
+      padding: 8px 16px;
+      border-style: solid;
+      border-radius: var(--radius-s);
+      gap: 8px;
+    }
+
+    .land-uploader__icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // ─── 图片墙变体 ───
+  &--picture {
+    .land-uploader__dropzone {
+      width: $file-thumb-size * 2;
+      height: $file-thumb-size * 2;
+      min-height: auto;
+      padding: 8px;
+    }
+
+    .land-uploader__icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .land-uploader__file-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  // ─── 头像变体 ───
+  &--avatar {
+    align-items: center;
+
+    .land-uploader__dropzone {
+      width: 100px;
+      height: 100px;
+      min-height: auto;
+      padding: 8px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .land-uploader__icon {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  // ==================== 状态变体 ====================
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    .land-uploader__dropzone {
+      cursor: not-allowed;
+      opacity: 0.5;
+
+      &:hover {
+        border-color: $uploader-border-color;
+        background-color: $uploader-bg;
+      }
+    }
+  }
+
+  // ─── 只读状态 ───
+  &--readonly {
+    .land-uploader__dropzone {
+      cursor: default;
+      pointer-events: none;
+    }
   }
 }

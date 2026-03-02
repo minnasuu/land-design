@@ -1,10 +1,21 @@
+// ============================================================================
+// Statistic 组件
+// @description 统计数值展示组件，支持多种动画效果
+// @author Land Design System
+// ============================================================================
+
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import Icon from "../Icon";
 import { motion, AnimatePresence } from "motion/react";
 import { StatisticProps } from "./props";
 import './index.scss';
 
-// 缓动函数
+const prefixCls = 'land-statistic';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 缓动函数
+// ─────────────────────────────────────────────────────────────────────────────
+
 const easingFunctions = {
   linear: (t: number) => t,
   easeIn: (t: number) => t * t,
@@ -22,6 +33,10 @@ const easingFunctions = {
   }
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 组件实现
+// ─────────────────────────────────────────────────────────────────────────────
+
 const Statistic: React.FC<StatisticProps> = ({
   value = 0,
   prefix,
@@ -36,10 +51,12 @@ const Statistic: React.FC<StatisticProps> = ({
 }) => {
   const [displayValue, setDisplayValue] = useState<string>("");
   const [animate, setAnimate] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const animationFrameRef = useRef<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const loopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const innerTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const previousValueRef = useRef<number>(value);
+  const isMountedRef = useRef(true);
 
   // 默认动画配置
   const defaultConfig = {
@@ -76,16 +93,33 @@ const Statistic: React.FC<StatisticProps> = ({
     }
   }, []);
 
+  // 清理循环定时器
+  const clearLoopTimeoutRef = useCallback(() => {
+    if (loopTimeoutRef.current) {
+      clearTimeout(loopTimeoutRef.current);
+      loopTimeoutRef.current = null;
+    }
+  }, []);
+
+  // 清理内部定时器
+  const clearInnerTimeoutRef = useCallback(() => {
+    if (innerTimeoutRef.current) {
+      clearTimeout(innerTimeoutRef.current);
+      innerTimeoutRef.current = null;
+    }
+  }, []);
+
   // 数字增长/减少动画
-  const runNumberAnimation = useCallback((startValue: number, endValue: number) => {
-    const duration = config.duration;
+  const runNumberAnimation = useCallback((startValue: number, endValue: number, duration: number, easing: keyof typeof easingFunctions) => {
     const frameRate = 60;
     const totalFrames = (duration / 1000) * frameRate;
     let currentFrame = 0;
 
-    const easingFunc = easingFunctions[config.easing];
+    const easingFunc = easingFunctions[easing];
 
     const updateNumber = () => {
+      if (!isMountedRef.current) return;
+      
       currentFrame++;
       const progress = currentFrame / totalFrames;
       const easedProgress = easingFunc(progress);
@@ -102,7 +136,7 @@ const Statistic: React.FC<StatisticProps> = ({
     };
 
     animationFrameRef.current = requestAnimationFrame(updateNumber);
-  }, [config.duration, config.easing, formatValue]);
+  }, [formatValue]);
 
   // 处理不同动画类型
   useEffect(() => {
@@ -113,14 +147,14 @@ const Statistic: React.FC<StatisticProps> = ({
 
     // 延迟执行动画
     timeoutRef.current = setTimeout(() => {
-      setIsVisible(true);
+      if (!isMountedRef.current) return;
       
       switch (animation) {
         case "increase":
-          runNumberAnimation(0, value);
+          runNumberAnimation(0, value, config.duration, config.easing);
           break;
         case "decrease":
-          runNumberAnimation(value * 1.5, value);
+          runNumberAnimation(value * 1.5, value, config.duration, config.easing);
           break;
         case "bounce":
           setDisplayValue(formatValue(value));
@@ -146,16 +180,22 @@ const Statistic: React.FC<StatisticProps> = ({
       clearTimeoutRef();
       clearAnimationFrame();
     };
-  }, [animation, value, config.delay, config.duration, runNumberAnimation, formatValue, clearTimeoutRef, clearAnimationFrame]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animation, value, config.delay, config.duration, config.easing]);
 
   // 循环动画
   useEffect(() => {
     if (!config.loop || animation === "none") return;
 
     const loopAnimation = () => {
-      timeoutRef.current = setTimeout(() => {
+      loopTimeoutRef.current = setTimeout(() => {
+        if (!isMountedRef.current) return;
+        
         setAnimate(false);
-        setTimeout(() => setAnimate(true), 100);
+        innerTimeoutRef.current = setTimeout(() => {
+          if (!isMountedRef.current) return;
+          setAnimate(true);
+        }, 100);
         loopAnimation();
       }, config.loopInterval);
     };
@@ -164,27 +204,45 @@ const Statistic: React.FC<StatisticProps> = ({
       loopAnimation();
     }
 
-    return () => clearTimeoutRef();
-  }, [config.loop, config.loopInterval, animate, animation, clearTimeoutRef]);
+    return () => {
+      clearLoopTimeoutRef();
+      clearInnerTimeoutRef();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config.loop, config.loopInterval, animate, animation]);
 
   // 组件卸载时清理
   useEffect(() => {
+    isMountedRef.current = true;
+    
     return () => {
+      isMountedRef.current = false;
       clearAnimationFrame();
       clearTimeoutRef();
+      clearLoopTimeoutRef();
+      clearInnerTimeoutRef();
     };
-  }, [clearAnimationFrame, clearTimeoutRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 数值变化检测
   useEffect(() => {
     if (previousValueRef.current !== value && animation !== "none") {
       setAnimate(false);
-      setTimeout(() => setAnimate(true), 50);
+      innerTimeoutRef.current = setTimeout(() => {
+        if (!isMountedRef.current) return;
+        setAnimate(true);
+      }, 50);
     }
     previousValueRef.current = value;
+    
+    return () => {
+      clearInnerTimeoutRef();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, animation]);
 
-  // 生成数字数组用于随机动画
+  // ─── 生成数字数组用于随机动画 ───
   const valueArray = useMemo(() => {
     const formattedValue = formatValue(value);
     return formattedValue.split('').map(char => {
@@ -194,8 +252,8 @@ const Statistic: React.FC<StatisticProps> = ({
     });
   }, [value, formatValue]);
 
-  // 动画变体
-  const animationVariants = {
+  // ─── 动画变体 ───
+  const animationVariants = useMemo(() => ({
     bounce: {
       initial: { scale: 0.8, opacity: 0 },
       animate: { 
@@ -239,28 +297,44 @@ const Statistic: React.FC<StatisticProps> = ({
         transition: { duration: 0.6, ease: "easeOut" as const }
       }
     }
-  };
+  }), []);
 
-  const getAnimationVariant = () => {
+  // ─── 获取动画变体 ───
+  const getAnimationVariant = useCallback(() => {
     if (animation === "bounce") return animationVariants.bounce;
     if (animation === "fade") return animationVariants.fade;
     if (animation === "slide") return animationVariants.slide;
     if (animation === "scale") return animationVariants.scale;
     if (animation === "flip") return animationVariants.flip;
     return animationVariants.fade;
-  };
+  }, [animation, animationVariants]);
+
+  // ─── 根容器类名 ───
+  const rootClassName = useMemo(() => {
+    return [
+      prefixCls,
+      animate && `${prefixCls}--animating`,
+      className,
+    ].filter(Boolean).join(' ');
+  }, [animate, className]);
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SECTION: 渲染
+  // ─────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className={`land-statistic ${className || ''}`} style={style}>
-      {prefix && <div className="land-statistic-prefix">{prefix}</div>}
+    <div className={rootClassName} style={style}>
+      {/* 前缀 */}
+      {prefix && <div className={`${prefixCls}__prefix`}>{prefix}</div>}
       
-      <div className="land-statistic-value">
+      {/* 数值区域 */}
+      <div className={`${prefixCls}__value`}>
         <AnimatePresence mode="wait">
           {animation === "random" ? (
-            <div className="flex items-center" key="random">
+            <div className={`${prefixCls}__random-wrapper`} key="random">
               {valueArray.map((digit, idx) => (
                 <div
-                  className="land-statistic-random"
+                  className={`${prefixCls}__random-digit`}
                   key={`digit-${idx}-${digit}`}
                   style={{ height: "45px" }}
                 >
@@ -272,7 +346,7 @@ const Statistic: React.FC<StatisticProps> = ({
                       stiffness: 100,
                       damping: 15
                     }}
-                    className="land-statistic-random-list"
+                    className={`${prefixCls}__random-list`}
                   >
                     {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                       <div key={num}>{num}</div>
@@ -312,9 +386,10 @@ const Statistic: React.FC<StatisticProps> = ({
           )}
         </AnimatePresence>
         
+        {/* 单位 */}
         {unit && (
           <motion.div 
-            className="land-statistic-unit"
+            className={`${prefixCls}__unit`}
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
@@ -324,9 +399,10 @@ const Statistic: React.FC<StatisticProps> = ({
         )}
       </div>
 
+      {/* 趋势图标 */}
       {trendIcon && (
         <motion.div 
-          className="land-statistic-trend-icon"
+          className={`${prefixCls}__trend-icon`}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3, delay: 0.2 }}
@@ -356,9 +432,10 @@ const Statistic: React.FC<StatisticProps> = ({
         </motion.div>
       )}
       
+      {/* 后缀 */}
       {suffix && (
         <motion.div 
-          className="land-statistic-suffix"
+          className={`${prefixCls}__suffix`}
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}

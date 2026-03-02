@@ -1,135 +1,290 @@
-.land-select{
+// ============================================================================
+// Select 组件样式
+// @description 选择器组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$select-width: var(--land-select-width, fit-content);
+$select-gap: var(--land-select-gap, var(--gap-s));
+$select-radius: var(--land-select-radius, var(--radius-m));
+
+// ─── 触发器令牌 ───
+$select-trigger-height: var(--land-select-trigger-height, 36px);
+$select-trigger-padding-x: var(--land-select-trigger-padding-x, var(--padding-m));
+$select-trigger-padding-y: var(--land-select-trigger-padding-y, 0);
+
+// ─── 尺寸令牌: Small ───
+$select-sm-height: var(--land-select-sm-height, 28px);
+$select-sm-padding-x: var(--land-select-sm-padding-x, var(--padding-s));
+$select-sm-font-size: var(--land-select-sm-font-size, var(--font-content-s));
+
+// ─── 尺寸令牌: Large ───
+$select-lg-height: var(--land-select-lg-height, 44px);
+$select-lg-padding-x: var(--land-select-lg-padding-x, var(--padding-l));
+$select-lg-font-size: var(--land-select-lg-font-size, var(--font-content-l));
+
+// ─── 外观令牌: Outline ───
+$select-outline-bg: var(--land-select-outline-bg, transparent);
+$select-outline-border: var(--land-select-outline-border, 1px solid var(--color-border-primary));
+$select-outline-border-hover: var(--land-select-outline-border-hover, 1px solid var(--color-border-secondary));
+$select-outline-border-focus: var(--land-select-outline-border-focus, 1px solid var(--color-primary));
+
+// ─── 外观令牌: Fill ───
+$select-fill-bg: var(--land-select-fill-bg, var(--color-bg-secondary));
+$select-fill-bg-hover: var(--land-select-fill-bg-hover, var(--color-bg-secondary));
+$select-fill-border: var(--land-select-fill-border, 1px solid transparent);
+
+// ─── 外观令牌: Text ───
+$select-text-bg: var(--land-select-text-bg, transparent);
+$select-text-bg-hover: var(--land-select-text-bg-hover, var(--color-bg-secondary));
+$select-text-border: var(--land-select-text-border, 1px solid transparent);
+
+// ─── 外观令牌: Transparent ───
+$select-transparent-bg: var(--land-select-transparent-bg, transparent);
+$select-transparent-border: var(--land-select-transparent-border, none);
+
+// ─── 排版令牌 ───
+$select-font-size: var(--land-select-font-size, var(--font-content-m));
+$select-color: var(--land-select-color, var(--color-text-primary));
+$select-placeholder-color: var(--land-select-placeholder-color, var(--color-text-tertiary));
+
+// ─── 状态令牌 ───
+$select-disabled-opacity: var(--land-select-disabled-opacity, 0.5);
+$select-disabled-cursor: var(--land-select-disabled-cursor, not-allowed);
+
+// ─── 下拉面板令牌 ───
+$select-dropdown-gap: var(--land-select-dropdown-gap, var(--gap-xs));
+
+// ─── 选项令牌 ───
+$select-option-padding-x: var(--land-select-option-padding-x, var(--padding-l));
+$select-option-padding-y: var(--land-select-option-padding-y, var(--padding-m));
+$select-option-radius: var(--land-select-option-radius, var(--radius-m));
+$select-option-color: var(--land-select-option-color, var(--color-text-primary));
+$select-option-bg-hover: var(--land-select-option-bg-hover, var(--color-bg-secondary));
+$select-option-bg-selected: var(--land-select-option-bg-selected, var(--color-bg-secondary));
+$select-option-disabled-color: var(--land-select-option-disabled-color, var(--color-text-tertiary));
+
+// ─── 箭头令牌 ───
+$select-arrow-color: var(--land-select-arrow-color, var(--color-text-primary));
+$select-arrow-size: var(--land-select-arrow-size, 16px);
+
+// ─── 动效令牌 ───
+$select-transition: var(--land-select-transition, all 0.2s ease-in-out);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-select {
   position: relative;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  gap: 8px;
-  width: var(--land-select-width,fit-content);
-  .land-dropdown{
-    &.land-dropdown--open{
-      .land-select-value-arrow{
+  width: $select-width;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 触发器
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $select-gap;
+    padding: $select-trigger-padding-y $select-trigger-padding-x;
+    width: 100%;
+    height: $select-trigger-height;
+    border-radius: $select-radius;
+    font-size: $select-font-size;
+    color: $select-color;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: $select-transition;
+
+    // ─── Outline 变体 ───
+    &--outline {
+      background-color: $select-outline-bg;
+      border: $select-outline-border;
+
+      &:hover:not(.land-select__trigger--disabled) {
+        border: $select-outline-border-hover;
+      }
+
+      &.land-select__trigger--open {
+        border: $select-outline-border-focus;
+      }
+    }
+
+    // ─── Fill 变体 ───
+    &--fill {
+      background-color: $select-fill-bg;
+      border: $select-fill-border;
+
+      &:hover:not(.land-select__trigger--disabled) {
+        background-color: $select-fill-bg-hover;
+      }
+    }
+
+    // ─── Text 变体 ───
+    &--text {
+      background-color: $select-text-bg;
+      border: $select-text-border;
+
+      &:hover:not(.land-select__trigger--disabled) {
+        background-color: $select-text-bg-hover;
+      }
+    }
+
+    // ─── Transparent 变体 ───
+    &--transparent {
+      padding: 0;
+      background-color: $select-transparent-bg;
+      border: $select-transparent-border;
+    }
+
+    // ─── Small 尺寸 ───
+    &--small {
+      height: $select-sm-height;
+      padding-left: $select-sm-padding-x;
+      padding-right: $select-sm-padding-x;
+      font-size: $select-sm-font-size;
+    }
+
+    // ─── Large 尺寸 ───
+    &--large {
+      height: $select-lg-height;
+      padding-left: $select-lg-padding-x;
+      padding-right: $select-lg-padding-x;
+      font-size: $select-lg-font-size;
+    }
+
+    // ─── 禁用状态 ───
+    &--disabled {
+      opacity: $select-disabled-opacity;
+      cursor: $select-disabled-cursor;
+      pointer-events: none;
+    }
+
+    // ─── 展开状态 ───
+    &--open {
+      .land-select__arrow {
         transform: rotate(180deg);
       }
     }
   }
-}
-.land-select-input{
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--gap-s);
-  padding: 0 12px;
-  width: 100%;
-  height: 36px;
-  font-size: 14px;
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-m);
-  color: var(--color-text-primary);
-  box-sizing: border-box;
-  cursor: pointer;
-  &.disabled{
-    cursor: not-allowed;
-    .land-select-value-arrow{
-      color: var(--color-text-secondary);
-    }
-  }
-  p {
-    flex: 1;
-    font-size: 14px;
-    &.land-select-placeholder {
-      color: var(--color-text-secondary);
-    }
-    &.land-select-trigger {
-      color: var(--color-text-primary);
-    }
-  }
-  svg {
-    color: var(--color-text-primary);
-    transition: transform var(--transition-s) ease;
-  }
-  &.show svg {
-    transform: rotate(180deg);
-  }
-  &.background{
-    border: none;
-    background-color: var(--color-bg-secondary);
-    transition: background-color var(--transition-s) linear;
-    &:hover:not(.disabled){
-      background-color: var(--color-bg-secondary);
-    }
-    &:active:not(.disabled){
-      background-color: var(--color-bg-secondary);
-    }
-    &.disabled{
-      background-color: var(--color-bg-secondary);
-    }
-  }
-  &.text{
-    border: none;
-    transition: background-color var(--transition-s) linear;
-    &:hover:not(.disabled) {
-      background-color: var(--color-bg-secondary);
-    }
-    &:active:not(.disabled) {
-      background-color: var(--color-bg-secondary);
-    }
-    &.disabled{
-      color: var(--color-text-secondary);
-    }
-  }
-  &.transparent{
-    padding: 0;
-    border: none;
-    transition: color var(--transition-s) linear;
-    &:hover:not(.disabled) p.land-select-trigger{
-      color: var(--color-text-primary);
-    }
-  }
-}
 
-.land-select-list{
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-s);
-  .land-select-drop-item{
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 内容区域
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__value {
+    color: $select-color;
+  }
+
+  &__placeholder {
+    color: $select-placeholder-color;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 箭头
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__arrow {
+    flex-shrink: 0;
+    width: $select-arrow-size;
+    height: $select-arrow-size;
+    color: $select-arrow-color;
+    transition: transform 0.2s ease;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 下拉面板
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: $select-dropdown-gap;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__option {
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--gap-s);
-    align-items: center;
-    border-radius: var(--radius-m);
-    padding: var(--padding-m) var(--padding-l);
-    color: var(--color-text-primary);
-    font-size: var(--font-content-m);
+    gap: $select-gap;
+    padding: $select-option-padding-y $select-option-padding-x;
+    border-radius: $select-option-radius;
+    color: $select-option-color;
+    font-size: $select-font-size;
     white-space: nowrap;
-    transition: all var(--transition-s) linear;
-    .land-select-checkbox{
-      display: flex;
-      align-items: center;
-      gap: var(--gap-s);
-    }
-    .land-select-item-info{
-      height: 16px;
-      position: relative;
-      cursor: default;
-    }
     cursor: pointer;
-    &:hover:not(.disabled) {
-      background-color: var(--color-bg-secondary);
+    transition: $select-transition;
+
+    &:hover:not(&--disabled) {
+      background-color: $select-option-bg-hover;
     }
-    &:active:not(.disabled) {
-      background-color: var(--color-bg-secondary);
+
+    &--selected:not(&--disabled) {
+      background-color: $select-option-bg-selected;
     }
-    &.selected:not(.disabled) {
-      background-color: var(--color-bg-secondary);
-    }
-    &.disabled {
-      cursor: not-allowed;
-      color: var(--color-text-tertiary);
+
+    &--disabled {
+      color: $select-option-disabled-color;
+      cursor: $select-disabled-cursor;
     }
   }
-  .land-select-drop-empty{
-    padding: var(--padding-s);
-    font-size: var(--font-content-m);
+
+  &__option-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__option-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
     color: var(--color-text-secondary);
+    cursor: help;
+  }
+
+  &__checkbox {
+    flex-shrink: 0;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 空状态
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__empty {
+    padding: var(--padding-m);
+    color: $select-placeholder-color;
+    font-size: $select-font-size;
+    text-align: center;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: Dropdown 开启状态下的箭头旋转
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-dropdown--open {
+  .land-select__arrow {
+    transform: rotate(180deg);
   }
 }

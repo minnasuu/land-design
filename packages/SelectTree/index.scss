@@ -1,148 +1,257 @@
-.land-select-tree{
-  .land-dropdown__content{
+// ============================================================================
+// SelectTree 组件样式
+// @description 树形选择器组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 触发器令牌 ───
+$select-tree-trigger-height: var(--land-select-tree-trigger-height, 36px);
+$select-tree-trigger-padding-x: var(--land-select-tree-trigger-padding-x, 12px);
+$select-tree-trigger-radius: var(--land-select-tree-radius, var(--radius-m));
+$select-tree-trigger-font-size: var(--land-select-tree-font-size, 14px);
+$select-tree-trigger-gap: var(--land-select-tree-gap, var(--gap-s));
+
+// ─── 外观令牌: Outline ───
+$select-tree-outline-bg: var(--land-select-tree-outline-bg, transparent);
+$select-tree-outline-border: var(--land-select-tree-outline-border, 1px solid var(--color-border-primary));
+
+// ─── 外观令牌: Fill ───
+$select-tree-fill-bg: var(--land-select-tree-fill-bg, var(--color-bg-secondary));
+$select-tree-fill-border: var(--land-select-tree-fill-border, 1px solid transparent);
+
+// ─── 外观令牌: Text ───
+$select-tree-text-bg: var(--land-select-tree-text-bg, transparent);
+$select-tree-text-bg-hover: var(--land-select-tree-text-bg-hover, var(--color-bg-secondary));
+$select-tree-text-border: var(--land-select-tree-text-border, 1px solid transparent);
+
+// ─── 外观令牌: Transparent ───
+$select-tree-transparent-bg: var(--land-select-tree-transparent-bg, transparent);
+$select-tree-transparent-border: var(--land-select-tree-transparent-border, none);
+
+// ─── 排版令牌 ───
+$select-tree-color: var(--land-select-tree-color, var(--color-text-primary));
+$select-tree-placeholder-color: var(--land-select-tree-placeholder-color, var(--color-text-secondary));
+
+// ─── 状态令牌 ───
+$select-tree-disabled-bg: var(--land-select-tree-disabled-bg, var(--color-bg-secondary));
+$select-tree-disabled-opacity: var(--land-select-tree-disabled-opacity, 0.5);
+
+// ─── 下拉面板令牌 ───
+$select-tree-dropdown-max-width: var(--land-select-tree-dropdown-max-width, 600px);
+
+// ─── 列表令牌 ───
+$select-tree-list-width: var(--land-select-tree-list-width, 160px);
+$select-tree-list-padding: var(--land-select-tree-list-padding, var(--padding-s));
+$select-tree-list-gap: var(--land-select-tree-list-gap, var(--gap-s));
+$select-tree-list-border: var(--land-select-tree-list-border, 1px solid var(--color-border-primary));
+
+// ─── 选项令牌 ───
+$select-tree-option-padding: var(--land-select-tree-option-padding, var(--padding-m) var(--padding-l));
+$select-tree-option-gap: var(--land-select-tree-option-gap, var(--gap-m));
+$select-tree-option-radius: var(--land-select-tree-option-radius, var(--radius-m));
+$select-tree-option-font-size: var(--land-select-tree-option-font-size, 14px);
+$select-tree-option-color: var(--land-select-tree-option-color, var(--color-text-primary));
+$select-tree-option-bg-hover: var(--land-select-tree-option-bg-hover, var(--color-bg-secondary));
+$select-tree-option-bg-selected: var(--land-select-tree-option-bg-selected, var(--color-bg-secondary));
+
+// ─── 动效令牌 ───
+$select-tree-transition: var(--land-select-tree-transition, all var(--transition-s) linear);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-select-tree {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+
+  // 重置 Dropdown 内容区域的内边距
+  .land-dropdown__content {
     padding: 0;
   }
-  .land-select-tree-drop{
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    max-width: 600px;
-    overflow-x: auto;
-    
-    .land-select-tree-drop-list{
-      display: flex;
-      flex-direction: column;
-      gap: var(--gap-s);
-      padding: var(--padding-s);
-      width: 160px;
-      min-width: 160px;
-      border-right: 1px solid var(--color-border-primary);
-      
-      &:last-child {
-        border-right: none;
-      }
-      
-      .land-select-tree-drop-list-item{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--gap-m);
-        padding: var(--padding-m) var(--padding-l);
-        font-size: 14px;
-        color: var(--color-text-primary);
-        white-space: nowrap;
-        border-radius: var(--radius-m);
-        transition: all var(--transition-s) linear;
-        cursor: pointer;
-        
-        &:hover{
-          background-color: var(--color-bg-secondary);
-        }
-        
-        &.expanded {
-          background-color: var(--color-bg-secondary);
-        }
-        
-        &.selected {
-          background-color: var(--color-bg-secondary);
-        }
-        
-        .land-select-tree-drop-list-item-content{
-          display: flex;
-          align-items: center;
-          gap: var(--gap-m);
-          flex: 1;
-          min-width: 0;
-        }
-        
-        .land-select-tree-drop-list-item-arrow{
-          transform: rotate(-90deg);
-          transition: transform var(--transition-s) ease;
-          flex-shrink: 0;
-          
-          &.expanded {
-            transform: rotate(0deg);
-          }
-        }
-      }
-    }
-  }
-  
-  .land-select-input{
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 触发器
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__trigger {
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--gap-s);
-    padding: 0 12px;
+    gap: $select-tree-trigger-gap;
+    padding: 0 $select-tree-trigger-padding-x;
     width: 100%;
-    height: 36px;
-    font-size: 14px;
-    border: 1px solid var(--color-border-primary);
-    border-radius: var(--radius-m);
+    height: $select-tree-trigger-height;
+    font-size: $select-tree-trigger-font-size;
+    border-radius: $select-tree-trigger-radius;
     box-sizing: border-box;
     cursor: pointer;
-    
-    &.disabled{
-      background-color: var(--color-bg-secondary);
-      cursor: not-allowed;
+    transition: $select-tree-transition;
+
+    // ─── Outline 变体 ───
+    &--outline {
+      background-color: $select-tree-outline-bg;
+      border: $select-tree-outline-border;
     }
-    
-    p {
-      flex: 1;
-      font-size: 14px;
-      
-      &.land-select-placeholder {
-        color: var(--color-text-secondary);
-      }
-      
-      &.land-select-trigger {
-        color: var(--color-text-primary);
-      }
+
+    // ─── Fill 变体 ───
+    &--fill {
+      background-color: $select-tree-fill-bg;
+      border: $select-tree-fill-border;
     }
-    
-    svg {
-      transition: transform var(--transition-s) ease;
-    }
-    
-    &.show svg {
-      transform: rotate(180deg);
-    }
-    
-    &.background{
-      border: none;
-      background-color: var(--color-bg-secondary);
-      transition: background-color var(--transition-s) linear;
-      
-      &:hover:not(.disabled){
-            background-color: var(--color-bg-secondary);
-      }
-      
-      &:active:not(.disabled){
-        background-color: var(--color-bg-secondary);
+
+    // ─── Text 变体 ───
+    &--text {
+      background-color: $select-tree-text-bg;
+      border: $select-tree-text-border;
+
+      &:hover:not(.land-select-tree__trigger--disabled) {
+        background-color: $select-tree-text-bg-hover;
       }
     }
-    
-    &.text{
-      border: none;
-      transition: background-color var(--transition-s) linear;
-      
-      &:hover:not(.disabled) {
-        background-color: var(--color-bg-secondary);
-      }
-      
-      &:active:not(.disabled) {
-        background-color: var(--color-bg-secondary);
-      }
-    }
-    
-    &.transparent{
+
+    // ─── Transparent 变体 ───
+    &--transparent {
       padding: 0;
-      border: none;
-      transition: color var(--transition-s) linear;
-      
-      &:hover:not(.disabled) p.land-select-trigger{
-        color: var(--color-text-primary);
-      }
+      background-color: $select-tree-transparent-bg;
+      border: $select-tree-transparent-border;
     }
+
+    // ─── 禁用状态 ───
+    &--disabled {
+      background-color: $select-tree-disabled-bg;
+      opacity: $select-tree-disabled-opacity;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 内容区域
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__value {
+    color: $select-tree-color;
+  }
+
+  &__placeholder {
+    color: $select-tree-placeholder-color;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 箭头
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__arrow {
+    flex-shrink: 0;
+    transition: transform var(--transition-s) ease;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 下拉面板
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__dropdown {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    max-width: $select-tree-dropdown-max-width;
+    overflow-x: auto;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 列表
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $select-tree-list-gap;
+    padding: $select-tree-list-padding;
+    width: $select-tree-list-width;
+    min-width: $select-tree-list-width;
+    height: 100%;
+
+    &:not(:last-child) {
+      border-right: $select-tree-list-border;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $select-tree-option-gap;
+    padding: $select-tree-option-padding;
+    font-size: $select-tree-option-font-size;
+    color: $select-tree-option-color;
+    white-space: nowrap;
+    border-radius: $select-tree-option-radius;
+    transition: $select-tree-transition;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $select-tree-option-bg-hover;
+    }
+
+    &--expanded {
+      background-color: $select-tree-option-bg-selected;
+    }
+
+    &--selected {
+      background-color: $select-tree-option-bg-selected;
+    }
+  }
+
+  &__option-content {
+    display: flex;
+    align-items: center;
+    gap: $select-tree-option-gap;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__option-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__option-arrow {
+    transform: rotate(-90deg);
+    transition: transform var(--transition-s) ease;
+    flex-shrink: 0;
+
+    &--expanded {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: Dropdown 开启状态下的箭头旋转
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-dropdown--open {
+  .land-select-tree__arrow {
+    transform: rotate(180deg);
   }
 }

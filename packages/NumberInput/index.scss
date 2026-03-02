@@ -1,59 +1,315 @@
-.land-number-input{
+// ==================== NumberInput 设计令牌 ====================
+
+// 尺寸变量
+$number-input-stepper-width: 32px;
+$number-input-stepper-width-small: 28px;
+$number-input-stepper-width-large: 40px;
+
+$number-input-height: 36px;
+$number-input-height-small: 28px;
+$number-input-height-large: 44px;
+
+$number-input-icon-size: 16px;
+$number-input-icon-size-small: 14px;
+$number-input-icon-size-large: 18px;
+
+// 颜色变量
+$number-input-stepper-color: var(--color-text-secondary);
+$number-input-stepper-hover-color: var(--color-text-primary);
+$number-input-stepper-disabled-color: var(--color-text-quaternary);
+$number-input-stepper-bg: transparent;
+$number-input-stepper-hover-bg: var(--color-fill-tertiary);
+$number-input-border-color: var(--color-border-primary);
+
+// 动画
+$number-input-transition: all 0.2s ease;
+
+// ==================== 主样式 ====================
+
+.land-number-input {
   position: relative;
-  .land-number-input-input input{
+  display: inline-flex;
+  align-items: center;
+
+  // ─── 隐藏原生数字输入框箭头 ───
+  .land-number-input__input input {
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
       height: auto;
+      appearance: none;
       -webkit-appearance: none;
+      margin: 0;
     }
+    appearance: textfield;
+    -moz-appearance: textfield;
   }
-  
-  // 鼠标滚轮功能样式
-  &[data-wheel-enabled="true"] {
-    cursor: ns-resize;
+
+  // ─── 输入框容器 ───
+  .land-number-input__popover {
+    flex: 1;
+    min-width: 0;
+    display: block;
+    width: 100%;
   }
-  &.hide-arrow-button{
-    .land-number-input-input{
-      padding-left: 0;
-    }
+
+  .land-number-input__input {
+    width: 100%;
   }
-  
-  .land-numberInput-arrow{
+
+  // ─── 步进按钮容器 ───
+  .land-number-input__stepper {
     position: absolute;
-    right: 0;
     top: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 32px;
+    width: $number-input-stepper-width;
     height: 100%;
-    color: var(--land-number-input-arrow-color, var(--color-text-primary));
-    
-    .land-numberInput-add svg{
+    z-index: 1;
+
+    &--right {
+      right: 0;
+      border-left: 1px solid transparent;
+    }
+
+    &--left {
+      left: 0;
+      border-right: 1px solid transparent;
+    }
+  }
+
+  // ─── 步进按钮 ───
+  .land-number-input__step-btn {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: calc(50% - 0.5px);
+    color: $number-input-stepper-color;
+    cursor: pointer;
+    transition: $number-input-transition;
+    user-select: none;
+
+    svg {
+      transition: $number-input-transition;
+    }
+
+    svg path {
+      transition: stroke-width 0.15s linear;
+    }
+
+    &--up svg {
       transform: rotate(180deg);
     }
-    .land-numberInput-add,
-    .land-numberInput-dec{
-      display: grid;
-      place-content: center;
-      height: var(--land-number-input-arrow-height, 18px);
-      width: 100%;
-      transition: color 0.15s linear;
-      cursor: pointer;
-      svg path{
-        transition: stroke-width 0.15s linear;
+
+    &:hover:not(&--disabled) {
+      color: $number-input-stepper-hover-color;
+      background-color: $number-input-stepper-hover-bg;
+
+      svg path {
+        stroke-width: 4px;
       }
-      &:hover:not(.disabled){
-        color: var(--color-text-primary);
-        svg path{
-          stroke-width: 4px;
-        }
-      }
-      &.disabled{
-        cursor: not-allowed;
-        color: var(--color-text-secondary);
+    }
+
+    &:active:not(&--disabled) {
+      transform: scale(0.95);
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: $number-input-stepper-disabled-color;
+      opacity: 0.5;
+    }
+
+    // 焦点样式
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: -2px;
+      border-radius: 2px;
+    }
+  }
+
+  // ==================== 外观变体 ====================
+
+  // ─── outline 变体 ───
+  &--outline {
+    .land-number-input__stepper--right {
+      border-left-color: $number-input-border-color;
+    }
+
+    .land-number-input__stepper--left {
+      border-right-color: $number-input-border-color;
+    }
+
+    // 聚焦时边框和分割线变主题色
+    &:focus-within {
+      background-color: var(--color-fill-tertiary);
+    }
+  }
+
+  // ─── fill 变体 ───
+  &--fill {
+    .land-number-input__stepper {
+      background: inherit;
+    }
+    .land-number-input__stepper--right {
+      border-left-color: $number-input-border-color;
+    }
+
+    .land-number-input__stepper--left {
+      border-right-color: $number-input-border-color;
+    }
+  }
+
+  // ─── transparent 变体 ───
+  &--transparent {
+    .land-number-input__stepper {
+      background: transparent;
+    }
+
+    .land-number-input__stepper--right,
+    .land-number-input__stepper--left {
+      border-color: transparent;
+    }
+
+    .land-number-input__step-btn {
+      border-radius: 4px;
+
+      &:hover:not(&--disabled) {
+        background-color: var(--color-fill-tertiary);
       }
     }
   }
+
+  // ==================== 尺寸变体 ====================
+
+  // ─── 小尺寸 ───
+  &--small {
+    .land-number-input__stepper {
+      width: $number-input-stepper-width-small;
+    }
+
+    .land-number-input__step-btn {
+      svg {
+        width: $number-input-icon-size-small;
+        height: $number-input-icon-size-small;
+      }
+    }
+
+    .land-number-input__input {
+      input {
+        height: $number-input-height-small;
+        font-size: 12px;
+      }
+    }
+  }
+
+  // ─── 大尺寸 ───
+  &--large {
+    .land-number-input__stepper {
+      width: $number-input-stepper-width-large;
+    }
+
+    .land-number-input__step-btn {
+      svg {
+        width: $number-input-icon-size-large;
+        height: $number-input-icon-size-large;
+      }
+    }
+
+    .land-number-input__input {
+      input {
+        height: $number-input-height-large;
+        font-size: 16px;
+      }
+    }
+  }
+
+  // ==================== 步进按钮位置变体 ====================
+
+  // ─── 隐藏步进按钮 ───
+  &--no-stepper {
+    .land-number-input__input {
+      padding-right: 0;
+    }
+  }
+
+  // ─── 两侧步进按钮 ───
+  &--stepper-both {
+    .land-number-input__stepper {
+      width: $number-input-stepper-width;
+      flex-direction: row;
+
+      &--left,
+      &--right {
+        border: none;
+      }
+    }
+
+    .land-number-input__step-btn {
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    &.land-number-input--outline {
+      .land-number-input__step-btn {
+        border: 1px solid $number-input-border-color;
+
+        &:hover:not(&--disabled) {
+          border-color: var(--color-primary);
+        }
+      }
+    }
+  }
+
+  // ==================== 状态 ====================
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+
+    .land-number-input__stepper {
+      pointer-events: none;
+    }
+  }
+
+  // ─── 滚轮可用 ───
+  &--wheelable {
+    cursor: ns-resize;
+
+    .land-number-input__input input {
+      cursor: ns-resize;
+    }
+  }
+
+  // ─── 宽度自适应 ───
+  &--auto-width {
+    width: fit-content;
+    display: inline-flex;
+
+    .land-number-input__popover {
+      flex: 0 0 auto;
+    }
+    input{
+      width: fit-content;
+    }
+  }
+
+  // ==================== 响应式调整 ====================
+
+  @media (hover: none) {
+    // 触摸设备增大点击区域
+    .land-number-input__step-btn {
+      min-height: 44px;
+    }
+  }
+}
+
+// ==================== Popover 样式覆盖 ====================
+
+.land-number-input__popover {
+  display: block;
+  width: 100%;
 }

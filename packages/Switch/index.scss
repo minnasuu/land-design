@@ -1,75 +1,305 @@
-.land-switch{
+// ==================== Switch 变量定义 ====================
+
+$switch-gap: var(--gap-m);
+$switch-transition: var(--transition-s);
+
+// 轨道尺寸
+$switch-track-width: 36px;
+$switch-track-height: 20px;
+$switch-track-padding: 2px;
+$switch-track-radius: 24px;
+
+// 轨道颜色
+$switch-track-bg: var(--color-gray-2);
+$switch-track-bg-hover: var(--color-gray-3);
+$switch-track-bg-active: var(--color-gray-4);
+$switch-track-bg-checked: var(--color-primary);
+
+// 滑块
+$switch-thumb-bg: var(--color-white);
+$switch-thumb-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+// 标签
+$switch-label-color: var(--color-text-primary);
+$switch-label-font-size: var(--font-content-m);
+
+// 禁用状态
+$switch-disabled-opacity: var(--opacity-disabled);
+
+// ==================== 主样式 ====================
+
+.land-switch {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--land-switch-gap, var(--gap-m));
-  &.disabled{
-    .land-switch-content{
-      opacity: var(--land-switch-disabled-opacity, var(--opacity-disabled));
-      cursor: not-allowed;
-    }
-    cursor: not-allowed;
-  }
-  .land-switch-content{
+  gap: $switch-gap;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+
+  // ─── 轨道 ───
+  &__track {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: var(--land-switch-content-gap, var(--gap-m));
-    cursor: pointer;
-    .land-switch-bar {
-      display: flex;
-      justify-content: start;
-      padding: 2px;
-      width: var(--land-switch-bar-width, 36px);
-      height: var(--land-switch-bar-height, 20px);
-      background-color: var(--land-switch-bar-background-color, var(--color-bg-secondary));
-      border-radius: var(--land-switch-bar-border-radius, 24px);
+    width: $switch-track-width;
+    height: $switch-track-height;
+    padding: $switch-track-padding;
+    background-color: $switch-track-bg;
+    border-radius: $switch-track-radius;
+    flex-shrink: 0;
+    transition: background-color $switch-transition ease;
+
+    &:hover {
+      background-color: $switch-track-bg-hover;
+    }
+
+    &:active {
+      background-color: $switch-track-bg-active;
+    }
+  }
+
+  // ─── 轨道内容 ───
+  &__track-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--color-white);
+    opacity: 0;
+    transition: opacity $switch-transition ease;
+    pointer-events: none;
+  }
+
+  // ─── 滑块 ───
+  &__thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc($switch-track-height - $switch-track-padding * 2);
+    aspect-ratio: 1;
+    background-color: $switch-thumb-bg;
+    border-radius: var(--radius-circle);
+    box-shadow: $switch-thumb-shadow;
+    flex-shrink: 0;
+    z-index: 1;
+
+    svg {
       flex-shrink: 0;
-      transition: background-color var(--transition-s) linear;
-      &:hover {
-        background-color: var(--land-switch-bar-hover-background-color, var(--color-bg-tertiary));
-      }
+    }
+  }
+
+  // ─── 加载图标 ───
+  &__loading-icon {
+    animation: land-switch-spin 1s linear infinite;
+  }
+
+  // ─── 标签 ───
+  &__label {
+    font-size: $switch-label-font-size;
+    color: $switch-label-color;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  // ─── 图标提示 ───
+  &__icon-tip {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-tertiary);
+    cursor: help;
+
+    &:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  // ==================== 状态变体 ====================
+
+  // ─── 选中状态 ───
+  &--checked {
+    .land-switch__track {
+      background-color: $switch-track-bg-checked;
+    }
+
+    .land-switch__track-content {
+      opacity: 1;
+      left: 6px;
+    }
+  }
+
+  // ─── 未选中时轨道内容位置 ───
+  &:not(&--checked) {
+    .land-switch__track-content {
+      opacity: 1;
+      right: 6px;
+      left: auto;
+    }
+  }
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    cursor: not-allowed;
+    opacity: $switch-disabled-opacity;
+
+    .land-switch__track {
+      cursor: not-allowed;
+
+      &:hover,
       &:active {
-        background-color: var(--land-switch-bar-active-background-color, var(--color-bg-quaternary));
+        background-color: $switch-track-bg;
       }
     }
-    .land-switch-indicator {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      aspect-ratio: 1;
-      background-color: var(--land-switch-indicator-background-color, var(--color-white));
-      border-radius: var(--land-switch-indicator-border-radius, var(--radius-circle));
+
+    &.land-switch--checked .land-switch__track {
+      &:hover,
+      &:active {
+        background-color: $switch-track-bg-checked;
+      }
     }
-    .land-switch-label {
-      font-size: var(--land-switch-label-font-size, var(--font-content-m));
-      color: var(--land-switch-label-color, var(--color-text-primary));
-      user-select: none;
-    }
-    & + .land-switch-label-iconTip {
-      position: relative;
-      height: var(--land-switch-label-iconTip-height, 16px);
+  }
+
+  // ─── 只读状态 ───
+  &--readonly {
+    cursor: default;
+
+    .land-switch__track {
       cursor: default;
-    }
-    &.checked {
-      .land-switch-bar {
-        background-color: var(--land-switch-bar-checked-background-color, var(--color-primary));
-        transition-delay: var(--land-switch-bar-checked-transition-delay, 100ms);
+
+      &:hover,
+      &:active {
+        background-color: $switch-track-bg;
       }
     }
-    &.dark{
-      .land-switch-bar{
-        background-color: var(--land-switch-bar-dark-background-color, rgba(0,0,0,0.2));
-        &:hover {
-          background-color: var(--land-switch-bar-dark-hover-background-color, rgba(0,0,0,0.2));
-        }
+
+    &.land-switch--checked .land-switch__track {
+      &:hover,
+      &:active {
+        background-color: $switch-track-bg-checked;
       }
-      &.checked{
-        .land-switch-bar {
-        background-color: var(--land-switch-bar-checked-background-color, var(--color-primary));
-        transition-delay: var(--land-switch-bar-checked-transition-delay, 100ms);
+    }
+  }
+
+  // ─── 加载状态 ───
+  &--loading {
+    cursor: wait;
+
+    .land-switch__track {
+      cursor: wait;
+    }
+  }
+
+  // ─── 有轨道内容时宽度自适应 ───
+  &--has-content {
+    &.land-switch--large .land-switch__track,
+    &.land-switch--medium .land-switch__trac,
+    &.land-switch--small .land-switch__track {
+      width: fit-content;
+      min-width: $switch-track-width;
+      padding-left: $switch-track-padding;
+    }
+
+    .land-switch__track-content {
+      position: relative;
+      left: auto;
+      right: auto;
+      padding: 0 6px;
+      white-space: nowrap;
+    }
+
+    // 小尺寸有内容
+    &.land-switch--small {
+      .land-switch__track {
+        min-width: 28px;
       }
+
+      .land-switch__track-content {
+        padding: 0 4px;
       }
-      } 
+    }
+
+    // 大尺寸有内容
+    &.land-switch--large {
+      .land-switch__track {
+        min-width: 44px;
+      }
+
+      .land-switch__track-content {
+        padding: 0 8px;
+      }
+    }
+  }
+
+  // ─── 键盘焦点 ───
+  &:focus-visible {
+    .land-switch__track {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  // ==================== 尺寸变体 ====================
+
+  // ─── 小尺寸 ───
+  &--small {
+    gap: var(--gap-s);
+
+    .land-switch__track {
+      width: 28px;
+      height: 16px;
+    }
+
+    .land-switch__thumb {
+      height: calc(16px - $switch-track-padding * 2);
+    }
+
+    .land-switch__label {
+      font-size: var(--font-content-s);
+    }
+
+    .land-switch__track-content {
+      font-size: 8px;
+    }
+  }
+
+  // ─── 大尺寸 ───
+  &--large {
+    gap: var(--gap-l);
+
+    .land-switch__track {
+      width: 44px;
+      height: 24px;
+    }
+
+    .land-switch__thumb {
+      height: calc(24px - $switch-track-padding * 2);
+    }
+
+    .land-switch__label {
+      font-size: var(--font-content-l);
+    }
+
+    .land-switch__track-content {
+      font-size: 12px;
+    }
+  }
+
+  // ==================== 布局变体 ====================
+
+  // ─── 标签在左侧 ───
+  &--label-left {
+    flex-direction: row-reverse;
+  }
+}
+
+// ==================== 动画 ====================
+
+@keyframes land-switch-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

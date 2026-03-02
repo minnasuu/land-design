@@ -1,56 +1,168 @@
-.land-check{
+// ============================================================================
+// Checkbox 组件样式
+// @description 复选框组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 尺寸令牌 ───
+$checkbox-size-small: 14px;
+$checkbox-size-default: 16px;
+$checkbox-size-large: 18px;
+
+$checkbox-gap-small: var(--gap-xs);
+$checkbox-gap-default: var(--gap-s);
+$checkbox-gap-large: var(--gap-m);
+
+$checkbox-font-size-small: var(--font-content-s);
+$checkbox-font-size-default: var(--font-content-m);
+$checkbox-font-size-large: var(--font-content-l);
+
+// ─── 颜色令牌 ───
+$checkbox-border-color: var(--land-checkbox-border-color, var(--color-border-primary));
+$checkbox-checked-border-color: var(--land-checkbox-checked-border-color, var(--color-primary));
+$checkbox-checked-bg: var(--land-checkbox-checked-bg, var(--color-primary));
+$checkbox-hover-bg: var(--land-checkbox-hover-bg, var(--color-bg-secondary));
+$checkbox-active-bg: var(--land-checkbox-active-bg, var(--color-bg-tertiary));
+
+// ─── 文本令牌 ───
+$checkbox-text-color: var(--land-checkbox-text-color, var(--color-text-primary));
+$checkbox-checked-text-color: var(--land-checkbox-checked-text-color, var(--color-primary));
+
+// ─── 图标令牌 ───
+$checkbox-icon-color: var(--land-checkbox-icon-color, var(--color-bg-primary));
+$checkbox-tip-icon-color: var(--land-checkbox-tip-icon-color, var(--color-text-tertiary));
+
+// ─── 形状令牌 ───
+$checkbox-border-radius: var(--land-checkbox-border-radius, var(--radius-s));
+
+// ─── 状态令牌 ───
+$checkbox-disabled-opacity: var(--land-checkbox-disabled-opacity, var(--opacity-disabled));
+
+// ─── 动效令牌 ───
+$checkbox-transition: var(--land-checkbox-transition, var(--transition-s));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 混入 (Mixins)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@mixin flex-center {
   display: flex;
   align-items: center;
-  gap: var(--land-checkbox-gap, var(--gap-s));
-  .land-check-label{
-    display: flex;
-    align-items: center;
-    gap: var(--land-checkbox-gap, var(--gap-s));
-    font-size: var(--land-checkbox-font-size, var(--font-content-m));
-    color: var(--land-checkbox-color, var(--color-text-primary));
-    cursor: pointer;
-    &.checked .land-check-circle{ 
-      border-color: var(--land-checkbox-circle-checked-border-color, var(--color-primary));
-      background-color: var(--land-checkbox-circle-checked-background-color, var(--color-primary));
-      &.animated{
-        animation: checkboxBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
-      
-      // 背景填充动画
-      &::before {
-        width: 100%;
-        height: 100%;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      
-      .land-check-circle-icon{
-        color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
-        transform: scale(1) rotate(360deg);
-        opacity: 1;
-      }
+}
+
+@mixin checkbox-size($size, $gap, $font-size) {
+  .land-checkbox__wrapper {
+    gap: $gap;
+    font-size: $font-size;
+  }
+
+  .land-checkbox__box {
+    width: $size;
+    height: $size;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 主样式
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-checkbox {
+  @include flex-center;
+  gap: var(--gap-xs);
+  position: relative;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SECTION: 尺寸变体
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  &--small {
+    @include checkbox-size($checkbox-size-small, $checkbox-gap-small, $checkbox-font-size-small);
+  }
+
+  &--default {
+    @include checkbox-size($checkbox-size-default, $checkbox-gap-default, $checkbox-font-size-default);
+  }
+
+  &--large {
+    @include checkbox-size($checkbox-size-large, $checkbox-gap-large, $checkbox-font-size-large);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SECTION: 状态修饰符
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  // ─── 选中状态 ───
+  &--checked {
+    .land-checkbox__text {
+      color: $checkbox-checked-text-color;
     }
-    &.disabled {
-      opacity: var(--land-checkbox-disabled-opacity, var(--opacity-disabled));
+  }
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+
+    .land-checkbox__wrapper {
+      opacity: $checkbox-disabled-opacity;
       cursor: not-allowed;
-      .land-check-circle{
-        cursor: not-allowed;
-      }
     }
-  } 
-  .land-check-circle{
+
+    .land-checkbox__box {
+      pointer-events: none;
+    }
+
+    // 提示图标仍可交互
+    .land-checkbox__tip {
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+
+  // ─── 禁用且选中 ───
+  &--disabled.land-checkbox--checked {
+    .land-checkbox__box {
+      background-color: var(--color-primary-light, rgba(var(--color-primary-rgb), 0.5));
+      border-color: var(--color-primary-light, rgba(var(--color-primary-rgb), 0.5));
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SECTION: 子元素样式
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  // ─── 可点击包装器 ───
+  &__wrapper {
+    @include flex-center;
+    cursor: pointer;
+    color: $checkbox-text-color;
+    white-space: nowrap;
+    
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: $checkbox-border-radius;
+    }
+  }
+
+  // ─── 选择框 ───
+  &__box {
     position: relative;
-    display: flex;
-    align-items: center;
+    @include flex-center;
     justify-content: center;
-    width: var(--land-checkbox-circle-size, 16px);
-    height: var(--land-checkbox-circle-size, 16px);
-    border-radius: var(--land-checkbox-circle-radius, var(--radius-s));
-    border: 1px solid var(--land-checkbox-circle-border-color, var(--color-border-primary));
-    transition: all var(--land-checkbox-circle-transition, var(--transition-s)) ease;
+    border-radius: $checkbox-border-radius;
+    border: 1px solid $checkbox-border-color;
+    background-color: transparent;
+    transition: all $checkbox-transition ease;
     cursor: pointer;
     overflow: hidden;
-    
-    // 背景填充动画
+    flex-shrink: 0;
+
+    // 背景填充伪元素
     &::before {
       content: '';
       position: absolute;
@@ -58,96 +170,147 @@
       left: 50%;
       width: 0;
       height: 0;
-      background-color: var(--land-checkbox-circle-checked-background-color, var(--color-primary));
-      border-radius: var(--land-checkbox-circle-radius, var(--radius-s));
+      background-color: $checkbox-checked-bg;
+      border-radius: calc($checkbox-border-radius - 1px);
       transform: translate(-50%, -50%);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
     }
-    
-    .land-check-circle-icon{
-      color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
+
+    &:hover {
+      background-color: $checkbox-hover-bg;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background-color: $checkbox-active-bg;
+      transform: scale(0.95);
+    }
+
+    // ─── 选中状态 ───
+    &--checked {
+      border-color: $checkbox-checked-border-color;
+      background-color: $checkbox-checked-bg;
+
+      &::before {
+        width: 100%;
+        height: 100%;
+      }
+
+      .land-checkbox__icon--check {
+        color: $checkbox-icon-color;
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+      }
+
+      &:hover {
+        background-color: $checkbox-checked-bg;
+        filter: brightness(1.1);
+      }
+    }
+
+    // ─── 选中状态（带动画）───
+    &--checked.land-checkbox__box--animated {
+      animation: checkboxBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    // ─── 半选状态 ───
+    &--indeterminate {
+      border-color: $checkbox-checked-border-color;
+      background-color: $checkbox-checked-bg;
+
+      &::before {
+        width: 100%;
+        height: 100%;
+        transition: none;
+      }
+
+      .land-checkbox__icon--indeterminate {
+        opacity: 1;
+        color: $checkbox-icon-color;
+      }
+
+      .land-checkbox__icon--check {
+        opacity: 0;
+      }
+    }
+
+    // ─── 无动画模式 ───
+    &--no-animation {
+      transition: none;
+      animation: none;
+
+      &:hover,
+      &:active {
+        transform: none;
+      }
+
+      &::before {
+        transition: none;
+      }
+
+      &.land-checkbox__box--checked {
+        transform: none;
+        animation: none;
+
+        .land-checkbox__icon--check {
+          transition: none;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  // ─── 图标 ───
+  &__icon {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+
+    &--check {
+      color: $checkbox-icon-color;
       transform: scale(0) rotate(0deg);
       opacity: 0;
       transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
-      z-index: 2;
-      position: relative;
-      flex-shrink: 0;
     }
-    &:hover {
-      background-color: var(--land-checkbox-circle-hover-background-color, var(--color-bg-secondary));
-      transform: scale(1.05);
-      .land-check-circle-icon{
-      color: var(--land-checkbox-circle-hover-icon-color, var(--color-bg-secondary));
-    }
-    }
-    &:active {
-      background-color: var(--land-checkbox-circle-active-background-color, var(--color-bg-secondary));
-      transform: scale(0.95);
-      .land-check-circle-icon{
-      color: var(--land-checkbox-circle-active-icon-color, var(--color-bg-secondary));
-    }
-    }
-    .land-check-indeterminate-icon{
+
+    &--indeterminate {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       opacity: 0;
-      color: var(--land-checkbox-circle-icon-color, var(--color-bg-primary));
-      z-index: 1;
-    }
-    &.indeterminate{
-      border-color: var(--land-checkbox-circle-checked-border-color, var(--color-primary));
-      &::before {
-        transition: none;
-        width: 100%;
-        height: 100%;
-      }
-      .land-check-indeterminate-icon{
-        opacity: 1;
-      }
-    }
-    // 无动画模式
-    &.no-animation {
-      transition: none;
-      animation: none;
-      
-      &:hover {
-        transform: none;
-      }
-      &:active {
-        transform: none;
-      }
-      &.checked {
-        transform: none;
-        animation: none;
-        
-        &::before {
-          transition: none;
-          width: 100%;
-          height: 100%;
-        }
-        
-        .land-check-circle-icon {
-          transition: none;
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-      .land-check-circle-icon {
-        transition: none;
-      }
+      color: $checkbox-icon-color;
+      z-index: 3;
     }
   }
-  .land-check-pop{
+
+  // ─── 文本标签 ───
+  &__text {
+    user-select: none;
+    transition: color $checkbox-transition ease;
+  }
+
+  // ─── 提示容器 ───
+  &__tip {
     position: relative;
-    height: var(--land-checkbox-pop-size, 16px);
-    line-height: var(--land-checkbox-pop-size, 16px);
-    .land-check-pop-icon{
-      color: var(--land-checkbox-pop-icon-color, var(--color-gray-6));
+    @include flex-center;
+    height: 16px;
+  }
+
+  &__tip-icon {
+    color: $checkbox-tip-icon-color;
+    cursor: help;
+
+    &:hover {
+      color: var(--color-text-secondary);
     }
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 动画
+// ─────────────────────────────────────────────────────────────────────────────
 
 @keyframes checkboxBounce {
   0% {
@@ -157,6 +320,6 @@
     transform: scale(1.2);
   }
   100% {
-    transform: scale(1.1);
+    transform: scale(1);
   }
 }

@@ -1,186 +1,229 @@
-import React, { CSSProperties, ChangeEvent, FocusEvent, KeyboardEvent } from "react";
-import { CommonProps } from "../types";
-import { InputProps } from "../Input/props";
+// ============================================================================
+// TagInput 组件属性定义
+// @description 标签输入框组件的完整类型定义
+// @author Land Design System
+// ============================================================================
+
+import { CSSProperties, ReactNode, ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 基础类型定义
+// ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * TagInput组件属性类型定义
- * 包含所有TagInput组件支持的属性及其详细说明
+ * 标签输入框外观变体
+ * - outline: 描边样式（默认）
+ * - fill: 填充样式
  */
-
-// ==================== 属性接口定义 ====================
+export type TagInputVariant = 'outline' | 'fill';
 
 /**
- * TagInput基础属性
- * 包含标签输入框的基本配置和内容属性
+ * 标签输入框尺寸
+ * - small: 小尺寸
+ * - default: 默认尺寸
+ * - large: 大尺寸
  */
-export interface TagInputBaseProps extends CommonProps, InputProps {
-  /** 
-   * 子元素
-   * 可以传入React节点作为标签输入框的内容
-   */
-  children?: React.ReactNode;
+export type TagInputSize = 'small' | 'default' | 'large';
 
-  /** 
-   * 初始标签
-   * 标签输入框的初始标签数据
-   */
-  tagData?: string[];
+/**
+ * 标签数据项
+ * 可以是简单字符串或带配置的对象
+ */
+export interface TagItem {
+  /** 标签唯一标识 */
+  key?: string;
+  /** 标签文本 */
+  label: string;
+  /** 是否可删除 */
+  closable?: boolean;
+  /** 标签自定义样式 */
+  style?: CSSProperties;
+  /** 标签自定义类名 */
+  className?: string;
 }
 
-/**
- * TagInput显示属性
- * 用于配置标签输入框的显示方式
- */
-export interface TagInputDisplayProps {
-  /** 
-   * 占位符
-   * 当没有标签时显示的提示文本
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 组件属性接口
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface TagInputProps {
+  // ─── 核心属性 ───
+
+  /**
+   * 标签数据（受控）
+   * 可以是字符串数组或 TagItem 数组
+   */
+  value?: (string | TagItem)[];
+
+  /**
+   * 默认标签数据（非受控）
+   * @deprecated 使用 defaultValue 代替
+   */
+  tagData?: string[];
+
+  /**
+   * 默认标签数据（非受控）
+   */
+  defaultValue?: (string | TagItem)[];
+
+  /**
+   * 输入框占位符
+   * @default '按下回车以输入标签'
    */
   placeholder?: string;
 
-  /** 
-   * 是否显示标签数量
-   * 设置为true时会显示当前标签的数量
-   */
-  showClear?: boolean;
-}
+  // ─── 限制属性 ───
 
-/**
- * TagInput功能属性
- * 用于配置标签输入框的功能特性
- */
-export interface TagInputFeatureProps {
-  /** 
-   * 允许输入的最大标签数
-   * 限制可以添加的最大标签数量
+  /**
+   * 最大标签数量
+   * @default 10
+   */
+  maxCount?: number;
+
+  /**
+   * @deprecated 使用 maxCount 代替
    */
   maxLength?: number;
 
-  /** 
-   * 高亮文字数组
-   * 需要高亮显示的文本数组
+  /**
+   * 单个标签最大长度
    */
-  highlightStr?: string[];
-}
+  maxTagLength?: number;
 
-/**
- * TagInput尺寸属性
- * 用于配置标签输入框的尺寸
- */
-export interface TagInputSizeProps {
-  /** 
-   * 宽度
-   * 设置标签输入框的宽度
+  /**
+   * 是否允许重复标签
+   * @default false
    */
-  width?: number | string;
-}
+  allowDuplicate?: boolean;
 
-/**
- * TagInput样式属性
- * 用于配置标签输入框的视觉样式
- */
-export interface TagInputStyleProps {
-  /** 
-   * 自定义样式
-   * 可以传入CSS样式对象来自定义标签输入框外观
-   */
-  style?: CSSProperties;
+  // ─── 外观属性 ───
 
-  /** 
-   * 自定义类名
-   * 可以传入额外的CSS类名
+  /**
+   * 外观变体
+   * @default 'fill'
    */
+  variant?: TagInputVariant;
+
+  /**
+   * 尺寸
+   * @default 'default'
+   */
+  size?: TagInputSize;
+
+  /**
+   * 是否禁用
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
+   * 是否只读
+   * @default false
+   */
+  readOnly?: boolean;
+
+  /**
+   * 是否显示清空按钮
+   * @default true
+   */
+  showClear?: boolean;
+
+  // ─── 样式属性 ───
+
+  /** 自定义类名 */
   className?: string;
 
-  /** 
-   * 标签样式
-   * 可以传入CSS样式对象来自定义标签外观
-   */
-  tagStyle?: CSSProperties;
+  /** 自定义样式 */
+  style?: CSSProperties;
 
-  /** 
-   * 标签类名
-   * 为标签添加自定义类名
-   */
+  /** 宽度（支持数字或字符串） */
+  width?: number | string;
+
+  /** 标签自定义类名 */
   tagClassName?: string;
 
-  /** 
-   * 高亮内容样式
-   * 可以传入CSS样式对象来自定义高亮内容外观
-   */
-  highlightStyle?: CSSProperties;
-}
+  /** 标签自定义样式 */
+  tagStyle?: CSSProperties;
 
-/**
- * TagInput事件属性
- * 用于配置标签输入框的交互事件
- */
-export interface TagInputEventProps {
-  /** 
-   * 变化事件
-   * 当标签数据发生变化时触发
-   * @param val 新的标签数组
-   * @param e 事件对象
-   */
-  onChange?: (val: string[], e: ChangeEvent<HTMLInputElement>) => void;
+  // ─── 自定义渲染 ───
 
-  /** 
-   * 回车事件
-   * 当按下回车键时触发
-   * @param val 当前的标签数组
-   * @param e 事件对象
+  /**
+   * 自定义标签渲染
+   * @param tag 标签数据
+   * @param index 标签索引
+   * @param onClose 关闭回调
    */
-  onEnter?: (val: string[], e: KeyboardEvent<HTMLInputElement>) => void;
+  renderTag?: (tag: string | TagItem, index: number, onClose: () => void) => ReactNode;
 
-  /** 
-   * 聚焦事件
-   * 当输入框获得焦点时触发
-   * @param e 事件对象
+  /**
+   * 前置内容
    */
-  onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
+  prefix?: ReactNode;
 
-  /** 
-   * 失焦事件
-   * 当输入框失去焦点时触发
-   * @param val 当前的标签数组
-   * @param e 事件对象
+  /**
+   * 后置内容
    */
-  onBlur?: (val: string[], e: FocusEvent<HTMLInputElement>) => void;
+  suffix?: ReactNode;
 
-  /** 
-   * 清空事件
-   * 当清空标签时触发
+  // ─── 事件属性 ───
+
+  /**
+   * 标签变化回调
+   * @param tags 当前标签数组
+   * @param trigger 触发方式
+   */
+  onChange?: (tags: (string | TagItem)[], trigger: 'add' | 'remove' | 'clear') => void;
+
+  /**
+   * 添加标签回调
+   * @param tag 新添加的标签
+   */
+  onAdd?: (tag: string) => void;
+
+  /**
+   * 删除标签回调
+   * @param tag 被删除的标签
+   * @param index 标签索引
+   */
+  onRemove?: (tag: string | TagItem, index: number) => void;
+
+  /**
+   * 清空回调
    */
   onClear?: () => void;
 
-  /** 
-   * 删除事件
-   * 当删除标签时触发
+  /**
+   * 回车回调
+   * @param inputValue 当前输入值
+   * @param e 键盘事件
    */
-  onDelete?: (val: string) => void;
+  onEnter?: (inputValue: string, e: KeyboardEvent<HTMLInputElement>) => void;
+
+  /**
+   * 输入变化回调
+   * @param value 输入值
+   * @param e 变化事件
+   */
+  onInputChange?: (value: string, e: ChangeEvent<HTMLInputElement>) => void;
+
+  /**
+   * 聚焦回调
+   */
+  onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
+
+  /**
+   * 失焦回调
+   */
+  onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+
+  // ─── 废弃属性（兼容）───
+
+  /** @deprecated 未实现 */
+  highlightStr?: string[];
+
+  /** @deprecated 未实现 */
+  highlightStyle?: CSSProperties;
+
+  /** @deprecated 使用 onRemove 代替 */
+  onDelete?: (tag: string) => void;
 }
-
-/**
- * TagInput组件完整属性类型
- * 合并了所有属性接口
- */
-export type TagInputProps = TagInputBaseProps &
-  TagInputDisplayProps &
-  TagInputFeatureProps &
-  TagInputSizeProps &
-  TagInputStyleProps &
-  TagInputEventProps;
-
-/**
- * 属性优先级说明：
- * 1. tagData控制标签输入框的初始数据
- * 2. placeholder显示在没有标签时的提示
- * 3. maxLength限制最大标签数量
- * 4. highlightStr控制需要高亮的文本
- * 5. showNumber控制是否显示标签数量
- * 6. width控制标签输入框的宽度
- * 7. onChange、onEnter、onFocus、onBlur处理各种事件
- * 8. style和className会覆盖默认样式
- * 9. tagStyle和tagClassName控制标签样式
- * 10. highlightStyle控制高亮内容的样式
- */

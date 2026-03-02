@@ -1,56 +1,215 @@
-.land-rate{
-    display: flex;
-    gap: var(--land-rate-gap, var(--gap-m));
-  .land-rate-character {
-    width: var(--land-rate-character-width, 24px);
-    height: var(--land-rate-character-height, 24px);
+// ==================== Rate 组件样式 ====================
+// 评分组件，支持多种尺寸、半星评分、自定义图标等功能
+
+// ─── 变量定义 ───
+$rate-size-small: 16px;
+$rate-size-default: 24px;
+$rate-size-large: 32px;
+
+$rate-gap: var(--land-rate-gap, 8px);
+$rate-inactive-color: var(--land-rate-inactive-color, var(--color-gray-3));
+$rate-active-color: var(--land-rate-active-color, var(--color-warning));
+$rate-hover-color: var(--land-rate-hover-color, var(--color-warning));
+$rate-transition: var(--transition-normal);
+
+// ==================== 根容器 ====================
+
+.land-rate {
+  display: inline-flex;
+  align-items: center;
+  gap: $rate-gap;
+  outline: none;
+  user-select: none;
+
+  // ==================== 单个图标容器 ====================
+
+  &__character {
     position: relative;
-    &.readonly{
-      cursor: default;
-      pointer-events: none;
+    width: $rate-size-default;
+    height: $rate-size-default;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform $rate-transition;
+
+    // 悬停放大效果
+    &:hover {
+      transform: scale(1.1);
     }
-    .land-rate-character-item.left{
+
+    // 点击缩小效果
+    &:active {
+      transform: scale(0.95);
+    }
+
+    // ─── 半星点击区域 ───
+    &-half {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      z-index: 2;
+
+      &--first {
+        left: 0;
+        width: 50%;
+      }
+
+      &--second {
+        right: 0;
+        width: 50%;
+      }
+
+      &--full {
+        width: 100%;
+        left: 0;
+      }
+    }
+
+    // ─── 图标容器 ───
+    &-icon {
       position: absolute;
       top: 0;
       left: 0;
-      width: 50%;
+      width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: 1;
-      svg{
-        width: 200%;
-        path{
-          fill: var(--land-rate-character-item-default-color, var(--color-bg-secondary));
-          stroke: none;
-          transition: fill var(--transition-s) linear;
-        }
-      }
-    }
-    .land-rate-character-item.right{
+      pointer-events: none;
+
+      // 未选中图标（底层）
+      &-inactive {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        svg{
+        color: $rate-inactive-color;
+        transition: color $rate-transition;
+
+        svg,
+        img {
+          display: block;
           width: 100%;
+          height: 100%;
         }
+      }
+
+      // 选中图标（上层）
+      &-active {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow: hidden;
+        color: $rate-active-color;
+        transition: width $rate-transition, color $rate-transition;
+
+        svg,
+        img {
+          display: block;
+          width: $rate-size-default;
+          height: 100%;
+        }
+      }
     }
-    .land-rate-character-item{
-      &.active{
-        svg path{
-          fill: var(--land-rate-character-item-active-color, var(--color-primary));
-          stroke: none;
-        }
+
+    // ─── 选中状态 ───
+    &--active {
+      .land-rate__character-icon-active {
+        width: 100%;
       }
-      svg{
-        cursor: pointer;
-        path{
-          fill: var(--land-rate-character-item-default-color, var(--color-bg-secondary));
-          stroke: none;
-          transition: fill var(--transition-s) linear;
-        }
+    }
+
+    // ─── 半星状态 ───
+    &--half {
+      .land-rate__character-icon-active {
+        width: 50%;
       }
-      &:hover:not(.active) svg path{
-          fill:var(--land-rate-character-item-hover-color, var(--color-bg-secondary));
-          stroke: none;
+    }
+  }
+
+  // ==================== 尺寸变体 ====================
+
+  // ─── 小尺寸 ───
+  &--small {
+    .land-rate__character {
+      width: $rate-size-small;
+      height: $rate-size-small;
+    }
+
+    .land-rate__character-icon-active {
+      svg,
+      img {
+        width: $rate-size-small;
+      }
+    }
+  }
+
+  // ─── 大尺寸 ───
+  &--large {
+    .land-rate__character {
+      width: $rate-size-large;
+      height: $rate-size-large;
+    }
+
+    .land-rate__character-icon-active {
+      svg,
+      img {
+        width: $rate-size-large;
+      }
+    }
+  }
+
+  // ==================== 状态变体 ====================
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .land-rate__character {
+      cursor: not-allowed;
+      pointer-events: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  // ─── 只读状态 ───
+  &--readonly {
+    .land-rate__character {
+      cursor: default;
+      pointer-events: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  // ─── 聚焦状态 ───
+  &--focused:not(&--disabled) {
+    .land-rate__character:first-child {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  // ─── 键盘焦点可见 ───
+  &:focus-visible:not(&--disabled) {
+    .land-rate__character:first-child {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  // ==================== 悬停效果 ====================
+
+  &:not(&--disabled):not(&--readonly) {
+    .land-rate__character:hover {
+      .land-rate__character-icon-active {
+        color: $rate-hover-color;
       }
     }
   }

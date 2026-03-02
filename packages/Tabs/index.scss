@@ -1,48 +1,131 @@
-.land-tabs{
+// ============================================================================
+// Tabs 组件样式
+// @description 标签页组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$tabs-gap: var(--land-tabs-gap, var(--gap-xs));
+$tabs-padding: var(--land-tabs-padding, var(--padding-xs));
+$tabs-radius: var(--land-tabs-radius, var(--radius-l));
+$tabs-bg: var(--land-tabs-background-color, var(--color-bg-secondary));
+
+// ─── 选项令牌 ───
+$tabs-item-gap: var(--land-tabs-item-gap, var(--gap-s));
+$tabs-item-height: var(--land-tabs-item-height, 32px);
+$tabs-item-padding-inline: var(--land-tabs-item-padding-inline, 12px);
+$tabs-item-radius: var(--land-tabs-item-radius, var(--radius-m));
+$tabs-item-font-size: var(--land-tabs-item-font-size, var(--font-content-m));
+$tabs-item-color: var(--land-tabs-item-color, var(--color-text-primary));
+
+// ─── 选项状态令牌 ───
+$tabs-item-hover-bg: var(--land-tabs-item-hover-background-color, var(--color-bg-secondary));
+$tabs-item-active-bg: var(--land-tabs-item-active-background-color, var(--color-bg-secondary));
+
+// ─── 选中状态令牌 ───
+$tabs-item-selected-color: var(--land-tabs-item-selected-color, var(--color-text-primary));
+$tabs-item-selected-bg: var(--land-tabs-item-selected-background-color, var(--color-bg-primary));
+$tabs-item-selected-active-bg: var(--land-tabs-item-selected-active-background-color, var(--color-bg-primary));
+
+// ─── 禁用状态令牌 ───
+$tabs-item-disabled-color: var(--land-tabs-item-disabled-color, var(--color-text-secondary));
+
+// ─── 动效令牌 ───
+$tabs-transition: var(--land-tabs-transition, all var(--transition-s) linear);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-tabs {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--land-tabs-gap, var(--gap-xs));
-  padding: var(--land-tabs-padding, var(--padding-xs));
-  background-color: var(--land-tabs-background-color, var(--color-bg-secondary));
-  border-radius: var(--land-tabs-radius, var(--radius-l));
-  .land-tabs-item{
+  gap: $tabs-gap;
+  padding: $tabs-padding;
+  background-color: $tabs-bg;
+  border-radius: $tabs-radius;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__item {
     flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--land-tabs-item-gap, var(--gap-s));
-  height: var(--land-tabs-item-height, 32px);
-  padding-inline: var(--land-tabs-item-padding-inline, 12px);
-  border-radius: var(--land-tabs-item-radius, var(--radius-m));
-  font-size: var(--land-tabs-item-font-size, var(--font-content-m));
-  border: none;
-  color: var(--land-tabs-item-color, var(--color-text-primary));
-  cursor: pointer;
-  transition: all var(--transition-s) linear;
-  &:hover:not(.disabled) {
-    background-color: var(--land-tabs-item-hover-background-color, var(--color-bg-secondary));
-  }
-  &:active:not(.disabled) {
-    background-color: var(--land-tabs-item-active-background-color, var(--color-bg-secondary));
-  }
-  &.selected {
-    color: var(--land-tabs-item-selected-color, var(--color-text-primary));
-    font-weight: bold;
-    background-color: var(--land-tabs-item-selected-background-color, var(--color-bg-primary));
-    &:hover,
-    &:active {
-      background-color: var(--land-tabs-item-selected-active-background-color, var(--color-bg-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $tabs-item-gap;
+    height: $tabs-item-height;
+    padding-inline: $tabs-item-padding-inline;
+    border-radius: $tabs-item-radius;
+    font-size: $tabs-item-font-size;
+    border: none;
+    color: $tabs-item-color;
+    cursor: pointer;
+    transition: $tabs-transition;
+
+    // ─── 悬停状态 ───
+    &:hover:not(&--disabled):not(&--selected) {
+      background-color: $tabs-item-hover-bg;
+    }
+
+    // ─── 激活状态 ───
+    &:active:not(&--disabled):not(&--selected) {
+      background-color: $tabs-item-active-bg;
+    }
+
+    // ─── 选中状态 ───
+    &--selected {
+      color: $tabs-item-selected-color;
+      font-weight: bold;
+      background-color: $tabs-item-selected-bg;
+
+      &:hover,
+      &:active {
+        background-color: $tabs-item-selected-active-bg;
+      }
+    }
+
+    // ─── 禁用状态 ───
+    &--disabled {
+      color: $tabs-item-disabled-color;
+      cursor: not-allowed;
     }
   }
-  &.disabled {
-    color: var(--land-tabs-item-disabled-color, var(--color-text-secondary));
-    cursor: not-allowed;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项标签
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__item-label {
+    white-space: nowrap;
   }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项图标
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__item-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
-  .land-tabs-divider{
-    transition: all var(--transition-s) linear;
-    &.hidden{
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 分割线
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__divider {
+    transition: $tabs-transition;
+
+    &--hidden {
       opacity: 0;
     }
   }

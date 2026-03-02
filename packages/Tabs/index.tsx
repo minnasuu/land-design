@@ -1,55 +1,73 @@
-import { Fragment } from "react";
+import React, { Fragment, useMemo, useCallback } from "react";
 import './index.scss';
 import Divider from "../Divider";
 import PopOver from "../PopOver";
 import Icon from "../Icon";
-import { TabsProps } from "./props";
+import { TabsProps, TabsItemType } from "./props";
 
-function Tabs({
+const prefixCls = 'land-tabs';
+
+const Tabs: React.FC<TabsProps> = ({
   width = "100%",
   checked,
-  data,
+  data = [],
   useDivider = false,
   onChange,
   activeClassName = "",
   className = "",
-  switchDisabled,
+  switchDisabled = false,
   style,
-}: TabsProps) {
+}) => {
+  // ─── 类名计算 ───
+  const rootClassName = useMemo(() => {
+    return [prefixCls, className].filter(Boolean).join(' ');
+  }, [className]);
+
+  // ─── 事件处理 ───
+  const handleItemClick = useCallback((item: TabsItemType, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (item.disabled || switchDisabled) return;
+    onChange?.(item.key, item);
+  }, [switchDisabled, onChange]);
+
+  // ─── 判断分割线是否隐藏 ───
+  const isDividerHidden = useCallback((index: number, itemKey: string) => {
+    const prevKey = data[index - 1]?.key;
+    return checked === itemKey || checked === prevKey;
+  }, [checked, data]);
+
+  // ─── 获取 item 类名 ───
+  const getItemClassName = useCallback((item: TabsItemType) => {
+    const isSelected = checked === item.key;
+    const isDisabled = item.disabled || switchDisabled;
+
+    return [
+      `${prefixCls}__item`,
+      isSelected && `${prefixCls}__item--selected`,
+      isSelected && activeClassName,
+      !isSelected && isDisabled && `${prefixCls}__item--disabled`,
+    ].filter(Boolean).join(' ');
+  }, [checked, switchDisabled, activeClassName]);
+
   return (
-    <div
-      className={`land-tabs  ${className}`}
-      style={{ width, ...style }}
-    >
-      {data?.map((item, index) => (
+    <div className={rootClassName} style={{ width, ...style }}>
+      {data.map((item, index) => (
         <Fragment key={item.key}>
           {useDivider && index !== 0 && (
             <Divider
               direction="vertical"
               spacing={0}
               length="14px"
-              className={`land-tabs-divider ${checked !== item.key && checked !== (data[index - 1]?.key as string)
-                ? ""
-                : "hidden"
-                }`}
+              className={`${prefixCls}__divider ${isDividerHidden(index, item.key) ? `${prefixCls}__divider--hidden` : ''}`}
             />
           )}
           <div
-            className={`land-tabs-item 
-               ${checked === item.key
-                ? `selected ${activeClassName}`
-                : (item.disabled || switchDisabled)
-                  ? "disabled"
-                  : ""
-              }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              !item.disabled && !switchDisabled && onChange?.(item.key, item);
-            }}
+            className={getItemClassName(item)}
+            onClick={(e) => handleItemClick(item, e)}
           >
-            {item.label}
+            <span className={`${prefixCls}__item-label`}>{item.label}</span>
             {item.showIcon && (
-              <div className="size-icon-16 fs-12 flex items-center color-icon-secondary hover-pop relative cursor-default">
+              <div className={`${prefixCls}__item-icon hover-pop`}>
                 <Icon name="info-stroke" size={16} />
                 <PopOver content={item.iconTip} theme="dark" />
               </div>
@@ -59,6 +77,6 @@ function Tabs({
       ))}
     </div>
   );
-}
+};
 
 export default Tabs;

@@ -1,14 +1,17 @@
-import React, { useMemo, CSSProperties, useEffect } from "react";
+import React, { useMemo, CSSProperties, useEffect, useCallback } from "react";
 import './index.scss';
 import Icon from "../Icon";
 import Divider from "../Divider";
 import Button from "../Button";
 import { motion } from "motion/react";
 import { DrawerProps } from "./props";
+
+const prefixCls = 'land-drawer';
+
 const Drawer: React.FC<DrawerProps> = ({
-  show,
+  show = false,
   placement = 'right',
-  mask,
+  mask = false,
   title,
   headerLeftComponent,
   headerRightComponent,
@@ -20,8 +23,8 @@ const Drawer: React.FC<DrawerProps> = ({
   useFooterDivider = true,
   cancelLabel = '取消',
   submitLabel = '确定',
-  cancelDisabled,
-  submitDisabled,
+  cancelDisabled = false,
+  submitDisabled = false,
   cancelButtonProps,
   submitButtonProps,
   minWidth,
@@ -40,155 +43,148 @@ const Drawer: React.FC<DrawerProps> = ({
   bodyClassName = '',
   maskStyle,
 }) => {
+  // ─── 尺寸计算 ───
   const contentWidth = useMemo(() => {
-    let width = '320px';
-    if (placement === 'bottom') {
-      width = '100%'
-    } else {
-      switch (size) {
-        case 'small': width = '32%'; break;
-        case 'medium': width = '60%'; break;
-        case 'large': width = '80%'; break;
-        case 'auto': width = 'fit-content'; break;
-        default:
-          break;
-      }
+    if (placement === 'bottom') return '100%';
+    
+    switch (size) {
+      case 'small': return '32%';
+      case 'medium': return '60%';
+      case 'large': return '80%';
+      case 'auto': return 'fit-content';
+      default: return '320px';
     }
-    return width;
   }, [size, placement]);
 
   const contentHeight = useMemo(() => {
-    let height = '100%';
-    if (placement === 'bottom') {
-      switch (size) {
-        case 'small': height = '30%'; break;
-        case 'medium': height = '60%'; break;
-        case 'large': height = '90%'; break;
-        case 'auto': height = 'fit-content'; break;
-        default:
-          break;
-      }
-    };
-    return height;
-  }, [placement]);
+    if (placement !== 'bottom') return '100%';
+    
+    switch (size) {
+      case 'small': return '30%';
+      case 'medium': return '60%';
+      case 'large': return '90%';
+      case 'auto': return 'fit-content';
+      default: return '100%';
+    }
+  }, [size, placement]);
 
-  const showCloseDIvider = useMemo(() => (onClose && (title || headerComponent || headerLeftComponent)), [onClose, headerComponent, headerLeftComponent]);
+  // ─── 显示判断 ───
+  const showCloseDivider = useMemo(() => {
+    return onClose && (title || headerComponent || headerLeftComponent);
+  }, [onClose, title, headerComponent, headerLeftComponent]);
 
-  // ESC key handling
+  const hasHeader = useMemo(() => {
+    return headerComponent || onClose || headerLeftComponent || headerRightComponent;
+  }, [headerComponent, onClose, headerLeftComponent, headerRightComponent]);
+
+  const hasFooter = useMemo(() => {
+    return footerComponent || onSubmit || onCancel || footerLeftComponent || footerRightComponent;
+  }, [footerComponent, onSubmit, onCancel, footerLeftComponent, footerRightComponent]);
+
+  // ─── 类名计算 ───
+  const rootClassName = useMemo(() => {
+    return [
+      prefixCls,
+      show && `${prefixCls}--show`,
+      `${prefixCls}--${placement}`,
+      wrapClassName,
+    ].filter(Boolean).join(' ');
+  }, [show, placement, wrapClassName]);
+
+  // ─── ESC 键处理 ───
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && enableEsc && show && onClose) {
+      onClose();
+    }
+  }, [enableEsc, show, onClose]);
+
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && enableEsc && show && onClose) {
-        onClose();
-      }
-    };
-
     if (show && enableEsc) {
       document.addEventListener('keydown', handleKeyDown);
     }
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [show, enableEsc, onClose]);
+  }, [show, enableEsc, handleKeyDown]);
+
+  // ─── 动画配置 ───
+  const motionInitial = useMemo(() => ({
+    opacity: 0,
+    x: placement === 'right' ? '20%' : '0%',
+    y: placement === 'bottom' ? '20%' : '0%',
+  }), [placement]);
 
   return (
-    <div
-      className={`land-drawer ${
-        show ? "show" : ""
-      } ${placement} ${wrapClassName}`}
-      style={wrapStyle}
-    >
+    <div className={rootClassName} style={wrapStyle}>
       {mask && show && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="land-drawer-mask"
+          className={`${prefixCls}__mask`}
           style={maskStyle}
-        ></motion.div>
+        />
       )}
       {show && (
         <motion.div
-          initial={{
-            opacity: 0,
-            x: placement === "right" ? "20%" : "0%",
-            y: placement === "bottom" ? "20%" : "0%",
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.6,
-            type: "spring",
-          }}
-          className={`land-drawer-content ${contentClassName}`}
+          initial={motionInitial}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 0.6, type: 'spring' }}
+          className={`${prefixCls}__content ${contentClassName}`}
           style={{
             width: contentWidth,
             height: contentHeight,
-            minWidth: minWidth,
-            maxWidth: maxWidth,
+            minWidth,
+            maxWidth,
             ...contentStyle,
           }}
         >
-          <div className="land-drawer-header-wrapper">
+          {/* Header Wrapper */}
+          <div className={`${prefixCls}__header-wrapper`}>
             {onClose && (
-              <div className="land-drawer-header-close">
+              <div className={`${prefixCls}__close`}>
                 <Icon name="close" onClick={onClose} strokeWidth={3} />
               </div>
             )}
-            {showCloseDIvider && (
+            {showCloseDivider && (
               <Divider direction="vertical" length="36px" spacing={12} />
             )}
-            {headerComponent ||
-              (title ||
-              onClose ||
-              headerLeftComponent ||
-              headerRightComponent ? (
-                <div className="land-drawer-header">
+            {headerComponent || (
+              (title || headerLeftComponent || headerRightComponent) && (
+                <div className={`${prefixCls}__header`}>
                   {headerLeftComponent || (
-                    <div className="land-drawer-header-title">{title}</div>
+                    <div className={`${prefixCls}__title`}>{title}</div>
                   )}
                   {headerRightComponent && (
-                    <div className="land-drawer-header-right">
+                    <div className={`${prefixCls}__header-right`}>
                       {headerRightComponent}
                     </div>
                   )}
                 </div>
-              ) : null)}
+              )
+            )}
           </div>
-          {useHeaderDivider &&
-            (headerComponent ||
-              onClose ||
-              headerLeftComponent ||
-              headerRightComponent) && <Divider />}
 
+          {useHeaderDivider && hasHeader && <Divider />}
+
+          {/* Body */}
           <div
-            className={`land-drawer-body ${bodyClassName}`}
+            className={`${prefixCls}__body ${bodyClassName}`}
             style={bodyStyle}
           >
             {children}
           </div>
 
-          {useFooterDivider &&
-            (footerComponent ||
-              onSubmit ||
-              onCancel ||
-              footerLeftComponent ||
-              footerRightComponent) && <Divider />}
-          {(footerComponent ||
-            onSubmit ||
-            onCancel ||
-            footerLeftComponent ||
-            footerRightComponent) && (
-            <div className="land-drawer-footer">
-              {footerRightComponent ||
-                ((cancelLabel || submitLabel || onCancel || onSubmit) && (
-                  <div className="land-drawer-footer-btn">
+          {/* Footer */}
+          {useFooterDivider && hasFooter && <Divider />}
+          {hasFooter && (
+            <div className={`${prefixCls}__footer`}>
+              {footerRightComponent || (
+                (onCancel || onSubmit) && (
+                  <div className={`${prefixCls}__footer-btns`}>
                     {onCancel && (
                       <Button
-                        type="fill"
+                        variant="fill"
                         disabled={cancelDisabled}
                         status="default"
                         onClick={onCancel}
@@ -199,7 +195,7 @@ const Drawer: React.FC<DrawerProps> = ({
                     )}
                     {onSubmit && (
                       <Button
-                        type="background"
+                        variant="background"
                         disabled={submitDisabled}
                         status="primary"
                         onClick={onSubmit}
@@ -209,7 +205,8 @@ const Drawer: React.FC<DrawerProps> = ({
                       </Button>
                     )}
                   </div>
-                ))}
+                )
+              )}
               {footerLeftComponent}
             </div>
           )}

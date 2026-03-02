@@ -1,117 +1,205 @@
+// ============================================================================
+// Statistic 组件样式
+// @description 统计数值展示组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$statistic-gap: var(--land-statistic-gap, var(--gap-xs));
+
+// ─── 前缀令牌 ───
+$statistic-prefix-font-size: var(--land-statistic-prefix-font-size, var(--font-content-m));
+$statistic-prefix-color: var(--land-statistic-prefix-color, var(--color-text-secondary));
+$statistic-prefix-font-weight: var(--land-statistic-prefix-font-weight, 400);
+
+// ─── 数值令牌 ───
+$statistic-value-font-size: var(--land-statistic-value-font-size, var(--font-title-l));
+$statistic-value-font-size-mobile: var(--land-statistic-value-font-size-mobile, var(--font-title-m));
+$statistic-value-font-weight: var(--land-statistic-value-font-weight, 700);
+$statistic-value-color: var(--land-statistic-value-color, var(--color-text-primary));
+
+// ─── 单位令牌 ───
+$statistic-unit-margin-left: var(--land-statistic-unit-margin-left, var(--gap-xs));
+$statistic-unit-font-size: var(--land-statistic-unit-font-size, var(--font-content-s));
+$statistic-unit-font-size-mobile: var(--land-statistic-unit-font-size-mobile, var(--font-content-xs));
+$statistic-unit-font-weight: var(--land-statistic-unit-font-weight, 400);
+$statistic-unit-color: var(--land-statistic-unit-color, var(--color-text-secondary));
+
+// ─── 后缀令牌 ───
+$statistic-suffix-font-size: var(--land-statistic-suffix-font-size, var(--font-content-m));
+$statistic-suffix-color: var(--land-statistic-suffix-color, var(--color-text-secondary));
+$statistic-suffix-font-weight: var(--land-statistic-suffix-font-weight, 400);
+
+// ─── 趋势图标令牌 ───
+$statistic-trend-icon-size: var(--land-statistic-trend-icon-size, 24px);
+$statistic-trend-icon-size-mobile: var(--land-statistic-trend-icon-size-mobile, 20px);
+$statistic-trend-icon-margin-left: var(--land-statistic-trend-icon-margin-left, var(--gap-xs));
+
+// ─── 随机动画令牌 ───
+$statistic-random-digit-height: var(--land-statistic-random-digit-height, 45px);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
 .land-statistic {
   display: flex;
   align-items: baseline;
-  gap: var(--land-statistic-gap, var(--gap-xs));
+  gap: $statistic-gap;
   font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
 
-  .land-statistic-prefix {
-    font-size: var(--land-statistic-prefix-font-size, var(--font-content-m));
-    color: var(--land-statistic-prefix-color, var(--color-text-secondary));
-    font-weight: var(--land-statistic-prefix-font-weight, 400);
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 前缀
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__prefix {
+    font-size: $statistic-prefix-font-size;
+    color: $statistic-prefix-color;
+    font-weight: $statistic-prefix-font-weight;
   }
 
-  .land-statistic-value {
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 数值区域
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__value {
     display: flex;
     align-items: baseline;
-    gap: var(--land-statistic-gap, var(--gap-xs));
-    font-size: var(--land-statistic-value-font-size, var(--font-title-l));
-    font-weight: var(--land-statistic-value-font-weight, 700);
-    color: var(--land-statistic-value-color, var(--color-text-primary));
+    gap: $statistic-gap;
+    font-size: $statistic-value-font-size;
+    font-weight: $statistic-value-font-weight;
+    color: $statistic-value-color;
     white-space: nowrap;
     line-height: 1;
     position: relative;
   }
 
-  .land-statistic-unit {
-    margin-left: var(--land-statistic-unit-margin-left, var(--gap-xs));
-    font-size: var(--land-statistic-unit-font-size, var(--font-content-s));
-    font-weight: var(--land-statistic-unit-font-weight, 400);
-    color: var(--land-statistic-unit-color, var(--color-text-secondary));
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 单位
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__unit {
+    margin-left: $statistic-unit-margin-left;
+    font-size: $statistic-unit-font-size;
+    font-weight: $statistic-unit-font-weight;
+    color: $statistic-unit-color;
     line-height: 1;
   }
 
-  .land-statistic-suffix {
-    font-size: var(--land-statistic-suffix-font-size, var(--font-content-m));
-    color: var(--land-statistic-suffix-color, var(--color-text-secondary));
-    font-weight: var(--land-statistic-suffix-font-weight, 400);
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 后缀
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__suffix {
+    font-size: $statistic-suffix-font-size;
+    color: $statistic-suffix-color;
+    font-weight: $statistic-suffix-font-weight;
   }
 
-  .land-statistic-trend-icon {
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 趋势图标
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__trend-icon {
     flex-shrink: 0;
-    width: var(--land-statistic-trend-icon-size, 24px);
-    height: var(--land-statistic-trend-icon-size, 24px);
+    width: $statistic-trend-icon-size;
+    height: $statistic-trend-icon-size;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: var(--land-statistic-trend-icon-margin-left, var(--gap-xs));
+    margin-left: $statistic-trend-icon-margin-left;
   }
 
-  // 随机数字动画样式
-  .land-statistic-random {
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 随机数字动画
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__random-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__random-digit {
     overflow: hidden;
     display: inline-block;
     width: 1ch;
     text-align: center;
     font-variant-numeric: tabular-nums;
-    
-    .land-statistic-random-list {
+  }
+
+  &__random-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > div {
+      height: $statistic-random-digit-height;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      
-      > div {
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: inherit;
-        font-weight: inherit;
-        color: inherit;
-        line-height: 1;
-      }
+      justify-content: center;
+      font-size: inherit;
+      font-weight: inherit;
+      color: inherit;
+      line-height: 1;
     }
   }
 
-  // 动画状态样式
-  &.land-statistic-animating {
-    .land-statistic-value {
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 动画状态
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &--animating {
+    .land-statistic__value {
       will-change: transform, opacity;
     }
   }
 
-  // 响应式设计
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 响应式设计
+  // ───────────────────────────────────────────────────────────────────────────
+
   @media (max-width: 768px) {
-    .land-statistic-value {
-      font-size: var(--land-statistic-value-font-size-mobile, var(--font-title-m));
+    &__value {
+      font-size: $statistic-value-font-size-mobile;
     }
-    
-    .land-statistic-unit {
-      font-size: var(--land-statistic-unit-font-size-mobile, var(--font-content-xs));
+
+    &__unit {
+      font-size: $statistic-unit-font-size-mobile;
     }
-    
-    .land-statistic-trend-icon {
-      width: var(--land-statistic-trend-icon-size-mobile, 20px);
-      height: var(--land-statistic-trend-icon-size-mobile, 20px);
+
+    &__trend-icon {
+      width: $statistic-trend-icon-size-mobile;
+      height: $statistic-trend-icon-size-mobile;
     }
   }
 
-  // 高对比度模式支持
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 高对比度模式
+  // ───────────────────────────────────────────────────────────────────────────
+
   @media (prefers-contrast: high) {
-    .land-statistic-value {
+    &__value {
       color: var(--color-text-primary-high-contrast, #000);
     }
-    
-    .land-statistic-unit,
-    .land-statistic-prefix,
-    .land-statistic-suffix {
+
+    &__unit,
+    &__prefix,
+    &__suffix {
       color: var(--color-text-secondary-high-contrast, #333);
     }
   }
 
-  // 减少动画偏好
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 减少动画偏好
+  // ───────────────────────────────────────────────────────────────────────────
+
   @media (prefers-reduced-motion: reduce) {
-    .land-statistic-random-list,
-    .land-statistic-value {
+    &__random-list,
+    &__value {
       animation: none !important;
       transition: none !important;
     }

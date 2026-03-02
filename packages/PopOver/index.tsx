@@ -1,9 +1,19 @@
+// ============================================================================
+// PopOver 组件
+// @description 气泡提示组件，支持多种触发方式和位置
+// @author Land Design System
+// ============================================================================
+
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { PopOverProps, PopOverPlacement } from './props';
 import './index.scss';
 
 const prefixCls = 'land-popover';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 组件实现
+// ─────────────────────────────────────────────────────────────────────────────
 
 const PopOver: React.FC<PopOverProps> = ({
   show,
@@ -30,6 +40,23 @@ const PopOver: React.FC<PopOverProps> = ({
   // ─── Refs ───
   const triggerRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
+  const onVisibleChangeRef = useRef(onVisibleChange);
+  const isMountedRef = useRef(true);
+  const placementRef = useRef(placement);
+  
+  // 更新回调 ref
+  useEffect(() => {
+    onVisibleChangeRef.current = onVisibleChange;
+    placementRef.current = placement;
+  });
+  
+  // 组件卸载时标记
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // ─── 常量 ───
   const OFFSET = 8; // 气泡与触发元素的间距
@@ -59,15 +86,25 @@ const PopOver: React.FC<PopOverProps> = ({
   }, [isVisible, isBodyAttach]);
 
   // ─── 触发回调 ───
+  const prevVisibleRef = useRef(isVisible);
   useEffect(() => {
-    onVisibleChange?.(isVisible);
-  }, [isVisible, onVisibleChange]);
-
-  // ─── 计算 body 模式下的位置 ───
-  const calculateBodyPosition = useCallback(() => {
-    if (!triggerRef.current || !isBodyAttach || bubbleSize.width === 0 || bubbleSize.height === 0) {
-      return;
+    // 只在状态真正变化时触发
+    if (prevVisibleRef.current !== isVisible) {
+      prevVisibleRef.current = isVisible;
+      onVisibleChangeRef.current?.(isVisible);
     }
+  }, [isVisible]);
+
+  // ─── 计算 body 模式下的位置（使用 ref 存储，避免依赖变化）───
+  const bubbleSizeRef = useRef(bubbleSize);
+  bubbleSizeRef.current = bubbleSize;
+  
+  const calculateBodyPositionRef = useRef<() => void>();
+  
+  calculateBodyPositionRef.current = () => {
+    if (!triggerRef.current || !isBodyAttach || !isMountedRef.current) return;
+    const currentBubbleSize = bubbleSizeRef.current;
+    if (currentBubbleSize.width === 0 || currentBubbleSize.height === 0) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
@@ -78,22 +115,22 @@ const PopOver: React.FC<PopOverProps> = ({
       switch (targetPlacement) {
         case 'top':
           return {
-            top: triggerRect.top - bubbleSize.height - OFFSET,
-            left: triggerRect.left + (triggerRect.width - bubbleSize.width) / 2,
+            top: triggerRect.top - currentBubbleSize.height - OFFSET,
+            left: triggerRect.left + (triggerRect.width - currentBubbleSize.width) / 2,
           };
         case 'bottom':
           return {
             top: triggerRect.bottom + OFFSET,
-            left: triggerRect.left + (triggerRect.width - bubbleSize.width) / 2,
+            left: triggerRect.left + (triggerRect.width - currentBubbleSize.width) / 2,
           };
         case 'left':
           return {
-            top: triggerRect.top + (triggerRect.height - bubbleSize.height) / 2,
-            left: triggerRect.left - bubbleSize.width - OFFSET,
+            top: triggerRect.top + (triggerRect.height - currentBubbleSize.height) / 2,
+            left: triggerRect.left - currentBubbleSize.width - OFFSET,
           };
         case 'right':
           return {
-            top: triggerRect.top + (triggerRect.height - bubbleSize.height) / 2,
+            top: triggerRect.top + (triggerRect.height - currentBubbleSize.height) / 2,
             left: triggerRect.right + OFFSET,
           };
       }
@@ -102,8 +139,8 @@ const PopOver: React.FC<PopOverProps> = ({
     // 检测位置是否在视口内
     const isInViewport = (pos: { top: number; left: number }, targetPlacement: PopOverPlacement) => {
       const { top, left } = pos;
-      const bottom = top + bubbleSize.height;
-      const right = left + bubbleSize.width;
+      const bottom = top + currentBubbleSize.height;
+      const right = left + currentBubbleSize.width;
 
       if (targetPlacement === 'top' || targetPlacement === 'bottom') {
         return top >= VIEWPORT_PADDING && bottom <= viewportHeight - VIEWPORT_PADDING;
@@ -123,7 +160,7 @@ const PopOver: React.FC<PopOverProps> = ({
     };
 
     // 尝试首选位置
-    let currentPlacement = placement;
+    let currentPlacement = placementRef.current;
     let pos = getPositionByPlacement(currentPlacement);
 
     // 边界检测：如果首选位置溢出，尝试对立方向
@@ -139,19 +176,25 @@ const PopOver: React.FC<PopOverProps> = ({
 
     // 边界修正：确保不超出视口
     let { top, left } = pos;
-    top = Math.max(VIEWPORT_PADDING, Math.min(viewportHeight - bubbleSize.height - VIEWPORT_PADDING, top));
-    left = Math.max(VIEWPORT_PADDING, Math.min(viewportWidth - bubbleSize.width - VIEWPORT_PADDING, left));
+    top = Math.max(VIEWPORT_PADDING, Math.min(viewportHeight - currentBubbleSize.height - VIEWPORT_PADDING, top));
+    left = Math.max(VIEWPORT_PADDING, Math.min(viewportWidth - currentBubbleSize.width - VIEWPORT_PADDING, left));
 
-    setPosition({ top, left });
-    setActualPlacement(currentPlacement);
+    // 只在位置真正变化时更新状态
+    setPosition((prev) => {
+      if (prev && prev.top === top && prev.left === left) {
+        return prev;
+      }
+      return { top, left };
+    });
+    setActualPlacement((prev) => prev === currentPlacement ? prev : currentPlacement);
     setIsPositioned(true);
-  }, [placement, isBodyAttach, bubbleSize, OFFSET, VIEWPORT_PADDING]);
+  };
 
   // ─── 监听窗口变化（body 模式）───
   useEffect(() => {
-    if (!isBodyAttach) return;
+    if (!isBodyAttach || !isVisible) return;
 
-    const handleUpdate = () => calculateBodyPosition();
+    const handleUpdate = () => calculateBodyPositionRef.current?.();
 
     window.addEventListener('resize', handleUpdate);
     window.addEventListener('scroll', handleUpdate, true);
@@ -160,7 +203,7 @@ const PopOver: React.FC<PopOverProps> = ({
       window.removeEventListener('resize', handleUpdate);
       window.removeEventListener('scroll', handleUpdate, true);
     };
-  }, [calculateBodyPosition, isBodyAttach]);
+  }, [isBodyAttach, isVisible]); // 移除 calculateBodyPosition 依赖
 
   // ─── 监听气泡尺寸变化（body 模式）───
   useEffect(() => {
@@ -169,7 +212,13 @@ const PopOver: React.FC<PopOverProps> = ({
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.target.getBoundingClientRect();
-        setBubbleSize({ width, height });
+        // 只在尺寸真正变化时更新状态，避免无限循环
+        setBubbleSize((prev) => {
+          if (prev.width === width && prev.height === height) {
+            return prev; // 返回相同引用，不触发重渲染
+          }
+          return { width, height };
+        });
       }
     });
 
@@ -180,9 +229,9 @@ const PopOver: React.FC<PopOverProps> = ({
   // ─── 位置更新（body 模式）───
   useEffect(() => {
     if (isVisible && isBodyAttach && bubbleSize.width > 0 && bubbleSize.height > 0) {
-      calculateBodyPosition();
+      calculateBodyPositionRef.current?.();
     }
-  }, [isVisible, isBodyAttach, bubbleSize, calculateBodyPosition]);
+  }, [isVisible, isBodyAttach, bubbleSize]);
 
   // ─── 点击外部关闭 ───
   useEffect(() => {

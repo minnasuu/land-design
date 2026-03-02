@@ -1,73 +1,305 @@
-.land-tag-input{
-   position: relative;
-    display: flex;
-    align-items: center;
-    gap: var(--land-tag-input-gap, var(--gap-s));
-    padding-block: var(--land-tag-input-padding-block, var(--gap-s));
-    height: fit-content;
-    border-radius: var(--land-tag-input-border-radius, var(--radius-m));
-    background-color: var(--land-tag-input-bg-color, var(--color-bg-secondary));
-    box-sizing: border-box;
-    overflow: auto;
-    transition: background-color var(--transition-s) linear;
-    padding-right: var(--land-tag-input-padding-right, var(--gap-s));
-    &.widthClear{
-      padding-right: var(--land-tag-input-padding-right-clear, var(--gap-m));
-    }
-    .land-tag-input-container{
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--land-tag-input-container-gap, var(--gap-s));
-      width: fit-content;
-      min-width: 0;
-      overflow: auto;
-    }
-    &::-webkit-scrollbar{
-      width: 0;
-      display: none;
-    }
-    &:focus-within,
-    &:hover{
-      background-color: var(--land-tag-input-hover-bg-color, var(--color-bg-secondary));
-      .land-input__clear{
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-    .land-tag-input-input{
-      flex: 1;
-      height: 28px;
-      min-width: 80px;
-    }
-    .land-input__clear{
-      width: var(--land-tag-input-clear-icon-size, 16px);
-      height: var(--land-tag-input-clear-icon-size, 16px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      cursor: pointer;
-      color: var(--land-tag-input-clear-icon-color, var(--color-text-secondary));
-      svg{
-        width: var(--land-tag-input-clear-icon-size, 16px);
-        height: var(--land-tag-input-clear-icon-size, 16px);
-      }
+// ============================================================================
+// TagInput 组件样式
+// @description 标签输入框组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$tag-input-gap: var(--land-tag-input-gap, var(--gap-s));
+$tag-input-padding-x: var(--land-tag-input-padding-x, var(--padding-m));
+$tag-input-padding-y: var(--land-tag-input-padding-y, var(--padding-s));
+$tag-input-radius: var(--land-tag-input-radius, var(--radius-m));
+$tag-input-min-height: var(--land-tag-input-min-height, 36px);
+
+// ─── 尺寸令牌: Small ───
+$tag-input-sm-padding-x: var(--land-tag-input-sm-padding-x, var(--padding-s));
+$tag-input-sm-padding-y: var(--land-tag-input-sm-padding-y, 2px);
+$tag-input-sm-min-height: var(--land-tag-input-sm-min-height, 28px);
+$tag-input-sm-font-size: var(--land-tag-input-sm-font-size, var(--font-content-s));
+$tag-input-sm-input-height: var(--land-tag-input-sm-input-height, 22px);
+
+// ─── 尺寸令牌: Large ───
+$tag-input-lg-padding-x: var(--land-tag-input-lg-padding-x, var(--padding-l));
+$tag-input-lg-padding-y: var(--land-tag-input-lg-padding-y, var(--padding-m));
+$tag-input-lg-min-height: var(--land-tag-input-lg-min-height, 44px);
+$tag-input-lg-font-size: var(--land-tag-input-lg-font-size, var(--font-content-l));
+$tag-input-lg-input-height: var(--land-tag-input-lg-input-height, 32px);
+
+// ─── 外观令牌: Fill ───
+$tag-input-fill-bg: var(--land-tag-input-fill-bg, var(--color-bg-secondary));
+$tag-input-fill-bg-hover: var(--land-tag-input-fill-bg-hover, var(--color-bg-secondary));
+$tag-input-fill-bg-focus: var(--land-tag-input-fill-bg-focus, var(--color-bg-primary));
+$tag-input-fill-border: var(--land-tag-input-fill-border, 1px solid transparent);
+$tag-input-fill-border-focus: var(--land-tag-input-fill-border-focus, 1px solid var(--color-primary));
+
+// ─── 外观令牌: Outline ───
+$tag-input-outline-bg: var(--land-tag-input-outline-bg, var(--color-bg-primary));
+$tag-input-outline-bg-hover: var(--land-tag-input-outline-bg-hover, var(--color-bg-primary));
+$tag-input-outline-bg-focus: var(--land-tag-input-outline-bg-focus, var(--color-bg-primary));
+$tag-input-outline-border: var(--land-tag-input-outline-border, 1px solid var(--color-border-secondary));
+$tag-input-outline-border-hover: var(--land-tag-input-outline-border-hover, 1px solid var(--color-border-primary));
+$tag-input-outline-border-focus: var(--land-tag-input-outline-border-focus, 1px solid var(--color-primary));
+
+// ─── 排版令牌 ───
+$tag-input-font-size: var(--land-tag-input-font-size, var(--font-content-m));
+$tag-input-color: var(--land-tag-input-color, var(--color-text-primary));
+$tag-input-placeholder-color: var(--land-tag-input-placeholder-color, var(--color-text-tertiary));
+
+// ─── 状态令牌 ───
+$tag-input-disabled-opacity: var(--land-tag-input-disabled-opacity, 0.5);
+$tag-input-disabled-cursor: var(--land-tag-input-disabled-cursor, not-allowed);
+
+// ─── 子元素令牌: 标签 ───
+$tag-input-tag-bg: var(--land-tag-input-tag-bg, var(--color-bg-primary));
+$tag-input-tag-color: var(--land-tag-input-tag-color, var(--color-text-primary));
+$tag-input-tag-border: var(--land-tag-input-tag-border, 1px solid var(--color-border-secondary));
+$tag-input-tag-radius: var(--land-tag-input-tag-radius, var(--radius-s));
+$tag-input-tag-padding-x: var(--land-tag-input-tag-padding-x, var(--padding-s));
+$tag-input-tag-padding-y: var(--land-tag-input-tag-padding-y, 2px);
+$tag-input-tag-font-size: var(--land-tag-input-tag-font-size, var(--font-content-s));
+$tag-input-tag-gap: var(--land-tag-input-tag-gap, var(--gap-xs));
+
+// ─── 子元素令牌: 输入框 ───
+$tag-input-input-height: var(--land-tag-input-input-height, 28px);
+$tag-input-input-min-width: var(--land-tag-input-input-min-width, 80px);
+
+// ─── 子元素令牌: 清空按钮 ───
+$tag-input-clear-size: var(--land-tag-input-clear-size, 16px);
+$tag-input-clear-color: var(--land-tag-input-clear-color, var(--color-text-tertiary));
+$tag-input-clear-color-hover: var(--land-tag-input-clear-color-hover, var(--color-text-secondary));
+
+// ─── 动效令牌 ───
+$tag-input-transition: var(--land-tag-input-transition, all 0.2s ease-in-out);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-tag-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $tag-input-gap;
+  padding: $tag-input-padding-y $tag-input-padding-x;
+  min-height: $tag-input-min-height;
+  border-radius: $tag-input-radius;
+  box-sizing: border-box;
+  cursor: text;
+  transition: $tag-input-transition;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 外观变体
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // ─── Fill 变体 ───
+  &--fill {
+    background-color: $tag-input-fill-bg;
+    border: $tag-input-fill-border;
+
+    &:hover:not(.land-tag-input--disabled):not(.land-tag-input--readonly) {
+      background-color: $tag-input-fill-bg-hover;
     }
 
-  .land-tag-input-tag{
+    &.land-tag-input--focused {
+      background-color: $tag-input-fill-bg-focus;
+      border: $tag-input-fill-border-focus;
+    }
+  }
+
+  // ─── Outline 变体 ───
+  &--outline {
+    background-color: $tag-input-outline-bg;
+    border: $tag-input-outline-border;
+
+    &:hover:not(.land-tag-input--disabled):not(.land-tag-input--readonly) {
+      border: $tag-input-outline-border-hover;
+    }
+
+    &.land-tag-input--focused {
+      background-color: $tag-input-outline-bg-focus;
+      border: $tag-input-outline-border-focus;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 尺寸变体
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // ─── Small ───
+  &--small {
+    padding: $tag-input-sm-padding-y $tag-input-sm-padding-x;
+    min-height: $tag-input-sm-min-height;
+    font-size: $tag-input-sm-font-size;
+
+    .land-tag-input__input {
+      height: $tag-input-sm-input-height;
+      font-size: $tag-input-sm-font-size;
+    }
+
+    .land-tag-input__tag {
+      font-size: $tag-input-sm-font-size;
+    }
+  }
+
+  // ─── Large ───
+  &--large {
+    padding: $tag-input-lg-padding-y $tag-input-lg-padding-x;
+    min-height: $tag-input-lg-min-height;
+    font-size: $tag-input-lg-font-size;
+
+    .land-tag-input__input {
+      height: $tag-input-lg-input-height;
+      font-size: $tag-input-lg-font-size;
+    }
+
+    .land-tag-input__tag {
+      font-size: $tag-input-lg-font-size;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 状态变体
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    opacity: $tag-input-disabled-opacity;
+    cursor: $tag-input-disabled-cursor;
+    pointer-events: none;
+
+    .land-tag-input__input {
+      cursor: $tag-input-disabled-cursor;
+    }
+  }
+
+  // ─── 只读状态 ───
+  &--readonly {
+    cursor: default;
+
+    .land-tag-input__tag {
+      cursor: default;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 内容区域
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $tag-input-gap;
+    min-width: 0;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 标签
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__tag {
     display: flex;
     align-items: center;
-    gap: var(--land-tag-input-tag-gap, var(--gap-s));
-    padding-left: var(--land-tag-input-tag-padding-left, var(--gap-m));
-    padding-right: var(--land-tag-input-tag-padding-right, var(--gap-s));
-    background-color: var(--land-tag-input-tag-bg-color, var(--color-bg-primary));
-    border-radius: var(--land-tag-input-tag-border-radius, var(--radius-s));
-    color: var(--land-tag-input-tag-color, var(--color-text-primary));
-    font-size: var(--land-tag-input-tag-font-size, var(--font-content-s));
-    border: var(--land-tag-input-tag-border, none);
+    gap: $tag-input-tag-gap;
+    padding: $tag-input-tag-padding-y $tag-input-tag-padding-x;
+    background-color: $tag-input-tag-bg;
+    color: $tag-input-tag-color;
+    border: $tag-input-tag-border;
+    border-radius: $tag-input-tag-radius;
+    font-size: $tag-input-tag-font-size;
+    line-height: 1.4;
     box-sizing: border-box;
     cursor: pointer;
+    flex-shrink: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 输入框
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__input {
+    flex: 1;
+    min-width: $tag-input-input-min-width;
+    height: $tag-input-input-height;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: $tag-input-font-size;
+    color: $tag-input-color;
+    line-height: $tag-input-input-height;
+
+    &::placeholder {
+      color: $tag-input-placeholder-color;
+    }
+
+    &:disabled {
+      cursor: $tag-input-disabled-cursor;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 前后置内容
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__prefix,
+  &__suffix {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 清空按钮
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: $tag-input-clear-size;
+    height: $tag-input-clear-size;
+    color: $tag-input-clear-color;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: $tag-input-transition;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      color: $tag-input-clear-color-hover;
+    }
+  }
+
+  // ─── 悬停/聚焦时显示清空按钮 ───
+  &:hover &__clear,
+  &--focused &__clear {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 滚动条隐藏
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 }

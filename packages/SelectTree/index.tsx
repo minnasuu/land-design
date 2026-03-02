@@ -1,13 +1,31 @@
-import React, { useState, useCallback, useMemo } from 'react'
+// ============================================================================
+// SelectTree 组件
+// @description 树形选择器组件，支持单选和多选模式
+// @author Land Design System
+// ============================================================================
+
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import Dropdown from '../Dropdown'
 import PopOver from '../PopOver'
-import { SelectTreeItemType, SelectTreeProps } from './props'
+import {
+  SelectTreeOption,
+  SelectTreeProps,
+  selectTreeDefaultProps,
+  typeToVariantMap,
+  SelectTreeType,
+} from './props'
 import Icon from '../Icon'
 import Checkbox from '../Checkbox'
 import './index.scss'
 
-// 获取所有子节点的key
-const getAllChildrenKeys = (item: SelectTreeItemType): string[] => {
+const prefixCls = 'land-select-tree';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 工具函数
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** 获取所有子节点的 key */
+const getAllChildrenKeys = (item: SelectTreeOption): string[] => {
   const keys: string[] = [];
   if (item.children) {
     item.children.forEach(child => {
@@ -18,9 +36,9 @@ const getAllChildrenKeys = (item: SelectTreeItemType): string[] => {
   return keys;
 };
 
-// 获取所有子节点
-const getAllChildren = (item: SelectTreeItemType): SelectTreeItemType[] => {
-  const children: SelectTreeItemType[] = [];
+/** 获取所有子节点 */
+const getAllChildren = (item: SelectTreeOption): SelectTreeOption[] => {
+  const children: SelectTreeOption[] = [];
   if (item.children) {
     item.children.forEach(child => {
       children.push(child);
@@ -30,73 +48,169 @@ const getAllChildren = (item: SelectTreeItemType): SelectTreeItemType[] => {
   return children;
 };
 
+/** 根据 key 在树中查找选项 */
+const findOptionByKey = (options: SelectTreeOption[], key: string): SelectTreeOption | undefined => {
+  for (const option of options) {
+    if (option.key === key) return option;
+    if (option.children) {
+      const found = findOptionByKey(option.children, key);
+      if (found) return found;
+    }
+  }
+  return undefined;
+};
+
+/** 根据 keys 数组获取选项数组 */
+const getOptionsByKeys = (options: SelectTreeOption[], keys: string[]): SelectTreeOption[] => {
+  return keys.map(key => findOptionByKey(options, key)).filter(Boolean) as SelectTreeOption[];
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 组件实现
+// ─────────────────────────────────────────────────────────────────────────────
+
 const SelectTree: React.FC<SelectTreeProps> = ({
+  // 核心属性（新）
+  options,
+  value,
+  values,
+  defaultValue,
+  defaultValues,
+  // 核心属性（旧，兼容）
+  data,
+  selected,
+  selectedValues: legacySelectedValues,
+  // 通用属性
+  multiple = selectTreeDefaultProps.multiple,
+  placeholder = selectTreeDefaultProps.placeholder,
+  // 外观属性
+  variant,
   type,
-  disabled,
-  multiple,
-  customValueDisplay,
+  size = selectTreeDefaultProps.size,
+  disabled = selectTreeDefaultProps.disabled,
+  width,
+  // 多选属性
+  separator = selectTreeDefaultProps.separator,
+  maxDisplayCount = selectTreeDefaultProps.maxDisplayCount,
+  // 提示属性
   tip,
   tipProps,
-  selected,
-  selectedValues,
-  separator,
-  maxDisplayCount,
-  placeholder = "请选择",
-  data,
+  // 自定义渲染
+  customValueDisplay,
+  renderOption,
+  emptyContent = selectTreeDefaultProps.emptyContent,
+  // 样式属性
+  className = '',
+  style,
+  dropdownClassName,
+  dropdownStyle,
+  // 事件属性
   onChange,
+  onExpand,
 }) => {
+  // ─── 计算有效数据源 ───
+  const effectiveOptions = useMemo(() => options ?? data ?? [], [options, data]);
+
+  // ─── 计算有效变体 ───
+  const effectiveVariant = useMemo(() => {
+    if (variant) return variant;
+    if (type) return typeToVariantMap[type as SelectTreeType] ?? 'outline';
+    return 'outline';
+  }, [variant, type]);
+
+  // ─── 受控/非受控状态处理 ───
+  // 单选值
+  const [innerValue, setInnerValue] = useState<string | undefined>(() => {
+    if (value !== undefined) return value;
+    if (selected !== undefined && selected !== null && selected.key !== undefined) return selected.key;
+    return defaultValue;
+  });
+
+  // 多选值
+  const [innerValues, setInnerValues] = useState<string[]>(() => {
+    if (values !== undefined) return values;
+    if (legacySelectedValues !== undefined && legacySelectedValues !== null && Array.isArray(legacySelectedValues)) {
+      return legacySelectedValues.filter(item => item != null).map(item => item.key);
+    }
+    return defaultValues ?? [];
+  });
+
+  // 同步受控属性
+  useEffect(() => {
+    if (value !== undefined) {
+      setInnerValue(value);
+    } else if (selected !== undefined && selected !== null && selected.key !== undefined) {
+      setInnerValue(selected.key);
+    }
+  }, [value, selected]);
+
+  useEffect(() => {
+    if (values !== undefined) {
+      setInnerValues(values);
+    } else if (legacySelectedValues !== undefined && legacySelectedValues !== null && Array.isArray(legacySelectedValues)) {
+      setInnerValues(legacySelectedValues.filter(item => item != null).map(item => item.key));
+    }
+  }, [values, legacySelectedValues]);
+
+  // ─── 展开路径状态 ───
   const [expandedPath, setExpandedPath] = useState<string[]>([]);
 
+  // ─── 获取选中的选项数据 ───
+  const selectedOptions = useMemo(() => {
+    if (multiple) {
+      return getOptionsByKeys(effectiveOptions, innerValues);
+    }
+    if (innerValue) {
+      const found = findOptionByKey(effectiveOptions, innerValue);
+      return found ? [found] : [];
+    }
+    return [];
+  }, [multiple, innerValues, innerValue, effectiveOptions]);
+
+  // ─── 渲染显示内容 ───
   const renderDisplayContent = useCallback(() => {
     if (multiple) {
-      const selectedLabels = selectedValues.map(item => item.label);
-      if (!selectedLabels || selectedLabels.length === 0) {
-        return placeholder;
+      const selectedLabels = selectedOptions.map(item => item.label);
+      if (selectedLabels.length === 0) {
+        return <span className={`${prefixCls}__placeholder`}>{placeholder}</span>;
       }
 
-      if (selectedLabels.length <= maxDisplayCount) {
-        return selectedLabels.join(separator);
-      } else {
-        return `${selectedLabels.slice(0, maxDisplayCount).join(separator)}等${selectedLabels.length}个选项`;
+      if (selectedLabels.length <= maxDisplayCount!) {
+        return <span className={`${prefixCls}__value`}>{selectedLabels.join(separator)}</span>;
       }
+      return (
+        <span className={`${prefixCls}__value`}>
+          {selectedLabels.slice(0, maxDisplayCount).join(separator)}等{selectedLabels.length}个选项
+        </span>
+      );
     } else {
-      if (!selected || !selected.label) {
-        return placeholder;
+      const selectedOption = selectedOptions[0];
+      if (!selectedOption) {
+        return <span className={`${prefixCls}__placeholder`}>{placeholder}</span>;
       }
-      return selected.label;
+      return <span className={`${prefixCls}__value`}>{selectedOption.label}</span>;
     }
-  }, [multiple, selectedValues, selected, placeholder, separator, maxDisplayCount]);
+  }, [multiple, selectedOptions, placeholder, separator, maxDisplayCount]);
 
+  // ─── 自定义显示处理 ───
   const handleCustomDisplay = useCallback(() => {
     if (!customValueDisplay) {
       return renderDisplayContent();
     }
 
-    if (multiple) {
-      return customValueDisplay({
-        values: selectedValues.map(item => item.key),
-        items: selectedValues,
-        isMultiple: true,
-        placeholder
-      });
-    } else {
-      const selectedItems = selected ? [selected] : [];
-      const selectedValues = selected ? [selected.key] : [];
-      return customValueDisplay({
-        values: selectedValues,
-        items: selectedItems,
-        isMultiple: false,
-        placeholder
-      });
-    }
-  }, [customValueDisplay, renderDisplayContent, multiple, selectedValues, selected, placeholder]);
+    return customValueDisplay({
+      values: multiple ? innerValues : (innerValue ? [innerValue] : []),
+      items: selectedOptions,
+      isMultiple: !!multiple,
+      placeholder: placeholder!,
+    });
+  }, [customValueDisplay, renderDisplayContent, multiple, innerValues, innerValue, selectedOptions, placeholder]);
 
-  const getCurrentLevelData = useCallback((level: number): SelectTreeItemType[] => {
-    if (level === 0) {
-      return data || [];
-    }
+  // ─── 获取当前层级数据 ───
+  const getCurrentLevelData = useCallback((level: number): SelectTreeOption[] => {
+    if (level === 0) return effectiveOptions;
 
-    let currentData = data || [];
+    let currentData = effectiveOptions;
     for (let i = 0; i < level; i++) {
       const pathKey = expandedPath[i];
       const parentItem = currentData.find(item => item.key === pathKey);
@@ -107,34 +221,32 @@ const SelectTree: React.FC<SelectTreeProps> = ({
       }
     }
     return currentData;
-  }, [data, expandedPath]);
+  }, [effectiveOptions, expandedPath]);
 
-  const isItemSelected = useCallback((item: SelectTreeItemType): boolean => {
+  // ─── 判断是否选中 ───
+  const isItemSelected = useCallback((item: SelectTreeOption): boolean => {
     if (multiple) {
-      return selectedValues.some(selected => selected.key === item.key);
-    } else {
-      return selected?.key === item.key;
+      return innerValues.includes(item.key);
     }
-  }, [multiple, selectedValues, selected]);
+    return innerValue === item.key;
+  }, [multiple, innerValues, innerValue]);
 
-  const isItemIndeterminate = useCallback((item: SelectTreeItemType): boolean => {
+  // ─── 判断是否半选 ───
+  const isItemIndeterminate = useCallback((item: SelectTreeOption): boolean => {
     if (!multiple || !item.children) return false;
 
     const childrenKeys = getAllChildrenKeys(item);
-    const selectedChildrenCount = childrenKeys.filter(key =>
-      selectedValues.some(selected => selected.key === key)
-    ).length;
+    const selectedChildrenCount = childrenKeys.filter(key => innerValues.includes(key)).length;
 
     return selectedChildrenCount > 0 && selectedChildrenCount < childrenKeys.length;
-  }, [multiple, selectedValues]);
+  }, [multiple, innerValues]);
 
-  // 更新父节点状态
-  const updateParentStates = useCallback((selectedValues: SelectTreeItemType[]): SelectTreeItemType[] => {
-    let updatedValues = [...selectedValues];
+  // ─── 更新父节点状态 ───
+  const updateParentStates = useCallback((keys: string[]): string[] => {
+    let updatedKeys = [...keys];
 
-    // 获取所有有子节点的节点
-    const getAllParentNodes = (items: SelectTreeItemType[]): SelectTreeItemType[] => {
-      const parents: SelectTreeItemType[] = [];
+    const getAllParentNodes = (items: SelectTreeOption[]): SelectTreeOption[] => {
+      const parents: SelectTreeOption[] = [];
       items.forEach(item => {
         if (item.children && item.children.length > 0) {
           parents.push(item);
@@ -144,90 +256,84 @@ const SelectTree: React.FC<SelectTreeProps> = ({
       return parents;
     };
 
-    const allParentNodes = getAllParentNodes(data || []);
+    const allParentNodes = getAllParentNodes(effectiveOptions);
 
     allParentNodes.forEach(parent => {
       const childrenKeys = getAllChildrenKeys(parent);
-      const selectedChildrenCount = childrenKeys.filter(key =>
-        updatedValues.some(selected => selected.key === key)
-      ).length;
-
-      const isParentSelected = updatedValues.some(selected => selected.key === parent.key);
+      const selectedChildrenCount = childrenKeys.filter(key => updatedKeys.includes(key)).length;
+      const isParentSelected = updatedKeys.includes(parent.key);
 
       if (selectedChildrenCount === childrenKeys.length && !isParentSelected) {
-        // 所有子节点都被选中，但父节点未选中，添加父节点
-        updatedValues.push(parent);
+        updatedKeys.push(parent.key);
       } else if (selectedChildrenCount === 0 && isParentSelected) {
-        // 没有子节点被选中，但父节点被选中，移除父节点
-        updatedValues = updatedValues.filter(selected => selected.key !== parent.key);
+        updatedKeys = updatedKeys.filter(key => key !== parent.key);
       }
     });
 
-    return updatedValues;
-  }, [data, getAllChildrenKeys]);
+    return updatedKeys;
+  }, [effectiveOptions]);
 
-  const handleLabelClick = useCallback((item: SelectTreeItemType, level: number) => {
+  // ─── 处理标签点击 ───
+  const handleLabelClick = useCallback((item: SelectTreeOption, level: number) => {
     if (item.children && item.children.length > 0) {
       const isCurrentlyExpanded = expandedPath[level] === item.key;
-
-      if (isCurrentlyExpanded) {
-        setExpandedPath(expandedPath.slice(0, level));
-      } else {
-        setExpandedPath([...expandedPath.slice(0, level), item.key]);
-      }
+      const newPath = isCurrentlyExpanded
+        ? expandedPath.slice(0, level)
+        : [...expandedPath.slice(0, level), item.key];
+      
+      setExpandedPath(newPath);
+      onExpand?.(newPath);
     } else {
       if (multiple) {
         const isSelected = isItemSelected(item);
-        let newSelectedValues: SelectTreeItemType[];
+        let newKeys = isSelected
+          ? innerValues.filter(key => key !== item.key)
+          : [...innerValues, item.key];
 
-        if (isSelected) {
-          newSelectedValues = selectedValues.filter(selected => selected.key !== item.key);
-        } else {
-          newSelectedValues = [...selectedValues, item];
-        }
+        newKeys = updateParentStates(newKeys);
+        setInnerValues(newKeys);
 
-        // 更新父节点状态
-        newSelectedValues = updateParentStates(newSelectedValues);
-
-        onChange?.(newSelectedValues, item);
+        const newOptions = getOptionsByKeys(effectiveOptions, newKeys);
+        onChange?.(newKeys, item, newOptions);
       } else {
-        onChange?.(item, item);
+        setInnerValue(item.key);
+        onChange?.(item.key, item, [item]);
       }
     }
-  }, [expandedPath, multiple, isItemSelected, selectedValues, onChange, updateParentStates]);
+  }, [expandedPath, multiple, isItemSelected, innerValues, onChange, updateParentStates, effectiveOptions, onExpand]);
 
-  const handleCheckedChange = useCallback((item: SelectTreeItemType, checked: boolean) => {
+  // ─── 处理复选框变化 ───
+  const handleCheckedChange = useCallback((item: SelectTreeOption) => {
     if (!multiple) return;
 
-    let newSelectedValues: SelectTreeItemType[] = [...selectedValues];
+    let newKeys = [...innerValues];
     const isCurrentlySelected = isItemSelected(item);
 
     if (isCurrentlySelected) {
-      // 如果当前已选中，则移除该节点及其所有子节点
       const keysToRemove = [item.key, ...getAllChildrenKeys(item)];
-      newSelectedValues = newSelectedValues.filter(selected =>
-        !keysToRemove.includes(selected.key)
-      );
+      newKeys = newKeys.filter(key => !keysToRemove.includes(key));
     } else {
-      // 如果当前未选中，则选中该节点及其所有子节点
       const itemsToAdd = [item, ...getAllChildren(item)];
       itemsToAdd.forEach(itemToAdd => {
-        if (!newSelectedValues.some(selected => selected.key === itemToAdd.key)) {
-          newSelectedValues.push(itemToAdd);
+        if (!newKeys.includes(itemToAdd.key)) {
+          newKeys.push(itemToAdd.key);
         }
       });
     }
 
-    // 更新父节点状态
-    newSelectedValues = updateParentStates(newSelectedValues);
+    newKeys = updateParentStates(newKeys);
+    setInnerValues(newKeys);
 
-    onChange?.(newSelectedValues, item);
-  }, [multiple, selectedValues, onChange, isItemSelected, getAllChildrenKeys, updateParentStates]);
+    const newOptions = getOptionsByKeys(effectiveOptions, newKeys);
+    onChange?.(newKeys, item, newOptions);
+  }, [multiple, innerValues, isItemSelected, updateParentStates, effectiveOptions, onChange]);
 
+  // ─── 处理下拉关闭 ───
   const handleDropdownClose = useCallback(() => {
     setExpandedPath([]);
   }, []);
 
+  // ─── 计算属性 ───
   const currentLevelData = useMemo(() => getCurrentLevelData(0), [getCurrentLevelData]);
 
   const subsequentLevels = useMemo(() => {
@@ -238,72 +344,121 @@ const SelectTree: React.FC<SelectTreeProps> = ({
     }).filter(({ levelData }) => levelData.length > 0);
   }, [expandedPath, getCurrentLevelData]);
 
+  // ─── 根容器类名 ───
+  const rootClassName = useMemo(() => {
+    return [
+      prefixCls,
+      `${prefixCls}--${size}`,
+      className,
+    ].filter(Boolean).join(' ');
+  }, [size, className]);
+
+  // ─── 触发器类名 ───
+  const triggerClassName = useMemo(() => {
+    return [
+      `${prefixCls}__trigger`,
+      `${prefixCls}__trigger--${effectiveVariant}`,
+      disabled && `${prefixCls}__trigger--disabled`,
+    ].filter(Boolean).join(' ');
+  }, [effectiveVariant, disabled]);
+
+  // ─── 下拉面板类名 ───
+  const panelClassName = useMemo(() => {
+    return [
+      `${prefixCls}__dropdown`,
+      dropdownClassName,
+    ].filter(Boolean).join(' ');
+  }, [dropdownClassName]);
+
+  // ─── 计算样式 ───
+  const rootStyle = useMemo(() => {
+    const baseStyle: React.CSSProperties = { ...style };
+    if (width) {
+      baseStyle.width = typeof width === 'number' ? `${width}px` : width;
+    }
+    return baseStyle;
+  }, [style, width]);
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SECTION: 渲染
+  // ─────────────────────────────────────────────────────────────────────────────
+
   return (
-    <div className='land-select-tree'>
+    <div className={rootClassName} style={rootStyle}>
       <Dropdown
         disabled={disabled}
         trigger='click'
         onClose={handleDropdownClose}
         content={
-          <div className='land-select-tree-drop'>
-            <TreeList
-              data={currentLevelData}
-              multiple={multiple}
-              level={0}
-              expandedPath={expandedPath}
-              onClick={handleLabelClick}
-              onCheckedChange={handleCheckedChange}
-              isItemSelected={isItemSelected}
-              isItemIndeterminate={isItemIndeterminate}
-            />
+          <div className={panelClassName} style={dropdownStyle}>
+            {effectiveOptions.length === 0 ? (
+              <div className={`${prefixCls}__empty`}>{emptyContent}</div>
+            ) : (
+              <>
+                <TreeList
+                  prefixCls={prefixCls}
+                  data={currentLevelData}
+                  multiple={multiple}
+                  level={0}
+                  expandedPath={expandedPath}
+                  onClick={handleLabelClick}
+                  onCheckedChange={handleCheckedChange}
+                  isItemSelected={isItemSelected}
+                  isItemIndeterminate={isItemIndeterminate}
+                  renderOption={renderOption}
+                />
 
-            {subsequentLevels.map(({ level, levelData }) => (
-              <TreeList
-                key={`level-${level}`}
-                data={levelData}
-                multiple={multiple}
-                level={level}
-                expandedPath={expandedPath}
-                onClick={handleLabelClick}
-                onCheckedChange={handleCheckedChange}
-                isItemSelected={isItemSelected}
-                isItemIndeterminate={isItemIndeterminate}
-              />
-            ))}
+                {subsequentLevels.map(({ level, levelData }) => (
+                  <TreeList
+                    key={`level-${level}`}
+                    prefixCls={prefixCls}
+                    data={levelData}
+                    multiple={multiple}
+                    level={level}
+                    expandedPath={expandedPath}
+                    onClick={handleLabelClick}
+                    onCheckedChange={handleCheckedChange}
+                    isItemSelected={isItemSelected}
+                    isItemIndeterminate={isItemIndeterminate}
+                    renderOption={renderOption}
+                  />
+                ))}
+              </>
+            )}
           </div>
         }
       >
-        <div
-          className={`land-select-input hover-pop ${type} ${disabled ? 'disabled' : ''}`}
-        >
-          <p
-            className={`${(multiple ? selectedValues.length > 0 : selected !== undefined)
-              ? "land-select-trigger"
-              : "land-select-placeholder"
-              }`}
-          >
+        <div className={triggerClassName}>
+          <div className={`${prefixCls}__content`}>
             {customValueDisplay ? handleCustomDisplay() : renderDisplayContent()}
-          </p>
-          <Icon name="arrow-triangle" className="land-select-value-arrow" size={16} />
-          {tip && <PopOver content={tip} theme="dark" {...tipProps} />}
+          </div>
+          <Icon name="arrow-triangle" className={`${prefixCls}__arrow`} size={16} />
+          {tip && <PopOver attach="body" content={tip} theme="dark" {...tipProps} />}
         </div>
       </Dropdown>
     </div>
   )
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: TreeList 子组件
+// ─────────────────────────────────────────────────────────────────────────────
+
 type TreeListProps = {
-  data: SelectTreeItemType[]
-  multiple: boolean
+  prefixCls: string
+  data: SelectTreeOption[]
+  multiple?: boolean
   level: number
   expandedPath: string[]
-  onClick: (item: SelectTreeItemType, level: number) => void
-  onCheckedChange: (item: SelectTreeItemType, checked: boolean) => void
-  isItemSelected: (item: SelectTreeItemType) => boolean
-  isItemIndeterminate: (item: SelectTreeItemType) => boolean
+  onClick: (item: SelectTreeOption, level: number) => void
+  onCheckedChange: (item: SelectTreeOption) => void
+  isItemSelected: (item: SelectTreeOption) => boolean
+  isItemIndeterminate: (item: SelectTreeOption) => boolean
+  renderOption?: SelectTreeProps['renderOption']
 }
 
 const TreeList: React.FC<TreeListProps> = React.memo(({
+  prefixCls,
   data,
   multiple,
   level,
@@ -311,49 +466,85 @@ const TreeList: React.FC<TreeListProps> = React.memo(({
   onClick,
   onCheckedChange,
   isItemSelected,
-  isItemIndeterminate
+  isItemIndeterminate,
+  renderOption,
 }) => {
-  const handleClick = useCallback((e: React.MouseEvent, item: SelectTreeItemType) => {
+  // ─── 事件处理 ───
+  const handleClick = useCallback((e: React.MouseEvent, item: SelectTreeOption) => {
     e.stopPropagation();
     onClick(item, level);
   }, [onClick, level]);
 
-  const handleCheckboxChange = useCallback((item: SelectTreeItemType, e?: React.MouseEvent) => {
+  const handleCheckboxChange = useCallback((item: SelectTreeOption, e?: React.MouseEvent) => {
     if (item.children && e) {
       e.stopPropagation();
     }
-    onCheckedChange(item, false); // checked参数不再使用，但保持接口兼容
+    onCheckedChange(item);
   }, [onCheckedChange]);
 
+  // ─── 获取选项类名 ───
+  const getOptionClassName = useCallback((isExpanded: boolean, isSelected: boolean) => {
+    return [
+      `${prefixCls}__option`,
+      isExpanded && `${prefixCls}__option--expanded`,
+      isSelected && `${prefixCls}__option--selected`,
+    ].filter(Boolean).join(' ');
+  }, [prefixCls]);
+
+  // ─── 获取箭头类名 ───
+  const getArrowClassName = useCallback((isExpanded: boolean) => {
+    return [
+      `${prefixCls}__option-arrow`,
+      isExpanded && `${prefixCls}__option-arrow--expanded`,
+    ].filter(Boolean).join(' ');
+  }, [prefixCls]);
+
   return (
-    <div className='land-select-tree-drop-list'>
+    <div className={`${prefixCls}__list`}>
       {data?.map(item => {
         const isExpanded = expandedPath[level] === item.key;
         const hasChildren = item.children && item.children.length > 0;
         const isSelected = isItemSelected(item);
         const isIndeterminate = isItemIndeterminate(item);
 
+        // 自定义渲染
+        if (renderOption) {
+          return (
+            <div
+              key={item.key}
+              className={getOptionClassName(isExpanded, isSelected)}
+              onClick={(e) => handleClick(e, item)}
+            >
+              {renderOption(item, {
+                selected: isSelected,
+                expanded: isExpanded,
+                indeterminate: isIndeterminate,
+                level,
+              })}
+            </div>
+          );
+        }
+
         return (
           <div
-            className={`land-select-tree-drop-list-item ${isExpanded ? 'expanded' : ''} ${isSelected ? 'selected' : ''}`}
+            className={getOptionClassName(isExpanded, isSelected)}
             key={item.key}
             onClick={(e) => handleClick(e, item)}
           >
-            <div className='land-select-tree-drop-list-item-content'>
+            <div className={`${prefixCls}__option-content`}>
               {multiple && (
                 <Checkbox
-                  label=''
                   checked={isSelected}
                   indeterminate={isIndeterminate}
-                  onCheckedChange={(checked, e) => handleCheckboxChange(item, e)}
+                  onCheckedChange={(_checked, e) => handleCheckboxChange(item, e)}
                 />
               )}
-              {item.label}
+              <span className={`${prefixCls}__option-label`}>{item.label}</span>
             </div>
             {hasChildren && (
               <Icon
                 name='arrow-triangle'
-                className={`land-select-tree-drop-list-item-arrow ${isExpanded ? 'expanded' : ''}`}
+                className={getArrowClassName(isExpanded)}
               />
             )}
           </div>

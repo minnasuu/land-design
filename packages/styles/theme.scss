@@ -95,9 +95,9 @@
   --color-bg-primary-inverse: var(--color-gray-12);
   
   // 边框色
-  --color-border-primary: var(--color-gray-3);
-  --color-border-secondary: var(--color-gray-4);
-  --color-border-tertiary: var(--color-gray-5);
+  --color-border-primary: var(--color-gray-rgba-3);
+  --color-border-secondary: var(--color-gray-rgba-4);
+  --color-border-tertiary: var(--color-gray-rgba-5);
 
   --color-bg-skeleton: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-tertiary) 37%, var(--color-bg-secondary) 63%);
 

@@ -1,269 +1,511 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import './index.scss';
-import { SliderProps } from './props';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
+import { SliderProps, SliderMark, sliderDefaultProps } from "./props";
+import "./index.scss";
 
-const Slider: React.FC<SliderProps> = ({
-  className = "",
-  style,
-  value: propValue,
-  min = 0,
-  max = 100,
-  step = 1,
-  range = false,
-  useDivider = false,
-  prefix,
-  suffix,
-  showTooltip = false,
-  tooltipPlacement = 'top',
-  tooltipFormatter = (val) => val.toString(),
-  height = 4,
-  thumbSize = 16,
-  defaultBg = 'var(--color-gray-4)',
-  activeBg = 'var(--color-primary-6)',
-  thumbStyle,
-  thumbClassName = '',
-  onChange,
-  onAfterChange,
-  disabled = false,
-  ...props
-}) => {
+/**
+ * Slider 滑动输入条组件
+ * @description 用于在一定范围内进行数值选择
+ */
+const Slider: React.FC<SliderProps> = (props) => {
+  const {
+    // 基础属性
+    value: controlledValue,
+    defaultValue = sliderDefaultProps.defaultValue,
+    min = sliderDefaultProps.min!,
+    max = sliderDefaultProps.max!,
+    step = sliderDefaultProps.step!,
+    range = sliderDefaultProps.range,
+    name,
+
+    // 外观属性
+    size = sliderDefaultProps.size,
+    orientation = sliderDefaultProps.orientation,
+    showMarks = sliderDefaultProps.showMarks,
+    marks,
+    showDots = sliderDefaultProps.showDots,
+
+    // Tooltip 属性
+    tooltip = sliderDefaultProps.tooltip,
+    tooltipPlacement = sliderDefaultProps.tooltipPlacement,
+    tooltipFormatter,
+
+    // 内容属性
+    prefix,
+    suffix,
+
+    // 状态属性
+    disabled = sliderDefaultProps.disabled,
+    readOnly = sliderDefaultProps.readOnly,
+
+    // 样式属性
+    className,
+    style,
+    trackClassName,
+    trackStyle,
+    activeTrackStyle,
+    thumbClassName,
+    thumbStyle,
+
+    // 事件属性
+    onChange,
+    onChangeComplete,
+    onFocus,
+    onBlur,
+  } = props;
+
+  // ─── Refs ───
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState<number | null>(null);
-  const [hoverThumb, setHoverThumb] = useState<number | null>(null);
-  
-  // 内部状态管理
-  const getInitialValue = (): [number, number] => {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // ─── 状态管理 ───
+  const isControlled = controlledValue !== undefined;
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [focused, setFocused] = useState(false);
+
+  // 获取初始值
+  const getInitialValue = useCallback((): [number, number] => {
+    const val = isControlled ? controlledValue : defaultValue;
     if (range) {
-      if (Array.isArray(propValue)) {
-        return [propValue[0], propValue[1]];
+      if (Array.isArray(val)) {
+        return [
+          Math.max(min, Math.min(max, val[0])),
+          Math.max(min, Math.min(max, val[1])),
+        ];
       }
       return [min, max];
     }
-    const val = typeof propValue === 'number' ? propValue : min;
-    return [val, val];
-  };
+    const singleVal = typeof val === "number" ? val : min;
+    return [Math.max(min, Math.min(max, singleVal)), max];
+  }, [isControlled, controlledValue, defaultValue, range, min, max]);
 
   const [internalValue, setInternalValue] = useState<[number, number]>(getInitialValue);
 
-  // 同步外部value
+  // 同步外部值
   useEffect(() => {
-    setInternalValue(getInitialValue());
-  }, [propValue, min, max, range]);
+    if (isControlled) {
+      setInternalValue(getInitialValue());
+    }
+  }, [controlledValue, isControlled, getInitialValue]);
 
-  // 计算百分比
-  const valueToPercent = (val: number): number => {
-    return ((val - min) / (max - min)) * 100;
-  };
+  // ─── 是否可交互 ───
+  const isInteractive = !disabled && !readOnly;
+  const isVertical = orientation === "vertical";
 
-  // 百分比转换为值
-  const percentToValue = (percent: number): number => {
-    const rawValue = (percent / 100) * (max - min) + min;
-    const steppedValue = Math.round(rawValue / step) * step;
-    return Math.min(max, Math.max(min, steppedValue));
-  };
+  // ─── 计算工具函数 ───
+  const valueToPercent = useCallback(
+    (val: number): number => {
+      if (max === min) return 0;
+      return ((val - min) / (max - min)) * 100;
+    },
+    [min, max]
+  );
 
-  // 获取鼠标位置对应的百分比
-  const getPercentFromEvent = (event: MouseEvent | React.MouseEvent): number => {
-    if (!sliderRef.current) return 0;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const percent = ((event.clientX - rect.left) / rect.width) * 100;
-    return Math.min(100, Math.max(0, percent));
-  };
+  const percentToValue = useCallback(
+    (percent: number): number => {
+      const rawValue = (percent / 100) * (max - min) + min;
+      const steppedValue = Math.round(rawValue / step) * step;
+      // 处理浮点数精度问题
+      const precision = String(step).includes(".")
+        ? String(step).split(".")[1].length
+        : 0;
+      const fixedValue = Number(steppedValue.toFixed(precision));
+      return Math.min(max, Math.max(min, fixedValue));
+    },
+    [min, max, step]
+  );
 
-  // 更新值
-  const updateValue = useCallback((thumbIndex: number, newValue: number) => {
-    if (disabled) return;
-    
-    setInternalValue(prev => {
-      const newValues: [number, number] = [...prev];
-      newValues[thumbIndex] = newValue;
-      
-      // 确保范围值的顺序
-      if (range && newValues[0] > newValues[1]) {
-        return thumbIndex === 0 ? [newValues[0], newValues[0]] : [newValues[1], newValues[1]];
+  const getPercentFromEvent = useCallback(
+    (event: MouseEvent | React.MouseEvent | TouchEvent | React.TouchEvent): number => {
+      if (!trackRef.current) return 0;
+      const rect = trackRef.current.getBoundingClientRect();
+
+      let clientPos: number;
+      if ("touches" in event) {
+        clientPos = isVertical
+          ? event.touches[0].clientY
+          : event.touches[0].clientX;
+      } else {
+        clientPos = isVertical ? event.clientY : event.clientX;
       }
-      
-      // 触发onChange回调
-      if (onChange) {
+
+      let percent: number;
+      if (isVertical) {
+        percent = ((rect.bottom - clientPos) / rect.height) * 100;
+      } else {
+        percent = ((clientPos - rect.left) / rect.width) * 100;
+      }
+
+      return Math.min(100, Math.max(0, percent));
+    },
+    [isVertical]
+  );
+
+  // ─── 值更新 ───
+  const updateValue = useCallback(
+    (thumbIndex: number, newValue: number, isComplete = false) => {
+      if (!isInteractive) return;
+
+      setInternalValue((prev) => {
+        const newValues: [number, number] = [...prev];
+        newValues[thumbIndex] = newValue;
+
+        // 范围模式下确保顺序
+        if (range) {
+          if (thumbIndex === 0 && newValues[0] > newValues[1]) {
+            newValues[0] = newValues[1];
+          } else if (thumbIndex === 1 && newValues[1] < newValues[0]) {
+            newValues[1] = newValues[0];
+          }
+        }
+
+        // 触发回调
         const emitValue = range ? newValues : newValues[0];
-        onChange(emitValue as any);
-      }
-      
-      return newValues;
-    });
-  }, [range, disabled, onChange]);
 
-  // 处理鼠标按下
-  const handleMouseDown = (thumbIndex: number) => (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsDragging(thumbIndex);
-  };
+        if (!isControlled) {
+          if (isComplete) {
+            onChangeComplete?.(emitValue);
+          } else {
+            onChange?.(emitValue);
+          }
+        } else {
+          onChange?.(emitValue);
+          if (isComplete) {
+            onChangeComplete?.(emitValue);
+          }
+        }
 
-  // 处理鼠标移动
-  useEffect(() => {
-    if (isDragging === null) return;
+        return isControlled ? prev : newValues;
+      });
+    },
+    [isInteractive, range, isControlled, onChange, onChangeComplete]
+  );
 
-    const handleMouseMove = (event: MouseEvent) => {
+  // ─── 事件处理 ───
+  const handleThumbMouseDown = useCallback(
+    (thumbIndex: number) => (event: React.MouseEvent | React.TouchEvent) => {
+      if (!isInteractive) return;
+      event.preventDefault();
+      event.stopPropagation();
+      setDraggingIndex(thumbIndex);
+    },
+    [isInteractive]
+  );
+
+  const handleTrackClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (!isInteractive || draggingIndex !== null) return;
+
       const percent = getPercentFromEvent(event);
       const newValue = percentToValue(percent);
-      updateValue(isDragging, newValue);
-    };
 
-    const handleMouseUp = () => {
-      setIsDragging(null);
-      
-      // 触发onAfterChange回调
-      if (onAfterChange) {
-        const emitValue = range ? internalValue : internalValue[0];
-        onAfterChange(emitValue as any);
+      if (range) {
+        // 找最近的滑块
+        const dist0 = Math.abs(newValue - internalValue[0]);
+        const dist1 = Math.abs(newValue - internalValue[1]);
+        const thumbIndex = dist0 <= dist1 ? 0 : 1;
+        updateValue(thumbIndex, newValue, true);
+      } else {
+        updateValue(0, newValue, true);
       }
+    },
+    [isInteractive, draggingIndex, getPercentFromEvent, percentToValue, range, internalValue, updateValue]
+  );
+
+  const handleFocus = useCallback(
+    (event: React.FocusEvent) => {
+      setFocused(true);
+      onFocus?.(event);
+    },
+    [onFocus]
+  );
+
+  const handleBlur = useCallback(
+    (event: React.FocusEvent) => {
+      setFocused(false);
+      onBlur?.(event);
+    },
+    [onBlur]
+  );
+
+  const handleKeyDown = useCallback(
+    (thumbIndex: number) => (event: React.KeyboardEvent) => {
+      if (!isInteractive) return;
+
+      let delta = 0;
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowUp":
+          delta = step;
+          break;
+        case "ArrowLeft":
+        case "ArrowDown":
+          delta = -step;
+          break;
+        case "PageUp":
+          delta = step * 10;
+          break;
+        case "PageDown":
+          delta = -step * 10;
+          break;
+        case "Home":
+          updateValue(thumbIndex, min, true);
+          return;
+        case "End":
+          updateValue(thumbIndex, max, true);
+          return;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      const currentValue = thumbIndex === 0 ? internalValue[0] : internalValue[1];
+      const newValue = Math.min(max, Math.max(min, currentValue + delta));
+      updateValue(thumbIndex, newValue, true);
+    },
+    [isInteractive, step, min, max, internalValue, updateValue]
+  );
+
+  // ─── 拖拽处理 ───
+  useEffect(() => {
+    if (draggingIndex === null) return;
+
+    const handleMove = (event: MouseEvent | TouchEvent) => {
+      const percent = getPercentFromEvent(event);
+      const newValue = percentToValue(percent);
+      updateValue(draggingIndex, newValue);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    const handleEnd = () => {
+      const emitValue = range ? internalValue : internalValue[0];
+      onChangeComplete?.(emitValue);
+      setDraggingIndex(null);
+    };
+
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleEnd);
+    document.addEventListener("touchmove", handleMove);
+    document.addEventListener("touchend", handleEnd);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleEnd);
+      document.removeEventListener("touchmove", handleMove);
+      document.removeEventListener("touchend", handleEnd);
     };
-  }, [isDragging, updateValue, onAfterChange, range, internalValue]);
+  }, [draggingIndex, getPercentFromEvent, percentToValue, updateValue, range, internalValue, onChangeComplete]);
 
-  // 点击轨道跳转
-  const handleTrackClick = (event: React.MouseEvent) => {
-    if (disabled || isDragging !== null) return;
-    
-    const percent = getPercentFromEvent(event);
-    const newValue = percentToValue(percent);
-    
-    if (range) {
-      // 找到最近的滑块
-      const dist0 = Math.abs(newValue - internalValue[0]);
-      const dist1 = Math.abs(newValue - internalValue[1]);
-      const thumbIndex = dist0 <= dist1 ? 0 : 1;
-      updateValue(thumbIndex, newValue);
-    } else {
-      updateValue(0, newValue);
+  // ─── 类名计算 ───
+  const rootClassName = useMemo(() => {
+    const classes = ["land-slider"];
+    if (size && size !== "default") classes.push(`land-slider--${size}`);
+    if (isVertical) classes.push("land-slider--vertical");
+    if (range) classes.push("land-slider--range");
+    if (disabled) classes.push("land-slider--disabled");
+    if (readOnly) classes.push("land-slider--readonly");
+    if (draggingIndex !== null) classes.push("land-slider--dragging");
+    if (focused) classes.push("land-slider--focused");
+    if (className) classes.push(className);
+    return classes.join(" ");
+  }, [size, isVertical, range, disabled, readOnly, draggingIndex, focused, className]);
+
+  // ─── 计算位置 ───
+  const leftPercent = valueToPercent(internalValue[0]);
+  const rightPercent = range ? valueToPercent(internalValue[1]) : leftPercent;
+  const activeStart = range ? leftPercent : 0;
+  const activeSize = range ? rightPercent - leftPercent : leftPercent;
+
+  // ─── 生成刻度标记 ───
+  const markList = useMemo((): SliderMark[] => {
+    if (!showMarks && !marks) return [];
+
+    if (Array.isArray(marks)) {
+      return marks;
     }
-  };
 
-  // 生成分隔符
-  const renderDividers = () => {
-    if (!useDivider) return null;
-    
-    const dividers = [];
+    // 自动生成刻度
+    const result: SliderMark[] = [];
     const count = Math.floor((max - min) / step);
-    
+    for (let i = 0; i <= count; i++) {
+      const value = min + i * step;
+      result.push({ value });
+    }
+    return result;
+  }, [showMarks, marks, min, max, step]);
+
+  // ─── 渲染刻度点 ───
+  const renderDots = () => {
+    if (!showDots) return null;
+
+    const dots = [];
+    const count = Math.floor((max - min) / step);
     for (let i = 0; i <= count; i++) {
       const value = min + i * step;
       const percent = valueToPercent(value);
-      dividers.push(
+      const isActive =
+        (range && value >= internalValue[0] && value <= internalValue[1]) ||
+        (!range && value <= internalValue[0]);
+
+      dots.push(
         <div
           key={i}
-          className="land-slider-divider"
-          style={{ left: `${percent}%` }}
+          className={`land-slider__dot ${isActive ? "land-slider__dot--active" : ""}`}
+          style={
+            isVertical
+              ? { bottom: `${percent}%` }
+              : { left: `${percent}%` }
+          }
         />
       );
     }
-    
-    return dividers;
+    return dots;
   };
 
-  // 渲染tooltip
-  const renderTooltip = (thumbIndex: number, value: number) => {
-    if (!showTooltip) return null;
-    
-    const isActive = isDragging === thumbIndex || hoverThumb === thumbIndex;
-    if (!isActive) return null;
+  // ─── 渲染刻度标记 ───
+  const renderMarks = () => {
+    if (markList.length === 0) return null;
 
     return (
-      <div 
-        className={`land-slider-tooltip land-slider-tooltip-${tooltipPlacement}`}
-      >
-        {tooltipFormatter(value)}
+      <div className="land-slider__marks">
+        {markList.map((mark, index) => {
+          const percent = valueToPercent(mark.value);
+          const isActive =
+            (range && mark.value >= internalValue[0] && mark.value <= internalValue[1]) ||
+            (!range && mark.value <= internalValue[0]);
+
+          return (
+            <div
+              key={index}
+              className={`land-slider__mark ${isActive ? "land-slider__mark--active" : ""}`}
+              style={{
+                ...(isVertical
+                  ? { bottom: `${percent}%` }
+                  : { left: `${percent}%` }),
+                ...mark.style,
+              }}
+            >
+              {mark.label !== undefined ? mark.label : mark.value}
+            </div>
+          );
+        })}
       </div>
     );
   };
 
-  // 计算样式
-  const leftPercent = valueToPercent(internalValue[0]);
-  const rightPercent = range ? valueToPercent(internalValue[1]) : leftPercent;
-  
-  // 单滑块模式：激活区域从0%到滑块位置
-  // 范围模式：激活区域从左滑块到右滑块
-  const activeLeft = range ? leftPercent : 0;
-  const activeWidth = range ? (rightPercent - leftPercent) : leftPercent;
+  // ─── 渲染 Tooltip ───
+  const renderTooltip = (thumbIndex: number, value: number) => {
+    if (tooltip === "never") return null;
+
+    const isActive =
+      tooltip === "always" ||
+      draggingIndex === thumbIndex ||
+      hoverIndex === thumbIndex;
+
+    if (!isActive) return null;
+
+    const content = tooltipFormatter ? tooltipFormatter(value) : value;
+
+    return (
+      <div className={`land-slider__tooltip land-slider__tooltip--${tooltipPlacement}`}>
+        {content}
+      </div>
+    );
+  };
+
+  // ─── 渲染滑块 ───
+  const renderThumb = (thumbIndex: number, percent: number, value: number) => {
+    const isDragging = draggingIndex === thumbIndex;
+    const isHover = hoverIndex === thumbIndex;
+
+    const thumbClasses = [
+      "land-slider__thumb",
+      isDragging && "land-slider__thumb--dragging",
+      isHover && "land-slider__thumb--hover",
+      thumbClassName,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    return (
+      <div
+        key={thumbIndex}
+        className={thumbClasses}
+        style={{
+          ...(isVertical
+            ? { bottom: `${percent}%` }
+            : { left: `${percent}%` }),
+          ...thumbStyle,
+        }}
+        role="slider"
+        tabIndex={disabled ? -1 : 0}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuenow={value}
+        aria-disabled={disabled}
+        aria-orientation={orientation}
+        onMouseDown={handleThumbMouseDown(thumbIndex)}
+        onTouchStart={handleThumbMouseDown(thumbIndex)}
+        onMouseEnter={() => setHoverIndex(thumbIndex)}
+        onMouseLeave={() => setHoverIndex(null)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown(thumbIndex)}
+      >
+        {renderTooltip(thumbIndex, value)}
+      </div>
+    );
+  };
 
   return (
-    <div 
-      className={`land-slider-wrapper ${disabled ? 'land-slider-disabled' : ''} ${className}`}
+    <div
+      ref={sliderRef}
+      className={rootClassName}
       style={style}
-      {...props}
+      data-name={name}
     >
-      {prefix && <div className="land-slider-prefix">{prefix}</div>}
-      
-      <div 
-        ref={sliderRef}
-        className="land-slider"
-        onClick={handleTrackClick}
-      >
+      {/* 前缀 */}
+      {prefix && <div className="land-slider__prefix">{prefix}</div>}
+
+      {/* 滑轨容器 */}
+      <div className="land-slider__rail-wrapper">
         {/* 轨道 */}
-        <div 
-          className="land-slider-track"
-          style={{
-            height: `${height}px`,
-            backgroundColor: defaultBg,
-          }}
+        <div
+          ref={trackRef}
+          className={`land-slider__track ${trackClassName ?? ""}`}
+          style={trackStyle}
+          onClick={handleTrackClick}
         >
-          {/* 激活区域 */}
-          <div 
-            className="land-slider-track-active"
+          {/* 激活轨道 */}
+          <div
+            className="land-slider__track-active"
             style={{
-              left: `${activeLeft}%`,
-              width: `${activeWidth}%`,
-              backgroundColor: activeBg,
+              ...(isVertical
+                ? { bottom: `${activeStart}%`, height: `${activeSize}%` }
+                : { left: `${activeStart}%`, width: `${activeSize}%` }),
+              ...activeTrackStyle,
             }}
           />
-          
-          {/* 分隔符 */}
-          {renderDividers()}
+
+          {/* 刻度点 */}
+          {renderDots()}
+
+          {/* 滑块 */}
+          {renderThumb(0, leftPercent, internalValue[0])}
+          {range && renderThumb(1, rightPercent, internalValue[1])}
         </div>
 
-        {/* 左侧滑块（或单值滑块） */}
-        <div
-          className={`land-slider-thumb ${thumbClassName} ${isDragging === 0 ? 'land-slider-thumb-dragging' : ''}`}
-          style={{
-            left: `${leftPercent}%`,
-            width: `${thumbSize}px`,
-            height: `${thumbSize}px`,
-            ...thumbStyle,
-          }}
-          onMouseDown={handleMouseDown(0)}
-          onMouseEnter={() => setHoverThumb(0)}
-          onMouseLeave={() => setHoverThumb(null)}
-        >
-          {renderTooltip(0, internalValue[0])}
-        </div>
-
-        {/* 右侧滑块（仅范围模式） */}
-        {range && (
-          <div
-            className={`land-slider-thumb ${thumbClassName} ${isDragging === 1 ? 'land-slider-thumb-dragging' : ''}`}
-            style={{
-              left: `${rightPercent}%`,
-              width: `${thumbSize}px`,
-              height: `${thumbSize}px`,
-              ...thumbStyle,
-            }}
-            onMouseDown={handleMouseDown(1)}
-            onMouseEnter={() => setHoverThumb(1)}
-            onMouseLeave={() => setHoverThumb(null)}
-          >
-            {renderTooltip(1, internalValue[1])}
-          </div>
-        )}
+        {/* 刻度标记 */}
+        {renderMarks()}
       </div>
 
-      {suffix && <div className="land-slider-suffix">{suffix}</div>}
+      {/* 后缀 */}
+      {suffix && <div className="land-slider__suffix">{suffix}</div>}
     </div>
   );
 };

@@ -136,7 +136,7 @@
       font-weight: 600;
       background-color: var(--color-bg-secondary);
       &.current{
-        color: var(--color-gray-0);
+        color: white;
         background-color: var(--color-primary);
       }
     }
@@ -175,7 +175,7 @@
       &.current{
         background-color: var(--color-primary);
         .land-calendar-item.day.current{
-          color: var(--color-gray-0);
+          color:white;
         }
       }
     }
@@ -246,7 +246,7 @@
         color: var(--color-text-primary);
       background-color: var(--color-bg-secondary);
       &.current{
-        color: var(--color-gray-0);
+        color:white;
         background-color: var(--color-primary);
       }
     }
@@ -285,10 +285,10 @@
       font-weight: 600;
       background-color: var(--color-bg-secondary);
       &.current{
-        color: var(--color-gray-0);
+        color:white;
         background-color: var(--color-primary);
         .quarter-months, .quarter-description{
-          color: var(--color-gray-0);
+          color:white;
         }
       }
     }
@@ -348,7 +348,7 @@
       color: var(--color-text-primary);
       background-color: var(--color-bg-secondary);
       &.current{
-        color: var(--color-gray-0);
+        color:white;
         background-color: var(--color-primary);
       }
     }

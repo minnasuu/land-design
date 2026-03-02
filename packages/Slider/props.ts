@@ -1,141 +1,285 @@
-import React, { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from "react";
+
+// ==================== 类型定义 ====================
 
 /**
- * Slider组件属性类型定义
+ * Slider 尺寸
+ * - small: 小尺寸
+ * - default: 默认尺寸
+ * - large: 大尺寸
  */
+export type SliderSize = "small" | "default" | "large";
 
-export interface SliderProps {
-  /** 
-   * 自定义类名
-   * 可以传入额外的CSS类名
-   */
-  className?: string;
+/**
+ * Slider 方向
+ * - horizontal: 水平（默认）
+ * - vertical: 垂直
+ */
+export type SliderOrientation = "horizontal" | "vertical";
 
-  /** 
-   * 自定义样式
-   * 可以传入CSS样式对象来自定义组件外观
-   */
+/**
+ * Tooltip 显示模式
+ * - hover: 悬停时显示
+ * - always: 始终显示
+ * - never: 从不显示
+ */
+export type SliderTooltipMode = "hover" | "always" | "never";
+
+/**
+ * Tooltip 位置
+ */
+export type SliderTooltipPlacement = "top" | "bottom" | "left" | "right";
+
+/**
+ * 刻度标记配置
+ */
+export interface SliderMark {
+  /** 标记值 */
+  value: number;
+  /** 标记标签 */
+  label?: ReactNode;
+  /** 标记样式 */
   style?: CSSProperties;
+}
 
-  /** 
-   * 输入值
-   * 支持单个值或范围值 [min, max]
+// ==================== 属性接口定义 ====================
+
+/**
+ * Slider 基础属性
+ */
+export interface SliderBaseProps {
+  /**
+   * 受控模式的当前值
+   * @description 单值模式为 number，范围模式为 [number, number]
    */
   value?: number | [number, number];
-  
-  /** 
+
+  /**
+   * 非受控模式的默认值
+   * @default 0
+   */
+  defaultValue?: number | [number, number];
+
+  /**
    * 最小值
-   * 设置滑块的最小值
+   * @default 0
    */
   min?: number;
-  
-  /** 
+
+  /**
    * 最大值
-   * 设置滑块的最大值
+   * @default 100
    */
   max?: number;
-  
+
   /**
-   * 调节步数
-   * 滑块移动的步长
+   * 步长
+   * @description 值的增减步长，需要大于 0
+   * @default 1
    */
   step?: number;
 
   /**
-   * 是否为范围选择器
-   * 设置为true时支持选择范围值
+   * 是否为范围选择模式
+   * @default false
    */
   range?: boolean;
 
   /**
-   * 是否使用分割线
-   * 设置为true时显示分割线
+   * 表单字段名
    */
-  useDivider?: boolean;
-  
+  name?: string;
+}
+
+/**
+ * Slider 外观属性
+ */
+export interface SliderAppearanceProps {
   /**
-   * 前缀
-   * 设置滑块的前缀
+   * 尺寸
+   * @default "default"
    */
-  prefix?: React.ReactNode;
-  
-  
-  /**
-   * 后缀
-   * 设置滑块的后缀
-   */
-  suffix?: React.ReactNode;
-  
-  
-  /**
-   * 是否显示提示
-   * 设置为true时显示提示
-   */
-  showTooltip?: boolean;
-  
-  /**
-   * 提示位置
-   * 设置提示的位置
-   */
-  tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
-  
-  /**
-   * 提示格式化
-   * 设置提示的格式化
-   */
-  tooltipFormatter?: (value: number) => string;
-  
-  /**
-   * 高度
-   * 设置滑块的高度
-   */
-  height?: number;
-  
-  /**
-   * 滑块大小
-   * 设置滑块的大小
-   */
-  thumbSize?: number;
-  
-  /**
-   * 默认背景色
-   * 设置滑块的默认背景色
-   */
-  defaultBg?: string;
-  
-  /**
-   * 激活背景色
-   * 设置滑块的激活背景色
-   */
-  activeBg?: string;
-  
-  /**
-   * 滑块样式
-   * 设置滑块的样式
-   */
-  thumbStyle?: CSSProperties;
+  size?: SliderSize;
 
   /**
-   * 滑块类名
-   * 设置滑块的类名
+   * 方向
+   * @default "horizontal"
+   */
+  orientation?: SliderOrientation;
+
+  /**
+   * 是否显示刻度标记
+   * @default false
+   */
+  showMarks?: boolean;
+
+  /**
+   * 刻度标记配置
+   * @description 可以是布尔值或标记数组
+   */
+  marks?: SliderMark[] | boolean;
+
+  /**
+   * 是否显示刻度点
+   * @default false
+   */
+  showDots?: boolean;
+
+  /**
+   * 是否只能选择刻度值
+   * @default false
+   */
+  included?: boolean;
+}
+
+/**
+ * Slider Tooltip 属性
+ */
+export interface SliderTooltipProps {
+  /**
+   * Tooltip 显示模式
+   * @default "hover"
+   */
+  tooltip?: SliderTooltipMode;
+
+  /**
+   * Tooltip 位置
+   * @default "top"
+   */
+  tooltipPlacement?: SliderTooltipPlacement;
+
+  /**
+   * Tooltip 格式化函数
+   */
+  tooltipFormatter?: (value: number) => ReactNode;
+}
+
+/**
+ * Slider 内容属性
+ */
+export interface SliderContentProps {
+  /**
+   * 前缀内容
+   */
+  prefix?: ReactNode;
+
+  /**
+   * 后缀内容
+   */
+  suffix?: ReactNode;
+}
+
+/**
+ * Slider 状态属性
+ */
+export interface SliderStateProps {
+  /**
+   * 是否禁用
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
+   * 只读模式
+   * @default false
+   */
+  readOnly?: boolean;
+}
+
+/**
+ * Slider 样式属性
+ */
+export interface SliderStyleProps {
+  /**
+   * 自定义类名
+   */
+  className?: string;
+
+  /**
+   * 自定义样式
+   */
+  style?: CSSProperties;
+
+  /**
+   * 轨道自定义类名
+   */
+  trackClassName?: string;
+
+  /**
+   * 轨道自定义样式
+   */
+  trackStyle?: CSSProperties;
+
+  /**
+   * 激活轨道自定义样式
+   */
+  activeTrackStyle?: CSSProperties;
+
+  /**
+   * 滑块自定义类名
    */
   thumbClassName?: string;
 
   /**
-   * 值变化回调
-   * 当滑块值变化时触发
+   * 滑块自定义样式
+   */
+  thumbStyle?: CSSProperties;
+}
+
+/**
+ * Slider 事件属性
+ */
+export interface SliderEventProps {
+  /**
+   * 值变化回调（拖拽过程中持续触发）
+   * @param value 当前值
    */
   onChange?: (value: number | [number, number]) => void;
 
   /**
-   * 拖拽结束回调
-   * 当拖拽结束时触发
+   * 值变化完成回调（拖拽结束或点击后触发）
+   * @param value 最终值
    */
-  onAfterChange?: (value: number | [number, number]) => void;
+  onChangeComplete?: (value: number | [number, number]) => void;
 
   /**
-   * 是否禁用
-   * 设置为true时禁用滑块
+   * 获得焦点事件
    */
-  disabled?: boolean;
+  onFocus?: (event: React.FocusEvent) => void;
+
+  /**
+   * 失去焦点事件
+   */
+  onBlur?: (event: React.FocusEvent) => void;
 }
+
+/**
+ * Slider 组件完整属性
+ */
+export interface SliderProps
+  extends SliderBaseProps,
+    SliderAppearanceProps,
+    SliderTooltipProps,
+    SliderContentProps,
+    SliderStateProps,
+    SliderStyleProps,
+    SliderEventProps {}
+
+// ==================== 默认属性 ====================
+
+export const sliderDefaultProps: Partial<SliderProps> = {
+  defaultValue: 0,
+  min: 0,
+  max: 100,
+  step: 1,
+  range: false,
+  size: "default",
+  orientation: "horizontal",
+  showMarks: false,
+  showDots: false,
+  included: false,
+  tooltip: "hover",
+  tooltipPlacement: "top",
+  disabled: false,
+  readOnly: false,
+};

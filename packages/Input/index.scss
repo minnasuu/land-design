@@ -35,7 +35,6 @@ $input-outline-bg: var(--land-input-outline-bg, transparent);
 $input-outline-border: var(--land-input-outline-border, 1px solid var(--land-input-border-color, var(--color-border-primary)));
 $input-outline-border-color: var(--land-input-border-color, var(--color-border-primary));
 $input-outline-hover-bg: var(--land-input-hover-bg, var(--color-bg-secondary));
-$input-outline-focus-border: var(--land-input-focus-border-color, var(--color-primary-6));
 
 // ─── 外观令牌: Fill ───
 $input-fill-border: var(--land-input-fill-border, none);
@@ -317,7 +316,7 @@ $theme-bg-hover-colors: (
     }
 
     &:focus-within:not(.land-input--disabled) {
-      border-color: $input-outline-focus-border;
+      background-color: $input-outline-hover-bg;
     }
 
     // 应用主题色样式

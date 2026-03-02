@@ -1,40 +1,89 @@
+// ============================================================================
+// Dropdown 组件样式
+// @description 下拉菜单组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$dropdown-gap: var(--land-dropdown-gap, var(--padding-s));
+$dropdown-z-index: var(--land-dropdown-z-index, var(--z-index-100));
+
+// ─── 状态令牌 ───
+$dropdown-disabled-opacity: var(--land-dropdown-disabled-opacity, var(--opacity-disabled));
+
+// ─── 内容令牌 ───
+$dropdown-padding: var(--land-dropdown-padding, var(--padding-s));
+$dropdown-border: var(--land-dropdown-border, var(--color-border-primary));
+$dropdown-bg: var(--land-dropdown-bg, var(--color-bg-primary));
+$dropdown-radius: var(--land-dropdown-radius, 12px);
+$dropdown-shadow: var(--land-dropdown-shadow, var(--shadow-m));
+
+// ─── 选项令牌 ───
+$dropdown-item-radius: var(--land-dropdown-item-radius, var(--radius-s));
+$dropdown-item-padding: var(--land-dropdown-item-padding, var(--padding-m) var(--padding-l));
+$dropdown-item-color: var(--land-dropdown-item-color, var(--color-text-primary));
+$dropdown-item-font-size: var(--land-dropdown-item-font-size, var(--font-content-m));
+$dropdown-item-hover-bg: var(--land-dropdown-item-hover-bg, var(--color-bg-secondary));
+$dropdown-item-active-bg: var(--land-dropdown-item-active-bg, var(--color-bg-secondary));
+
+// ─── 动效令牌 ───
+$dropdown-transition: var(--land-dropdown-transition, var(--transition-s) ease);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
 .land-dropdown {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: opacity var(--transition-s) ease;
+  transition: opacity $dropdown-transition;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 状态变体
+  // ───────────────────────────────────────────────────────────────────────────
 
   &--disabled {
-    opacity: var(--land-dropdown-disabled-opacity, var(--opacity-disabled));
+    opacity: $dropdown-disabled-opacity;
     pointer-events: none;
     cursor: not-allowed;
   }
 
-  // ==================== Panel ====================
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 面板
+  // ───────────────────────────────────────────────────────────────────────────
+
   &__panel {
     position: absolute;
     top: 100%;
-    padding-top: var(--land-dropdown-gap, var(--padding-s));
+    padding-top: $dropdown-gap;
     transform-origin: top center;
     min-width: 100%;
     pointer-events: none;
-    z-index: var(--land-dropdown-z-index, var(--z-index-100));
+    z-index: $dropdown-z-index;
     opacity: 0;
     transform: scaleY(0.95);
-    transition: opacity var(--transition-s) ease, transform var(--transition-s) ease;
+    transition: opacity $dropdown-transition, transform $dropdown-transition;
 
+    // ─── 打开状态 ───
     &--open {
       pointer-events: all;
       opacity: 1;
       transform: scaleY(1);
     }
 
+    // ─── 左对齐 ───
     &--left {
       left: 0;
     }
 
+    // ─── 右对齐 ───
     &--right {
       right: 0;
       transform: scaleY(0.95);
@@ -44,6 +93,7 @@
       }
     }
 
+    // ─── 居中对齐 ───
     &--center {
       left: 50%;
       transform: translateX(-50%) scaleY(0.95);
@@ -53,10 +103,11 @@
       }
     }
 
+    // ─── 顶部位置 ───
     &--top {
       top: auto;
       bottom: 100%;
-      padding-bottom: var(--land-dropdown-gap, var(--padding-s));
+      padding-bottom: $dropdown-gap;
       padding-top: 0;
       transform-origin: bottom center;
 
@@ -77,7 +128,7 @@
       }
     }
 
-    // Portal 模式：fixed 定位，重置所有相对定位属性
+    // ─── Portal 模式 ───
     &--portal {
       position: fixed;
       top: auto;
@@ -119,39 +170,48 @@
     }
   }
 
-  // ==================== Content ====================
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 内容
+  // ───────────────────────────────────────────────────────────────────────────
+
   &__content {
     width: fit-content;
-    padding: var(--land-dropdown-padding, var(--padding-s));
-    border: 1px solid var(--land-dropdown-border, var(--color-border-primary));
-    background-color: var(--land-dropdown-bg, var(--color-bg-primary));
-    border-radius: var(--land-dropdown-radius, 12px);
-    box-shadow: var(--land-dropdown-shadow, var(--shadow-m));
+    padding: $dropdown-padding;
+    border: 1px solid $dropdown-border;
+    background-color: $dropdown-bg;
+    border-radius: $dropdown-radius;
+    box-shadow: $dropdown-shadow;
   }
 
-  // ==================== List ====================
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 列表
+  // ───────────────────────────────────────────────────────────────────────────
+
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  // ==================== Item ====================
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项
+  // ───────────────────────────────────────────────────────────────────────────
+
   &__item {
-    border-radius: var(--land-dropdown-item-radius, var(--radius-s));
-    padding: var(--land-dropdown-item-padding, var(--padding-m) var(--padding-l));
-    color: var(--land-dropdown-item-color, var(--color-text-primary));
-    font-size: var(--land-dropdown-item-font-size, var(--font-content-m));
+    border-radius: $dropdown-item-radius;
+    padding: $dropdown-item-padding;
+    color: $dropdown-item-color;
+    font-size: $dropdown-item-font-size;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color var(--transition-s) ease, color var(--transition-s) ease;
+    transition: background-color $dropdown-transition, color $dropdown-transition;
 
     &:hover {
-      background-color: var(--land-dropdown-item-hover-bg, var(--color-bg-secondary));
+      background-color: $dropdown-item-hover-bg;
     }
 
     &:active {
-      background-color: var(--land-dropdown-item-active-bg, var(--color-bg-secondary));
+      background-color: $dropdown-item-active-bg;
     }
   }
 }

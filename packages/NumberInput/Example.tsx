@@ -71,7 +71,8 @@ export default function NumberInputExample() {
           >
             <CodeOperationContainer column>
               <NumberInput value={0} />
-              <NumberInput type="background" value={0} />
+              <NumberInput variant="fill" value={0} />
+              <NumberInput variant="transparent" value={0} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -123,7 +124,7 @@ export default function NumberInputExample() {
                 min={0}
                 max={100}
                 step={1}
-                enableWheelScroll={true}
+                wheelable={true}
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -186,6 +187,20 @@ export default function NumberInputExample() {
                 value={0}
                 step={10}
                 prefix="大数："
+              />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+           {/* 宽度自适应 */}
+          <ComponentSectionLayout
+            title='宽度自适应'
+            id='number-input-auto-width'
+            description='通过 autoWidth 属性可以设置宽度自适应。'
+          >
+            <CodeOperationContainer column>
+              <NumberInput
+                autoWidth
+                value={0}
+                step={1}
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>

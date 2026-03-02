@@ -1,42 +1,124 @@
-.land-radio-item{
-  position: relative;
-   display: flex;
+// ============================================================================
+// Radio 组件样式
+// @description 单选框组件的完整样式定义
+// @author Land Design System
+// @version 2.0.0
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$radio-gap: var(--land-radio-gap, var(--gap-s));
+$radio-circle-size: var(--land-radio-circle-size, 16px);
+
+// ─── 排版令牌 ───
+$radio-font-size: var(--land-radio-font-size, var(--font-content-m));
+$radio-color: var(--land-radio-color, var(--color-text-primary));
+
+// ─── 边框令牌 ───
+$radio-border-color: var(--land-radio-border-color, var(--color-border-primary));
+$radio-checked-border-color: var(--land-radio-checked-border-color, var(--color-primary));
+
+// ─── 背景令牌 ───
+$radio-bg: var(--land-radio-bg, transparent);
+$radio-checked-bg: var(--land-radio-checked-bg, var(--color-primary));
+$radio-hover-bg: var(--land-radio-hover-bg, var(--color-bg-secondary));
+$radio-active-bg: var(--land-radio-active-bg, var(--color-bg-secondary));
+
+// ─── 图标令牌 ───
+$radio-icon-color: var(--land-radio-icon-color, var(--color-bg-primary));
+
+// ─── 状态令牌 ───
+$radio-disabled-opacity: var(--land-radio-disabled-opacity, var(--opacity-disabled));
+
+// ─── 动效令牌 ───
+$radio-transition: var(--transition-s);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 混入 (Mixins)
+// ─────────────────────────────────────────────────────────────────────────────
+
+@mixin flex-center {
+  display: flex;
   align-items: center;
-  gap: var(--land-radio-gap, var(--gap-xs)); 
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 主样式
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-radio {
+  position: relative;
+  @include flex-center;
+  gap: var(--gap-xs);
   cursor: pointer;
-  &.disabled{
-    .land-radio-label{
-      opacity: var(--land-radio-disabled-opacity, var(--opacity-disabled));
+
+  // ─── 选中状态（根级别） ───
+  &--checked {
+    .land-radio__text {
+      color: var(--color-primary);
     }
-    .land-radio-circle{
+  }
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+
+    .land-radio__label {
+      opacity: $radio-disabled-opacity;
+    }
+
+    .land-radio__circle {
       pointer-events: none;
     }
-    cursor: not-allowed;
+
+    .land-radio__tip {
+      pointer-events: auto;
+    }
   }
-  .land-radio-label{
-    display: flex;
-  align-items: center;
-  gap: var(--land-radio-gap, var(--gap-s));
-  font-size: var(--land-radio-font-size, var(--font-content-m));
-  color: var(--land-radio-color, var(--color-text-primary));
-  white-space: nowrap; 
+
+  // ─── 禁用且选中状态 ───
+  &--disabled.land-radio--checked {
+    .land-radio__circle {
+      background-color: var(--color-primary-light, rgba(var(--color-primary-rgb), 0.5));
+      border-color: var(--color-primary-light, rgba(var(--color-primary-rgb), 0.5));
+    }
   }
-  .land-radio-circle{
+
+  // ─── 标签容器 ───
+  &__label {
+    @include flex-center;
+    gap: $radio-gap;
+    font-size: $radio-font-size;
+    color: $radio-color;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  // ─── 文本 ───
+  &__text {
+    user-select: none;
+  }
+
+  // ─── 圆形选择框 ───
+  &__circle {
     position: relative;
-    display: flex;
-    align-items: center;
+    @include flex-center;
     justify-content: center;
-    width: var(--land-radio-circle-size, 16px);
-    height: var(--land-radio-circle-size, 16px);
+    width: $radio-circle-size;
+    height: $radio-circle-size;
     border-radius: 100%;
-    border: 1px solid var(--land-radio-circle-border-color, var(--color-border-primary));
-    background-color: var(--land-radio-circle-background-color, transparent);
+    border: 1px solid $radio-border-color;
+    background-color: $radio-bg;
     flex-shrink: 0;
-    transition: all var(--transition-s) ease;
+    transition: all $radio-transition ease;
     overflow: hidden;
     transform: scale(1);
-    
-    // 背景填充动画
+
+    // 背景填充伪元素
     &::before {
       content: '';
       position: absolute;
@@ -44,86 +126,100 @@
       left: 50%;
       width: 0;
       height: 0;
-      background-color: var(--land-radio-circle-checked-background-color, var(--color-primary));
+      background-color: $radio-checked-bg;
       border-radius: 50%;
       transform: translate(-50%, -50%);
       z-index: 1;
     }
-    
+
     &:hover {
-      background-color: var(--land-radio-circle-hover-background-color, var(--color-bg-secondary));
+      background-color: $radio-hover-bg;
       transform: scale(1.05);
     }
+
     &:active {
-      background-color: var(--land-radio-circle-active-background-color, var(--color-bg-secondary));
+      background-color: $radio-active-bg;
       transform: scale(0.95);
     }
-    &.checked {
-      border-color: var(--land-radio-circle-checked-border-color, var(--color-primary));
-      background-color: var(--land-radio-circle-checked-background-color, var(--color-primary));
+
+    // ─── 选中状态 ───
+    &--checked {
+      border-color: $radio-checked-border-color;
+      background-color: $radio-checked-bg;
       transform: scale(1.1);
-      animation: radioBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      
-      // 背景填充动画
+
       &::before {
         width: 100%;
         height: 100%;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      
-      .land-radio-circle-icon{
+
+      .land-radio__icon {
         color: var(--color-bg-primary);
         transform: scale(1) rotate(360deg);
         opacity: 1;
       }
     }
-    .land-radio-circle-icon{
-      color: var(--land-radio-circle-icon-color, var(--color-bg-primary));
-      transform: scale(0) rotate(0deg);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
-      z-index: 2;
-      position: relative;
+
+    // ─── 带动画的选中状态 ───
+    &--checked.land-radio__circle--animated {
+      animation: radioBounce 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
-    
-    // 无动画模式
-    &.no-animation {
+
+    // ─── 无动画模式 ───
+    &--no-animation {
       transition: none;
       animation: none;
-      
-      &:hover {
-        transform: none;
-      }
+
+      &:hover,
       &:active {
         transform: none;
       }
-      &.checked {
+
+      &.land-radio__circle--checked {
         transform: none;
         animation: none;
-        
+
         &::before {
           transition: none;
           width: 100%;
           height: 100%;
         }
-        
-        .land-radio-circle-icon {
+
+        .land-radio__icon {
           transition: none;
           transform: scale(1);
           opacity: 1;
         }
       }
-      .land-radio-circle-icon {
+
+      .land-radio__icon {
         transition: none;
       }
     }
   }
-  .land-radio-pop{
+
+  // ─── 图标 ───
+  &__icon {
+    color: $radio-icon-color;
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
+    z-index: 2;
     position: relative;
-    height: var(--land-radio-pop-size, 12px);
-    line-height: var(--land-radio-pop-size, 12px);
+  }
+
+  // ─── 提示图标 ───
+  &__tip {
+    position: relative;
+    height: 12px;
+    line-height: 12px;
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 动画
+// ─────────────────────────────────────────────────────────────────────────────
 
 @keyframes radioBounce {
   0% {
