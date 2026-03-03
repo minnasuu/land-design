@@ -73,9 +73,17 @@ export default defineConfig({
       include: [
         resolve(__dirname, './packages'),
         resolve(__dirname, './packages/index.tsx'),
-        resolve(__dirname, './pro-packages'),
       ],
-      exclude: ['**/node_modules'],
+      exclude: [
+        '**/node_modules',
+        '**/Example.tsx',
+        '**/Example.ts',
+        '**/*.test.tsx',
+        '**/*.test.ts',
+        '**/VideoOptimizationTest.tsx',
+        'example/**/*',
+        'pro-packages/**/*',
+      ],
     }),
   ],
 });

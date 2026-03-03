@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dropdown",
+  "description": "下拉菜单组件，用于展示下拉选项列表",
+  "type": "object",
+  "definitions": {
+    "DropdownItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "唯一标识"
+        },
+        "label": {
+          "type": ["string", "ReactNode"],
+          "description": "显示内容"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DropdownItem" },
+      "description": "下拉选项数据"
+    },
+    "content": {
+      "type": "ReactNode",
+      "description": "自定义下拉内容（优先级高于 items）"
+    },
+    "trigger": {
+      "type": "string",
+      "description": "触发方式",
+      "enum": ["hover", "click"],
+      "default": "hover"
+    },
+    "placement": {
+      "type": "string",
+      "description": "展开方向",
+      "enum": ["top", "bottom"],
+      "default": "bottom"
+    },
+    "alignment": {
+      "type": "string",
+      "description": "对齐方式",
+      "enum": ["left", "right", "center"],
+      "default": "left"
+    },
+    "attach": {
+      "description": "面板挂载节点",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "HTMLElement" }
+      ]
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "open": {
+      "type": "boolean",
+      "description": "受控展开状态",
+      "default": false
+    },
+    "toggleClassName": {
+      "type": "string",
+      "description": "触发元素类名"
+    },
+    "toggleStyle": {
+      "type": "object",
+      "description": "触发元素样式"
+    },
+    "contentClassName": {
+      "type": "string",
+      "description": "下拉面板类名"
+    },
+    "contentStyle": {
+      "type": "object",
+      "description": "下拉面板样式"
+    },
+    "onChange": {
+      "type": "function",
+      "description": "选中下拉项回调"
+    },
+    "onOpen": {
+      "type": "function",
+      "description": "面板展开回调"
+    },
+    "onClose": {
+      "type": "function",
+      "description": "面板关闭回调"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础下拉菜单",
+      "value": {
+        "items": [
+          { "key": "1", "label": "选项1" },
+          { "key": "2", "label": "选项2" }
+        ]
+      }
+    },
+    {
+      "description": "点击触发",
+      "value": {
+        "trigger": "click",
+        "items": [
+          { "key": "1", "label": "选项1" }
+        ]
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Divider",
+  "description": "分割线组件，用于分隔内容区域",
+  "type": "object",
+  "properties": {
+    "direction": {
+      "type": "string",
+      "description": "分割线方向",
+      "enum": ["horizontal", "vertical"],
+      "default": "horizontal"
+    },
+    "variant": {
+      "type": "string",
+      "description": "线型",
+      "enum": ["solid", "dashed"],
+      "default": "solid"
+    },
+    "align": {
+      "type": "string",
+      "description": "内容对齐方式",
+      "enum": ["start", "center", "end"],
+      "default": "center"
+    },
+    "content": {
+      "type": "ReactNode",
+      "description": "中间显示的内容"
+    },
+    "length": {
+      "type": "string",
+      "description": "分割线长度",
+      "default": "100%"
+    },
+    "spacing": {
+      "type": "number",
+      "description": "分割线与周围的间距（px）",
+      "default": 0
+    },
+    "dashLength": {
+      "type": "number",
+      "description": "虚线每段长度（px）",
+      "default": 10
+    },
+    "dashGap": {
+      "type": "number",
+      "description": "虚线间隔（px）",
+      "default": 5
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础分割线",
+      "value": {}
+    },
+    {
+      "description": "带内容的分割线",
+      "value": {
+        "content": "分割内容"
+      }
+    },
+    {
+      "description": "虚线",
+      "value": {
+        "variant": "dashed"
+      }
+    },
+    {
+      "description": "垂直分割线",
+      "value": {
+        "direction": "vertical"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

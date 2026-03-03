@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tag",
+  "description": "标签组件，用于进行标记和分类的小标签。支持多种变体、颜色、形状，可用于信息分类、状态标记、筛选条件展示等场景。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": ["string", "object"],
+      "description": "标签内容，可以是文本或 React 节点"
+    },
+    "icon": {
+      "type": "object",
+      "description": "前置图标，传入 React 节点"
+    },
+    "suffixIcon": {
+      "type": "object",
+      "description": "后置图标（不包括关闭图标），传入 React 节点"
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "是否可见（受控模式）",
+      "default": true
+    },
+    "defaultVisible": {
+      "type": "boolean",
+      "description": "默认是否可见（非受控模式）",
+      "default": true
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "medium", "large"],
+      "description": "标签尺寸",
+      "default": "medium"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["filled", "outlined", "light"],
+      "description": "标签变体：filled（填充背景）、outlined（边框样式）、light（浅色背景）",
+      "default": "light"
+    },
+    "color": {
+      "type": "string",
+      "description": "预设颜色或自定义颜色。预设值：default、primary、success、warning、error、info，也可传入自定义颜色值",
+      "default": "default"
+    },
+    "shape": {
+      "type": "string",
+      "enum": ["square", "rounded", "pill"],
+      "description": "标签形状：square（直角）、rounded（圆角）、pill（胶囊形）",
+      "default": "rounded"
+    },
+    "bold": {
+      "type": "boolean",
+      "description": "是否加粗文字",
+      "default": false
+    },
+    "backgroundColor": {
+      "type": "string",
+      "description": "自定义背景色，优先级高于 color"
+    },
+    "textColor": {
+      "type": "string",
+      "description": "自定义文字色，优先级高于 color"
+    },
+    "borderColor": {
+      "type": "string",
+      "description": "自定义边框色，优先级高于 color"
+    },
+    "border": {
+      "type": "string",
+      "description": "自定义边框样式",
+      "examples": ["1px solid #ccc", "2px dashed #1890ff"]
+    },
+    "closable": {
+      "type": "boolean",
+      "description": "是否可关闭/删除",
+      "default": false
+    },
+    "clickable": {
+      "type": "boolean",
+      "description": "是否可点击（显示 hover 效果和 cursor: pointer）",
+      "default": false
+    },
+    "checkable": {
+      "type": "boolean",
+      "description": "是否可选中（显示选中样式）",
+      "default": false
+    },
+    "checked": {
+      "type": "boolean",
+      "description": "是否选中（受控模式，配合 checkable 使用）"
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "description": "默认是否选中（非受控模式）",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "closeIcon": {
+      "type": "object",
+      "description": "自定义关闭图标，传入 React 节点"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击事件回调，参数：(e: React.MouseEvent) => void"
+    },
+    "onClose": {
+      "type": "function",
+      "description": "关闭/删除事件回调，参数：(e: React.MouseEvent) => void"
+    },
+    "onVisibleChange": {
+      "type": "function",
+      "description": "可见性变化事件回调，参数：(visible: boolean) => void"
+    },
+    "onCheck": {
+      "type": "function",
+      "description": "选中状态变化事件回调（checkable 模式），参数：(checked: boolean) => void"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式对象"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    }
+  },
+  "definitions": {
+    "TagSize": {
+      "type": "string",
+      "enum": ["small", "medium", "large"],
+      "description": "标签尺寸类型"
+    },
+    "TagVariant": {
+      "type": "string",
+      "enum": ["filled", "outlined", "light"],
+      "description": "标签变体类型"
+    },
+    "TagColor": {
+      "type": "string",
+      "description": "标签颜色，预设值或自定义颜色"
+    },
+    "TagShape": {
+      "type": "string",
+      "enum": ["square", "rounded", "pill"],
+      "description": "标签形状类型"
+    },
+    "CheckableTagProps": {
+      "type": "object",
+      "description": "可选中标签属性",
+      "properties": {
+        "checked": {
+          "type": "boolean",
+          "description": "是否选中（受控）"
+        },
+        "defaultChecked": {
+          "type": "boolean",
+          "description": "默认是否选中（非受控）",
+          "default": false
+        },
+        "onChange": {
+          "type": "function",
+          "description": "选中状态变化事件，参数：(checked: boolean) => void"
+        }
+      }
+    },
+    "TagGroupProps": {
+      "type": "object",
+      "description": "标签组属性",
+      "properties": {
+        "gap": {
+          "type": ["number", "string"],
+          "description": "标签间距",
+          "default": 8
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "是否换行",
+          "default": true
+        },
+        "align": {
+          "type": "string",
+          "enum": ["flex-start", "center", "flex-end"],
+          "description": "对齐方式",
+          "default": "flex-start"
+        },
+        "maxCount": {
+          "type": "number",
+          "description": "最大显示数量，超出显示 +N"
+        },
+        "maxCountRender": {
+          "type": "function",
+          "description": "超出数量的自定义渲染，参数：(count: number) => ReactNode"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "基础标签",
+      "props": {
+        "children": "默认标签"
+      }
+    },
+    {
+      "title": "主色填充标签",
+      "props": {
+        "children": "主色标签",
+        "color": "primary",
+        "variant": "filled"
+      }
+    },
+    {
+      "title": "成功状态标签",
+      "props": {
+        "children": "成功",
+        "color": "success",
+        "shape": "pill"
+      }
+    },
+    {
+      "title": "可关闭标签",
+      "props": {
+        "children": "可关闭",
+        "closable": true,
+        "color": "primary"
+      }
+    },
+    {
+      "title": "可选中标签",
+      "props": {
+        "children": "可选中",
+        "checkable": true,
+        "color": "primary"
+      }
+    },
+    {
+      "title": "自定义颜色标签",
+      "props": {
+        "children": "自定义颜色",
+        "backgroundColor": "#f0f5ff",
+        "textColor": "#1890ff",
+        "borderColor": "#91d5ff"
+      }
+    }
+  ]
+}

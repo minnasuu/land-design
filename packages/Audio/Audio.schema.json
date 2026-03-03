@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Audio",
+  "description": "音频播放器组件，支持播放控制、进度显示、波形可视化",
+  "type": "object",
+  "properties": {
+    "src": {
+      "type": "string",
+      "description": "音频文件地址（必需）"
+    },
+    "title": {
+      "type": "string",
+      "description": "音频标题"
+    },
+    "cover": {
+      "type": "string",
+      "description": "音频封面图地址"
+    },
+    "autoPlay": {
+      "type": "boolean",
+      "description": "是否自动播放",
+      "default": false
+    },
+    "loop": {
+      "type": "boolean",
+      "description": "是否循环播放",
+      "default": false
+    },
+    "muted": {
+      "type": "boolean",
+      "description": "是否静音",
+      "default": false
+    },
+    "volume": {
+      "type": "number",
+      "description": "初始音量 (0-100)",
+      "default": 100
+    },
+    "playbackRate": {
+      "type": "number",
+      "description": "播放速率",
+      "default": 1
+    },
+    "preload": {
+      "type": "string",
+      "enum": ["none", "metadata", "auto"],
+      "description": "预加载策略",
+      "default": "metadata"
+    },
+    "showPlayButton": {
+      "type": "boolean",
+      "description": "是否显示播放按钮",
+      "default": true
+    },
+    "showProgress": {
+      "type": "boolean",
+      "description": "是否显示进度条",
+      "default": true
+    },
+    "showTime": {
+      "type": "boolean",
+      "description": "是否显示时间",
+      "default": true
+    },
+    "showVolume": {
+      "type": "boolean",
+      "description": "是否显示音量控制",
+      "default": false
+    },
+    "showWave": {
+      "type": "boolean",
+      "description": "是否显示波形",
+      "default": false
+    },
+    "waveType": {
+      "type": "string",
+      "enum": ["bar", "line"],
+      "description": "波形类型",
+      "default": "bar"
+    },
+    "waveSampleCount": {
+      "type": "number",
+      "description": "波形采样数量",
+      "default": 100
+    },
+    "waveBarWidth": {
+      "type": "number",
+      "description": "波形条形宽度",
+      "default": 2
+    },
+    "waveBarGap": {
+      "type": "number",
+      "description": "波形条形间距",
+      "default": 1
+    },
+    "waveDefaultColor": {
+      "type": "string",
+      "description": "波形默认颜色",
+      "default": "var(--color-border-2)"
+    },
+    "waveActiveColor": {
+      "type": "string",
+      "description": "波形激活颜色",
+      "default": "var(--color-primary-6)"
+    },
+    "waveHeight": {
+      "type": "number",
+      "description": "波形高度",
+      "default": 48
+    },
+    "onPlay": {
+      "type": "function",
+      "description": "播放事件回调"
+    },
+    "onPause": {
+      "type": "function",
+      "description": "暂停事件回调"
+    },
+    "onEnded": {
+      "type": "function",
+      "description": "播放结束事件回调"
+    },
+    "onTimeUpdate": {
+      "type": "function",
+      "description": "时间更新事件回调"
+    },
+    "onVolumeChange": {
+      "type": "function",
+      "description": "音量变化事件回调"
+    },
+    "onSeek": {
+      "type": "function",
+      "description": "进度跳转事件回调"
+    },
+    "onLoaded": {
+      "type": "function",
+      "description": "加载完成事件回调"
+    },
+    "onError": {
+      "type": "function",
+      "description": "加载错误事件回调"
+    },
+    "onStatusChange": {
+      "type": "function",
+      "description": "状态变化事件回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "progressColor": {
+      "type": "string",
+      "description": "进度条激活颜色",
+      "default": "var(--color-primary-6)"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "自定义内容"
+    }
+  },
+  "required": ["src"],
+  "examples": [
+    {
+      "description": "基础音频播放器",
+      "value": {
+        "src": "/audio/music.mp3"
+      }
+    },
+    {
+      "description": "带标题和封面",
+      "value": {
+        "src": "/audio/music.mp3",
+        "title": "歌曲名称",
+        "cover": "/images/cover.jpg"
+      }
+    },
+    {
+      "description": "波形模式",
+      "value": {
+        "src": "/audio/music.mp3",
+        "showWave": true,
+        "waveType": "bar"
+      }
+    }
+  ],
+  "additionalProperties": false
+}

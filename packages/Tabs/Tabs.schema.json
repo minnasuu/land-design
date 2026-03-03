@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tabs",
+  "description": "标签页组件，用于在同一区域切换显示不同内容。",
+  "type": "object",
+  "properties": {
+    "checked": {
+      "type": "string",
+      "description": "当前选中的标签页 key"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/TabsItemType"
+      },
+      "description": "标签页数据"
+    },
+    "switchDisabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用切换"
+    },
+    "width": {
+      "type": "string",
+      "description": "标签页容器宽度"
+    },
+    "useDivider": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否使用分割线"
+    },
+    "activeClassName": {
+      "type": "string",
+      "description": "激活状态的额外类名"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "标签切换回调：(key: string, item?: TabsItemType) => void"
+    }
+  },
+  "definitions": {
+    "TabsItemType": {
+      "type": "object",
+      "properties": {
+        "key": { "type": "string", "description": "标签页唯一标识" },
+        "label": { "type": "string", "description": "标签页显示文本" },
+        "disabled": { "type": "boolean", "description": "是否禁用" },
+        "tip": { "type": "string", "description": "提示内容" },
+        "iconTip": { "type": "string", "description": "图标提示内容" }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Tabs checked=\"tab1\" data={[{key:'tab1',label:'标签一'},{key:'tab2',label:'标签二'}]} onChange={setTab} />"
+    },
+    {
+      "description": "禁用某标签",
+      "code": "<Tabs data={[{key:'tab1',label:'标签一'},{key:'tab2',label:'禁用',disabled:true}]} />"
+    }
+  ]
+}

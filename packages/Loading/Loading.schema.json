@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Loading",
+  "description": "加载中组件，展示内容加载状态",
+  "type": "object",
+  "properties": {
+    "size": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "description": "加载图标尺寸"
+    },
+    "strokeSize": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "description": "描边宽度"
+    },
+    "color": {
+      "type": "string",
+      "description": "加载图标颜色"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "被覆盖的内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础加载",
+      "value": {}
+    },
+    {
+      "description": "自定义尺寸和颜色",
+      "value": {
+        "size": 32,
+        "color": "var(--color-primary-6)"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Drawer",
+  "description": "抽屉组件，从屏幕边缘滑出的面板",
+  "type": "object",
+  "properties": {
+    "show": {
+      "type": "boolean",
+      "description": "是否显示抽屉"
+    },
+    "placement": {
+      "type": "string",
+      "description": "弹出位置",
+      "enum": ["right", "bottom"],
+      "default": "right"
+    },
+    "mask": {
+      "type": "boolean",
+      "description": "是否显示背景遮罩",
+      "default": true
+    },
+    "size": {
+      "type": "string",
+      "description": "抽屉尺寸",
+      "enum": ["small", "medium", "large", "auto"]
+    },
+    "minWidth": {
+      "type": "string",
+      "description": "最小宽度"
+    },
+    "maxWidth": {
+      "type": "string",
+      "description": "最大宽度"
+    },
+    "title": {
+      "type": ["string", "ReactNode"],
+      "description": "抽屉标题"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "抽屉内容"
+    },
+    "headerComponent": {
+      "type": "ReactNode",
+      "description": "自定义头部"
+    },
+    "footerComponent": {
+      "type": "ReactNode",
+      "description": "自定义尾部"
+    },
+    "cancelLabel": {
+      "type": ["string", "ReactNode"],
+      "description": "取消按钮文案"
+    },
+    "submitLabel": {
+      "type": ["string", "ReactNode"],
+      "description": "确定按钮文案"
+    },
+    "cancelDisabled": {
+      "type": "boolean",
+      "description": "取消按钮是否禁用"
+    },
+    "submitDisabled": {
+      "type": "boolean",
+      "description": "确定按钮是否禁用"
+    },
+    "enableEsc": {
+      "type": "boolean",
+      "description": "是否启用 ESC 键关闭",
+      "default": true
+    },
+    "onClose": {
+      "type": "function",
+      "description": "关闭回调"
+    },
+    "onCancel": {
+      "type": "function",
+      "description": "取消按钮回调"
+    },
+    "onSubmit": {
+      "type": "function",
+      "description": "确定按钮回调"
+    },
+    "wrapClassName": {
+      "type": "string",
+      "description": "外层类名"
+    },
+    "wrapStyle": {
+      "type": "object",
+      "description": "外层样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "右侧抽屉",
+      "value": {
+        "show": true,
+        "title": "标题",
+        "placement": "right"
+      }
+    },
+    {
+      "description": "底部抽屉",
+      "value": {
+        "show": true,
+        "title": "标题",
+        "placement": "bottom"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

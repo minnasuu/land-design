@@ -1,0 +1,326 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Uploader",
+  "description": "文件上传组件，用于将本地文件上传到服务器。支持拖拽上传、多文件上传、图片预览、上传进度显示等功能。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": "object",
+      "description": "子元素，用于自定义上传区域内容"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["dragger", "button", "picture", "avatar"],
+      "description": "上传区域变体：dragger（拖拽区域）、button（按钮样式）、picture（图片墙）、avatar（头像上传）",
+      "default": "dragger"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "是否只读（显示文件但不可操作）",
+      "default": false
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "accept": {
+      "type": "string",
+      "description": "接受的文件类型，支持 MIME 类型或文件扩展名",
+      "examples": ["image/*", ".jpg,.png", "image/png,image/jpeg"]
+    },
+    "multiple": {
+      "type": "boolean",
+      "description": "是否支持多文件上传",
+      "default": false
+    },
+    "directory": {
+      "type": "boolean",
+      "description": "是否支持目录上传",
+      "default": false
+    },
+    "maxCount": {
+      "type": "number",
+      "description": "最大文件数量（multiple 为 true 时有效）"
+    },
+    "maxSize": {
+      "type": "number",
+      "description": "单文件最大大小（字节）"
+    },
+    "action": {
+      "type": "string",
+      "description": "上传地址，不传则使用本地预览模式"
+    },
+    "method": {
+      "type": "string",
+      "enum": ["POST", "PUT", "PATCH"],
+      "description": "上传请求的 HTTP 方法",
+      "default": "POST"
+    },
+    "headers": {
+      "type": "object",
+      "description": "上传请求的额外 headers"
+    },
+    "data": {
+      "oneOf": [
+        { "type": "object" },
+        { "type": "function" }
+      ],
+      "description": "上传请求的额外参数，可以是对象或函数"
+    },
+    "withCredentials": {
+      "type": "boolean",
+      "description": "上传请求是否携带 cookie",
+      "default": false
+    },
+    "draggable": {
+      "type": "boolean",
+      "description": "是否开启拖拽上传",
+      "default": true
+    },
+    "title": {
+      "type": ["string", "object"],
+      "description": "上传区域标题/描述"
+    },
+    "hint": {
+      "type": ["string", "object"],
+      "description": "上传提示文案"
+    },
+    "dropHint": {
+      "type": ["string", "object"],
+      "description": "拖拽时的提示文案",
+      "default": "释放文件即可上传"
+    },
+    "uploadingHint": {
+      "type": ["string", "object"],
+      "description": "上传中的提示文案",
+      "default": "上传中..."
+    },
+    "icon": {
+      "type": "object",
+      "description": "上传区域图标，传入 React 节点"
+    },
+    "showFileList": {
+      "type": "boolean",
+      "description": "是否显示文件列表",
+      "default": true
+    },
+    "listType": {
+      "type": "string",
+      "enum": ["text", "picture", "picture-card"],
+      "description": "文件列表显示类型",
+      "default": "text"
+    },
+    "showProgress": {
+      "type": "boolean",
+      "description": "是否显示上传进度",
+      "default": true
+    },
+    "showRemoveButton": {
+      "type": "boolean",
+      "description": "是否显示删除按钮",
+      "default": true
+    },
+    "showPreviewButton": {
+      "type": "boolean",
+      "description": "是否显示预览按钮（图片类型）",
+      "default": true
+    },
+    "fileList": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/UploadFile" },
+      "description": "文件列表（受控模式）"
+    },
+    "defaultFileList": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/UploadFile" },
+      "description": "默认文件列表（非受控模式）"
+    },
+    "onChange": {
+      "type": "function",
+      "description": "文件状态变化回调，参数：(file: UploadFile, fileList: UploadFile[]) => void"
+    },
+    "beforeUpload": {
+      "type": "function",
+      "description": "文件选择前回调，返回 false 阻止上传，参数：(file: File, fileList: File[]) => boolean | File | Promise"
+    },
+    "onProgress": {
+      "type": "function",
+      "description": "上传进度回调，参数：(percent: number, file: UploadFile) => void"
+    },
+    "onSuccess": {
+      "type": "function",
+      "description": "上传成功回调，参数：(response: any, file: UploadFile) => void"
+    },
+    "onError": {
+      "type": "function",
+      "description": "上传失败回调，参数：(error: Error, file: UploadFile) => void"
+    },
+    "onRemove": {
+      "type": "function",
+      "description": "文件删除回调，参数：(file: UploadFile) => void | boolean | Promise<boolean>"
+    },
+    "onPreview": {
+      "type": "function",
+      "description": "文件预览回调，参数：(file: UploadFile) => void"
+    },
+    "onDragEnter": {
+      "type": "function",
+      "description": "拖拽进入回调"
+    },
+    "onDragLeave": {
+      "type": "function",
+      "description": "拖拽离开回调"
+    },
+    "onDrop": {
+      "type": "function",
+      "description": "文件放置回调"
+    },
+    "onExceed": {
+      "type": "function",
+      "description": "超出最大数量回调，参数：(files: File[]) => void"
+    },
+    "width": {
+      "type": ["string", "number"],
+      "description": "上传区域宽度"
+    },
+    "height": {
+      "type": ["string", "number"],
+      "description": "上传区域高度"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "dropzoneStyle": {
+      "type": "object",
+      "description": "上传区域样式"
+    },
+    "dropzoneClassName": {
+      "type": "string",
+      "description": "上传区域类名"
+    },
+    "fileListStyle": {
+      "type": "object",
+      "description": "文件列表样式"
+    },
+    "fileListClassName": {
+      "type": "string",
+      "description": "文件列表类名"
+    }
+  },
+  "definitions": {
+    "UploadFile": {
+      "type": "object",
+      "description": "上传文件信息",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "文件唯一标识"
+        },
+        "name": {
+          "type": "string",
+          "description": "文件名"
+        },
+        "size": {
+          "type": "number",
+          "description": "文件大小（字节）"
+        },
+        "type": {
+          "type": "string",
+          "description": "文件类型"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["uploading", "done", "error", "removed"],
+          "description": "文件状态"
+        },
+        "percent": {
+          "type": "number",
+          "description": "上传进度（0-100）"
+        },
+        "url": {
+          "type": "string",
+          "description": "文件预览 URL"
+        },
+        "thumbUrl": {
+          "type": "string",
+          "description": "缩略图 URL"
+        },
+        "originFile": {
+          "type": "object",
+          "description": "原始文件对象"
+        },
+        "error": {
+          "type": "string",
+          "description": "错误信息"
+        },
+        "response": {
+          "description": "服务器响应"
+        }
+      },
+      "required": ["uid", "name", "size", "type", "status"]
+    },
+    "UploaderVariant": {
+      "type": "string",
+      "enum": ["dragger", "button", "picture", "avatar"],
+      "description": "上传区域变体类型"
+    },
+    "FileListType": {
+      "type": "string",
+      "enum": ["text", "picture", "picture-card"],
+      "description": "文件列表显示类型"
+    }
+  },
+  "examples": [
+    {
+      "title": "基础拖拽上传",
+      "props": {
+        "action": "/api/upload",
+        "hint": "点击或拖拽文件到此区域上传"
+      }
+    },
+    {
+      "title": "按钮上传",
+      "props": {
+        "variant": "button",
+        "action": "/api/upload"
+      }
+    },
+    {
+      "title": "图片上传",
+      "props": {
+        "variant": "picture",
+        "action": "/api/upload",
+        "accept": "image/*",
+        "multiple": true,
+        "listType": "picture-card"
+      }
+    },
+    {
+      "title": "头像上传",
+      "props": {
+        "variant": "avatar",
+        "accept": "image/*"
+      }
+    },
+    {
+      "title": "限制文件",
+      "props": {
+        "accept": ".jpg,.png,.pdf",
+        "maxSize": 5242880,
+        "maxCount": 5,
+        "multiple": true,
+        "hint": "只支持 jpg/png/pdf，单个不超过 5MB，最多 5 个"
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SelectTree",
+  "description": "树形选择器组件，用于从树形结构数据中选择值。",
+  "type": "object",
+  "properties": {
+    "options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SelectTreeOption"
+      },
+      "description": "树形选项数据"
+    },
+    "value": {
+      "type": "string",
+      "description": "当前选中值（单选模式）"
+    },
+    "values": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "当前选中值数组（多选模式）"
+    },
+    "defaultValue": {
+      "type": "string",
+      "description": "默认选中值（单选，非受控）"
+    },
+    "defaultValues": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "默认选中值数组（多选，非受控）"
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否多选模式"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "请选择",
+      "description": "占位符文本"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["outline", "fill", "text", "transparent"],
+      "default": "outline",
+      "description": "外观变体"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "选择器宽度"
+    },
+    "separator": {
+      "type": "string",
+      "default": "，",
+      "description": "多选时的分隔符"
+    },
+    "maxDisplayCount": {
+      "type": "number",
+      "default": 3,
+      "description": "多选时最大显示数量"
+    },
+    "tip": {
+      "type": "string",
+      "description": "选择框提示内容"
+    },
+    "emptyContent": {
+      "type": "string",
+      "default": "暂无数据",
+      "description": "空数据时的显示内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "选中变化回调：(value, option, selectedOptions?) => void"
+    },
+    "onExpand": {
+      "type": "string",
+      "description": "展开/收起回调：(expandedKeys: string[]) => void"
+    }
+  },
+  "definitions": {
+    "SelectTreeOption": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "选项唯一标识"
+        },
+        "label": {
+          "type": "string",
+          "description": "选项显示文本"
+        },
+        "tip": {
+          "type": "string",
+          "description": "选项提示内容"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用"
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/SelectTreeOption" },
+          "description": "子选项"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<SelectTree options={treeData} value={value} onChange={setValue} />"
+    },
+    {
+      "description": "多选模式",
+      "code": "<SelectTree multiple options={treeData} values={values} onChange={setValues} />"
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Select",
+  "description": "选择器组件，用于从一组选项中选择一个或多个值。",
+  "type": "object",
+  "properties": {
+    "options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SelectOption"
+      },
+      "description": "选项数据"
+    },
+    "value": {
+      "type": ["string", "number"],
+      "description": "当前选中值（单选模式）"
+    },
+    "values": {
+      "type": "array",
+      "items": { "type": ["string", "number"] },
+      "description": "当前选中值数组（多选模式）"
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否多选模式"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "请选择",
+      "description": "占位符文本"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["outline", "fill", "text", "transparent"],
+      "default": "outline",
+      "description": "外观变体"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "选择器宽度"
+    },
+    "showCheckbox": {
+      "type": "boolean",
+      "default": false,
+      "description": "多选时是否显示复选框"
+    },
+    "separator": {
+      "type": "string",
+      "default": "，",
+      "description": "多选时的分隔符"
+    },
+    "maxDisplayCount": {
+      "type": "number",
+      "description": "多选时最大显示数量"
+    },
+    "tip": {
+      "type": "string",
+      "description": "选择框提示内容"
+    },
+    "emptyContent": {
+      "type": "string",
+      "default": "暂无数据",
+      "description": "空数据时的显示内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "dropdownClassName": {
+      "type": "string",
+      "description": "下拉面板类名"
+    },
+    "dropdownStyle": {
+      "type": "object",
+      "description": "下拉面板样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "选中变化回调：(value, option, selectedOptions?) => void"
+    }
+  },
+  "definitions": {
+    "SelectOption": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": ["string", "number"],
+          "description": "选项唯一标识"
+        },
+        "label": {
+          "type": "string",
+          "description": "选项显示文本"
+        },
+        "tip": {
+          "type": "string",
+          "description": "选项提示内容"
+        },
+        "iconTip": {
+          "type": "string",
+          "description": "选项图标提示"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用"
+        },
+        "className": {
+          "type": "string",
+          "description": "选项类名"
+        },
+        "style": {
+          "type": "object",
+          "description": "选项样式"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础单选",
+      "code": "<Select options={[{key:'1',label:'选项一'},{key:'2',label:'选项二'}]} value={value} onChange={setValue} />"
+    },
+    {
+      "description": "多选模式",
+      "code": "<Select multiple options={options} values={values} onChange={setValues} />"
+    },
+    {
+      "description": "带复选框的多选",
+      "code": "<Select multiple showCheckbox options={options} />"
+    },
+    {
+      "description": "禁用状态",
+      "code": "<Select disabled options={options} />"
+    },
+    {
+      "description": "自定义宽度",
+      "code": "<Select width={200} options={options} />"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Link",
+  "description": "链接组件，用于页面间导航跳转",
+  "type": "object",
+  "properties": {
+    "href": {
+      "type": "string",
+      "description": "链接地址"
+    },
+    "target": {
+      "type": "string",
+      "description": "链接打开方式",
+      "enum": ["_self", "_blank", "_parent", "_top"],
+      "default": "_self"
+    },
+    "status": {
+      "type": "string",
+      "description": "链接状态",
+      "enum": ["default", "primary", "success", "danger", "warning"],
+      "default": "default"
+    },
+    "size": {
+      "type": "string",
+      "description": "链接尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "underline": {
+      "type": "string",
+      "description": "下划线模式",
+      "enum": ["none", "always", "hover"],
+      "default": "hover"
+    },
+    "anchor": {
+      "type": "string",
+      "description": "锚点 ID，点击后平滑滚动"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "startIcon": {
+      "oneOf": [
+        { "type": "boolean" },
+        { "type": "ReactNode" }
+      ],
+      "description": "起始图标"
+    },
+    "endIcon": {
+      "oneOf": [
+        { "type": "boolean" },
+        { "type": "ReactNode" }
+      ],
+      "description": "末尾图标"
+    },
+    "tip": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "ReactNode" }
+      ],
+      "description": "气泡提示内容"
+    },
+    "popoverProps": {
+      "type": "object",
+      "description": "气泡提示配置"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击事件回调"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础链接",
+      "value": {
+        "href": "/page",
+        "children": "链接文本"
+      }
+    },
+    {
+      "description": "外部链接",
+      "value": {
+        "href": "https://example.com",
+        "target": "_blank",
+        "endIcon": true
+      }
+    },
+    {
+      "description": "锚点链接",
+      "value": {
+        "anchor": "section-1",
+        "children": "跳转到章节"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

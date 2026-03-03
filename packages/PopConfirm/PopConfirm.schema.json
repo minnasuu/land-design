@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PopConfirm",
+  "description": "气泡确认框组件，在元素上弹出气泡式确认框。",
+  "type": "object",
+  "properties": {
+    "show": {
+      "type": "boolean",
+      "description": "是否显示确认框"
+    },
+    "content": {
+      "type": "string",
+      "description": "确认框内容（也支持 ReactNode）"
+    },
+    "placement": {
+      "type": "string",
+      "enum": ["top", "bottom", "left", "right"],
+      "default": "top",
+      "description": "气泡位置"
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "default": "light",
+      "description": "颜色主题"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["background", "border"],
+      "description": "气泡样式类型"
+    },
+    "hideArrow": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否隐藏箭头指示器"
+    },
+    "cancelLabel": {
+      "type": "string",
+      "default": "取消",
+      "description": "取消按钮文案"
+    },
+    "submitLabel": {
+      "type": "string",
+      "default": "确认",
+      "description": "确认按钮文案"
+    },
+    "cancelButtonProps": {
+      "type": "object",
+      "description": "取消按钮的扩展属性（ButtonProps）"
+    },
+    "submitButtonProps": {
+      "type": "object",
+      "description": "确认按钮的扩展属性（ButtonProps）"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onCancel": {
+      "type": "string",
+      "description": "取消按钮点击回调：() => void"
+    },
+    "onSubmit": {
+      "type": "string",
+      "description": "确认按钮点击回调：() => void"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<PopConfirm show={show} content=\"确定删除？\" onSubmit={handleDelete} onCancel={() => setShow(false)} />"
+    },
+    {
+      "description": "底部弹出",
+      "code": "<PopConfirm placement=\"bottom\" content=\"确定操作？\" />"
+    },
+    {
+      "description": "暗色主题",
+      "code": "<PopConfirm theme=\"dark\" content=\"确认执行？\" />"
+    },
+    {
+      "description": "自定义按钮文案",
+      "code": "<PopConfirm cancelLabel=\"取消\" submitLabel=\"确定删除\" content=\"此操作不可恢复\" />"
+    }
+  ]
+}

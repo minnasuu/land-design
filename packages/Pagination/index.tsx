@@ -153,7 +153,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <div className={`${prefixCls}__input`}>
           跳转至
           <NumberInput
-            hideArrowButton
+            stepperPosition="none"
             value={innerCurrent}
             onChange={handleInputChange}
             className={`${prefixCls}__input-field`}

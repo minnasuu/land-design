@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Rate",
+  "description": "评分组件，用于对事物进行评级打分。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "当前评分值（受控模式）"
+    },
+    "defaultValue": {
+      "type": "number",
+      "description": "默认评分值（非受控模式）"
+    },
+    "count": {
+      "type": "number",
+      "default": 5,
+      "description": "评分总数（星星数量）"
+    },
+    "allowHalf": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否允许半选"
+    },
+    "allowClear": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否允许清除（再次点击同一值时重置为0）"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "组件尺寸"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否只读"
+    },
+    "autoFocus": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否自动聚焦"
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "showTooltip": {
+      "type": "boolean",
+      "default": false,
+      "description": "悬停时是否显示提示文案"
+    },
+    "tooltips": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "各等级的提示文案，数组长度应与 count 相同"
+    },
+    "gap": {
+      "type": "number",
+      "default": 8,
+      "description": "图标间距"
+    },
+    "inactiveColor": {
+      "type": "string",
+      "default": "var(--color-fill-tertiary)",
+      "description": "未选中时的颜色"
+    },
+    "activeColor": {
+      "type": "string",
+      "default": "var(--color-warning)",
+      "description": "选中时的颜色"
+    },
+    "hoverColor": {
+      "type": "string",
+      "description": "悬停时的颜色（不传则使用 activeColor）"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "characterClassName": {
+      "type": "string",
+      "description": "单个图标的类名"
+    },
+    "characterStyle": {
+      "type": "object",
+      "description": "单个图标的样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "评分变化回调：(value: number) => void"
+    },
+    "onHoverChange": {
+      "type": "string",
+      "description": "悬停值变化回调：(value: number | undefined) => void"
+    },
+    "onFocus": {
+      "type": "string",
+      "description": "聚焦事件回调"
+    },
+    "onBlur": {
+      "type": "string",
+      "description": "失焦事件回调"
+    },
+    "onKeyDown": {
+      "type": "string",
+      "description": "键盘事件回调"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Rate defaultValue={3} onChange={(v) => console.log(v)} />"
+    },
+    {
+      "description": "半星评分",
+      "code": "<Rate allowHalf defaultValue={2.5} />"
+    },
+    {
+      "description": "只读模式",
+      "code": "<Rate readOnly value={4} />"
+    },
+    {
+      "description": "自定义数量",
+      "code": "<Rate count={10} defaultValue={7} />"
+    },
+    {
+      "description": "带提示文案",
+      "code": "<Rate showTooltip tooltips={['很差','较差','一般','良好','优秀']} />"
+    }
+  ]
+}

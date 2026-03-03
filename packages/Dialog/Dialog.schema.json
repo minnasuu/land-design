@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dialog",
+  "description": "对话框组件，用于展示重要信息或确认操作",
+  "type": "object",
+  "properties": {
+    "show": {
+      "type": "boolean",
+      "description": "是否显示对话框"
+    },
+    "mask": {
+      "type": "boolean",
+      "description": "是否显示背景遮罩",
+      "default": true
+    },
+    "size": {
+      "type": "string",
+      "description": "对话框尺寸",
+      "enum": ["small", "medium", "large"],
+      "default": "medium"
+    },
+    "title": {
+      "type": ["string", "ReactNode"],
+      "description": "对话框标题"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "对话框内容"
+    },
+    "headerComponent": {
+      "type": "ReactNode",
+      "description": "自定义头部"
+    },
+    "headerLeftComponent": {
+      "type": "ReactNode",
+      "description": "自定义头部左侧"
+    },
+    "headerRightComponent": {
+      "type": "ReactNode",
+      "description": "自定义头部右侧"
+    },
+    "footerComponent": {
+      "type": "ReactNode",
+      "description": "自定义尾部"
+    },
+    "footerLeftComponent": {
+      "type": "ReactNode",
+      "description": "自定义尾部左侧"
+    },
+    "footerRightComponent": {
+      "type": "ReactNode",
+      "description": "自定义尾部右侧"
+    },
+    "useHeaderDivider": {
+      "type": "boolean",
+      "description": "是否显示头部分割线"
+    },
+    "useFooterDivider": {
+      "type": "boolean",
+      "description": "是否显示尾部分割线"
+    },
+    "cancelLabel": {
+      "type": ["string", "ReactNode"],
+      "description": "取消按钮文案"
+    },
+    "submitLabel": {
+      "type": ["string", "ReactNode"],
+      "description": "确定按钮文案"
+    },
+    "submitDisabled": {
+      "type": "boolean",
+      "description": "确定按钮是否禁用"
+    },
+    "enableEsc": {
+      "type": "boolean",
+      "description": "是否启用 ESC 键关闭",
+      "default": true
+    },
+    "onClose": {
+      "type": "function",
+      "description": "关闭回调"
+    },
+    "onCancel": {
+      "type": "function",
+      "description": "取消按钮回调"
+    },
+    "onSubmit": {
+      "type": "function",
+      "description": "确定按钮回调"
+    },
+    "wrapClassName": {
+      "type": "string",
+      "description": "外层类名"
+    },
+    "wrapStyle": {
+      "type": "object",
+      "description": "外层样式"
+    },
+    "contentClassName": {
+      "type": "string",
+      "description": "内容类名"
+    },
+    "contentStyle": {
+      "type": "object",
+      "description": "内容样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础对话框",
+      "value": {
+        "show": true,
+        "title": "标题",
+        "children": "内容"
+      }
+    },
+    {
+      "description": "确认对话框",
+      "value": {
+        "show": true,
+        "title": "确认",
+        "cancelLabel": "取消",
+        "submitLabel": "确定"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

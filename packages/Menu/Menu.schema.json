@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Menu",
+  "description": "菜单组件，用于展示导航菜单列表",
+  "type": "object",
+  "definitions": {
+    "MenuItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "唯一标识"
+        },
+        "label": {
+          "type": "string",
+          "description": "标题文本"
+        },
+        "path": {
+          "type": "string",
+          "description": "路由路径"
+        },
+        "subText": {
+          "type": "string",
+          "description": "副标题"
+        },
+        "icon": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "ReactNode" }
+          ],
+          "description": "前置图标"
+        },
+        "isNew": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "ReactNode" }
+          ],
+          "description": "角标内容"
+        },
+        "href": {
+          "type": "string",
+          "description": "外部链接地址"
+        },
+        "clickType": {
+          "type": "string",
+          "description": "点击行为类型",
+          "enum": ["self", "others", "simple", "disabled"]
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用"
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/MenuItem" },
+          "description": "子菜单数据"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MenuItem" },
+      "description": "菜单数据"
+    },
+    "active": {
+      "type": "string",
+      "description": "当前激活项的 key"
+    },
+    "direction": {
+      "type": "string",
+      "description": "排列方向",
+      "enum": ["row", "column"],
+      "default": "row"
+    },
+    "titleDirection": {
+      "type": "string",
+      "description": "标题排列方向",
+      "enum": ["row", "column"],
+      "default": "row"
+    },
+    "border": {
+      "type": "boolean",
+      "description": "是否显示边框",
+      "default": true
+    },
+    "scrollToView": {
+      "type": "boolean",
+      "description": "选中时是否滚动到视区",
+      "default": false
+    },
+    "onChange": {
+      "type": "function",
+      "description": "菜单项点击回调"
+    },
+    "onDropChange": {
+      "type": "function",
+      "description": "下拉菜单项点击回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "水平菜单",
+      "value": {
+        "items": [
+          { "key": "home", "label": "首页" },
+          { "key": "products", "label": "产品" }
+        ],
+        "active": "home"
+      }
+    },
+    {
+      "description": "垂直菜单",
+      "value": {
+        "direction": "column",
+        "items": [
+          { "key": "dashboard", "label": "仪表盘" },
+          { "key": "settings", "label": "设置" }
+        ]
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

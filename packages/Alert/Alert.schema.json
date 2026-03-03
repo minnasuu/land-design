@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Alert",
+  "description": "警告提示组件，用于页面中展示重要的提示信息",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "警告类型",
+      "enum": ["info", "success", "warning", "error", "loading"],
+      "default": "info"
+    },
+    "variant": {
+      "type": "string",
+      "description": "外观变体",
+      "enum": ["filled", "outlined", "light", "text"],
+      "default": "light"
+    },
+    "direction": {
+      "type": "string",
+      "description": "布局方向",
+      "enum": ["horizontal", "vertical"],
+      "default": "horizontal"
+    },
+    "size": {
+      "type": "string",
+      "description": "尺寸",
+      "enum": ["small", "medium", "large"],
+      "default": "medium"
+    },
+    "title": {
+      "type": "ReactNode",
+      "description": "警告标题内容"
+    },
+    "description": {
+      "type": "ReactNode",
+      "description": "警告描述内容，显示在标题下方"
+    },
+    "icon": {
+      "oneOf": [
+        { "type": "ReactNode" },
+        { "type": "boolean", "enum": [false] }
+      ],
+      "description": "自定义图标，传 false 可隐藏图标"
+    },
+    "closable": {
+      "type": "boolean",
+      "description": "是否显示关闭按钮",
+      "default": false
+    },
+    "closeIcon": {
+      "type": "ReactNode",
+      "description": "自定义关闭按钮图标"
+    },
+    "bordered": {
+      "type": "boolean",
+      "description": "是否显示边框",
+      "default": true
+    },
+    "animated": {
+      "type": "boolean",
+      "description": "是否启用关闭动画",
+      "default": true
+    },
+    "link": {
+      "type": "string",
+      "description": "链接文本，显示在标题后"
+    },
+    "onLinkClick": {
+      "type": "function",
+      "description": "链接点击回调"
+    },
+    "action": {
+      "type": "ReactNode",
+      "description": "操作区域，可放置按钮等"
+    },
+    "onClose": {
+      "type": "function",
+      "description": "关闭按钮点击回调"
+    },
+    "afterClose": {
+      "type": "function",
+      "description": "关闭动画结束后回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "iconStyle": {
+      "type": "object",
+      "description": "图标样式"
+    },
+    "contentStyle": {
+      "type": "object",
+      "description": "内容区域样式"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素内容"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础信息提示",
+      "value": {
+        "type": "info",
+        "title": "这是一条提示信息"
+      }
+    },
+    {
+      "description": "成功提示带描述",
+      "value": {
+        "type": "success",
+        "title": "操作成功",
+        "description": "您的操作已成功完成"
+      }
+    },
+    {
+      "description": "可关闭的警告",
+      "value": {
+        "type": "warning",
+        "title": "请注意",
+        "closable": true
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

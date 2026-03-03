@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Image",
+  "description": "图片组件，增强的图片展示功能",
+  "type": "object",
+  "properties": {
+    "src": {
+      "type": "string",
+      "description": "图片地址"
+    },
+    "alt": {
+      "type": "string",
+      "description": "图片描述",
+      "default": ""
+    },
+    "width": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "description": "图片宽度"
+    },
+    "height": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "description": "图片高度"
+    },
+    "fit": {
+      "type": "string",
+      "description": "填充模式",
+      "enum": ["cover", "contain", "fill", "none", "scale-down"],
+      "default": "cover"
+    },
+    "position": {
+      "type": "string",
+      "description": "图片位置",
+      "enum": ["center", "top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"],
+      "default": "center"
+    },
+    "ratio": {
+      "type": "number",
+      "description": "宽高比"
+    },
+    "radius": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "string" }
+      ],
+      "description": "圆角"
+    },
+    "round": {
+      "type": "boolean",
+      "description": "是否为圆形",
+      "default": false
+    },
+    "lazy": {
+      "type": "boolean",
+      "description": "是否懒加载",
+      "default": false
+    },
+    "preview": {
+      "type": "string",
+      "description": "预览图地址"
+    },
+    "fallbackSrc": {
+      "type": "string",
+      "description": "兜底图片地址"
+    },
+    "fallback": {
+      "type": "ReactNode",
+      "description": "兜底内容"
+    },
+    "placeholder": {
+      "type": "ReactNode",
+      "description": "加载中占位内容"
+    },
+    "showSkeleton": {
+      "type": "boolean",
+      "description": "是否显示加载骨架屏",
+      "default": true
+    },
+    "showError": {
+      "type": "boolean",
+      "description": "是否显示错误状态",
+      "default": true
+    },
+    "onLoad": {
+      "type": "function",
+      "description": "加载成功回调"
+    },
+    "onError": {
+      "type": "function",
+      "description": "加载失败回调"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础图片",
+      "value": {
+        "src": "/photo.jpg",
+        "alt": "图片"
+      }
+    },
+    {
+      "description": "固定比例",
+      "value": {
+        "src": "/photo.jpg",
+        "width": "100%",
+        "ratio": 1.7778
+      }
+    },
+    {
+      "description": "圆形头像",
+      "value": {
+        "src": "/avatar.jpg",
+        "width": 64,
+        "height": 64,
+        "round": true
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

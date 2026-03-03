@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ellipsis",
+  "description": "文本省略组件，处理长文本的省略显示",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": "ReactNode",
+      "description": "文本内容"
+    },
+    "text": {
+      "type": "ReactNode",
+      "description": "文本内容（优先级高于 children）"
+    },
+    "line": {
+      "type": "number",
+      "description": "显示行数，超过时显示省略号",
+      "default": 1
+    },
+    "open": {
+      "type": "boolean",
+      "description": "是否启用悬停提示",
+      "default": true
+    },
+    "popoverProps": {
+      "type": "object",
+      "description": "PopOver 组件属性"
+    },
+    "setMaxWidth": {
+      "type": "function",
+      "description": "自定义 maxWidth 计算函数"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "单行省略",
+      "value": {
+        "children": "这是一段很长的文本内容"
+      }
+    },
+    {
+      "description": "多行省略",
+      "value": {
+        "line": 2,
+        "children": "这是一段很长的多行文本内容"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

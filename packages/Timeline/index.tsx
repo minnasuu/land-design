@@ -28,7 +28,7 @@ const convertLegacyProps = (props: TimelineProps & LegacyTimelineProps): Timelin
     ...rest,
     items: data ?? rest.items,
     // 兼容旧版 direction: 'row' -> 'horizontal', 'column' -> 'vertical'
-    direction: direction === 'row' ? 'horizontal' : direction === 'column' ? 'vertical' : direction,
+    direction: (direction as string) === 'row' ? 'horizontal' : (direction as string) === 'column' ? 'vertical' : direction,
   };
 };
 

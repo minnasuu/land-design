@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RadioGroup",
+  "description": "单选框组组件，管理一组单选框的选中状态。",
+  "type": "object",
+  "properties": {
+    "checked": {
+      "type": "string",
+      "description": "当前选中项的 key 值"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RadioItemType"
+      },
+      "description": "单选框选项数据"
+    },
+    "animated": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否启用选中动画效果"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "选择变化回调：(value: string, item: RadioItemType, e: MouseEvent) => void"
+    }
+  },
+  "definitions": {
+    "RadioItemType": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "选项唯一标识"
+        },
+        "label": {
+          "type": "string",
+          "description": "选项显示文本"
+        },
+        "tip": {
+          "type": "string",
+          "description": "选项提示信息"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用该选项"
+        },
+        "iconTip": {
+          "type": "string",
+          "description": "图标提示信息"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<RadioGroup checked={value} data={[{key:'a',label:'A'},{key:'b',label:'B'}]} onChange={setValue} />"
+    },
+    {
+      "description": "带提示的选项",
+      "code": "<RadioGroup data={[{key:'free',label:'免费',tip:'基础功能'}]} />"
+    },
+    {
+      "description": "禁用某选项",
+      "code": "<RadioGroup data={[{key:'a',label:'可选'},{key:'b',label:'禁用',disabled:true}]} />"
+    }
+  ]
+}

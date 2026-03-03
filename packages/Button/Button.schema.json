@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Button",
+  "description": "按钮组件，用于触发操作或事件",
+  "type": "object",
+  "properties": {
+    "variant": {
+      "type": "string",
+      "description": "外观变体",
+      "enum": ["text", "fill", "background", "outline", "dashed", "transparent"],
+      "default": "outline"
+    },
+    "status": {
+      "type": "string",
+      "description": "语义状态",
+      "enum": ["default", "primary", "warning", "danger", "success"],
+      "default": "default"
+    },
+    "size": {
+      "type": "string",
+      "description": "按钮尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "justify": {
+      "type": "string",
+      "description": "文字对齐方式",
+      "enum": ["center", "start", "end"],
+      "default": "center"
+    },
+    "block": {
+      "type": "boolean",
+      "description": "是否为块级按钮",
+      "default": false
+    },
+    "text": {
+      "type": "string",
+      "description": "按钮主要文案"
+    },
+    "subText": {
+      "type": "string",
+      "description": "按钮次要文案"
+    },
+    "icon": {
+      "type": "ReactNode",
+      "description": "按钮图标"
+    },
+    "bold": {
+      "type": "boolean",
+      "description": "是否加粗文字",
+      "default": false
+    },
+    "hoverBold": {
+      "type": "boolean",
+      "description": "悬停时是否加粗",
+      "default": false
+    },
+    "capsule": {
+      "type": "boolean",
+      "description": "是否为胶囊形状",
+      "default": false
+    },
+    "hoverAnimation": {
+      "type": "boolean",
+      "description": "是否启用悬停缩放动画",
+      "default": false
+    },
+    "activeAnimation": {
+      "type": "boolean",
+      "description": "是否启用点击缩放动画",
+      "default": false
+    },
+    "tip": {
+      "description": "气泡提示内容",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "ReactNode" }
+      ]
+    },
+    "popoverProps": {
+      "type": "object",
+      "description": "气泡提示配置"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击事件回调"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "htmlProps": {
+      "type": "object",
+      "description": "原生 button HTML 属性透传"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础按钮",
+      "value": {
+        "text": "按钮"
+      }
+    },
+    {
+      "description": "主要填充按钮",
+      "value": {
+        "variant": "fill",
+        "status": "primary",
+        "text": "主要按钮"
+      }
+    },
+    {
+      "description": "图标按钮",
+      "value": {
+        "icon": "<Icon name='search' />"
+      }
+    },
+    {
+      "description": "带提示的按钮",
+      "value": {
+        "text": "保存",
+        "tip": "保存当前更改"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

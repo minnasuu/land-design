@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "declaration": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": false,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "incremental": true
+  },
+  "include": ["packages"],
+  "exclude": [
+    "node_modules",
+    "**/Example.tsx",
+    "**/Example.ts",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/VideoOptimizationTest.tsx",
+    "example/**/*",
+    "pro-packages/**/*",
+    "packages/Video/VideoSetting.tsx"
+  ]
+}

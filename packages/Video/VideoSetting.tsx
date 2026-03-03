@@ -34,7 +34,6 @@ const VideoSetting: React.FC<VideoSettingProps> = ({
           <span className="land-video-setting__text">自动循环</span>
           <Switch
             checked={loop}
-            dark
             onChange={() => onLoopChange?.(!loop)}
           />
         </div>

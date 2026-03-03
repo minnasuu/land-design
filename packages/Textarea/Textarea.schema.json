@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Textarea",
+  "description": "多行文本输入框组件，用于输入多行文本内容。支持自动高度调整、字数统计、多种外观变体等功能。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "string",
+      "description": "输入值（受控模式）"
+    },
+    "defaultValue": {
+      "type": "string",
+      "description": "默认值（非受控模式）"
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "占位符",
+      "default": "请输入"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["outline", "filled", "transparent"],
+      "description": "外观变体：outline（描边，有边框无背景）、filled（填充，有背景色无边框）、transparent（透明，无边框无背景）",
+      "default": "outline"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["default", "primary", "warning", "danger", "success"],
+      "description": "语义状态",
+      "default": "default"
+    },
+    "textAlign": {
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "description": "文字对齐方式",
+      "default": "left"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "是否只读",
+      "default": false
+    },
+    "maxLength": {
+      "type": "number",
+      "description": "最大字符数"
+    },
+    "showCount": {
+      "type": "boolean",
+      "description": "是否显示字数统计",
+      "default": false
+    },
+    "countFormatter": {
+      "type": "function",
+      "description": "自定义字数统计显示格式，参数：(count: number, maxLength?: number) => string"
+    },
+    "rows": {
+      "type": "number",
+      "description": "文本域行数",
+      "default": 4
+    },
+    "minRows": {
+      "type": "number",
+      "description": "最小行数（配合 autoSize 使用）"
+    },
+    "maxRows": {
+      "type": "number",
+      "description": "最大行数（配合 autoSize 使用）"
+    },
+    "autoSize": {
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "properties": {
+            "minRows": { "type": "number" },
+            "maxRows": { "type": "number" }
+          }
+        }
+      ],
+      "description": "是否自动调整高度，可传入对象指定 minRows 和 maxRows",
+      "default": false
+    },
+    "resize": {
+      "type": "string",
+      "enum": ["none", "both", "horizontal", "vertical"],
+      "description": "调整大小方式",
+      "default": "none"
+    },
+    "block": {
+      "type": "boolean",
+      "description": "是否为块级元素，占满父容器宽度",
+      "default": false
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "自定义宽度"
+    },
+    "height": {
+      "type": ["number", "string"],
+      "description": "自定义高度"
+    },
+    "beforeContent": {
+      "type": "object",
+      "description": "结构前缀（文本域外部上方），传入 React 节点"
+    },
+    "afterContent": {
+      "type": "object",
+      "description": "结构后缀（文本域外部下方），传入 React 节点"
+    },
+    "onChange": {
+      "type": "function",
+      "description": "值变化回调，参数：(value: string, e?: ChangeEvent) => void"
+    },
+    "onFocus": {
+      "type": "function",
+      "description": "聚焦回调，参数：(e: FocusEvent) => void"
+    },
+    "onBlur": {
+      "type": "function",
+      "description": "失焦回调，参数：(e: FocusEvent) => void"
+    },
+    "onKeyDown": {
+      "type": "function",
+      "description": "键盘按下回调，参数：(e: KeyboardEvent) => void"
+    },
+    "onEnter": {
+      "type": "function",
+      "description": "回车回调（不包含 Shift+Enter），参数：(value: string, e?: KeyboardEvent) => void"
+    },
+    "onClear": {
+      "type": "function",
+      "description": "清除回调（传入即显示清除按钮），参数：() => void"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "htmlProps": {
+      "type": "object",
+      "description": "原生 textarea HTML 属性透传"
+    }
+  },
+  "definitions": {
+    "TextareaVariant": {
+      "type": "string",
+      "enum": ["outline", "filled", "transparent"],
+      "description": "文本域外观变体"
+    },
+    "TextareaStatus": {
+      "type": "string",
+      "enum": ["default", "primary", "warning", "danger", "success"],
+      "description": "文本域语义状态"
+    },
+    "TextareaAlign": {
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "description": "文字对齐方式"
+    },
+    "TextareaResize": {
+      "type": "string",
+      "enum": ["none", "both", "horizontal", "vertical"],
+      "description": "调整大小方式"
+    },
+    "AutoSizeConfig": {
+      "type": "object",
+      "properties": {
+        "minRows": {
+          "type": "number",
+          "description": "最小行数"
+        },
+        "maxRows": {
+          "type": "number",
+          "description": "最大行数"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "基础文本框",
+      "props": {
+        "placeholder": "请输入内容"
+      }
+    },
+    {
+      "title": "带字数统计",
+      "props": {
+        "showCount": true,
+        "maxLength": 200,
+        "placeholder": "最多200字"
+      }
+    },
+    {
+      "title": "自动高度",
+      "props": {
+        "autoSize": { "minRows": 2, "maxRows": 6 },
+        "placeholder": "自动调整高度"
+      }
+    },
+    {
+      "title": "填充样式",
+      "props": {
+        "variant": "filled",
+        "placeholder": "填充样式"
+      }
+    },
+    {
+      "title": "错误状态",
+      "props": {
+        "status": "danger",
+        "placeholder": "错误状态"
+      }
+    },
+    {
+      "title": "禁用状态",
+      "props": {
+        "disabled": true,
+        "defaultValue": "禁用的内容"
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AffixContainer",
+  "description": "图钉容器组件，提供灵活的图钉定位功能，支持预设位置和自定义位置，以及多种显示模式",
+  "type": "object",
+  "properties": {
+    "items": {
+      "description": "图钉配置，支持单个图钉或图钉数组",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/AffixItemProps"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AffixItemProps"
+          }
+        }
+      ]
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用容器的交互功能",
+      "default": false
+    },
+    "onClick": {
+      "type": "function",
+      "description": "容器点击事件回调，参数为 MouseEvent<HTMLDivElement>"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "容器内的子元素内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义容器的 CSS 类名",
+      "default": ""
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义容器的内联样式，类型为 React.CSSProperties"
+    },
+    "htmlProps": {
+      "type": "object",
+      "description": "原生 div HTML 属性透传，类型为 HTMLAttributes<HTMLDivElement>"
+    }
+  },
+  "definitions": {
+    "AffixPlacement": {
+      "type": "string",
+      "description": "图钉预设位置",
+      "enum": [
+        "topStart",
+        "topCenter",
+        "topEnd",
+        "bottomStart",
+        "bottomCenter",
+        "bottomEnd",
+        "startCenter",
+        "endCenter",
+        "center",
+        "custom"
+      ],
+      "enumDescriptions": {
+        "topStart": "顶部左侧",
+        "topCenter": "顶部居中",
+        "topEnd": "顶部右侧",
+        "bottomStart": "底部左侧",
+        "bottomCenter": "底部居中",
+        "bottomEnd": "底部右侧",
+        "startCenter": "左侧居中",
+        "endCenter": "右侧居中",
+        "center": "正中心",
+        "custom": "自定义位置，需配合 left/top/right/bottom 使用"
+      },
+      "default": "center"
+    },
+    "AffixDisplayMode": {
+      "type": "string",
+      "description": "图钉显示模式",
+      "enum": ["always", "hoverShow", "hoverHide"],
+      "enumDescriptions": {
+        "always": "始终显示",
+        "hoverShow": "鼠标悬停时显示",
+        "hoverHide": "鼠标悬停时隐藏"
+      },
+      "default": "always"
+    },
+    "AffixItemProps": {
+      "type": "object",
+      "description": "单个图钉项的配置",
+      "properties": {
+        "content": {
+          "type": "ReactNode",
+          "description": "图钉显示的内容，可以是任意 React 节点"
+        },
+        "placement": {
+          "$ref": "#/definitions/AffixPlacement",
+          "description": "图钉在容器中的位置",
+          "default": "center"
+        },
+        "offset": {
+          "type": "number",
+          "description": "图钉到容器边缘的偏移距离（像素），仅对预设位置生效",
+          "default": 8
+        },
+        "zIndex": {
+          "type": "number",
+          "description": "图钉的层级，用于控制多个图钉的层叠顺序",
+          "default": 2
+        },
+        "display": {
+          "$ref": "#/definitions/AffixDisplayMode",
+          "description": "图钉的显示模式",
+          "default": "always"
+        },
+        "animation": {
+          "type": "string",
+          "description": "显示/隐藏时的 CSS animation 属性值，如 'fadeIn 0.2s ease'"
+        },
+        "left": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ],
+          "description": "自定义位置的 left 值，仅当 placement='custom' 时生效，可以是数字（像素）或字符串（如 '20%'）"
+        },
+        "top": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ],
+          "description": "自定义位置的 top 值，仅当 placement='custom' 时生效，可以是数字（像素）或字符串（如 '20%'）"
+        },
+        "right": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ],
+          "description": "自定义位置的 right 值，仅当 placement='custom' 时生效"
+        },
+        "bottom": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ],
+          "description": "自定义位置的 bottom 值，仅当 placement='custom' 时生效"
+        },
+        "onClick": {
+          "type": "function",
+          "description": "图钉的点击事件回调，参数为 MouseEvent<HTMLDivElement>，点击事件会阻止冒泡"
+        },
+        "className": {
+          "type": "string",
+          "description": "图钉元素的自定义 CSS 类名",
+          "default": ""
+        },
+        "style": {
+          "type": "object",
+          "description": "图钉元素的自定义内联样式，类型为 React.CSSProperties"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法 - 居中显示单个图钉",
+      "value": {
+        "items": {
+          "content": "<Tag>标签</Tag>"
+        },
+        "className": "w-full h-[200px] bg-gray-100 rounded-lg"
+      }
+    },
+    {
+      "description": "多个图钉 - 四角定位",
+      "value": {
+        "items": [
+          { "placement": "topStart", "content": "<Tag>左上</Tag>" },
+          { "placement": "topEnd", "content": "<Tag>右上</Tag>" },
+          { "placement": "bottomStart", "content": "<Tag>左下</Tag>" },
+          { "placement": "bottomEnd", "content": "<Tag>右下</Tag>" }
+        ]
+      }
+    },
+    {
+      "description": "自定义位置",
+      "value": {
+        "items": {
+          "placement": "custom",
+          "content": "<Tag>自定义</Tag>",
+          "left": "20%",
+          "top": "60%"
+        }
+      }
+    },
+    {
+      "description": "悬停显示图钉",
+      "value": {
+        "items": {
+          "content": "<Button>操作</Button>",
+          "display": "hoverShow",
+          "animation": "fadeIn 0.2s ease"
+        }
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

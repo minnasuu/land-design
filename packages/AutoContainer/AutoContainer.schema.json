@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AutoContainer",
+  "description": "自适应容器组件，自动根据容器尺寸调整内容宽高比",
+  "type": "object",
+  "properties": {
+    "ratio": {
+      "type": "number",
+      "description": "容器宽高比，大于1宽大于高，小于1高大于宽",
+      "default": 1
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "容器内容"
+    },
+    "contentClassName": {
+      "type": "string",
+      "description": "内容区域自定义类名",
+      "default": ""
+    },
+    "contentStyle": {
+      "type": "object",
+      "description": "内容区域自定义样式"
+    },
+    "className": {
+      "type": "string",
+      "description": "容器自定义类名",
+      "default": ""
+    },
+    "style": {
+      "type": "object",
+      "description": "容器自定义样式"
+    },
+    "onResize": {
+      "type": "function",
+      "description": "尺寸变化回调，参数为 { width, height, ratio }"
+    }
+  },
+  "examples": [
+    {
+      "description": "默认正方形容器",
+      "value": {
+        "ratio": 1,
+        "className": "w-full h-[300px]"
+      }
+    },
+    {
+      "description": "16:9 视频容器",
+      "value": {
+        "ratio": 1.7778,
+        "className": "w-full h-[400px]"
+      }
+    },
+    {
+      "description": "4:3 图片容器",
+      "value": {
+        "ratio": 1.3333,
+        "className": "w-full h-[300px]"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Radio",
+  "description": "单选框组件，用于在一组选项中进行单项选择。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": ["string", "number"],
+      "description": "单选框的值，用于表单提交和 RadioGroup 中标识选项"
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "label": {
+      "type": "string",
+      "description": "标签文本（也支持 ReactNode）"
+    },
+    "checked": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否选中（受控模式）"
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "default": false,
+      "description": "默认是否选中（非受控模式）"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "animated": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否启用选中动画"
+    },
+    "tip": {
+      "type": "string",
+      "description": "提示内容（也支持 ReactNode）"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "labelClassName": {
+      "type": "string",
+      "description": "标签文本的类名"
+    },
+    "labelStyle": {
+      "type": "object",
+      "description": "标签文本的样式"
+    },
+    "onCheckedChange": {
+      "type": "string",
+      "description": "选中状态变化回调：(checked: boolean, e: React.MouseEvent) => void"
+    },
+    "onClick": {
+      "type": "string",
+      "description": "点击事件回调（已废弃，建议使用 onCheckedChange）"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Radio label=\"选项 A\" />"
+    },
+    {
+      "description": "受控模式",
+      "code": "<Radio label=\"选项\" checked={selected} onCheckedChange={setSelected} />"
+    },
+    {
+      "description": "默认选中",
+      "code": "<Radio label=\"默认选中\" defaultChecked />"
+    },
+    {
+      "description": "禁用状态",
+      "code": "<Radio label=\"禁用\" disabled />"
+    },
+    {
+      "description": "带提示",
+      "code": "<Radio label=\"选项\" tip=\"帮助信息\" />"
+    }
+  ]
+}

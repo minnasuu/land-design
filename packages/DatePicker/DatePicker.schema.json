@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DatePicker",
+  "description": "日期选择器组件，支持多种日期选择类型",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "Date",
+      "description": "当前选中值（受控）"
+    },
+    "defaultValue": {
+      "type": "Date",
+      "description": "默认选中值（非受控）"
+    },
+    "type": {
+      "type": "string",
+      "description": "选择器类型",
+      "enum": ["date", "week", "month", "quarter", "year"],
+      "default": "date"
+    },
+    "language": {
+      "type": "string",
+      "description": "语言设置",
+      "enum": ["zh", "en"],
+      "default": "zh"
+    },
+    "size": {
+      "type": "string",
+      "description": "尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "variant": {
+      "type": "string",
+      "description": "变体样式",
+      "enum": ["outline", "filled", "borderless"],
+      "default": "filled"
+    },
+    "minDate": {
+      "description": "最小可选日期"
+    },
+    "maxDate": {
+      "description": "最大可选日期"
+    },
+    "disabledDate": {
+      "type": "function",
+      "description": "禁用日期判断函数"
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "占位符文本"
+    },
+    "format": {
+      "description": "日期格式化",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "function" }
+      ]
+    },
+    "allowClear": {
+      "type": "boolean",
+      "description": "是否显示清除按钮",
+      "default": true
+    },
+    "allowInput": {
+      "type": "boolean",
+      "description": "是否允许直接输入",
+      "default": false
+    },
+    "showConfirm": {
+      "type": "boolean",
+      "description": "是否显示确认按钮",
+      "default": false
+    },
+    "showToday": {
+      "type": "boolean",
+      "description": "是否显示今天按钮",
+      "default": false
+    },
+    "showIcon": {
+      "type": "boolean",
+      "description": "是否显示图标",
+      "default": true
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "是否只读",
+      "default": false
+    },
+    "onChange": {
+      "type": "function",
+      "description": "值变化回调"
+    },
+    "onOpenChange": {
+      "type": "function",
+      "description": "下拉框打开/关闭回调"
+    },
+    "width": {
+      "description": "输入框宽度"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础日期选择器",
+      "value": {
+        "placeholder": "请选择日期"
+      }
+    },
+    {
+      "description": "月份选择器",
+      "value": {
+        "type": "month",
+        "placeholder": "请选择月份"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

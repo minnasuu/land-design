@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BreadCrumb",
+  "description": "面包屑导航组件，显示当前页面在系统层级结构中的位置",
+  "type": "object",
+  "definitions": {
+    "BreadCrumbItem": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "唯一标识"
+        },
+        "label": {
+          "type": "ReactNode",
+          "description": "显示内容"
+        },
+        "tip": {
+          "type": "string",
+          "description": "提示信息"
+        },
+        "maxWidth": {
+          "type": "number",
+          "description": "最大宽度（px）"
+        }
+      },
+      "required": ["value", "label"]
+    }
+  },
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/BreadCrumbItem" },
+      "description": "面包屑数据"
+    },
+    "current": {
+      "type": "string",
+      "description": "当前激活项的 value"
+    },
+    "showMask": {
+      "type": "boolean",
+      "description": "是否显示溢出遮罩",
+      "default": false
+    },
+    "hoverPreview": {
+      "type": "boolean",
+      "description": "省略时 hover 显示完整内容",
+      "default": false
+    },
+    "onChange": {
+      "type": "function",
+      "description": "面包屑项点击回调，参数为被点击的项"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础面包屑",
+      "value": {
+        "items": [
+          { "value": "home", "label": "首页" },
+          { "value": "list", "label": "列表页" },
+          { "value": "detail", "label": "详情页" }
+        ],
+        "current": "detail"
+      }
+    },
+    {
+      "description": "带遮罩的面包屑",
+      "value": {
+        "items": [
+          { "value": "1", "label": "一级" },
+          { "value": "2", "label": "二级" },
+          { "value": "3", "label": "三级" }
+        ],
+        "showMask": true
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

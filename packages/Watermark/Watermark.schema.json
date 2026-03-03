@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Watermark",
+  "description": "水印组件，用于在页面或区域上添加水印覆盖层。支持文本水印和图片水印，常用于版权保护、品牌展示或防截图场景。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": "object",
+      "description": "子元素，水印覆盖的内容区域"
+    },
+    "content": {
+      "type": ["string", "object", "array"],
+      "description": "水印内容，可以是字符串、React 节点或字符串数组（多行文本）"
+    },
+    "url": {
+      "type": "string",
+      "description": "图片水印的 URL 地址。当 content 和 url 同时存在时，优先显示图片水印"
+    },
+    "width": {
+      "type": "number",
+      "description": "单个水印的宽度",
+      "default": 120
+    },
+    "height": {
+      "type": "number",
+      "description": "单个水印的高度",
+      "default": 64
+    },
+    "gap": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "水印之间的间距 [水平间距, 垂直间距]",
+      "default": [212, 212]
+    },
+    "offset": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "水印的偏移量 [水平偏移, 垂直偏移]",
+      "default": [212, 212]
+    },
+    "rotate": {
+      "type": "number",
+      "description": "水印旋转角度",
+      "default": -22
+    },
+    "fontSize": {
+      "type": "number",
+      "description": "文本水印的字体大小",
+      "default": 16
+    },
+    "fontColor": {
+      "type": "string",
+      "description": "文本水印的字体颜色，建议使用带透明度的颜色",
+      "default": "rgba(0, 0, 0, 0.15)"
+    },
+    "fontWeight": {
+      "type": ["string", "number"],
+      "description": "文本水印的字体粗细",
+      "default": "normal"
+    },
+    "fontFamily": {
+      "type": "string",
+      "description": "文本水印的字体族",
+      "default": "sans-serif"
+    },
+    "zIndex": {
+      "type": "number",
+      "description": "水印的 z-index 层级",
+      "default": 9
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式对象"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    }
+  },
+  "definitions": {
+    "WatermarkGap": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "水印间距配置 [水平, 垂直]"
+    },
+    "WatermarkOffset": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "水印偏移配置 [水平, 垂直]"
+    }
+  },
+  "examples": [
+    {
+      "title": "基础文本水印",
+      "props": {
+        "content": "版权所有"
+      }
+    },
+    {
+      "title": "多行文本",
+      "props": {
+        "content": ["Land Design", "版权所有"]
+      }
+    },
+    {
+      "title": "图片水印",
+      "props": {
+        "url": "https://example.com/logo.png",
+        "width": 120,
+        "height": 64
+      }
+    },
+    {
+      "title": "自定义样式",
+      "props": {
+        "content": "机密文档",
+        "fontSize": 20,
+        "fontColor": "rgba(255, 0, 0, 0.15)",
+        "fontWeight": "bold",
+        "rotate": -30
+      }
+    },
+    {
+      "title": "调整间距",
+      "props": {
+        "content": "调整间距",
+        "gap": [100, 100]
+      }
+    },
+    {
+      "title": "全局水印",
+      "props": {
+        "content": "全局水印",
+        "zIndex": 1000
+      }
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ColorPicker",
+  "description": "颜色选择器组件，支持多种颜色格式",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "string",
+      "description": "当前颜色值（受控）"
+    },
+    "defaultValue": {
+      "type": "string",
+      "description": "默认颜色值（非受控）",
+      "default": "#1677ff"
+    },
+    "format": {
+      "type": "string",
+      "description": "颜色格式",
+      "enum": ["hex", "rgb", "rgba", "hsl", "hsv"],
+      "default": "hex"
+    },
+    "showAlpha": {
+      "type": "boolean",
+      "description": "是否显示透明度选择",
+      "default": true
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "size": {
+      "type": "string",
+      "description": "组件尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "trigger": {
+      "type": "string",
+      "description": "触发器类型",
+      "enum": ["default", "input", "custom"],
+      "default": "default"
+    },
+    "allowClear": {
+      "type": "boolean",
+      "description": "是否允许清空",
+      "default": false
+    },
+    "presets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "预设颜色列表"
+    },
+    "recentColors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "最近使用的颜色"
+    },
+    "showInput": {
+      "type": "boolean",
+      "description": "是否显示颜色输入框",
+      "default": true
+    },
+    "showFormatSwitch": {
+      "type": "boolean",
+      "description": "是否显示格式切换",
+      "default": true
+    },
+    "placement": {
+      "type": "string",
+      "description": "面板位置",
+      "enum": ["top", "bottom", "left", "right"],
+      "default": "bottom"
+    },
+    "onChange": {
+      "type": "function",
+      "description": "颜色变化回调"
+    },
+    "onOpenChange": {
+      "type": "function",
+      "description": "面板打开/关闭回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础颜色选择器",
+      "value": {}
+    },
+    {
+      "description": "带预设颜色",
+      "value": {
+        "presets": ["#f5222d", "#52c41a", "#1677ff"]
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

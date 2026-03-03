@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Steps",
+  "description": "步骤条组件，用于引导用户按照流程完成任务。",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/StepItem"
+      },
+      "description": "步骤数据"
+    },
+    "current": {
+      "type": ["number", "string"],
+      "description": "当前步骤的 key"
+    },
+    "finished": {
+      "type": "array",
+      "items": { "type": ["number", "string"] },
+      "description": "已完成步骤的 key 数组"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["horizontal", "vertical"],
+      "default": "horizontal",
+      "description": "排列方向"
+    },
+    "useDivider": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否显示分割线"
+    },
+    "dividerWidth": {
+      "type": "string",
+      "description": "分割线宽度"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onClick": {
+      "type": "string",
+      "description": "步骤点击回调：(item: StepItem) => void"
+    }
+  },
+  "definitions": {
+    "StepItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": ["number", "string"],
+          "description": "唯一标识"
+        },
+        "title": {
+          "type": "string",
+          "description": "步骤标题"
+        },
+        "desc": {
+          "type": "string",
+          "description": "步骤描述"
+        },
+        "finished": {
+          "type": "boolean",
+          "description": "是否已完成"
+        }
+      },
+      "required": ["key"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Steps current=\"step2\" items={[{key:'step1',title:'第一步'},{key:'step2',title:'第二步'}]} />"
+    },
+    {
+      "description": "垂直方向",
+      "code": "<Steps direction=\"vertical\" current=\"step1\" items={items} />"
+    },
+    {
+      "description": "带已完成状态",
+      "code": "<Steps current=\"step2\" finished={['step1']} items={items} />"
+    }
+  ]
+}

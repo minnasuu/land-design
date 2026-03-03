@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NumberInput",
+  "description": "数字输入框组件，用于数值输入的专用输入框，支持步进调整、范围限制、滚轮控制等功能。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "当前值（受控模式）"
+    },
+    "defaultValue": {
+      "type": "number",
+      "description": "默认值（非受控模式）",
+      "default": 0
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名，用于表单提交"
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "占位文本"
+    },
+    "variant": {
+      "type": "string",
+      "enum": ["outline", "fill", "transparent"],
+      "default": "outline",
+      "description": "外观变体：outline-描边样式、fill-填充样式、transparent-透明样式"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "stepperPosition": {
+      "type": "string",
+      "enum": ["right", "both", "none"],
+      "default": "right",
+      "description": "步进按钮位置：right-右侧、both-两侧、none-隐藏"
+    },
+    "textAlign": {
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "left",
+      "description": "文本对齐方式"
+    },
+    "step": {
+      "type": "number",
+      "default": 1,
+      "description": "每次增减的步长"
+    },
+    "min": {
+      "type": "number",
+      "description": "最小值限制"
+    },
+    "max": {
+      "type": "number",
+      "description": "最大值限制"
+    },
+    "precision": {
+      "type": "number",
+      "description": "数值精度（小数位数）"
+    },
+    "strictStep": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否强制值必须是步长的倍数"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "前缀内容（也可以是 ReactNode）"
+    },
+    "suffix": {
+      "type": "string",
+      "description": "后缀内容（也可以是 ReactNode）"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否只读"
+    },
+    "wheelable": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否允许通过鼠标滚轮调整数值"
+    },
+    "keyboard": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否允许通过键盘方向键调整数值"
+    },
+    "autoWidth": {
+      "type": "boolean",
+      "default": false,
+      "description": "宽度是否自适应内容"
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "输入框宽度"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "inputClassName": {
+      "type": "string",
+      "description": "内部 input 元素的类名"
+    },
+    "inputStyle": {
+      "type": "object",
+      "description": "内部 input 元素的样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "值变化回调函数：(value: number | undefined, info: NumberInputChangeInfo) => void"
+    },
+    "onStep": {
+      "type": "string",
+      "description": "步进回调函数：(value: number, direction: 'up' | 'down') => void"
+    },
+    "onFocus": {
+      "type": "string",
+      "description": "获得焦点回调"
+    },
+    "onBlur": {
+      "type": "string",
+      "description": "失去焦点回调"
+    },
+    "onPressEnter": {
+      "type": "string",
+      "description": "按下回车键回调"
+    }
+  },
+  "definitions": {
+    "NumberInputChangeInfo": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["input", "step", "wheel", "keyboard"],
+          "description": "触发变化的来源"
+        },
+        "event": {
+          "description": "原始事件对象"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<NumberInput defaultValue={0} onChange={(value) => console.log(value)} />"
+    },
+    {
+      "description": "设置范围和步长",
+      "code": "<NumberInput min={0} max={100} step={5} />"
+    },
+    {
+      "description": "带前后缀的金额输入",
+      "code": "<NumberInput prefix=\"¥\" suffix=\"元\" precision={2} />"
+    },
+    {
+      "description": "两侧步进按钮布局",
+      "code": "<NumberInput stepperPosition=\"both\" />"
+    },
+    {
+      "description": "启用滚轮控制",
+      "code": "<NumberInput wheelable />"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Swiper",
+  "description": "轮播组件，用于循环展示一组内容。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "description": "轮播内容，每个子元素为一个轮播项"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["horizontal", "vertical"],
+      "default": "horizontal",
+      "description": "轮播方向"
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["slide", "fade", "cube", "coverflow", "flip"],
+      "default": "slide",
+      "description": "切换效果"
+    },
+    "activeIndex": {
+      "type": "number",
+      "description": "当前激活的轮播项索引"
+    },
+    "showIndicators": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示指示器"
+    },
+    "showNavigation": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示导航按钮"
+    },
+    "loop": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否循环播放"
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否自动播放"
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "description": "自动播放间隔时间（毫秒）"
+    },
+    "autoplayDirection": {
+      "type": "string",
+      "enum": ["forward", "backward"],
+      "default": "forward",
+      "description": "自动播放方向"
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "轮播容器宽度"
+    },
+    "height": {
+      "type": ["number", "string"],
+      "description": "轮播容器高度"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "切换回调：(index: number) => void"
+    },
+    "onStart": {
+      "type": "string",
+      "description": "轮播开始回调"
+    },
+    "onEnd": {
+      "type": "string",
+      "description": "轮播结束回调"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Swiper><div>1</div><div>2</div><div>3</div></Swiper>"
+    },
+    {
+      "description": "自动播放",
+      "code": "<Swiper autoplay autoplayDelay={3000} loop>...</Swiper>"
+    },
+    {
+      "description": "淡入淡出效果",
+      "code": "<Swiper effect=\"fade\" showIndicators>...</Swiper>"
+    }
+  ]
+}

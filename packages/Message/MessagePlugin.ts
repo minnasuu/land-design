@@ -150,7 +150,7 @@ class MessagePlugin {
 
       // 创建内容容器
       const contentEl = document.createElement('div');
-      contentEl.textContent = options.content;
+      contentEl.textContent = String(options.content);
       contentEl.style.flex = '1';
 
       // 添加图标
@@ -179,7 +179,7 @@ class MessagePlugin {
       messageEl.appendChild(contentEl);
 
       // 添加关闭按钮
-      if (options.showClose) {
+      if (options.closable) {
         const closeBtn = document.createElement('span');
         closeBtn.innerHTML = '×';
         closeBtn.style.cssText = `
@@ -323,7 +323,7 @@ class MessagePlugin {
       if (options.content) {
         const contentEl = messageEl.querySelector('div');
         if (contentEl) {
-          contentEl.textContent = options.content;
+          contentEl.textContent = String(options.content);
         }
       }
 
@@ -369,17 +369,6 @@ class MessagePlugin {
       return this.createDummyInstance();
     }
     return this.show({ content, type: 'error', ...options });
-  }
-
-  /**
-   * 失败消息
-   */
-  public fail(content: string, options?: Partial<MessagePluginOptions>): MessageInstance {
-    if (!content || typeof content !== 'string') {
-      console.error('MessagePlugin: 消息内容不能为空');
-      return this.createDummyInstance();
-    }
-    return this.show({ content, type: 'fail', ...options });
   }
 
   /**
@@ -457,7 +446,7 @@ export const message = {
   },
   fail: (content: string, options?: Partial<MessagePluginOptions>) => {
     try {
-      return messagePlugin.fail(content, options);
+      return messagePlugin.error(content, options);
     } catch (error) {
       console.error('MessagePlugin: fail 方法执行失败', error);
       return { close: () => { }, update: () => { } };

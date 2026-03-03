@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Statistic",
+  "description": "统计数值组件，用于展示统计数据，支持数值动画和趋势指示。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "要显示的统计数值"
+    },
+    "precision": {
+      "type": "number",
+      "description": "数值精度（小数位数）"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "前缀内容（也支持 ReactNode）"
+    },
+    "suffix": {
+      "type": "string",
+      "description": "后缀内容（也支持 ReactNode）"
+    },
+    "unit": {
+      "type": "string",
+      "description": "数值单位，如 '%'、'元' 等"
+    },
+    "trendIcon": {
+      "type": "string",
+      "enum": ["up", "down", "default"],
+      "description": "趋势图标：up-上升、down-下降、default-默认"
+    },
+    "animation": {
+      "type": "string",
+      "enum": ["increase", "decrease", "random", "bounce", "fade", "slide", "scale", "flip", "none"],
+      "description": "动画效果类型"
+    },
+    "animationConfig": {
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "number",
+          "description": "动画持续时间（毫秒）"
+        },
+        "easing": {
+          "type": "string",
+          "enum": ["linear", "easeIn", "easeOut", "easeInOut", "bounce", "elastic"],
+          "description": "缓动函数"
+        },
+        "delay": {
+          "type": "number",
+          "description": "延迟时间（毫秒）"
+        },
+        "loop": {
+          "type": "boolean",
+          "description": "是否循环播放"
+        },
+        "loopInterval": {
+          "type": "number",
+          "description": "循环间隔（毫秒）"
+        }
+      },
+      "description": "动画配置"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Statistic value={1234567} />"
+    },
+    {
+      "description": "带精度",
+      "code": "<Statistic value={99.56} precision={2} />"
+    },
+    {
+      "description": "带前后缀",
+      "code": "<Statistic value={112893} prefix=\"¥\" suffix=\"元\" />"
+    },
+    {
+      "description": "趋势图标",
+      "code": "<Statistic value={11.28} trendIcon=\"up\" suffix=\"%\" />"
+    },
+    {
+      "description": "数值动画",
+      "code": "<Statistic value={999} animation=\"increase\" />"
+    }
+  ]
+}

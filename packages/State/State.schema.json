@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "State",
+  "description": "状态组件，用于展示空状态、错误状态等各种页面状态。",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["empty", "error", "offline", "forbidden", "notFound", "success", "warning"],
+      "default": "empty",
+      "description": "状态类型（预设图标）"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "icon": {
+      "description": "自定义图标/图片（优先级高于 type 预设）"
+    },
+    "image": {
+      "type": "string",
+      "description": "图片地址（便捷属性）"
+    },
+    "imageWidth": {
+      "type": ["number", "string"],
+      "description": "图片宽度"
+    },
+    "imageHeight": {
+      "type": ["number", "string"],
+      "description": "图片高度"
+    },
+    "title": {
+      "type": "string",
+      "description": "主标题"
+    },
+    "description": {
+      "type": "string",
+      "description": "描述文字"
+    },
+    "actions": {
+      "description": "操作区域（如按钮、链接等）"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "iconClassName": {
+      "type": "string",
+      "description": "图标/图片区域自定义类名"
+    },
+    "iconStyle": {
+      "type": "object",
+      "description": "图标/图片区域自定义样式"
+    },
+    "titleClassName": {
+      "type": "string",
+      "description": "标题区域自定义类名"
+    },
+    "titleStyle": {
+      "type": "object",
+      "description": "标题区域自定义样式"
+    },
+    "descriptionClassName": {
+      "type": "string",
+      "description": "描述区域自定义类名"
+    },
+    "descriptionStyle": {
+      "type": "object",
+      "description": "描述区域自定义样式"
+    },
+    "onClick": {
+      "type": "string",
+      "description": "点击回调：(e: MouseEvent) => void"
+    }
+  },
+  "examples": [
+    {
+      "description": "空状态",
+      "code": "<State type=\"empty\" title=\"暂无数据\" />"
+    },
+    {
+      "description": "错误状态",
+      "code": "<State type=\"error\" title=\"出错了\" description=\"请稍后重试\" />"
+    },
+    {
+      "description": "自定义图片",
+      "code": "<State image=\"/empty.png\" title=\"暂无数据\" />"
+    },
+    {
+      "description": "带操作按钮",
+      "code": "<State type=\"error\" title=\"出错了\" actions={<Button>重试</Button>} />"
+    }
+  ]
+}

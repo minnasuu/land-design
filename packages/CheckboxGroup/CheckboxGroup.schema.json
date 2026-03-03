@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CheckboxGroup",
+  "description": "复选框组组件，统一管理多个复选框",
+  "type": "object",
+  "definitions": {
+    "CheckboxItemType": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "唯一标识"
+        },
+        "label": {
+          "type": "ReactNode",
+          "description": "显示内容"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用"
+        }
+      },
+      "required": ["key"]
+    }
+  },
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/CheckboxItemType" },
+      "description": "复选框选项数据"
+    },
+    "checked": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "number" }
+        ]
+      },
+      "description": "选中项的值数组"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素"
+    },
+    "animated": {
+      "type": "boolean",
+      "description": "是否启用动画",
+      "default": true
+    },
+    "onChange": {
+      "type": "function",
+      "description": "选择变化回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "数据驱动",
+      "value": {
+        "data": [
+          { "key": "a", "label": "选项A" },
+          { "key": "b", "label": "选项B" }
+        ],
+        "checked": ["a"]
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

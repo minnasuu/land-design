@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Switch",
+  "description": "开关组件，用于表示两种相互对立的状态间的切换。",
+  "type": "object",
+  "properties": {
+    "checked": {
+      "type": "boolean",
+      "description": "受控模式下的开关状态"
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "default": false,
+      "description": "非受控模式的默认状态"
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "value": {
+      "type": ["string", "number", "boolean"],
+      "default": true,
+      "description": "开关值（用于表单）"
+    },
+    "label": {
+      "type": "string",
+      "description": "标签文字"
+    },
+    "checkedLabel": {
+      "type": "string",
+      "description": "开启状态的标签文字"
+    },
+    "uncheckedContent": {
+      "type": "string",
+      "description": "关闭状态显示的内容（轨道内）"
+    },
+    "checkedContent": {
+      "type": "string",
+      "description": "开启状态显示的内容（轨道内）"
+    },
+    "icon": {
+      "description": "关闭状态的图标（滑块内）"
+    },
+    "checkedIcon": {
+      "description": "开启状态的图标（滑块内）"
+    },
+    "tip": {
+      "type": "string",
+      "description": "整体提示内容"
+    },
+    "iconTip": {
+      "type": "string",
+      "description": "图标提示内容"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "labelPosition": {
+      "type": "string",
+      "enum": ["left", "right"],
+      "default": "right",
+      "description": "标签位置"
+    },
+    "loading": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否加载中状态"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否只读"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "状态变化回调：(checked: boolean, event) => void"
+    },
+    "onClick": {
+      "type": "string",
+      "description": "点击事件回调"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Switch onChange={(checked) => console.log(checked)} />"
+    },
+    {
+      "description": "带标签",
+      "code": "<Switch label=\"自动保存\" />"
+    },
+    {
+      "description": "轨道内文字",
+      "code": "<Switch uncheckedContent=\"OFF\" checkedContent=\"ON\" />"
+    },
+    {
+      "description": "加载状态",
+      "code": "<Switch loading />"
+    }
+  ]
+}

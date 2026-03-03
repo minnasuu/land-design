@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Grid",
+  "description": "网格布局组件，基于 CSS Grid",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "网格布局类型",
+      "enum": ["column-fit", "column-fill", "row-fit", "row-fill", "column-repeat", "row-repeat", "default"],
+      "default": "default"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素"
+    },
+    "autoSize": {
+      "type": "number",
+      "description": "自动填充模式下的最小宽度/高度"
+    },
+    "repeatNum": {
+      "type": "number",
+      "description": "重复模式下的重复数量"
+    },
+    "gap": {
+      "type": "number",
+      "description": "行列间隙"
+    },
+    "columnGap": {
+      "type": "number",
+      "description": "列间隙"
+    },
+    "rowGap": {
+      "type": "number",
+      "description": "行间隙"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "列适应模式",
+      "value": {
+        "type": "column-fit",
+        "repeatNum": 3,
+        "gap": 16
+      }
+    },
+    {
+      "description": "列填充模式",
+      "value": {
+        "type": "column-fill",
+        "autoSize": 200,
+        "gap": 16
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

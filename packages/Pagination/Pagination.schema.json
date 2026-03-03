@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pagination",
+  "description": "分页组件，用于长列表数据的分页导航。",
+  "type": "object",
+  "properties": {
+    "current": {
+      "type": "number",
+      "default": 1,
+      "description": "当前页码（从1开始）"
+    },
+    "total": {
+      "type": "number",
+      "default": 1,
+      "description": "总页数"
+    },
+    "pageSize": {
+      "type": "number",
+      "default": 5,
+      "description": "每次可见的页码数量"
+    },
+    "showTotal": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示总页数"
+    },
+    "showInput": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示页码输入框"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "页码变化回调函数：(current: number) => void"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Pagination current={1} total={10} onChange={(page) => setPage(page)} />"
+    },
+    {
+      "description": "显示总页数",
+      "code": "<Pagination current={1} total={50} showTotal />"
+    },
+    {
+      "description": "带页码输入框",
+      "code": "<Pagination current={1} total={100} showInput />"
+    },
+    {
+      "description": "完整功能",
+      "code": "<Pagination current={5} total={100} showTotal showInput pageSize={7} />"
+    }
+  ]
+}

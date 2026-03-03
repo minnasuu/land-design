@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Anchor",
+  "description": "锚点导航组件，用于快速跳转到页面指定位置",
+  "type": "object",
+  "definitions": {
+    "AnchorItem": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "唯一标识，对应页面中目标元素的 id"
+        },
+        "title": {
+          "type": "string",
+          "description": "锚点文字内容"
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AnchorItem" },
+          "description": "子项，支持嵌套层级导航"
+        }
+      },
+      "required": ["key", "title"]
+    }
+  },
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/AnchorItem" },
+      "description": "锚点数据，支持嵌套结构"
+    },
+    "gap": {
+      "type": "number",
+      "description": "锚点项之间的间距（px）",
+      "default": 4
+    },
+    "onChange": {
+      "type": "function",
+      "description": "锚点变化时的回调，参数为锚点项的 key"
+    },
+    "offsetTop": {
+      "type": "number",
+      "description": "滚动偏移量（px），用于固定头部场景",
+      "default": 0
+    },
+    "getContainer": {
+      "type": "function",
+      "description": "滚动容器选择器，默认为 window"
+    },
+    "renderItem": {
+      "type": "function",
+      "description": "自定义锚点项渲染函数，参数为 (item, index, active, defaultNode)"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础锚点导航",
+      "value": {
+        "items": [
+          { "key": "section1", "title": "第一章" },
+          { "key": "section2", "title": "第二章" },
+          { "key": "section3", "title": "第三章" }
+        ]
+      }
+    },
+    {
+      "description": "带偏移量的锚点",
+      "value": {
+        "items": [
+          { "key": "part1", "title": "部分一" },
+          { "key": "part2", "title": "部分二" }
+        ],
+        "offsetTop": 64
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

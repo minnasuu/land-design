@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Table",
+  "description": "表格组件，用于展示行列数据。",
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/TableColumn"
+      },
+      "description": "列配置"
+    },
+    "dataSource": {
+      "type": "array",
+      "description": "数据源"
+    },
+    "rowKey": {
+      "type": "string",
+      "default": "key",
+      "description": "行 key 的取值字段名"
+    },
+    "title": {
+      "description": "表格标题"
+    },
+    "footer": {
+      "description": "表格尾部"
+    },
+    "summary": {
+      "description": "表格总结行"
+    },
+    "empty": {
+      "description": "空数据时显示的内容"
+    },
+    "showHeader": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否显示表头"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "medium", "large"],
+      "default": "medium",
+      "description": "表格尺寸"
+    },
+    "bordered": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否显示边框"
+    },
+    "striped": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否隔行变色"
+    },
+    "crossHighlight": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否启用十字高亮"
+    },
+    "rowHover": {
+      "type": "boolean",
+      "default": true,
+      "description": "行悬停高亮"
+    },
+    "stickyHeader": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否固定表头"
+    },
+    "scroll": {
+      "type": "object",
+      "properties": {
+        "x": { "type": ["number", "string"] },
+        "y": { "type": ["number", "string"] }
+      },
+      "description": "滚动配置"
+    },
+    "rowSelection": {
+      "type": "object",
+      "description": "行选择配置"
+    },
+    "pagination": {
+      "type": ["object", "boolean"],
+      "description": "分页配置，设为 false 禁用分页"
+    },
+    "expandable": {
+      "type": "object",
+      "description": "展开配置"
+    },
+    "loading": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示加载状态"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onSortChange": {
+      "type": "string",
+      "description": "排序变化回调"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "表格数据变化回调"
+    }
+  },
+  "definitions": {
+    "TableColumn": {
+      "type": "object",
+      "properties": {
+        "key": { "type": "string", "description": "列唯一标识" },
+        "title": { "type": "string", "description": "列标题" },
+        "dataIndex": { "type": "string", "description": "数据字段名" },
+        "width": { "type": ["number", "string"], "description": "列宽度" },
+        "align": { "type": "string", "enum": ["left", "center", "right"], "description": "对齐方式" },
+        "fixed": { "type": ["string", "boolean"], "description": "是否固定列" },
+        "sorter": { "type": ["boolean", "object"], "description": "列排序配置" },
+        "ellipsis": { "type": "boolean", "description": "是否省略显示" },
+        "hidden": { "type": "boolean", "description": "是否隐藏列" }
+      },
+      "required": ["title", "dataIndex"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Table columns={[{title:'姓名',dataIndex:'name'}]} dataSource={[{key:'1',name:'张三'}]} />"
+    },
+    {
+      "description": "隔行变色",
+      "code": "<Table columns={columns} dataSource={data} striped />"
+    },
+    {
+      "description": "固定表头",
+      "code": "<Table columns={columns} dataSource={data} stickyHeader scroll={{y:300}} />"
+    }
+  ]
+}

@@ -1,0 +1,256 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Timeline",
+  "description": "时间线组件，用于垂直或水平展示时间流信息。适用于展示时间进程、事件记录、操作日志等按时间排序的信息。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": "object",
+      "description": "子元素（支持 Timeline.Item），与 items 二选一"
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/TimelineItem" },
+      "description": "数据源（与 children 二选一），时间线项配置数组"
+    },
+    "icon": {
+      "type": "object",
+      "description": "全局默认图标，传入 React 节点"
+    },
+    "pending": {
+      "oneOf": [
+        { "type": "boolean" },
+        { "type": "object" }
+      ],
+      "description": "是否显示待完成项（最后一项显示为 pending 状态），可传入 ReactNode 自定义内容"
+    },
+    "pendingIcon": {
+      "type": "object",
+      "description": "pending 项的图标，传入 React 节点"
+    },
+    "reverse": {
+      "type": "boolean",
+      "description": "是否倒序显示",
+      "default": false
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["vertical", "horizontal"],
+      "description": "布局方向",
+      "default": "vertical"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["left", "right", "alternate"],
+      "description": "内容位置模式：left（左侧）、right（右侧）、alternate（交替）",
+      "default": "right"
+    },
+    "gap": {
+      "type": ["number", "string"],
+      "description": "节点间距"
+    },
+    "lineType": {
+      "type": "string",
+      "enum": ["solid", "dashed", "dotted"],
+      "description": "连接线类型",
+      "default": "solid"
+    },
+    "lineColor": {
+      "type": "string",
+      "description": "连接线颜色"
+    },
+    "lineWidth": {
+      "type": "number",
+      "description": "连接线宽度"
+    },
+    "dotSize": {
+      "type": "number",
+      "description": "节点大小"
+    },
+    "dotColor": {
+      "type": "string",
+      "description": "默认节点颜色"
+    },
+    "showLine": {
+      "type": "boolean",
+      "description": "是否显示连接线",
+      "default": true
+    },
+    "onItemClick": {
+      "type": "function",
+      "description": "点击项回调，参数：(item: TimelineItem, index: number, e: MouseEvent) => void"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    }
+  },
+  "definitions": {
+    "TimelineItem": {
+      "type": "object",
+      "description": "时间线项配置",
+      "properties": {
+        "key": {
+          "type": ["string", "number"],
+          "description": "唯一标识"
+        },
+        "title": {
+          "type": ["string", "object"],
+          "description": "标题，可传入字符串或 React 节点"
+        },
+        "subTitle": {
+          "type": ["string", "object"],
+          "description": "副标题（通常用于显示时间）"
+        },
+        "desc": {
+          "type": ["string", "object"],
+          "description": "描述内容"
+        },
+        "extra": {
+          "type": "object",
+          "description": "额外内容（显示在描述下方）"
+        },
+        "icon": {
+          "type": "object",
+          "description": "自定义节点图标，优先级高于全局 icon"
+        },
+        "color": {
+          "type": "string",
+          "description": "节点颜色/状态，预设值：default、primary、success、warning、error、info，或自定义颜色",
+          "default": "default"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "是否为当前激活项"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "是否禁用"
+        },
+        "dotStyle": {
+          "type": "object",
+          "description": "自定义节点样式"
+        },
+        "contentStyle": {
+          "type": "object",
+          "description": "自定义内容样式"
+        },
+        "className": {
+          "type": "string",
+          "description": "自定义类名"
+        },
+        "onClick": {
+          "type": "function",
+          "description": "点击回调"
+        }
+      }
+    },
+    "TimelineDirection": {
+      "type": "string",
+      "enum": ["vertical", "horizontal"],
+      "description": "时间线方向"
+    },
+    "TimelineMode": {
+      "type": "string",
+      "enum": ["left", "right", "alternate"],
+      "description": "内容位置模式"
+    },
+    "TimelineItemStatus": {
+      "type": "string",
+      "enum": ["default", "primary", "success", "warning", "error", "info"],
+      "description": "节点状态/颜色预设值"
+    },
+    "TimelineLineType": {
+      "type": "string",
+      "enum": ["solid", "dashed", "dotted"],
+      "description": "连接线类型"
+    },
+    "TimelineItemProps": {
+      "type": "object",
+      "description": "Timeline.Item 组件属性",
+      "properties": {
+        "children": {
+          "type": "object",
+          "description": "子元素（作为内容）"
+        },
+        "title": {
+          "type": ["string", "object"],
+          "description": "标题"
+        },
+        "subTitle": {
+          "type": ["string", "object"],
+          "description": "副标题"
+        },
+        "desc": {
+          "type": ["string", "object"],
+          "description": "描述"
+        },
+        "icon": {
+          "type": "object",
+          "description": "自定义图标"
+        },
+        "color": {
+          "type": "string",
+          "description": "节点颜色"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "基础时间线",
+      "props": {
+        "items": [
+          { "title": "事件1", "subTitle": "2024-01-01" },
+          { "title": "事件2", "subTitle": "2024-01-02" },
+          { "title": "事件3", "subTitle": "2024-01-03" }
+        ]
+      }
+    },
+    {
+      "title": "带颜色状态",
+      "props": {
+        "items": [
+          { "title": "已完成", "color": "success" },
+          { "title": "进行中", "color": "primary" },
+          { "title": "待处理", "color": "warning" }
+        ]
+      }
+    },
+    {
+      "title": "交替模式",
+      "props": {
+        "mode": "alternate",
+        "items": [
+          { "title": "事件1" },
+          { "title": "事件2" },
+          { "title": "事件3" }
+        ]
+      }
+    },
+    {
+      "title": "水平时间线",
+      "props": {
+        "direction": "horizontal",
+        "items": [
+          { "title": "步骤1" },
+          { "title": "步骤2" },
+          { "title": "步骤3" }
+        ]
+      }
+    },
+    {
+      "title": "加载状态",
+      "props": {
+        "pending": true,
+        "items": [
+          { "title": "已完成的事件" }
+        ]
+      }
+    }
+  ]
+}

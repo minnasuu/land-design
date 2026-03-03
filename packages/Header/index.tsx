@@ -80,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({
         <Button
           className="land-mobile-toggle-button"
           icon={<Icon name="more-line" />}
-          type="text"
+          variant="text"
           onClick={() => setShowMobileNav(!showMobileNav)}
         />
       )}

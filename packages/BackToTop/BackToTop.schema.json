@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BackToTop",
+  "description": "回到顶部组件，点击可快速回到页面顶部",
+  "type": "object",
+  "properties": {
+    "fixed": {
+      "type": "boolean",
+      "description": "是否固定定位，true 相对视口，false 相对父容器",
+      "default": true
+    },
+    "target": {
+      "type": "Element",
+      "description": "滚动容器，默认为 document.body"
+    },
+    "visibleHeight": {
+      "type": "number",
+      "description": "显示的滚动高度阈值（px）",
+      "default": 600
+    },
+    "offsetRight": {
+      "type": "number",
+      "description": "距离右侧偏移量（px）",
+      "default": 24
+    },
+    "offsetBottom": {
+      "type": "number",
+      "description": "距离底部偏移量（px）",
+      "default": 24
+    },
+    "scrollBehavior": {
+      "type": "string",
+      "enum": ["auto", "smooth"],
+      "description": "滚动行为",
+      "default": "smooth"
+    },
+    "icon": {
+      "type": "ReactNode",
+      "description": "自定义图标"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击回调，在默认滚动行为之前执行"
+    },
+    "onVisibilityChange": {
+      "type": "function",
+      "description": "显示/隐藏状态变化回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "value": {}
+    },
+    {
+      "description": "自定义阈值和位置",
+      "value": {
+        "visibleHeight": 300,
+        "offsetRight": 40,
+        "offsetBottom": 40
+      }
+    },
+    {
+      "description": "相对父容器定位",
+      "value": {
+        "fixed": false,
+        "visibleHeight": 200
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

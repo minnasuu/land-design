@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Checkbox",
+  "description": "复选框组件，用于多选",
+  "type": "object",
+  "properties": {
+    "value": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" }
+      ],
+      "description": "复选框的值"
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "checked": {
+      "type": "boolean",
+      "description": "是否选中（受控）",
+      "default": false
+    },
+    "defaultChecked": {
+      "type": "boolean",
+      "description": "默认是否选中（非受控）",
+      "default": false
+    },
+    "indeterminate": {
+      "type": "boolean",
+      "description": "是否半选状态",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "label": {
+      "type": "ReactNode",
+      "description": "标签内容"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素内容"
+    },
+    "size": {
+      "type": "string",
+      "description": "尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "animated": {
+      "type": "boolean",
+      "description": "是否启用动画",
+      "default": true
+    },
+    "tip": {
+      "type": "ReactNode",
+      "description": "提示内容"
+    },
+    "onCheckedChange": {
+      "type": "function",
+      "description": "选中状态变化回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础复选框",
+      "value": {
+        "children": "同意协议"
+      }
+    },
+    {
+      "description": "默认选中",
+      "value": {
+        "defaultChecked": true,
+        "children": "选项"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

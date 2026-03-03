@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Slider",
+  "description": "滑块组件，用于在一个范围内选择数值。",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": ["number", "array"],
+      "description": "当前值（受控模式）：单值为 number，范围为 [number, number]"
+    },
+    "defaultValue": {
+      "type": ["number", "array"],
+      "default": 0,
+      "description": "默认值（非受控模式）"
+    },
+    "min": {
+      "type": "number",
+      "default": 0,
+      "description": "最小值"
+    },
+    "max": {
+      "type": "number",
+      "default": 100,
+      "description": "最大值"
+    },
+    "step": {
+      "type": "number",
+      "default": 1,
+      "description": "步长"
+    },
+    "range": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否为范围选择模式"
+    },
+    "name": {
+      "type": "string",
+      "description": "表单字段名"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["small", "default", "large"],
+      "default": "default",
+      "description": "尺寸大小"
+    },
+    "orientation": {
+      "type": "string",
+      "enum": ["horizontal", "vertical"],
+      "default": "horizontal",
+      "description": "方向：水平或垂直"
+    },
+    "showMarks": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示刻度标记"
+    },
+    "marks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SliderMark"
+      },
+      "description": "刻度标记配置"
+    },
+    "showDots": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否显示刻度点"
+    },
+    "included": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否只能选择刻度值"
+    },
+    "tooltip": {
+      "type": "string",
+      "enum": ["hover", "always", "never"],
+      "default": "hover",
+      "description": "Tooltip 显示模式"
+    },
+    "tooltipPlacement": {
+      "type": "string",
+      "enum": ["top", "bottom", "left", "right"],
+      "default": "top",
+      "description": "Tooltip 位置"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "前缀内容"
+    },
+    "suffix": {
+      "type": "string",
+      "description": "后缀内容"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否禁用"
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否只读"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "值变化回调（拖动过程中）：(value) => void"
+    },
+    "onChangeComplete": {
+      "type": "string",
+      "description": "值变化完成回调（拖动结束）：(value) => void"
+    }
+  },
+  "definitions": {
+    "SliderMark": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "标记值"
+        },
+        "label": {
+          "type": "string",
+          "description": "标记标签"
+        },
+        "style": {
+          "type": "object",
+          "description": "标记样式"
+        }
+      },
+      "required": ["value"]
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法",
+      "code": "<Slider defaultValue={30} onChange={(v) => console.log(v)} />"
+    },
+    {
+      "description": "范围选择",
+      "code": "<Slider range defaultValue={[20, 50]} />"
+    },
+    {
+      "description": "带刻度标记",
+      "code": "<Slider showMarks marks={[{value:0,label:'0'},{value:50,label:'50'},{value:100,label:'100'}]} />"
+    }
+  ]
+}

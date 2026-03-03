@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PopOver",
+  "description": "气泡提示组件，在元素附近弹出气泡卡片显示提示信息。",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "气泡内容（也支持 ReactNode）"
+    },
+    "children": {
+      "description": "触发气泡的子元素"
+    },
+    "show": {
+      "type": "boolean",
+      "description": "受控模式下的显示状态"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["hover", "click"],
+      "default": "hover",
+      "description": "触发方式"
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "default": "light",
+      "description": "颜色主题"
+    },
+    "placement": {
+      "type": "string",
+      "enum": ["top", "bottom", "left", "right"],
+      "default": "top",
+      "description": "气泡位置"
+    },
+    "hideArrow": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否隐藏箭头"
+    },
+    "attach": {
+      "type": "string",
+      "enum": ["parent", "body"],
+      "default": "parent",
+      "description": "气泡挂载层级：parent-父容器、body-body元素"
+    },
+    "className": {
+      "type": "string",
+      "description": "根容器自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "根容器自定义样式"
+    },
+    "popoverClassName": {
+      "type": "string",
+      "description": "气泡自定义类名"
+    },
+    "popoverStyle": {
+      "type": "object",
+      "description": "气泡自定义样式"
+    },
+    "onVisibleChange": {
+      "type": "string",
+      "description": "显示状态变化回调：(visible: boolean) => void"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法 - 悬停显示",
+      "code": "<PopOver content=\"提示内容\"><Button>悬停显示</Button></PopOver>"
+    },
+    {
+      "description": "点击触发",
+      "code": "<PopOver trigger=\"click\" content=\"点击显示的内容\"><Button>点击</Button></PopOver>"
+    },
+    {
+      "description": "暗色主题",
+      "code": "<PopOver theme=\"dark\" content=\"暗色提示\"><span>暗色主题</span></PopOver>"
+    },
+    {
+      "description": "不同位置",
+      "code": "<PopOver placement=\"bottom\" content=\"底部显示\"><span>底部</span></PopOver>"
+    },
+    {
+      "description": "挂载到 body",
+      "code": "<PopOver attach=\"body\" content=\"挂载到body\"><Button>Body挂载</Button></PopOver>"
+    }
+  ]
+}

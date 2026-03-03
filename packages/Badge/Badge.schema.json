@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Badge",
+  "description": "徽标组件，用于展示数字或状态标记",
+  "type": "object",
+  "properties": {
+    "variant": {
+      "type": "string",
+      "description": "外观变体",
+      "enum": ["standard", "outline", "light"],
+      "default": "standard"
+    },
+    "status": {
+      "type": "string",
+      "description": "语义状态/颜色",
+      "enum": ["default", "primary", "success", "warning", "danger", "info"],
+      "default": "default"
+    },
+    "placement": {
+      "type": "string",
+      "description": "徽标位置",
+      "enum": ["top-right", "top-left", "bottom-right", "bottom-left"],
+      "default": "top-right"
+    },
+    "count": {
+      "type": "number",
+      "description": "徽标数值"
+    },
+    "max": {
+      "type": "number",
+      "description": "封顶数值，超过后显示 max+",
+      "default": 99
+    },
+    "dot": {
+      "type": "boolean",
+      "description": "是否显示为小圆点",
+      "default": false
+    },
+    "content": {
+      "type": "ReactNode",
+      "description": "自定义徽标内容，优先级高于 count"
+    },
+    "showZero": {
+      "type": "boolean",
+      "description": "当 count 为 0 时是否显示",
+      "default": false
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "包裹的子元素"
+    },
+    "hidden": {
+      "type": "boolean",
+      "description": "是否隐藏徽标",
+      "default": false
+    },
+    "offset": {
+      "type": "array",
+      "items": { "type": "number" },
+      "description": "徽标偏移量 [x, y]，正值向内，负值向外"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "徽标点击回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "badgeClassName": {
+      "type": "string",
+      "description": "徽标自定义类名"
+    },
+    "badgeStyle": {
+      "type": "object",
+      "description": "徽标自定义样式"
+    },
+    "htmlProps": {
+      "type": "object",
+      "description": "原生 HTML 属性透传"
+    }
+  },
+  "examples": [
+    {
+      "description": "数字徽标",
+      "value": {
+        "count": 5
+      }
+    },
+    {
+      "description": "小红点",
+      "value": {
+        "dot": true
+      }
+    },
+    {
+      "description": "封顶数值",
+      "value": {
+        "count": 100,
+        "max": 99
+      }
+    },
+    {
+      "description": "成功状态",
+      "value": {
+        "count": 5,
+        "status": "success"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

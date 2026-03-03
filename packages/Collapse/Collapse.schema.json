@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Collapse",
+  "description": "折叠面板组件，可展开/收起内容",
+  "type": "object",
+  "properties": {
+    "variant": {
+      "type": "string",
+      "description": "外观变体",
+      "enum": ["default", "bordered", "card"],
+      "default": "default"
+    },
+    "arrowPosition": {
+      "type": "string",
+      "description": "箭头位置",
+      "enum": ["start", "end"],
+      "default": "start"
+    },
+    "title": {
+      "type": "ReactNode",
+      "description": "折叠面板标题"
+    },
+    "content": {
+      "type": "ReactNode",
+      "description": "折叠面板内容"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "子元素内容（优先级高于 content）"
+    },
+    "extra": {
+      "type": "ReactNode",
+      "description": "标题右侧额外内容"
+    },
+    "arrow": {
+      "description": "自定义箭头图标",
+      "oneOf": [
+        { "type": "ReactNode" },
+        { "type": "function" }
+      ]
+    },
+    "expanded": {
+      "type": "boolean",
+      "description": "是否展开（受控）"
+    },
+    "defaultExpanded": {
+      "type": "boolean",
+      "description": "默认是否展开（非受控）",
+      "default": false
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "hideArrow": {
+      "type": "boolean",
+      "description": "是否隐藏箭头",
+      "default": false
+    },
+    "destroyOnCollapse": {
+      "type": "boolean",
+      "description": "收起时是否销毁内容 DOM",
+      "default": false
+    },
+    "animated": {
+      "type": "boolean",
+      "description": "是否启用动画",
+      "default": true
+    },
+    "duration": {
+      "type": "number",
+      "description": "动画持续时间（毫秒）",
+      "default": 200
+    },
+    "onChange": {
+      "type": "function",
+      "description": "展开/收起状态变化回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础折叠面板",
+      "value": {
+        "title": "标题",
+        "children": "内容"
+      }
+    },
+    {
+      "description": "卡片样式",
+      "value": {
+        "variant": "card",
+        "title": "标题",
+        "defaultExpanded": true
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

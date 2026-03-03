@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Title",
+  "description": "标题组件，用于展示页面或区块的标题。支持四种层级、前缀、角标、提示等装饰元素。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": ["string", "object"],
+      "description": "子元素，可以传入 React 节点作为标题的内容"
+    },
+    "title": {
+      "type": ["string", "object"],
+      "description": "标题内容，可以传入字符串或 React 节点。当 title 和 children 同时存在时，优先使用 title"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["h1", "h2", "h3", "h4"],
+      "description": "标题层级，决定了 HTML 标签和默认字体大小：h1（一级标题）、h2（二级标题）、h3（三级标题）、h4（四级标题）"
+    },
+    "prefix": {
+      "type": "string",
+      "description": "标题前缀，显示在标题文本之前的文本内容"
+    },
+    "sub": {
+      "type": ["string", "object"],
+      "description": "标题角标，显示在标题文本之后，可以是字符串或 React 节点"
+    },
+    "tip": {
+      "type": ["string", "object"],
+      "description": "提示内容，可以是字符串或 React 节点，用于显示额外的提示信息"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击事件回调，参数：() => void"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式对象"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    }
+  },
+  "definitions": {
+    "TitleType": {
+      "type": "string",
+      "enum": ["h1", "h2", "h3", "h4"],
+      "description": "标题层级类型"
+    }
+  },
+  "examples": [
+    {
+      "title": "基础标题",
+      "props": {
+        "children": "这是一个标题"
+      }
+    },
+    {
+      "title": "一级标题",
+      "props": {
+        "type": "h1",
+        "children": "一级标题"
+      }
+    },
+    {
+      "title": "带前缀",
+      "props": {
+        "prefix": "01",
+        "children": "第一章节"
+      }
+    },
+    {
+      "title": "带角标",
+      "props": {
+        "children": "新功能",
+        "sub": "New"
+      }
+    },
+    {
+      "title": "带提示",
+      "props": {
+        "children": "带提示的标题",
+        "tip": "这是提示信息"
+      }
+    },
+    {
+      "title": "完整示例",
+      "props": {
+        "type": "h2",
+        "prefix": "01",
+        "children": "基本信息",
+        "sub": "必填",
+        "tip": "请填写完整"
+      }
+    }
+  ]
+}

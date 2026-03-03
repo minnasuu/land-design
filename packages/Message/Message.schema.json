@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Message",
+  "description": "消息提示组件，用于显示全局反馈信息",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "消息类型",
+      "enum": ["info", "success", "warning", "error", "loading"],
+      "default": "info"
+    },
+    "content": {
+      "type": "ReactNode",
+      "description": "消息内容"
+    },
+    "variant": {
+      "type": "string",
+      "description": "变体样式",
+      "enum": ["filled", "light", "outlined"],
+      "default": "light"
+    },
+    "simple": {
+      "type": "boolean",
+      "description": "是否简洁版（无图标）",
+      "default": false
+    },
+    "icon": {
+      "oneOf": [
+        { "type": "ReactNode" },
+        { "type": "boolean", "enum": [false] }
+      ],
+      "description": "自定义图标，false 隐藏图标"
+    },
+    "closable": {
+      "type": "boolean",
+      "description": "是否显示关闭按钮",
+      "default": false
+    },
+    "closeIcon": {
+      "type": "ReactNode",
+      "description": "自定义关闭图标"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "pluginOptions": {
+    "description": "函数式调用选项",
+    "properties": {
+      "content": {
+        "type": "ReactNode",
+        "description": "消息内容"
+      },
+      "type": {
+        "type": "string",
+        "description": "消息类型"
+      },
+      "duration": {
+        "type": "number",
+        "description": "显示时长（毫秒），0 不自动关闭",
+        "default": 3000
+      },
+      "placement": {
+        "type": "string",
+        "description": "显示位置",
+        "enum": ["top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right", "center"],
+        "default": "top"
+      },
+      "closable": {
+        "type": "boolean",
+        "description": "是否显示关闭按钮"
+      },
+      "key": {
+        "type": ["string", "number"],
+        "description": "唯一标识"
+      },
+      "offset": {
+        "type": "number",
+        "description": "距离顶部/底部偏移量",
+        "default": 24
+      },
+      "maxCount": {
+        "type": "number",
+        "description": "最大显示数量",
+        "default": 5
+      },
+      "onClose": {
+        "type": "function",
+        "description": "关闭回调"
+      }
+    }
+  },
+  "examples": [
+    {
+      "description": "成功消息",
+      "value": {
+        "type": "success",
+        "content": "操作成功"
+      }
+    },
+    {
+      "description": "错误消息",
+      "value": {
+        "type": "error",
+        "content": "操作失败"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

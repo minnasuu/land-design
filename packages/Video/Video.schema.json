@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Video",
+  "description": "功能完善的视频播放器组件，支持自定义控制栏、倍速播放、画中画、全屏、键盘快捷键等功能。",
+  "type": "object",
+  "properties": {
+    "children": {
+      "type": "object",
+      "description": "子元素，用于自定义叠加内容"
+    },
+    "src": {
+      "type": "string",
+      "description": "视频地址"
+    },
+    "poster": {
+      "type": "string",
+      "description": "视频封面图 URL"
+    },
+    "type": {
+      "type": "string",
+      "description": "视频的 MIME 类型"
+    },
+    "width": {
+      "type": ["number", "string"],
+      "description": "视频宽度"
+    },
+    "height": {
+      "type": ["number", "string"],
+      "description": "视频高度"
+    },
+    "ratio": {
+      "type": ["number", "string"],
+      "description": "宽高比，如 16/9"
+    },
+    "radius": {
+      "type": ["number", "string"],
+      "description": "圆角"
+    },
+    "fit": {
+      "type": "string",
+      "enum": ["cover", "contain", "fill", "none", "scale-down"],
+      "description": "视频填充模式"
+    },
+    "autoPlay": {
+      "type": "boolean",
+      "description": "是否自动播放（需配合 muted 使用）"
+    },
+    "loop": {
+      "type": "boolean",
+      "description": "是否循环播放"
+    },
+    "muted": {
+      "type": "boolean",
+      "description": "是否静音"
+    },
+    "volume": {
+      "type": "number",
+      "description": "初始音量（0-100）"
+    },
+    "playbackRate": {
+      "type": "number",
+      "description": "初始播放速率"
+    },
+    "preload": {
+      "type": "string",
+      "enum": ["auto", "metadata", "none"],
+      "description": "预加载策略"
+    },
+    "rateOptions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/VideoRateOption" },
+      "description": "可选播放速率列表"
+    },
+    "controls": {
+      "type": "boolean",
+      "description": "是否显示控制栏"
+    },
+    "showPlayButton": {
+      "type": "boolean",
+      "description": "是否显示播放/暂停按钮"
+    },
+    "showProgress": {
+      "type": "boolean",
+      "description": "是否显示进度条"
+    },
+    "showTime": {
+      "type": "boolean",
+      "description": "是否显示时间显示"
+    },
+    "showVolume": {
+      "type": "boolean",
+      "description": "是否显示音量控制"
+    },
+    "showRate": {
+      "type": "boolean",
+      "description": "是否显示倍速设置"
+    },
+    "showPip": {
+      "type": "boolean",
+      "description": "是否显示画中画按钮"
+    },
+    "showWebFullscreen": {
+      "type": "boolean",
+      "description": "是否显示网页全屏按钮"
+    },
+    "showFullscreen": {
+      "type": "boolean",
+      "description": "是否显示全屏按钮"
+    },
+    "showLoop": {
+      "type": "boolean",
+      "description": "是否显示循环播放开关"
+    },
+    "showSettings": {
+      "type": "boolean",
+      "description": "是否显示设置按钮"
+    },
+    "previewEnabled": {
+      "type": "boolean",
+      "description": "是否启用关键帧预览"
+    },
+    "previewWidth": {
+      "type": "number",
+      "description": "预览图宽度"
+    },
+    "keyboard": {
+      "type": "boolean",
+      "description": "是否启用键盘快捷键"
+    },
+    "seekStep": {
+      "type": "number",
+      "description": "快进/快退秒数",
+      "default": 5
+    },
+    "volumeStep": {
+      "type": "number",
+      "description": "音量调节步长",
+      "default": 10
+    },
+    "showPrev": {
+      "type": "boolean",
+      "description": "是否显示上一集按钮"
+    },
+    "showNext": {
+      "type": "boolean",
+      "description": "是否显示下一集按钮"
+    },
+    "prevDisabled": {
+      "type": "boolean",
+      "description": "上一集是否禁用"
+    },
+    "nextDisabled": {
+      "type": "boolean",
+      "description": "下一集是否禁用"
+    },
+    "onPlay": {
+      "type": "function",
+      "description": "播放事件回调，参数：(data: VideoEventData) => void"
+    },
+    "onPause": {
+      "type": "function",
+      "description": "暂停事件回调，参数：(data: VideoEventData) => void"
+    },
+    "onEnded": {
+      "type": "function",
+      "description": "播放结束事件回调，参数：(data: VideoEventData) => void"
+    },
+    "onTimeUpdate": {
+      "type": "function",
+      "description": "时间更新事件回调，参数：(data: VideoEventData) => void"
+    },
+    "onVolumeChange": {
+      "type": "function",
+      "description": "音量变化事件回调，参数：(volume: number, muted: boolean) => void"
+    },
+    "onRateChange": {
+      "type": "function",
+      "description": "播放速率变化事件回调，参数：(rate: number) => void"
+    },
+    "onFullscreenEnter": {
+      "type": "function",
+      "description": "进入全屏事件回调"
+    },
+    "onFullscreenExit": {
+      "type": "function",
+      "description": "退出全屏事件回调"
+    },
+    "onWebFullscreenChange": {
+      "type": "function",
+      "description": "网页全屏变化事件回调，参数：(isWebFullscreen: boolean) => void"
+    },
+    "onLoaded": {
+      "type": "function",
+      "description": "加载完成事件回调，参数：(data: VideoEventData) => void"
+    },
+    "onError": {
+      "type": "function",
+      "description": "加载错误事件回调，参数：(error: Error) => void"
+    },
+    "onWaiting": {
+      "type": "function",
+      "description": "缓冲中事件回调"
+    },
+    "onCanPlay": {
+      "type": "function",
+      "description": "可以播放事件回调"
+    },
+    "onSeek": {
+      "type": "function",
+      "description": "进度条跳转事件回调，参数：(time: number) => void"
+    },
+    "onPrevClick": {
+      "type": "function",
+      "description": "上一集点击事件回调"
+    },
+    "onNextClick": {
+      "type": "function",
+      "description": "下一集点击事件回调"
+    },
+    "onPipEnter": {
+      "type": "function",
+      "description": "画中画进入事件回调"
+    },
+    "onPipExit": {
+      "type": "function",
+      "description": "画中画退出事件回调"
+    },
+    "videoClassName": {
+      "type": "string",
+      "description": "视频元素自定义类名"
+    },
+    "videoStyle": {
+      "type": "object",
+      "description": "视频元素自定义样式"
+    },
+    "controlsClassName": {
+      "type": "string",
+      "description": "控制栏自定义类名"
+    },
+    "controlsStyle": {
+      "type": "object",
+      "description": "控制栏自定义样式"
+    },
+    "progressColor": {
+      "type": "string",
+      "description": "进度条激活颜色"
+    },
+    "videoProps": {
+      "type": "object",
+      "description": "透传给 video 元素的原生属性"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    }
+  },
+  "definitions": {
+    "VideoFit": {
+      "type": "string",
+      "enum": ["cover", "contain", "fill", "none", "scale-down"],
+      "description": "视频填充模式"
+    },
+    "VideoPreload": {
+      "type": "string",
+      "enum": ["auto", "metadata", "none"],
+      "description": "视频预加载策略"
+    },
+    "VideoStatus": {
+      "type": "string",
+      "enum": ["idle", "loading", "playing", "paused", "ended", "error", "buffering"],
+      "description": "视频播放状态"
+    },
+    "VideoRateOption": {
+      "type": "object",
+      "description": "播放速率配置",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "显示标签"
+        },
+        "value": {
+          "type": "number",
+          "description": "播放速率值"
+        }
+      },
+      "required": ["label", "value"]
+    },
+    "VideoEventData": {
+      "type": "object",
+      "description": "视频事件数据",
+      "properties": {
+        "currentTime": {
+          "type": "number",
+          "description": "当前播放时间（秒）"
+        },
+        "duration": {
+          "type": "number",
+          "description": "总时长（秒）"
+        },
+        "buffered": {
+          "type": "number",
+          "description": "缓冲进度（0-1）"
+        },
+        "volume": {
+          "type": "number",
+          "description": "音量（0-100）"
+        },
+        "muted": {
+          "type": "boolean",
+          "description": "是否静音"
+        },
+        "playbackRate": {
+          "type": "number",
+          "description": "播放速率"
+        },
+        "status": {
+          "$ref": "#/definitions/VideoStatus",
+          "description": "播放状态"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "基础播放器",
+      "props": {
+        "src": "https://example.com/video.mp4",
+        "poster": "https://example.com/poster.jpg"
+      }
+    },
+    {
+      "title": "自动播放",
+      "props": {
+        "src": "https://example.com/video.mp4",
+        "autoPlay": true,
+        "muted": true
+      }
+    },
+    {
+      "title": "循环播放",
+      "props": {
+        "src": "https://example.com/video.mp4",
+        "loop": true
+      }
+    },
+    {
+      "title": "自定义尺寸",
+      "props": {
+        "src": "https://example.com/video.mp4",
+        "width": 800,
+        "height": 450,
+        "fit": "contain"
+      }
+    },
+    {
+      "title": "剧集导航",
+      "props": {
+        "src": "https://example.com/video.mp4",
+        "showPrev": true,
+        "showNext": true
+      }
+    }
+  ]
+}

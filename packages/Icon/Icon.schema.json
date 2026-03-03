@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Icon",
+  "description": "图标组件，用于展示各种图标",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "图标名称"
+    },
+    "size": {
+      "type": "number",
+      "description": "图标尺寸（像素）",
+      "default": 16
+    },
+    "color": {
+      "type": "string",
+      "description": "图标颜色"
+    },
+    "strokeWidth": {
+      "type": "number",
+      "description": "描边宽度"
+    },
+    "onClick": {
+      "type": "function",
+      "description": "点击事件回调"
+    },
+    "children": {
+      "type": "ReactNode",
+      "description": "自定义图标内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础图标",
+      "value": {
+        "name": "search"
+      }
+    },
+    {
+      "description": "自定义尺寸和颜色",
+      "value": {
+        "name": "heart",
+        "size": 24,
+        "color": "red"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": true
+}

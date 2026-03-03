@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skeleton",
+  "description": "骨架屏组件，用于在内容加载过程中显示占位图形。",
+  "type": "object",
+  "properties": {
+    "width": {
+      "type": ["number", "string"],
+      "description": "骨架屏宽度"
+    },
+    "height": {
+      "type": ["number", "string"],
+      "description": "骨架屏高度"
+    },
+    "radius": {
+      "type": ["number", "string"],
+      "description": "骨架屏圆角"
+    },
+    "start": {
+      "type": "string",
+      "description": "渐变起始颜色"
+    },
+    "stop": {
+      "type": "string",
+      "description": "渐变结束颜色"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础矩形骨架",
+      "code": "<Skeleton width={200} height={20} />"
+    },
+    {
+      "description": "圆形骨架（头像）",
+      "code": "<Skeleton width={48} height={48} radius=\"50%\" />"
+    },
+    {
+      "description": "自定义颜色",
+      "code": "<Skeleton width={200} height={20} start=\"#f0f0f0\" stop=\"#e0e0e0\" />"
+    }
+  ]
+}

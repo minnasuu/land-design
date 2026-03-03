@@ -45,7 +45,7 @@ const Divider: React.FC<DividerProps> = ({
           ? { height: length, margin: `0 ${spacing}px` }
           : { width: length, margin: `${spacing}px 0` }),
         ...style,
-      }) as React.CSSProperties,
+      } as unknown as React.CSSProperties),
     [length, spacing, dashLength, dashGap, isVertical, style],
   );
 

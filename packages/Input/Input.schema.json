@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Input",
+  "description": "输入框组件，用于接收用户输入",
+  "type": "object",
+  "properties": {
+    "variant": {
+      "type": "string",
+      "description": "外观变体",
+      "enum": ["outline", "fill", "transparent"],
+      "default": "outline"
+    },
+    "status": {
+      "type": "string",
+      "description": "语义状态",
+      "enum": ["default", "primary", "warning", "danger", "success"],
+      "default": "default"
+    },
+    "size": {
+      "type": "string",
+      "description": "尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "textAlign": {
+      "type": "string",
+      "description": "文字对齐方式",
+      "enum": ["left", "center", "right"],
+      "default": "left"
+    },
+    "inputType": {
+      "type": "string",
+      "description": "HTML 输入类型",
+      "enum": ["text", "password", "email", "number", "tel", "url", "search"],
+      "default": "text"
+    },
+    "value": {
+      "type": "string",
+      "description": "输入值（受控）"
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "占位符",
+      "default": "请输入"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "是否禁用",
+      "default": false
+    },
+    "maxLength": {
+      "type": "number",
+      "description": "最大字符数"
+    },
+    "block": {
+      "type": "boolean",
+      "description": "是否为块级，占满宽度",
+      "default": false
+    },
+    "autoWidth": {
+      "type": "boolean",
+      "description": "宽度随内容自适应",
+      "default": false
+    },
+    "beforeContent": {
+      "type": "ReactNode",
+      "description": "结构前缀（外部左侧）"
+    },
+    "afterContent": {
+      "type": "ReactNode",
+      "description": "结构后缀（外部右侧）"
+    },
+    "prefix": {
+      "type": "ReactNode",
+      "description": "内容前缀（内部左侧）"
+    },
+    "suffix": {
+      "type": "ReactNode",
+      "description": "内容后缀（内部右侧）"
+    },
+    "onChange": {
+      "type": "function",
+      "description": "值变化回调"
+    },
+    "onEnter": {
+      "type": "function",
+      "description": "回车回调"
+    },
+    "onFocus": {
+      "type": "function",
+      "description": "聚焦回调"
+    },
+    "onBlur": {
+      "type": "function",
+      "description": "失焦回调"
+    },
+    "onClear": {
+      "type": "function",
+      "description": "清除回调（传入即显示清除按钮）"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础输入框",
+      "value": {
+        "placeholder": "请输入"
+      }
+    },
+    {
+      "description": "填充样式",
+      "value": {
+        "variant": "fill",
+        "placeholder": "填充样式"
+      }
+    },
+    {
+      "description": "带前缀图标",
+      "value": {
+        "prefix": "<Icon name='search' />",
+        "placeholder": "搜索"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}

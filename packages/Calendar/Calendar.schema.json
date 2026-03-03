@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Calendar",
+  "description": "日历组件，支持多种视图模式的日期选择",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "Date",
+      "description": "当前选中值（受控模式）"
+    },
+    "defaultValue": {
+      "type": "Date",
+      "description": "默认选中值（非受控模式）"
+    },
+    "mode": {
+      "type": "string",
+      "description": "视图模式",
+      "enum": ["date", "week", "month", "quarter", "year"],
+      "default": "date"
+    },
+    "language": {
+      "type": "string",
+      "description": "语言设置",
+      "enum": ["zh", "en"],
+      "default": "zh"
+    },
+    "size": {
+      "type": "string",
+      "description": "尺寸",
+      "enum": ["small", "default", "large"],
+      "default": "default"
+    },
+    "minDate": {
+      "description": "最小可选日期",
+      "oneOf": [
+        { "type": "Date" },
+        { "type": "number" },
+        { "type": "string" }
+      ]
+    },
+    "maxDate": {
+      "description": "最大可选日期",
+      "oneOf": [
+        { "type": "Date" },
+        { "type": "number" },
+        { "type": "string" }
+      ]
+    },
+    "disabledDate": {
+      "type": "function",
+      "description": "禁用日期判断函数"
+    },
+    "weekStartDay": {
+      "type": "number",
+      "description": "星期起始日（0-6，0=周日）",
+      "default": 0
+    },
+    "showHolidays": {
+      "type": "boolean",
+      "description": "是否显示节假日标记",
+      "default": false
+    },
+    "showWeekNumber": {
+      "type": "boolean",
+      "description": "是否显示周数",
+      "default": false
+    },
+    "showTodayButton": {
+      "type": "boolean",
+      "description": "是否显示返回今天按钮",
+      "default": true
+    },
+    "onChange": {
+      "type": "function",
+      "description": "值变化回调"
+    },
+    "onPanelChange": {
+      "type": "function",
+      "description": "面板变化回调"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础日历",
+      "value": {
+        "mode": "date"
+      }
+    },
+    {
+      "description": "月份选择",
+      "value": {
+        "mode": "month"
+      }
+    }
+  ],
+  "required": [],
+  "additionalProperties": false
+}
