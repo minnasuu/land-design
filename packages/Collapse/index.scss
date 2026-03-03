@@ -1,29 +1,172 @@
-.land-collapse{
-  font-size: 14px;
-  transition: height var(--transition-s) cubic-bezier(0.38, 0, 0.24, 1);
-  .land-collapse-title {
-    display: flex;
-    align-items: center;
-    color: var(--color-text-primary);
-    cursor: pointer;
-    svg {
-      transform: rotate(-90deg);
-      transition: transform var(--transition-s) linear;
+// ==================== Collapse 组件样式 ====================
+// 使用 BEM 命名规范: .land-collapse / .land-collapse__header / .land-collapse--modifier
+
+$collapse-prefix: 'land-collapse';
+
+// ─── 变量定义 ───
+$collapse-font-size: 14px;
+$collapse-line-height: 1.5;
+$collapse-header-padding: 12px 0;
+$collapse-content-padding: 0 0 12px;
+$collapse-border-radius: 8px;
+$collapse-border-color: var(--color-border-secondary, #e8e8e8);
+$collapse-bg-color: var(--color-bg-container, #fff);
+$collapse-card-bg: var(--color-fill-quaternary, #fafafa);
+$collapse-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+// ==================== 根容器 ====================
+.#{$collapse-prefix} {
+  position: relative;
+  font-size: $collapse-font-size;
+  line-height: $collapse-line-height;
+  color: var(--color-text-primary, #262626);
+  box-sizing: border-box;
+
+  // ─── 外观变体 ───
+  &--default {
+    background-color: transparent;
+  }
+
+  &--bordered {
+    border: 1px solid $collapse-border-color;
+    border-radius: $collapse-border-radius;
+
+    .#{$collapse-prefix}__header {
+      padding: 12px 16px;
+    }
+
+    .#{$collapse-prefix}__content-inner {
+      padding: 0 16px 16px;
     }
   }
-  .land-collapse-content {
-    color: var(--color-text-primary);
-    overflow: hidden;
-    transition: max-height var(--transition-s) linear;
-    .land-collapse-content-details {
-      padding: 12px 12px 0;
+
+  &--card {
+    background-color: $collapse-card-bg;
+    border-radius: $collapse-border-radius;
+    box-shadow: $collapse-card-shadow;
+
+    .#{$collapse-prefix}__header {
+      padding: 12px 16px;
+    }
+
+    .#{$collapse-prefix}__content-inner {
+      padding: 0 16px 16px;
     }
   }
-  &[open] {
-    .land-collapse-title {
-      svg {
-        transform: rotate(0deg);
-      }
+
+  // ─── 展开状态 ───
+  &--expanded {
+    .#{$collapse-prefix}__arrow {
+      transform: rotate(0deg);
     }
-  } 
+  }
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    .#{$collapse-prefix}__header {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  // ─── 动画状态 ───
+  &--animating {
+    .#{$collapse-prefix}__content {
+      overflow: hidden;
+    }
+  }
+}
+
+// ==================== 标题区域 ====================
+.#{$collapse-prefix}__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: $collapse-header-padding;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #1677ff);
+    outline-offset: -2px;
+    border-radius: 4px;
+  }
+
+  // 箭头在前
+  &--arrow-start {
+    flex-direction: row;
+
+    .#{$collapse-prefix}__title {
+      flex: 1;
+    }
+  }
+
+  // 箭头在后
+  &--arrow-end {
+    flex-direction: row;
+
+    .#{$collapse-prefix}__title {
+      flex: 1;
+    }
+
+    .#{$collapse-prefix}__arrow {
+      order: 1;
+    }
+
+    .#{$collapse-prefix}__extra {
+      order: 0;
+    }
+  }
+}
+
+// ==================== 箭头图标 ====================
+.#{$collapse-prefix}__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease;
+
+  svg {
+    display: block;
+  }
+}
+
+// ==================== 标题文字 ====================
+.#{$collapse-prefix}__title {
+  flex: 1;
+  font-weight: 500;
+  color: var(--color-text-primary, #262626);
+}
+
+// ==================== 额外内容 ====================
+.#{$collapse-prefix}__extra {
+  flex-shrink: 0;
+  color: var(--color-text-tertiary, #8c8c8c);
+  font-size: 12px;
+}
+
+// ==================== 内容区域 ====================
+.#{$collapse-prefix}__content {
+  overflow: hidden;
+  transition-property: height;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.#{$collapse-prefix}__content-inner {
+  padding: $collapse-content-padding;
+  color: var(--color-text-secondary, #595959);
+}
+
+// ==================== 嵌套折叠面板 ====================
+.#{$collapse-prefix} .#{$collapse-prefix} {
+  margin-left: 16px;
+
+  &--bordered,
+  &--card {
+    margin-left: 0;
+    margin-top: 8px;
+  }
 }

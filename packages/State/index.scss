@@ -1,27 +1,140 @@
-.land-state{
+// ==================== State 组件样式 ====================
+// 使用 BEM 命名规范: .land-state / .land-state__icon / .land-state--modifier
+
+$state-prefix: 'land-state';
+
+// ─── 尺寸变量 ───
+$state-sizes: (
+  'small': (
+    'icon-size': 32px,
+    'title-font-size': 13px,
+    'desc-font-size': 12px,
+    'gap': 6px,
+  ),
+  'default': (
+    'icon-size': 48px,
+    'title-font-size': 14px,
+    'desc-font-size': 13px,
+    'gap': 8px,
+  ),
+  'large': (
+    'icon-size': 64px,
+    'title-font-size': 16px,
+    'desc-font-size': 14px,
+    'gap': 12px,
+  ),
+);
+
+// ─── 类型颜色变量 ───
+$state-type-colors: (
+  'empty': var(--color-text-quaternary, #bfbfbf),
+  'error': var(--color-red-5, #ff4d4f),
+  'offline': var(--color-text-quaternary, #bfbfbf),
+  'forbidden': var(--color-orange-5, #ffa940),
+  'notFound': var(--color-text-quaternary, #bfbfbf),
+  'success': var(--color-green-5, #52c41a),
+  'warning': var(--color-orange-5, #ffa940),
+);
+
+// ==================== 根容器 ====================
+.#{$state-prefix} {
   display: flex;
   flex-direction: column;
   align-items: center;
-  .land-state-title {
-    font-size: 14px;
-    margin-top: 8px;
-    color: var(--color-text-primary);
-  }
-  .land-state-subTitle {
-    font-size: 12px;
-    margin-top: 4px;
-    color: var(--color-text-secondary);
-    .land-state-subTitle-link {
-      font-size: 12px;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+
+  // ─── 尺寸变体 ───
+  @each $size, $values in $state-sizes {
+    &--#{$size} {
+      gap: map-get($values, 'gap');
+
+      .#{$state-prefix}__icon {
+        width: map-get($values, 'icon-size');
+        height: map-get($values, 'icon-size');
+      }
+
+      .#{$state-prefix}__icon-svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .#{$state-prefix}__title {
+        font-size: map-get($values, 'title-font-size');
+      }
+
+      .#{$state-prefix}__description {
+        font-size: map-get($values, 'desc-font-size');
+      }
     }
+  }
+
+  // ─── 可点击状态 ───
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      .#{$state-prefix}__icon {
+        opacity: 0.8;
+      }
     }
-  .land-state-button {
-    margin-top: 8px;
   }
-  .land-state-empty-icon {
-    color: var(--color-text-quaternary);
+}
+
+// ==================== 图标区域 ====================
+.#{$state-prefix}__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+
+  // ─── 类型颜色 ───
+  @each $type, $color in $state-type-colors {
+    &--#{$type} {
+      color: $color;
+    }
   }
-  .land-state-offline-icon {
-    color: var(--color-text-quaternary);
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
+}
+
+.#{$state-prefix}__icon-svg {
+  display: block;
+}
+
+// ==================== 标题区域 ====================
+.#{$state-prefix}__title {
+  font-weight: 500;
+  color: var(--color-text-primary, #262626);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+// ==================== 描述区域 ====================
+.#{$state-prefix}__description {
+  color: var(--color-text-secondary, #8c8c8c);
+  line-height: 1.5;
+  word-break: break-word;
+  max-width: 320px;
+}
+
+// ==================== 操作区域 ====================
+.#{$state-prefix}__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+// ==================== 额外内容 ====================
+.#{$state-prefix}__extra {
+  margin-top: 4px;
 }

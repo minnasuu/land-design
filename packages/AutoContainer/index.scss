@@ -1,4 +1,35 @@
-.land-auto-container{
+// ==================== AutoContainer 组件样式 ====================
+// 采用 BEM 命名规范: land-auto-container / land-auto-container__element / land-auto-container--modifier
+
+$prefix: 'land-auto-container';
+
+.#{$prefix} {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // ==================== 内容区域 ====================
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // ==================== 修饰符：水平布局 ====================
+  &--horizontal {
+    .#{$prefix}__content {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // ==================== 修饰符：垂直布局 ====================
+  &--vertical {
+    .#{$prefix}__content {
+      width: auto;
+      height: 100%;
+    }
+  }
 }

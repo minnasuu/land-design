@@ -1,172 +1,186 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { VideoProgressBarProps } from './props';
+import './index.scss';
 
 const VideoProgressBar: React.FC<VideoProgressBarProps> = ({
-  curPercentage = 0,
-  bufferPercentage = 0,
-  activeBg = 'var(--color-primary-6)',
-  onClick,
-  onMove,
+  progress = 0,
+  buffered = 0,
+  activeColor = 'white',
+  bufferedColor = 'rgba(255,255,255,0.5)',
+  disabled = false,
+  onChange,
   onMouseEnter,
+  onMouseMove,
   onMouseLeave,
   onDragStart,
   onDragEnd,
+  isExternalDragging = false,
 }) => {
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState<number>();
-  const [hover, setHover] = useState<boolean>(false);
-  const [isDrag, setIsDrag] = useState<boolean>(false);
-  const [moveLeft, setMoveLeft] = useState<number>(0);
+  const barRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [hoverProgress, setHoverProgress] = useState(0);
 
+  // 监听容器宽度变化
   useEffect(() => {
-    const callback: ResizeObserverCallback = (entries) => {
-      entries.forEach(entry => {
-        setWidth(entry.contentRect.width)
+    if (!barRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        setContainerWidth(entry.contentRect.width);
       });
-    };
-    const observer = new ResizeObserver(callback);
-    if (progressBarRef.current) {
-      observer.observe(progressBarRef.current);
-    }
+    });
+
+    observer.observe(barRef.current);
     return () => observer.disconnect();
   }, []);
 
-  const handleBarMove = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+  // 计算进度值
+  const calculateProgress = useCallback((clientX: number) => {
+    if (!barRef.current) return 0;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    if (rect) {
-      const percentage = (e.clientX - rect.left) / rect.width;
-      setMoveLeft(percentage);
-
-      if (isDrag) {
-        onClick?.(percentage, e);
-      }
-      onMove?.(percentage, e.clientX - rect.left, rect.width, e);
-    }
-  }, [isDrag, onClick, onMove]);
-
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDrag(true);
-    onDragStart?.();
-
-    // 立即触发点击事件
-    const rect = e.currentTarget.getBoundingClientRect();
-    if (rect) {
-      const percentage = (e.clientX - rect.left) / rect.width;
-      onClick?.(percentage, e);
-    }
-  }, [onClick, onDragStart]);
-
-  const handleMouseUp = useCallback(() => {
-    if (isDrag) {
-      setIsDrag(false);
-      onDragEnd?.();
-    }
-  }, [isDrag, onDragEnd]);
-
-  const handleMouseLeave = useCallback((e: React.MouseEvent) => {
-    setMoveLeft(0);
-    setHover(false);
-    if (isDrag) {
-      setIsDrag(false);
-      onDragEnd?.();
-    }
-    onMouseLeave?.(e);
-  }, [isDrag, onDragEnd, onMouseLeave]);
-
-  const handleMouseOver = useCallback(() => {
-    setHover(true);
+    const rect = barRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    return Math.max(0, Math.min(1, x / rect.width));
   }, []);
 
-  // 添加全局鼠标事件监听，确保拖拽时鼠标移出组件也能正确处理
-  useEffect(() => {
-    if (isDrag) {
-      const handleGlobalMouseUp = () => {
-        setIsDrag(false);
-        onDragEnd?.();
-      };
+  // 鼠标按下
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (disabled) return;
 
-      document.addEventListener('mouseup', handleGlobalMouseUp);
-      return () => {
-        document.removeEventListener('mouseup', handleGlobalMouseUp);
-      };
+    e.preventDefault();
+    setIsDragging(true);
+    onDragStart?.();
+
+    const newProgress = calculateProgress(e.clientX);
+    onChange?.(newProgress);
+  }, [disabled, calculateProgress, onChange, onDragStart]);
+
+  // 鼠标移动
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (disabled) return;
+
+    const rect = barRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const newProgress = calculateProgress(e.clientX);
+    setHoverProgress(newProgress);
+
+    if (isDragging) {
+      onChange?.(newProgress);
     }
-  }, [isDrag, onDragEnd]);
+
+    onMouseMove?.(newProgress, e.clientX - rect.left, rect.width);
+  }, [disabled, isDragging, calculateProgress, onChange, onMouseMove]);
+
+  // 鼠标进入
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    if (disabled) return;
+
+    setIsHovering(true);
+
+    const rect = barRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const newProgress = calculateProgress(e.clientX);
+    setHoverProgress(newProgress);
+    onMouseEnter?.(newProgress, e.clientX - rect.left, rect.width);
+  }, [disabled, calculateProgress, onMouseEnter]);
+
+  // 鼠标离开 - 如果有外部拖动状态，不结束拖拽
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    setHoverProgress(0);
+
+    // 如果外部正在拖动，不结束拖拽状态（由父组件控制）
+    if (!isExternalDragging && isDragging) {
+      setIsDragging(false);
+      onDragEnd?.();
+    }
+
+    onMouseLeave?.();
+  }, [isDragging, isExternalDragging, onDragEnd, onMouseLeave]);
+
+  // 鼠标松开
+  const handleMouseUp = useCallback(() => {
+    if (isDragging) {
+      setIsDragging(false);
+      onDragEnd?.();
+    }
+  }, [isDragging, onDragEnd]);
+
+  // 全局鼠标松开监听
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+      onDragEnd?.();
+    };
+
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => document.removeEventListener('mouseup', handleGlobalMouseUp);
+  }, [isDragging, onDragEnd]);
+
+  // 计算类名 - 当外部拖动时也保持拖动状态样式
+  const barClassName = [
+    'land-video-progress',
+    isHovering && 'land-video-progress--hover',
+    (isDragging || isExternalDragging) && 'land-video-progress--dragging',
+    disabled && 'land-video-progress--disabled',
+  ].filter(Boolean).join(' ');
 
   return (
-    <StyledVideoProgressBar ref={progressBarRef} className={`land-video-progress-bar ${hover ? 'hover' : ''}`} >
-      <div
-        className='land-video-progress-bar-list'
-        onMouseMove={handleBarMove}
-        onMouseEnter={onMouseEnter ? (e: React.MouseEvent) => onMouseEnter(moveLeft, e.clientX - e.currentTarget.getBoundingClientRect().left, e.currentTarget.getBoundingClientRect().width, e) : undefined}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onMouseOver={handleMouseOver}
-      >
-        <div className='land-video-progress-bar default'></div>
-        <div className='land-video-progress-bar buffer' style={{ transform: `scaleX(${bufferPercentage})` }}></div>
-        <div className='land-video-progress-bar hover' style={{ transform: `scaleX(${moveLeft})` }}></div>
-        <div className='land-video-progress-bar marker' style={{ transform: `scaleX(${curPercentage})`, backgroundColor: activeBg }}></div>
-      </div>
-      <div className='land-video-progress-bar-thumb' style={{ transform: `translateX(${curPercentage * (width || 0)}px)`, backgroundColor: activeBg }}></div>
-    </StyledVideoProgressBar>
-  )
-}
+    <div
+      ref={barRef}
+      className={barClassName}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+    >
+      {/* 轨道容器 */}
+      <div className="land-video-progress__track">
+        {/* 背景轨道 */}
+        <div className="land-video-progress__bg" />
 
-const StyledVideoProgressBar = styled.div`
-  position: relative;
-  width: 100%;
-  height: 0.25rem;
-  border-radius: 2px;
-  .land-video-progress-bar-list{
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.2s linear;
-  }
-  .land-video-progress-bar.default{
-    background-color: rgba(255,255,255,0.36);
-  }
-  .land-video-progress-bar.buffer{
-    background-color: rgba(255,255,255,0.6);
-  }
-  .land-video-progress-bar.hover{
-    background-color: rgba(255,255,255,0.8);
-  }
-  .land-video-progress-bar{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    transform-origin: left center;
-    pointer-events: none;
-  }
-  .land-video-progress-bar-thumb{
-    position: absolute;
-    left: -0.5rem;
-    top: -0.375rem;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 100%;
-    opacity: 0;
-    transition: opacity 0.2s linear;
-    pointer-events: none;
-  }
-  &.hover{
-    .land-video-progress-bar-list{
-      transform: scaleY(2);
-    }
-    .land-video-progress-bar-thumb{
-        opacity: 1;
-      }
-  }
-`;
+        {/* 缓冲进度 */}
+        <div
+          className="land-video-progress__buffered"
+          style={{
+            transform: `scaleX(${buffered})`,
+            backgroundColor: bufferedColor,
+          }}
+        />
+
+        {/* 悬停进度 */}
+        <div
+          className="land-video-progress__hover"
+          style={{ transform: `scaleX(${hoverProgress})` }}
+        />
+
+        {/* 播放进度 */}
+        <div
+          className="land-video-progress__fill"
+          style={{
+            transform: `scaleX(${progress})`,
+            backgroundColor: activeColor,
+          }}
+        />
+      </div>
+
+      {/* 滑块 */}
+      <div
+        className="land-video-progress__thumb"
+        style={{
+          transform: `translateX(${progress * containerWidth}px)`,
+          backgroundColor: activeColor,
+        }}
+      />
+    </div>
+  );
+};
 
 export default VideoProgressBar;

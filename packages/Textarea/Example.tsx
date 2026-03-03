@@ -11,73 +11,83 @@ export default function TextareaExample() {
   const [value2, setValue2] = useState('这是一个带有初始值的文本域');
   const [value3, setValue3] = useState('');
   const [value4, setValue4] = useState('');
+  const [value5, setValue5] = useState('');
+  const [autoSizeValue, setAutoSizeValue] = useState('');
 
   const TextareaProps = [
-    { name: 'type', type: '"border" | "background" | "transparent"', desc: '文本域类型，控制边框和背景样式' },
-    { name: 'value', type: 'string', desc: '输入值，受控组件' },
-    { name: 'placeholder', type: 'string', desc: '占位符文本' },
-    { name: 'disabled', type: 'boolean', desc: '是否禁用' },
-    { name: 'maxLength', type: 'number', desc: '允许输入的最大字符数' },
-    { name: 'showNumber', type: 'boolean', desc: '是否显示字数统计' },
-    { name: 'rows', type: 'number', desc: '文本域行数' },
-    { name: 'resize', type: '"none" | "both" | "horizontal" | "vertical"', desc: '是否可调整大小' },
-    { name: 'beforeContent', type: 'ReactNode', desc: '在文本域上方添加的内容' },
-    { name: 'afterContent', type: 'ReactNode', desc: '在文本域下方添加的内容' },
-    { name: 'prefix', type: 'ReactNode', desc: '在文本域内部左上角添加的内容' },
-    { name: 'suffix', type: 'ReactNode', desc: '在文本域内部右下角添加的内容' },
-    { name: 'width', type: 'number | string', desc: '文本域宽度' },
-    { name: 'height', type: 'number | string', desc: '文本域高度' },
-    { name: 'textAlign', type: '"left" | "center" | "right"', desc: '文字对齐方式' },
-    { name: 'onChange', type: '(val: string, e?: ChangeEvent) => void', desc: '值变化事件' },
-    { name: 'onFocus', type: '(e: FocusEvent) => void', desc: '聚焦事件' },
-    { name: 'onBlur', type: '(e: FocusEvent) => void', desc: '失焦事件' },
-    { name: 'onClear', type: '() => void', desc: '清除事件' },
+    { name: 'variant', type: '"outline" | "filled" | "transparent"', default: '"outline"', desc: '文本域外观变体' },
+    { name: 'status', type: '"default" | "primary" | "warning" | "danger" | "success"', default: '"default"', desc: '语义状态' },
+    { name: 'textAlign', type: '"left" | "center" | "right"', default: '"left"', desc: '文字对齐方式' },
+    { name: 'value', type: 'string', desc: '输入值（受控）' },
+    { name: 'defaultValue', type: 'string', desc: '默认值（非受控）' },
+    { name: 'placeholder', type: 'string', default: '"请输入"', desc: '占位符文本' },
+    { name: 'disabled', type: 'boolean', default: 'false', desc: '是否禁用' },
+    { name: 'readOnly', type: 'boolean', default: 'false', desc: '是否只读' },
+    { name: 'maxLength', type: 'number', desc: '最大字符数' },
+    { name: 'showCount', type: 'boolean', default: 'false', desc: '是否显示字数统计' },
+    { name: 'countFormatter', type: '(count: number, maxLength?: number) => string', desc: '自定义字数统计格式' },
+    { name: 'rows', type: 'number', default: '4', desc: '文本域行数' },
+    { name: 'minRows', type: 'number', desc: '最小行数（配合 autoSize）' },
+    { name: 'maxRows', type: 'number', desc: '最大行数（配合 autoSize）' },
+    { name: 'autoSize', type: 'boolean | { minRows?: number; maxRows?: number }', default: 'false', desc: '自动调整高度' },
+    { name: 'resize', type: '"none" | "both" | "horizontal" | "vertical"', default: '"none"', desc: '调整大小方式' },
+    { name: 'block', type: 'boolean', default: 'false', desc: '是否块级元素' },
+    { name: 'width', type: 'number | string', desc: '自定义宽度' },
+    { name: 'height', type: 'number | string', desc: '自定义高度' },
+    { name: 'beforeContent', type: 'ReactNode', desc: '结构前缀（文本域上方）' },
+    { name: 'afterContent', type: 'ReactNode', desc: '结构后缀（文本域下方）' },
+    { name: 'onChange', type: '(value: string, e?: ChangeEvent) => void', desc: '值变化回调' },
+    { name: 'onFocus', type: '(e: FocusEvent) => void', desc: '聚焦回调' },
+    { name: 'onBlur', type: '(e: FocusEvent) => void', desc: '失焦回调' },
+    { name: 'onKeyDown', type: '(e: KeyboardEvent) => void', desc: '键盘按下回调' },
+    { name: 'onEnter', type: '(value: string, e?: KeyboardEvent) => void', desc: '回车回调' },
+    { name: 'onClear', type: '() => void', desc: '清除回调（传入即显示清除按钮）' },
     { name: 'className', type: 'string', desc: '自定义类名' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
+    { name: 'htmlProps', type: 'TextareaHTMLAttributes', desc: '原生属性透传' },
   ];
 
   return (
     <ComponentContentLayout
       zh='Textarea'
       en='Textarea'
-      desc='LandDesign 的 Textarea 组件，支持多种样式类型、前后缀、字数统计等功能。'
+      desc='多行文本输入框，支持多种外观变体、语义状态、自动调整高度等功能。'
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
-      {/* 标签页内容 */}
       {activeTab === 'examples' && (
         <div className='flex flex-col gap-24'>
-          {/* 基础用法 */}
+          {/* 外观变体 */}
           <ComponentSectionLayout
-            title='基础用法'
-            id='basic-usage'
-            description='Textarea 组件的基础用法，支持不同的样式类型。'
+            title='外观变体'
+            id='textarea-variant'
+            description='Textarea 组件支持三种外观变体：outline（描边）、filled（填充）、transparent（透明）。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
                 <div>
-                  <h4>边框样式 (border)</h4>
+                  <div className="fs-12 color-gray-4 mb-8">Outline（描边样式）</div>
                   <Textarea
-                    type="border"
-                    placeholder="请输入内容..."
+                    variant="outline"
+                    placeholder="描边样式..."
                     value={value1}
                     onChange={setValue1}
                   />
                 </div>
                 <div>
-                  <h4>背景样式 (background)</h4>
+                  <div className="fs-12 color-gray-4 mb-8">Filled（填充样式）</div>
                   <Textarea
-                    type="background"
-                    placeholder="请输入内容..."
+                    variant="filled"
+                    placeholder="填充样式..."
                     value={value2}
                     onChange={setValue2}
                   />
                 </div>
                 <div>
-                  <h4>透明样式 (transparent)</h4>
+                  <div className="fs-12 color-gray-4 mb-8">Transparent（透明样式）</div>
                   <Textarea
-                    type="transparent"
-                    placeholder="请输入内容..."
+                    variant="transparent"
+                    placeholder="透明样式..."
                     value={value3}
                     onChange={setValue3}
                   />
@@ -86,41 +96,104 @@ export default function TextareaExample() {
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 字数统计 */}
+          {/* 语义状态 */}
           <ComponentSectionLayout
-            title='字数统计'
-            id='count-usage'
-            description='显示字数统计功能，支持最大长度限制。'
+            title='语义状态'
+            id='textarea-status'
+            description='通过 status 属性设置不同的语义状态。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
-                <Textarea
-                  placeholder="最多输入100个字符..."
-                  maxLength={100}
-                  showNumber={true}
-                  value={value4}
-                  onChange={setValue4}
-                />
+                <Textarea status="default" placeholder="Default 状态" />
+                <Textarea status="primary" placeholder="Primary 状态" />
+                <Textarea status="warning" placeholder="Warning 状态" />
+                <Textarea status="danger" placeholder="Danger 状态" />
+                <Textarea status="success" placeholder="Success 状态" />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 前后缀 */}
+          {/* 字数统计 */}
           <ComponentSectionLayout
-            title='前后缀'
-            id='affix-usage'
-            description='支持在文本域内部和外部添加前后缀内容。'
+            title='字数统计'
+            id='textarea-count'
+            description='通过 showCount 显示字数统计，配合 maxLength 限制最大字符数。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
                 <div>
-                  <h4>外部前后缀</h4>
+                  <div className="fs-12 color-gray-4 mb-8">基础字数统计</div>
                   <Textarea
-                    beforeContent={<div style={{ fontWeight: 'bold' }}>描述</div>}
-                    afterContent={<div style={{ fontSize: '12px', color: '#666' }}>请详细描述您的问题</div>}
-                    placeholder="请输入描述..."
+                    showCount
+                    placeholder="输入后显示字数..."
+                    value={value4}
+                    onChange={setValue4}
                   />
                 </div>
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">限制最大字符数</div>
+                  <Textarea
+                    showCount
+                    maxLength={100}
+                    placeholder="最多输入100个字符..."
+                    value={value5}
+                    onChange={setValue5}
+                  />
+                </div>
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">自定义字数格式</div>
+                  <Textarea
+                    showCount
+                    maxLength={50}
+                    countFormatter={(count, max) => `已输入 ${count} 字，还可输入 ${max! - count} 字`}
+                    placeholder="自定义格式..."
+                  />
+                </div>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 自动调整高度 */}
+          <ComponentSectionLayout
+            title='自动调整高度'
+            id='textarea-autosize'
+            description='通过 autoSize 属性让文本域高度根据内容自动调整。'
+          >
+            <CodeOperationContainer column>
+              <div className="flex flex-col gap-16">
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">自动调整（无限制）</div>
+                  <Textarea
+                    resize='vertical'
+                    placeholder="输入更多内容，高度自动增加..."
+                    value={autoSizeValue}
+                    onChange={setAutoSizeValue}
+                  />
+                </div>
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">限制最小/最大行数</div>
+                  <Textarea
+                    autoSize={{ minRows: 2, maxRows: 6 }}
+                    placeholder="最小2行，最大6行..."
+                  />
+                </div>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 前后置内容 */}
+          <ComponentSectionLayout
+            title='前后置内容'
+            id='textarea-affix'
+            description='通过 beforeContent 和 afterContent 在文本域外部添加内容。'
+          >
+            <CodeOperationContainer column>
+              <div className="flex flex-col gap-16">
+                <Textarea
+                  beforeContent={<div className="fw-600">问题描述</div>}
+                  afterContent={<div className="fs-12 color-gray-4">请详细描述您遇到的问题，以便我们更好地帮助您。</div>}
+                  placeholder="请输入问题描述..."
+                />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -128,34 +201,45 @@ export default function TextareaExample() {
           {/* 清除功能 */}
           <ComponentSectionLayout
             title='清除功能'
-            id='clear-usage'
-            description='支持一键清除文本域内容。'
+            id='textarea-clear'
+            description='传入 onClear 回调即可显示清除按钮。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
                 <Textarea
                   placeholder="输入内容后可以点击清除按钮..."
-                  onClear={() => setValue1('')}
                   value={value1}
                   onChange={setValue1}
+                  onClear={() => setValue1('')}
                 />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 禁用状态 */}
+          {/* 禁用和只读 */}
           <ComponentSectionLayout
-            title='禁用状态'
-            id='disabled-usage'
-            description='禁用状态的文本域。'
+            title='禁用和只读'
+            id='textarea-disabled'
+            description='通过 disabled 禁用输入，通过 readOnly 设置只读状态。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
-                <Textarea
-                  disabled
-                  value="这是一个禁用的文本域"
-                  placeholder="禁用状态"
-                />
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">禁用状态</div>
+                  <Textarea
+                    disabled
+                    value="这是一个禁用的文本域"
+                    placeholder="禁用状态"
+                  />
+                </div>
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">只读状态</div>
+                  <Textarea
+                    readOnly
+                    value="这是一个只读的文本域，可以选择复制但不能编辑"
+                    placeholder="只读状态"
+                  />
+                </div>
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -163,33 +247,59 @@ export default function TextareaExample() {
           {/* 自定义尺寸 */}
           <ComponentSectionLayout
             title='自定义尺寸'
-            id='size-usage'
-            description='自定义文本域的宽度、高度和行数。'
+            id='textarea-custom-size'
+            description='通过 width、height、rows 等属性自定义文本域尺寸。'
           >
-            <CodeOperationContainer>
+            <CodeOperationContainer column>
               <div className="flex flex-col gap-16">
                 <div>
-                  <h4>自定义宽度和高度</h4>
+                  <div className="fs-12 color-gray-4 mb-8">自定义宽度和高度</div>
                   <Textarea
                     width={400}
                     height={120}
-                    placeholder="自定义尺寸的文本域..."
+                    placeholder="400px 宽 × 120px 高"
                   />
                 </div>
                 <div>
-                  <h4>自定义行数</h4>
+                  <div className="fs-12 color-gray-4 mb-8">块级元素（100% 宽度）</div>
+                  <Textarea
+                    block
+                    placeholder="占满父容器宽度"
+                  />
+                </div>
+                <div>
+                  <div className="fs-12 color-gray-4 mb-8">自定义行数</div>
                   <Textarea
                     rows={6}
-                    placeholder="6行高度的文本域..."
+                    placeholder="6 行高度"
                   />
                 </div>
                 <div>
-                  <h4>禁止调整大小</h4>
+                  <div className="fs-12 color-gray-4 mb-8">禁止调整大小</div>
                   <Textarea
                     resize="none"
-                    placeholder="不可调整大小的文本域..."
+                    placeholder="不可拖拽调整大小"
                   />
                 </div>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 回车事件 */}
+          <ComponentSectionLayout
+            title='回车事件'
+            id='textarea-enter'
+            description='通过 onEnter 监听回车事件（不包含 Shift+Enter）。'
+          >
+            <CodeOperationContainer column>
+              <div className="flex flex-col gap-16">
+                <Textarea
+                  placeholder="按回车触发提交（Shift+Enter 换行）..."
+                  onEnter={(value) => {
+                    console.log('提交内容:', value);
+                    alert(`提交内容: ${value}`);
+                  }}
+                />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>

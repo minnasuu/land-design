@@ -1,388 +1,681 @@
-.land-calendar{
+// ─── Calendar 组件样式 ───
+// 使用 BEM 命名规范
+
+// ─── 变量定义 ───
+$calendar-padding: 12px;
+$calendar-cell-size: 32px;
+$calendar-cell-size-small: 28px;
+$calendar-cell-size-large: 36px;
+$calendar-border-radius: var(--radius-m);
+$calendar-transition: var(--transition-s);
+
+// ─── 根容器 ───
+.land-calendar {
   position: relative;
   display: flex;
   flex-direction: column;
   width: fit-content;
-  padding: 12px;
+  padding: $calendar-padding;
   border: 1px solid var(--color-border-primary);
   background-color: var(--color-bg-primary);
-  border-radius: var(--radius-m);
-  user-select: none; 
-}
-.land-calendar-month,
-.land-calendar-quarter,
-.land-calendar-year{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  border-radius: $calendar-border-radius;
+  user-select: none;
+
+  // ─── 尺寸变体 ───
+  &--small {
+    padding: 8px;
+
+    .land-calendar__cell {
+      width: $calendar-cell-size-small;
+      height: $calendar-cell-size-small;
+      font-size: 12px;
+    }
+
+    .land-calendar__weekday {
+      width: $calendar-cell-size-small;
+      height: $calendar-cell-size-small;
+      font-size: 10px;
+    }
+
+    .land-calendar__month-cell,
+    .land-calendar__quarter-cell,
+    .land-calendar__year-cell {
+      font-size: 12px;
+    }
+  }
+
+  &--large {
+    padding: 16px;
+
+    .land-calendar__cell {
+      width: $calendar-cell-size-large;
+      height: $calendar-cell-size-large;
+      font-size: 16px;
+    }
+
+    .land-calendar__weekday {
+      width: $calendar-cell-size-large;
+      height: $calendar-cell-size-large;
+      font-size: 14px;
+    }
+
+    .land-calendar__month-cell,
+    .land-calendar__quarter-cell,
+    .land-calendar__year-cell {
+      font-size: 16px;
+    }
+  }
 }
 
-// 占位符样式
-.land-calendar-month-placeholder,
-.land-calendar-quarter-placeholder,
-.land-calendar-year-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  background-color: var(--color-bg-primary);
-  border-radius: var(--radius-m);
-  min-height: 200px;
-}
-
-.land-calendar-header{
+// ─── 头部 ───
+.land-calendar__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .land-calendar-header-btn-group{
-    display: flex;
-    align-items: center;
+  margin-bottom: 8px;
+}
+
+.land-calendar__header-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.land-calendar__nav-btn {
+  padding: 4px;
+  border-radius: var(--radius-s);
+  transition: all $calendar-transition linear;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-bg-secondary);
   }
-  .land-calendar-year,
-  .land-calendar-decade{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-    .land-calendar-year-input,
-    .land-calendar-decade-input {
-      font-weight: 600;
-      color: var(--color-text-primary);
-    }
+
+  &--prev,
+  &--prev-year {
+    transform: rotate(90deg);
   }
-  .land-calendar-header-center{
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: var(--color-text-primary);
-  }
-  .land-calendar-week-selector {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: var(--color-text-primary);
-  }
-  .land-calendar-btn{
-    padding: 4px;
-    border-radius: var(--radius-s);
-    transition: all var(--transition-s) linear;
-    &:hover:not(:disabled){
-      background-color: var(--color-bg-secondary);
-    }
-    &:active:not(:disabled){
-      background-color: var(--color-bg-secondary);
-    }
-    &.prev{
-      transform: rotate(90deg);
-    }
-    &.next{
-      transform: rotate(-90deg);
-    }
+
+  &--next,
+  &--next-year {
+    transform: rotate(-90deg);
   }
 }
 
-.land-calendar-weekdays{
+.land-calendar__header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.land-calendar__year {
+  display: flex;
+  align-items: center;
+
+  .land-calendar__year-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+}
+
+.land-calendar__month {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.land-calendar__header-extra {
+  margin-left: auto;
+}
+
+// ─── 内容区域 ───
+.land-calendar__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// ─── 星期行 ───
+.land-calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  .land-calendar-item.weekday{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
-    color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.land-calendar__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $calendar-cell-size;
+  height: $calendar-cell-size;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+// ─── 网格容器 ───
+.land-calendar__grid {
+  display: grid;
+
+  &--date {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &--week {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  &--month {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  &--quarter {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  &--year {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+}
+
+// ─── 日期单元格 ───
+.land-calendar__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $calendar-cell-size;
+  height: $calendar-cell-size;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all $calendar-transition linear;
+
+  &:hover:not(&--empty):not(&--selected):not(&--disabled) {
+    background-color: var(--color-bg-secondary);
+  }
+
+  &--empty {
     cursor: default;
   }
-}
 
-.land-calendar-days{
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  .land-calendar-item.day{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
-    color: var(--color-text-primary);
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all var(--transition-s) linear;
-    &:hover:not(.empty):not(.active):not(.selected){
-      background-color: var(--color-bg-secondary);
-    }
-    &:active:not(.empty):not(.active):not(.selected){
-      background-color: var(--color-bg-secondary);
-    }
-    &.empty{
-      cursor: default;
-        background-color: var(--color-bg-primary);
-    }
-    &.current{
-      color: var(--color-primary);
-      font-weight: 600;
-    }
-    &.selected:not(.active){
-      font-weight: 600;
-      background-color: var(--color-bg-secondary);
-      &.current{
-        color: white;
-        background-color: var(--color-primary);
-      }
-    }
-    &.other-month{
-      color: var(--color-text-secondary);
-    }
-    .land-calendar-bottom-dot{
+  &--today {
+    color: var(--color-primary);
+    font-weight: 600;
+
+    &::after {
+      content: "";
       position: absolute;
       bottom: 4px;
       left: 50%;
       transform: translateX(-50%);
       width: 4px;
       height: 4px;
-      background-color: var(--color-red-6);
+      background-color: var(--color-primary);
       border-radius: 50%;
     }
   }
-}
 
-.land-calendar-week-days{
-  .land-calendar-week-row{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    padding: 4px;
-    border-radius: var(--radius-m);
+  &--selected {
+    font-weight: 600;
+    background-color: var(--color-bg-secondary);
+
+    &.land-calendar__cell--today {
+      color: white;
+      background-color: var(--color-primary);
+
+      &::after {
+        background-color: white;
+      }
+    }
+  }
+
+  &--other {
+    color: var(--color-text-tertiary);
     cursor: pointer;
-    transition: all var(--transition-s) linear;
-    &:hover{
-      background-color: var(--color-bg-secondary);
+
+    &:hover {
+      color: var(--color-text-secondary);
     }
-    &:active{
-      background-color: var(--color-bg-secondary);
-    }
-    &.selected{
-      background-color: var(--color-bg-secondary);
-      &.current{
-        background-color: var(--color-primary);
-        .land-calendar-item.day.current{
-          color:white;
-        }
-      }
-    }
-    .land-calendar-item.day{
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      font-size: 12px;
-      color: var(--color-text-primary);
-      cursor: pointer;
-      transition: all var(--transition-s) linear;
-      &:hover{
-        background-color: transparent;
-      }
-      &.current{
-        color: var(--color-primary);
-        font-weight: 600;
-      }
-      &.other-month{
-        color: var(--color-text-secondary);
-        .day-number{
-          color: var(--color-text-secondary);
-        }
-      }
-      .day-number{
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 2px;
-      }
+  }
+
+  &--disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      background-color: transparent;
     }
   }
 }
 
-// 月视图样式
-.land-calendar-months-grid{
+.land-calendar__cell-text {
+  position: relative;
+  z-index: 1;
+}
+
+// ─── 周行 ───
+.land-calendar__week-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  .land-calendar-month-item{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 72px;
-    height: 72px;
-    font-size: 14px;
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    border-radius: var(--radius-m);
-    cursor: pointer;
-    transition: all var(--transition-s) linear;
-    &:hover{
-      background-color: var(--color-bg-secondary);
-    }
-    &:active{
-      background-color: var(--color-bg-secondary);
-    }
-    &.current{
-      font-weight: 600;
-      color: var(--color-primary);  
-    }
-    &.selected{
-      font-weight: 600;
-        color: var(--color-text-primary);
-      background-color: var(--color-bg-secondary);
-      &.current{
-        color:white;
-        background-color: var(--color-primary);
+  grid-template-columns: repeat(7, 1fr);
+  padding: 4px;
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: all $calendar-transition linear;
+
+  &:hover:not(&--disabled) {
+    background-color: var(--color-bg-secondary);
+  }
+
+  &--selected {
+    background-color: var(--color-bg-secondary);
+
+    &.land-calendar__week-row--current {
+      background-color: var(--color-primary);
+
+      .land-calendar__cell {
+        color: white;
+
+        &--today {
+          font-weight: 700;
+
+          &::after {
+            background-color: white;
+          }
+        }
       }
+    }
+  }
+
+  &--current {
+    .land-calendar__cell--today {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .land-calendar__cell {
+    &:hover {
+      background-color: transparent;
     }
   }
 }
 
-// 季度视图样式
-.land-calendar-quarters-grid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  .land-calendar-quarter-item{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 128px;
-    height: 128px;
-    background-color: var(--color-bg-primary);
+// ─── 月份单元格 ───
+.land-calendar__month-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  font-size: 14px;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: all $calendar-transition linear;
+
+  &:hover:not(&--disabled) {
+    background-color: var(--color-bg-secondary);
+  }
+
+  &--current {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  &--selected {
+    font-weight: 600;
     color: var(--color-text-primary);
-    border-radius: var(--radius-l);
-    cursor: pointer;
-    transition: all var(--transition-s) linear;
-    &:hover{
-      background-color: var(--color-bg-secondary);
+    background-color: var(--color-bg-secondary);
+
+    &.land-calendar__month-cell--current {
+      color: white;
+      background-color: var(--color-primary);
     }
-    &:active{
-      background-color: var(--color-bg-secondary);
-    }
-    &.current{
-      font-weight: 600;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.land-calendar__month-text {
+  font-size: inherit;
+}
+
+// ─── 季度单元格 ───
+.land-calendar__quarter-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
+  height: 128px;
+  padding: 16px;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-l);
+  cursor: pointer;
+  transition: all $calendar-transition linear;
+
+  &:hover:not(&--disabled) {
+    background-color: var(--color-bg-secondary);
+  }
+
+  &--current {
+    font-weight: 600;
+    color: var(--color-primary);
+
+    .land-calendar__quarter-months,
+    .land-calendar__quarter-desc {
       color: var(--color-primary);
     }
-    &.selected{
-      color: var(--color-text-primary);
-      font-weight: 600;
-      background-color: var(--color-bg-secondary);
-      &.current{
-        color:white;
-        background-color: var(--color-primary);
-        .quarter-months, .quarter-description{
-          color:white;
-        }
-      }
-    }
-    .quarter-header{
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      .quarter-name{
-        font-size: 14px;
-        font-weight: 600;
-      }
-      .current-indicator{
-        font-size: 10px;
-        color: var(--color-primary);
-        background-color: var(--color-bg-secondary);
-      }
-    }
-    .quarter-months{
-      font-size: 14px;
-      color: var(--color-text-secondary);
-      margin-bottom: 4px;
-    }
-    .quarter-description{
-      font-size: 12px;
-      color: var(--color-text-secondary);
-    }
   }
-}
 
-// 年视图样式
-.land-calendar-years-grid{
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  .land-calendar-year-item{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    background-color: var(--color-bg-primary);
+  &--selected {
+    font-weight: 600;
     color: var(--color-text-primary);
-    cursor: pointer;
-    transition: all var(--transition-s) linear;
-    border-radius: var(--radius-l);
-    &:hover:not(.disabled){
-      background-color: var(--color-bg-secondary);
-    }
-    &.current{
-      font-weight: 600;
-      color: var(--color-primary);
-    }
-    &.selected{
-      font-weight: 600;
-      color: var(--color-text-primary);
-      background-color: var(--color-bg-secondary);
-      &.current{
-        color:white;
-        background-color: var(--color-primary);
+    background-color: var(--color-bg-secondary);
+
+    &.land-calendar__quarter-cell--current {
+      color: white;
+      background-color: var(--color-primary);
+
+      .land-calendar__quarter-months,
+      .land-calendar__quarter-desc {
+        color: white;
       }
     }
-    &.disabled{
-      cursor: not-allowed;
-      opacity: 0.5;
-      .year-number{
-        color: var(--color-text-secondary);
-      }
-    }
-    .year-number{
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-    .disabled-overlay{
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 10px;
-      color: var(--color-text-secondary);
-      background-color: var(--color-bg-secondary);
-      padding: 2px 6px;
-      border-radius: var(--radius-xs);
-      white-space: nowrap;
-    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 }
 
-// 返回今天按钮样式
-.land-calendar-btn.back {
+.land-calendar__quarter-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.land-calendar__quarter-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.land-calendar__quarter-months {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.land-calendar__quarter-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+// ─── 年份单元格 ───
+.land-calendar__year-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all $calendar-transition linear;
+  border-radius: var(--radius-l);
+
+  &:hover:not(&--disabled) {
+    background-color: var(--color-bg-secondary);
+  }
+
+  &--current {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  &--selected {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-secondary);
+
+    &.land-calendar__year-cell--current {
+      color: white;
+      background-color: var(--color-primary);
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.land-calendar__year-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+// ─── 返回今天按钮 ───
+.land-calendar__today-btn {
   margin-top: 8px;
   font-size: 12px;
   height: 32px;
   border-radius: var(--radius-m);
+}
+
+// ─── 节假日标记 ───
+.land-calendar__holiday-dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-red-6);
+  border-radius: 50%;
+}
+
+// ─── 兼容旧版类名 ───
+// 保持向后兼容
+
+.land-calendar-header {
+  @extend .land-calendar__header;
+}
+
+.land-calendar-header-btn-group {
+  @extend .land-calendar__header-nav;
+}
+
+.land-calendar-header-center {
+  @extend .land-calendar__header-title;
+}
+
+.land-calendar-weekdays {
+  @extend .land-calendar__weekdays;
+}
+
+.land-calendar-item.weekday {
+  @extend .land-calendar__weekday;
+}
+
+.land-calendar-days {
+  @extend .land-calendar__grid;
+  @extend .land-calendar__grid--date;
+}
+
+.land-calendar-item.day {
+  @extend .land-calendar__cell;
+
+  &.current {
+    @extend .land-calendar__cell--today;
+  }
+
+  &.selected {
+    @extend .land-calendar__cell--selected;
+  }
+
+  &.other-month {
+    @extend .land-calendar__cell--other;
+  }
+
+  &.disabled {
+    @extend .land-calendar__cell--disabled;
+  }
+
+  .day-number {
+    @extend .land-calendar__cell-text;
+  }
+}
+
+.land-calendar-btn.back {
+  @extend .land-calendar__today-btn;
+}
+
+.land-calendar-bottom-dot {
+  @extend .land-calendar__holiday-dot;
+}
+
+// 视图模式类名
+.land-calendar-date,
+.land-calendar-week,
+.land-calendar-month,
+.land-calendar-quarter,
+.land-calendar-year {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// 月视图
+.land-calendar-months-grid {
+  @extend .land-calendar__grid;
+  @extend .land-calendar__grid--month;
+}
+
+.land-calendar-month-item {
+  @extend .land-calendar__month-cell;
+
+  &.current {
+    @extend .land-calendar__month-cell--current;
+  }
+
+  &.selected {
+    @extend .land-calendar__month-cell--selected;
+  }
+
+  &.disabled {
+    @extend .land-calendar__month-cell--disabled;
+  }
+}
+
+// 季度视图
+.land-calendar-quarters-grid {
+  @extend .land-calendar__grid;
+  @extend .land-calendar__grid--quarter;
+}
+
+.land-calendar-quarter-item {
+  @extend .land-calendar__quarter-cell;
+
+  &.current {
+    @extend .land-calendar__quarter-cell--current;
+  }
+
+  &.selected {
+    @extend .land-calendar__quarter-cell--selected;
+  }
+
+  &.disabled {
+    @extend .land-calendar__quarter-cell--disabled;
+  }
+
+  .quarter-header {
+    @extend .land-calendar__quarter-header;
+  }
+
+  .quarter-name {
+    @extend .land-calendar__quarter-name;
+  }
+
+  .quarter-months {
+    @extend .land-calendar__quarter-months;
+  }
+
+  .quarter-description {
+    @extend .land-calendar__quarter-desc;
+  }
+}
+
+// 年视图
+.land-calendar-years-grid {
+  @extend .land-calendar__grid;
+  @extend .land-calendar__grid--year;
+}
+
+.land-calendar-year-item {
+  @extend .land-calendar__year-cell;
+
+  &.current {
+    @extend .land-calendar__year-cell--current;
+  }
+
+  &.selected {
+    @extend .land-calendar__year-cell--selected;
+  }
+
+  &.disabled {
+    @extend .land-calendar__year-cell--disabled;
+  }
+
+  .year-number {
+    @extend .land-calendar__year-text;
+  }
+}
+
+// 周视图
+.land-calendar-week-days {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.land-calendar-week-row {
+  @extend .land-calendar__week-row;
+
+  &.selected {
+    @extend .land-calendar__week-row--selected;
+  }
+
+  &.current {
+    @extend .land-calendar__week-row--current;
+  }
+
+  &.disabled {
+    @extend .land-calendar__week-row--disabled;
+  }
 }

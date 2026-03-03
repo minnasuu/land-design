@@ -1,102 +1,282 @@
-.land-date-picker {
-  --land-date-picker-input-bg: var(--color-bg-secondary);
-  --land-date-picker-input-padding: 0 12px;
-  --land-date-picker-input-border-radius: var(--radius-m);
-  position: relative;
+// ─── DatePicker 组件样式 ───
+// 使用 BEM 命名规范
 
-  // 优化：禁用状态样式
-  &.disabled {
+// ─── 变量定义 ───
+$date-picker-height-small: 28px;
+$date-picker-height-default: 36px;
+$date-picker-height-large: 44px;
+$date-picker-border-radius: var(--radius-m);
+$date-picker-transition: var(--transition-s);
+
+// ─── 根容器 ───
+.land-date-picker {
+  position: relative;
+  display: inline-flex;
+
+  // ─── 自适应宽度 ───
+  &--auto-width {
+    transition: width $date-picker-transition ease;
+  }
+
+  // ─── 尺寸变体 ───
+  &--small {
+    .land-date-picker__trigger {
+      height: $date-picker-height-small;
+    }
+
+    .land-date-picker__input {
+      font-size: 12px;
+    }
+
+    .land-date-picker__icon {
+      font-size: 14px;
+    }
+  }
+
+  &--default {
+    .land-date-picker__trigger {
+      height: $date-picker-height-default;
+    }
+  }
+
+  &--large {
+    .land-date-picker__trigger {
+      height: $date-picker-height-large;
+    }
+
+    .land-date-picker__input {
+      font-size: 16px;
+    }
+
+    .land-date-picker__icon {
+      font-size: 18px;
+    }
+  }
+
+  // ─── 样式变体 ───
+  &--filled {
+    .land-date-picker__trigger {
+      background-color: var(--color-bg-secondary);
+      border: 1px solid transparent;
+
+      &:hover:not(.land-date-picker__trigger--disabled) {
+        border-color: var(--color-border-primary);
+      }
+
+      &:focus-within {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+      }
+    }
+  }
+
+  &--outline {
+    .land-date-picker__trigger {
+      background-color: transparent;
+      border: 1px solid var(--color-border-primary);
+
+      &:hover:not(.land-date-picker__trigger--disabled) {
+        border-color: var(--color-primary);
+      }
+
+      &:focus-within {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+      }
+    }
+  }
+
+  &--borderless {
+    .land-date-picker__trigger {
+      background-color: transparent;
+      border: none;
+
+      &:hover:not(.land-date-picker__trigger--disabled) {
+        background-color: var(--color-bg-secondary);
+      }
+    }
+  }
+
+  // ─── 状态 ───
+  &--disabled {
     pointer-events: none;
-    
-    .land-date-picker-input {
-      opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
+
+    .land-date-picker__trigger {
+      opacity: var(--opacity-disabled);
       cursor: not-allowed;
-      
-      .land-date-picker-icon {
-        opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
-      }
     }
   }
-  
-  .land-date-picker-input {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    background-color: var(--land-date-picker-input-bg);
-    border-radius: var(--land-date-picker-input-border-radius);
-    transition: opacity var(--transition-s) ease;
-    
-    // 优化：禁用状态下的输入框样式
-    &.disabled {
-      opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
-      cursor: not-allowed;
-      
-      .land-date-picker-input-value {
-        cursor: not-allowed;
-        pointer-events: none;
-      }
-      
-      .land-date-picker-icon {
-        opacity: var(--land-date-picker-disabled-opacity, var(--opacity-disabled));
-      }
-    }
-    
-    .land-date-picker-input-value {
-      flex: 1;
-      padding: var(--land-date-picker-input-padding);
-      
-      // 输入模式下的样式
-      &:not([readonly]) {
-        background-color: var(--color-bg-primary);
-        border: 1px solid var(--color-border-primary);
-        border-radius: var(--land-date-picker-input-border-radius);
-        
-        &:focus {
-          border-color: var(--color-primary);
-          box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.2);
-        }
-      }
-    }
-    
-    .land-date-picker-icon {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--color-text-secondary);
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    
-    &:hover:not(.empty):not(.input-mode):not(.disabled) {
-      .land-date-picker-icon {
-        opacity: 0;
-      }
-    }
-    &.input-mode{
-      .land-date-picker-input-value .land-input__clear{
-        opacity: 0;
-        pointer-events: none;
-      }
+
+  &--readonly {
+    .land-date-picker__trigger {
+      cursor: default;
     }
   }
-  
-  .land-date-picker-dropdown-content {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    
-    .land-date-picker-dropdown-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      
-      .land-date-picker-dropdown-cancel-button,
-      .land-date-picker-dropdown-confirm-button {
-        min-width: 60px;
-      }
+
+  &--open {
+    .land-date-picker__trigger {
+      border-color: var(--color-primary);
     }
   }
+}
+
+// ─── 隐藏的测量元素 ───
+.land-date-picker__measure {
+  position: absolute;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 14px;
+  font-family: inherit;
+  pointer-events: none;
+
+  // 尺寸变体字体大小
+  .land-date-picker--small & {
+    font-size: 12px;
+  }
+
+  .land-date-picker--large & {
+    font-size: 16px;
+  }
+}
+
+// ─── 触发器 ───
+.land-date-picker__trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: $date-picker-height-default;
+  padding: 0 12px;
+  border-radius: $date-picker-border-radius;
+  cursor: pointer;
+  transition: all $date-picker-transition ease;
+
+  &--empty {
+    .land-date-picker__input {
+      color: var(--color-text-tertiary);
+    }
+  }
+
+  &--input {
+    .land-date-picker__icon {
+      opacity: 0.3;
+    }
+  }
+}
+
+// ─── 输入框 ───
+.land-date-picker__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--color-text-primary);
+
+  &::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  // 隐藏清除按钮的默认样式
+  .land-input__wrapper {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+}
+
+// ─── 图标 ───
+.land-date-picker__icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  color: var(--color-text-tertiary);
+  font-size: 16px;
+  pointer-events: none;
+  transition: opacity $date-picker-transition ease;
+
+  .land-date-picker__trigger:hover:not(.land-date-picker__trigger--empty):not(.land-date-picker__trigger--input) & {
+    opacity: 0;
+  }
+}
+
+// ─── 下拉框 ───
+.land-date-picker__dropdown {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-m);
+
+  .land-calendar {
+    border: none;
+    padding: 0;
+  }
+}
+
+// ─── 底部操作栏 ───
+.land-date-picker__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid var(--color-border-primary);
+}
+
+.land-date-picker__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+// ─── 兼容旧版类名 ───
+.land-date-picker-input {
+  @extend .land-date-picker__trigger;
+
+  &.empty {
+    @extend .land-date-picker__trigger--empty;
+  }
+
+  &.input-mode {
+    @extend .land-date-picker__trigger--input;
+  }
+
+  &.disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.land-date-picker-input-value {
+  @extend .land-date-picker__input;
+}
+
+.land-date-picker-icon {
+  @extend .land-date-picker__icon;
+}
+
+.land-date-picker-dropdown-content {
+  @extend .land-date-picker__dropdown;
+}
+
+.land-date-picker-dropdown-actions {
+  @extend .land-date-picker__actions;
+}
+
+.land-date-picker-dropdown-cancel-button,
+.land-date-picker-dropdown-confirm-button {
+  min-width: 60px;
 }

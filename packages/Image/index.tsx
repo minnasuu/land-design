@@ -1,175 +1,236 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { ImageProps, ImageLoadingStatus, defaultImageProps } from './props';
+import Skeleton from '../Skeleton';
+import Icon from '../Icon';
 import './index.scss';
-import Alert from "../Alert";
-import Skeleton from "../Skeleton";
-import { ImageProps } from "./props";
 
-const Image: React.FC<ImageProps> = ({
-  url,
-  alt = "",
-  ratio,
-  className,
-  imgClassName,
-  imgStyle,
-  style,
-  fallback,
-  fallbackUrl,
-}) => {
+const prefixCls = 'land-image';
+
+// 位置映射
+const positionMap: Record<string, string> = {
+  'center': 'center',
+  'top': 'top',
+  'bottom': 'bottom',
+  'left': 'left',
+  'right': 'right',
+  'top-left': 'top left',
+  'top-right': 'top right',
+  'bottom-left': 'bottom left',
+  'bottom-right': 'bottom right',
+};
+
+const Image: React.FC<ImageProps> = (props) => {
+  const {
+    // 基础属性
+    src,
+    alt = defaultImageProps.alt,
+    width,
+    height,
+    // 显示属性
+    fit = defaultImageProps.fit,
+    position = defaultImageProps.position,
+    ratio,
+    radius,
+    round = defaultImageProps.round,
+    // 加载属性
+    lazy = defaultImageProps.lazy,
+    preview,
+    fallbackSrc,
+    fallback,
+    placeholder,
+    showSkeleton = defaultImageProps.showSkeleton,
+    showError = defaultImageProps.showError,
+    // 事件属性
+    onLoad,
+    onError,
+    onClick,
+    // 样式属性
+    className,
+    style,
+    imgClassName,
+    imgStyle,
+    htmlProps,
+    imgProps,
+  } = props;
+
+  // 状态
+  const [status, setStatus] = useState<ImageLoadingStatus>('idle');
+  const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
+  const [usedFallback, setUsedFallback] = useState(false);
+  const [naturalRatio, setNaturalRatio] = useState<number | undefined>();
   const imgRef = useRef<HTMLImageElement>(null);
-  const [loadingState, setLoadingState] = useState<'idle' | 'loading' | 'success' | 'error'>('loading');
-  const [currentSrc, setCurrentSrc] = useState<string | undefined>(url);
-  const [imgRatio, setImgRatio] = useState<string>("auto");
-  const [hasTriedFallback, setHasTriedFallback] = useState<boolean>(false);
-  const [fallbackLoadingState, setFallbackLoadingState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // 当url变化时重置状态
+  // src 变化时重置状态
   useEffect(() => {
-    setLoadingState('loading');
-    setCurrentSrc(url);
-    setHasTriedFallback(false);
-    setFallbackLoadingState('idle');
-  }, [url]);
-
-  // 处理图片加载事件
-  const handleImageLoad = () => {
-    if (hasTriedFallback) {
-      setFallbackLoadingState('success');
+    if (src) {
+      setStatus('loading');
+      setCurrentSrc(src);
+      setUsedFallback(false);
+      setNaturalRatio(undefined);
     } else {
-      setLoadingState('success');
+      setStatus('idle');
+      setCurrentSrc(undefined);
     }
+  }, [src]);
 
-    // 延迟删除loading class, 避免页面闪烁跳动
-    setTimeout(() => {
-      if (hasTriedFallback) {
-        setFallbackLoadingState('success');
-      } else {
-        setLoadingState('success');
-      }
-    }, 150);
-
-    // 设置图片比例
-    if (imgRef.current) {
-      setImgRatio(`${imgRef.current.width / imgRef.current.height}`);
+  // 图片加载成功
+  const handleLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    
+    // 计算自然比例
+    if (img.naturalWidth && img.naturalHeight) {
+      setNaturalRatio(img.naturalWidth / img.naturalHeight);
     }
-  };
+    
+    setStatus('success');
+    onLoad?.(e);
+  }, [onLoad]);
 
-  // 处理图片加载错误
-  const handleImageError = () => {
-    if (hasTriedFallback) {
-      setFallbackLoadingState('error');
-    } else {
-      setLoadingState('error');
-      // 如果有fallbackUrl，尝试加载兜底图
-      if (fallbackUrl && !hasTriedFallback) {
-        setHasTriedFallback(true);
-        setFallbackLoadingState('loading');
-        setCurrentSrc(fallbackUrl);
-      } else if (fallback && typeof fallback === 'string' && !hasTriedFallback) {
-        // 如果有fallback字符串URL，尝试加载
-        setHasTriedFallback(true);
-        setFallbackLoadingState('loading');
-        setCurrentSrc(fallback);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const image = imgRef.current;
-
-    if (!image) {
-      setLoadingState('idle');
-      // 延迟 300ms 删除 loading class, 避免页面闪烁跳动
-      setTimeout(() => {
-        setLoadingState('idle');
-      }, 300);
+  // 图片加载失败
+  const handleError = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+    // 尝试使用 fallbackSrc
+    if (!usedFallback && fallbackSrc) {
+      setUsedFallback(true);
+      setCurrentSrc(fallbackSrc);
       return;
     }
+    
+    setStatus('error');
+    onError?.(e);
+  }, [usedFallback, fallbackSrc, onError]);
 
-    // 如果图片已经加载完成
-    if (image.complete) {
-      if (hasTriedFallback) {
-        setFallbackLoadingState('success');
-      } else {
-        setLoadingState('success');
-      }
-      // 延迟删除loading class, 避免页面闪烁跳动
-      setTimeout(() => {
-        if (hasTriedFallback) {
-          setFallbackLoadingState('success');
-        } else {
-          setLoadingState('success');
-        }
-      }, 150);
-      setImgRatio(`${imgRef.current.width / imgRef.current.height}`);
+  // 处理点击
+  const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    onClick?.(e);
+  }, [onClick]);
+
+  // 根容器类名
+  const rootClasses = useMemo(() => {
+    const classes = [prefixCls];
+    
+    // 状态
+    classes.push(`${prefixCls}--${status}`);
+    
+    // 圆形
+    if (round) {
+      classes.push(`${prefixCls}--round`);
     }
-
-    // 添加事件监听器
-    image.addEventListener("load", handleImageLoad);
-    image.addEventListener("error", handleImageError);
-
-    return () => {
-      image?.removeEventListener("load", handleImageLoad);
-      image?.removeEventListener("error", handleImageError);
-    };
-  }, [currentSrc, hasTriedFallback]);
-
-  // 计算最终的宽高比
-  const finalRatio = ratio || (loadingState === 'success' || fallbackLoadingState === 'success' ? imgRatio : '1');
-
-  // 渲染兜底内容
-  const renderFallback = () => {
-    // 如果传了fallback且主图和兜底图都加载失败，且fallback不是字符串URL
-    if (fallback && typeof fallback !== 'string' && loadingState === 'error' && (fallbackLoadingState === 'error' || !fallbackUrl)) {
-      // 如果fallback是React节点，直接渲染
-      return fallback;
+    
+    // 可点击
+    if (onClick) {
+      classes.push(`${prefixCls}--clickable`);
     }
-
-    // 默认错误状态 - 主图和兜底图都加载失败，且没有有效的fallback
-    if (loadingState === 'error' && (fallbackLoadingState === 'error' || !fallbackUrl) && (!fallback || typeof fallback === 'string')) {
-      return <Alert type="error" title="加载失败" direction="column" className="land-image-alert" noBg />;
+    
+    if (className) {
+      classes.push(className);
     }
+    
+    return classes.join(' ');
+  }, [status, round, onClick, className]);
 
-    return null;
-  };
+  // 根容器样式
+  const rootStyle = useMemo<React.CSSProperties>(() => {
+    const styles: React.CSSProperties = { ...style };
+    
+    if (width !== undefined) {
+      styles.width = typeof width === 'number' ? `${width}px` : width;
+    }
+    
+    if (height !== undefined) {
+      styles.height = typeof height === 'number' ? `${height}px` : height;
+    }
+    
+    // 宽高比
+    const finalRatio = ratio ?? (status === 'success' ? naturalRatio : undefined);
+    if (finalRatio !== undefined) {
+      styles.aspectRatio = `${finalRatio}`;
+    }
+    
+    // 圆角
+    if (round) {
+      styles.borderRadius = '50%';
+    } else if (radius !== undefined) {
+      styles.borderRadius = typeof radius === 'number' ? `${radius}px` : radius;
+    }
+    
+    return styles;
+  }, [style, width, height, ratio, naturalRatio, status, round, radius]);
 
-  // 判断是否显示加载状态
-  const showLoading = (loadingState === 'loading') || (hasTriedFallback && fallbackLoadingState === 'loading');
+  // 图片样式
+  const imgStyles = useMemo<React.CSSProperties>(() => ({
+    objectFit: fit,
+    objectPosition: positionMap[position!] || 'center',
+    ...imgStyle,
+  }), [fit, position, imgStyle]);
 
-  // 判断是否显示图片
-  const showImage = currentSrc && (loadingState === 'success' || fallbackLoadingState === 'success' || showLoading);
-
-  return (
-    <div
-      className={`land-image ${showLoading ? 'loading' : (loadingState === 'success' || fallbackLoadingState === 'success') ? 'success' : 'error'} ${className ?? ''}`}
-      style={{
-        aspectRatio: finalRatio,
-        ...style,
-      }}
-    >
-      {/* 加载中状态 */}
-      {showLoading && (
+  // 渲染加载占位
+  const renderPlaceholder = () => {
+    if (placeholder) {
+      return <div className={`${prefixCls}__placeholder`}>{placeholder}</div>;
+    }
+    
+    if (showSkeleton) {
+      return (
         <Skeleton
           width="100%"
           height="100%"
-          radius="var(--radius-m)"
-          className="land-image-skeleton"
+          radius={round ? '50%' : (radius ?? 'var(--radius-m)')}
+          className={`${prefixCls}__skeleton`}
         />
-      )}
+      );
+    }
+    
+    return null;
+  };
 
-      {/* 兜底内容或错误状态 */}
-      {renderFallback()}
+  // 渲染错误状态
+  const renderError = () => {
+    // 自定义 fallback
+    if (fallback) {
+      return <div className={`${prefixCls}__fallback`}>{fallback}</div>;
+    }
+    
+    // 默认错误状态
+    if (showError) {
+      return (
+        <div className={`${prefixCls}__error`}>
+          <Icon name="image" size={24} stroke="var(--color-text-quaternary)" />
+          <span className={`${prefixCls}__error-text`}>加载失败</span>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
+  // 是否显示图片
+  const showImg = currentSrc && status !== 'error';
+
+  return (
+    <div
+      className={rootClasses}
+      style={rootStyle}
+      onClick={onClick ? handleClick : undefined}
+      {...htmlProps}
+    >
+      {/* 加载中占位 */}
+      {status === 'loading' && renderPlaceholder()}
+
+      {/* 错误状态 */}
+      {status === 'error' && renderError()}
 
       {/* 图片元素 */}
-      {showImage && (
+      {showImg && (
         <img
           ref={imgRef}
-          alt={alt}
           src={currentSrc}
-          className={`land-image-img ${(loadingState === 'success' || fallbackLoadingState === 'success') ? 'loaded' : ''} ${imgClassName}`}
-          style={{
-            opacity: (loadingState === 'success' || fallbackLoadingState === 'success') ? 1 : 0,
-            ...imgStyle
-          }}
+          alt={alt}
+          loading={lazy ? 'lazy' : undefined}
+          className={`${prefixCls}__img ${status === 'success' ? `${prefixCls}__img--loaded` : ''} ${imgClassName || ''}`}
+          style={imgStyles}
+          onLoad={handleLoad}
+          onError={handleError}
+          {...imgProps}
         />
       )}
     </div>

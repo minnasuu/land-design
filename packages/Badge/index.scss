@@ -1,40 +1,185 @@
-.land-badge{
-  --land-badge-content-gap: var(--gap-xs);
-  --land-badge-content-padding: 0 var(--padding-m);
-  --land-badge-content-min-width: 20px;
-  --land-badge-content-height: 20px;
-  --land-badge-content-radius: var(--radius-full);
-  --land-badge-content-bg: var(--color-red-6);
-  --land-badge-content-color: var(--color-text-primary);
-  --land-badge-content-border: none;
+// ==================== Badge 组件样式 ====================
+// 使用 BEM 命名规范: .land-badge / .land-badge__sup / .land-badge--modifier
+
+$badge-prefix: 'land-badge';
+
+// ─── 变量定义 ───
+$badge-font-size: 12px;
+$badge-line-height: 1;
+$badge-height: 20px;
+$badge-min-width: 20px;
+$badge-padding-x: 6px;
+$badge-border-radius: 10px;
+$badge-dot-size: 8px;
+$badge-font-weight: 500;
+
+// ─── 颜色变量 ───
+$badge-colors: (
+  'default': (
+    'bg': var(--color-red-6, #f5222d),
+    'color': #fff,
+    'border': var(--color-red-6, #f5222d),
+    'light-bg': var(--color-red-1, #fff1f0),
+    'light-color': var(--color-red-6, #f5222d),
+  ),
+  'primary': (
+    'bg': var(--color-primary, #1677ff),
+    'color': #fff,
+    'border': var(--color-primary, #1677ff),
+    'light-bg': var(--color-blue-1, #e6f4ff),
+    'light-color': var(--color-primary, #1677ff),
+  ),
+  'success': (
+    'bg': var(--color-green-6, #52c41a),
+    'color': #fff,
+    'border': var(--color-green-6, #52c41a),
+    'light-bg': var(--color-green-1, #f6ffed),
+    'light-color': var(--color-green-6, #52c41a),
+  ),
+  'warning': (
+    'bg': var(--color-orange-6, #fa8c16),
+    'color': #fff,
+    'border': var(--color-orange-6, #fa8c16),
+    'light-bg': var(--color-orange-1, #fff7e6),
+    'light-color': var(--color-orange-6, #fa8c16),
+  ),
+  'danger': (
+    'bg': var(--color-red-6, #f5222d),
+    'color': #fff,
+    'border': var(--color-red-6, #f5222d),
+    'light-bg': var(--color-red-1, #fff1f0),
+    'light-color': var(--color-red-6, #f5222d),
+  ),
+  'info': (
+    'bg': var(--color-gray-6, #8c8c8c),
+    'color': #fff,
+    'border': var(--color-gray-6, #8c8c8c),
+    'light-bg': var(--color-gray-2, #f5f5f5),
+    'light-color': var(--color-gray-8, #595959),
+  ),
+);
+
+// ==================== 根容器 ====================
+.#{$badge-prefix} {
   position: relative;
-  --land-badge-content-font-size: var(--font-content-s);
-  --land-badge-content-font-weight: 400;
-  --land-badge-content-dot-size: 8px;
-  --land-badge-content-transform: translate(30%,-30%);
-  .land-badge-content{
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--land-badge-content-gap);
-    padding:var(--land-badge-content-padding);
-    min-width: var(--land-badge-content-min-width);
-    height: var(--land-badge-content-height);
-    box-sizing: border-box;
-    border-radius: var(--land-badge-content-radius);
-    background-color: var(--land-badge-content-bg);
-    color: var(--land-badge-content-color);
-    border: var(--land-badge-content-border);
-    font-size: var(--land-badge-content-font-size);
-    font-weight: var(--land-badge-content-font-weight);
-    transform: var(--land-badge-content-transform);
-    &.dot{
-      padding: 0;
-      min-width: var(--land-badge-content-dot-size);
-      height: var(--land-badge-content-dot-size);
+  display: inline-flex;
+  vertical-align: middle;
+  box-sizing: border-box;
+
+  // 有子元素时
+  &--has-children {
+    // 默认样式
+  }
+
+  // 独立使用（无子元素）
+  &--standalone {
+    .#{$badge-prefix}__sup {
+      position: relative;
+      top: auto;
+      right: auto;
+      transform: none;
     }
+  }
+}
+
+// ==================== 徽标元素 ====================
+.#{$badge-prefix}__sup {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: $badge-min-width;
+  height: $badge-height;
+  padding: 0 $badge-padding-x;
+  font-size: $badge-font-size;
+  font-weight: $badge-font-weight;
+  line-height: $badge-line-height;
+  white-space: nowrap;
+  border-radius: $badge-border-radius;
+  transform-origin: center;
+  cursor: default;
+  transition: all 0.2s ease;
+
+  // ─── 位置变体 ───
+  &--top-right {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+  &--top-left {
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  &--bottom-right {
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+  }
+
+  &--bottom-left {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+  }
+
+  // ─── 圆点模式 ───
+  &--dot {
+    min-width: $badge-dot-size;
+    width: $badge-dot-size;
+    height: $badge-dot-size;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  // ─── 多位数字 ───
+  &--multiple {
+    padding: 0 $badge-padding-x;
+  }
+
+  // ─── 自定义内容 ───
+  &--custom {
+    padding: 0 $badge-padding-x;
+  }
+
+  // ─── 外观变体 & 颜色状态组合 ───
+  @each $status, $colors in $badge-colors {
+    // 标准样式 (standard)
+    &--standard.#{$badge-prefix}__sup--#{$status} {
+      background-color: map-get($colors, 'bg');
+      color: map-get($colors, 'color');
+      border: none;
+    }
+
+    // 描边样式 (outline)
+    &--outline.#{$badge-prefix}__sup--#{$status} {
+      background-color: transparent;
+      color: map-get($colors, 'light-color');
+      border: 1px solid map-get($colors, 'border');
+    }
+
+    // 浅色样式 (light)
+    &--light.#{$badge-prefix}__sup--#{$status} {
+      background-color: map-get($colors, 'light-bg');
+      color: map-get($colors, 'light-color');
+      border: none;
+    }
+  }
+}
+
+// ==================== 可点击状态 ====================
+.#{$badge-prefix}__sup[style*="cursor"] {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:active {
+    opacity: 0.7;
   }
 }

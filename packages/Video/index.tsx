@@ -1,819 +1,909 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../Icon';
 import VideoProgressBar from './VideoProgressBar';
-import AffixContainer from "../AffixContainer";
-import Loading from "../Loading";
-import useClickOutside from "../hooks/useClickOutside";
-import PopOver from "../PopOver";
-import VideoSetting from "./VideoSetting";
-import useFormateTime from "../hooks/useFormateTime";
-import Dropdown from "../Dropdown";
-import { VideoProps } from './props';
-import './index.scss'
+import VideoSetting from './VideoSetting';
+import Loading from '../Loading';
+import PopOver from '../PopOver';
+import Dropdown from '../Dropdown';
 import Alert from '../Alert';
-import Slider from '../Slider';
+import useFormateTime from '../hooks/useFormateTime';
+import useClickOutside from '../hooks/useClickOutside';
+import {
+  VideoProps,
+  VideoStatus,
+  VideoEventData,
+  DEFAULT_RATE_OPTIONS,
+  DEFAULT_SEEK_STEP,
+  DEFAULT_VOLUME_STEP,
+  DEFAULT_PREVIEW_WIDTH,
+} from './props';
+import './index.scss';
 
 const Video: React.FC<VideoProps> = ({
+  // 基础属性
+  children,
   src,
+  poster,
+  type,
+
+  // 尺寸与样式
+  width,
+  height,
   ratio,
-  radius = "0px",
-  forwardSecond = 5,
-  useKeyImg,
-  onFullWidthChange,
-  useKeyControls,
-  autoPlay,
-  className = "",
+  radius = 0,
+  fit = 'contain',
+
+  // 播放控制
+  autoPlay = false,
+  loop: loopProp = false,
+  muted: mutedProp = true,
+  volume: volumeProp = 100,
+  playbackRate: playbackRateProp = 1,
+  preload = 'metadata',
+  rateOptions = DEFAULT_RATE_OPTIONS,
+
+  // 控制栏配置
+  controls = true,
+  showPlayButton = true,
+  showProgress = true,
+  showTime = true,
+  showVolume = true,
+  showRate = true,
+  showPip = true,
+  showWebFullscreen = true,
+  showFullscreen = true,
+  showLoop = true,
+  showSettings = true,
+
+  // 关键帧预览
+  previewEnabled = false,
+  previewWidth = DEFAULT_PREVIEW_WIDTH,
+
+  // 键盘控制
+  keyboard = true,
+  seekStep = DEFAULT_SEEK_STEP,
+  volumeStep = DEFAULT_VOLUME_STEP,
+
+  // 剧集导航
+  showPrev = false,
+  showNext = false,
+  prevDisabled = false,
+  nextDisabled = false,
+
+  // 事件回调
+  onPlay,
+  onPause,
+  onEnded,
+  onTimeUpdate,
+  onVolumeChange,
+  onRateChange,
+  onFullscreenEnter,
+  onFullscreenExit,
+  onWebFullscreenChange,
+  onLoaded,
+  onError,
+  onWaiting,
+  onCanPlay,
+  onSeek,
+  onPrevClick,
+  onNextClick,
+  onPipEnter,
+  onPipExit,
+
+  // 样式定制
+  className = '',
   style,
-  videoClassName = "",
+  videoClassName = '',
   videoStyle,
-  showControls,
-  usePrevEpisode,
-  useNextEpisode,
-  onPrevEpisodeClick,
-  onNextEpisodeClick,
+  controlsClassName = '',
+  controlsStyle,
+  progressColor,
+
+  videoProps,
 }) => {
+  // ─── Refs ───
   const videoRef = useRef<HTMLVideoElement>(null);
   const previewVideoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const controlsContainerRef = useRef<HTMLDivElement>(null);
-  const [videoRatio, setVideoRatio] = useState<number>(1);
-  const [duration, setDuration] = useState<number>(0);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [buffered, setBuffered] = useState<number>(0);
-  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
-  /** 是否卡顿 */
-  const [loss, setLoss] = useState<boolean>(false);
-  /** 是否正在拖拽进度条 */
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  /** 是否正在播放 */
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  /** 是否需要收起右侧控件 */
-  const [shouldCollapseControls, setShouldCollapseControls] = useState<boolean>(false);
-  /** 预览帧更新定时器 */
-  const previewTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const volumeSliderRef = useRef<HTMLDivElement>(null);
 
-  const handleTimeUpdate = useCallback(() => {
-    if (videoRef.current && !isDragging) {
-      const video = videoRef.current;
-      setCurrentTime(video.currentTime);
-      if (video.buffered.length > 0) {
-        const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-        setBuffered(bufferedEnd);
-      }
-      if (videoRef.current.currentTime === 0) {
-        setIsInitialLoad(true);
-      }
-    }
-  }, [isDragging]);
+  // ─── 视频状态 ───
+  const [status, setStatus] = useState<VideoStatus>('idle');
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [buffered, setBuffered] = useState(0);
+  const [videoRatio, setVideoRatio] = useState(16 / 9);
 
-  /** 视频播放 & 暂停 */
+  // ─── 控制状态 ───
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(volumeProp);
+  const [lastVolume, setLastVolume] = useState(volumeProp);
+  const [muted, setMuted] = useState(mutedProp);
+  const [loop, setLoop] = useState(loopProp);
+  const [playbackRate, setPlaybackRate] = useState(playbackRateProp);
+
+  // ─── UI 状态 ───
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isWebFullscreen, setIsWebFullscreen] = useState(false);
+  const [shouldCollapseControls, setShouldCollapseControls] = useState(false);
+
+  // ─── 进度条拖动状态 (用于热区扩展) ───
+  const [isProgressDragging, setIsProgressDragging] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // ─── 预览状态 ───
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewLeft, setPreviewLeft] = useState(0);
+
+  // ─── 快捷键反馈 ───
+  const [showBackward, setShowBackward] = useState(false);
+  const [showForward, setShowForward] = useState(false);
+  const [showCenterIcon, setShowCenterIcon] = useState(false);
+
+  // ─── 计算属性 ───
+  const finalRadius = useMemo(() => {
+    if (typeof radius === 'number') return `${radius}px`;
+    return radius;
+  }, [radius]);
+
+  const finalRatio = useMemo(() => {
+    if (ratio) return typeof ratio === 'number' ? ratio : ratio;
+    return videoRatio;
+  }, [ratio, videoRatio]);
+
+  const previewHeight = useMemo(() => {
+    const r = videoRatio || 16 / 9;
+    return previewWidth / r;
+  }, [previewWidth, videoRatio]);
+
+  // ─── 事件数据生成 ───
+  const getEventData = useCallback((): VideoEventData => ({
+    currentTime,
+    duration,
+    buffered: duration > 0 ? buffered / duration : 0,
+    volume,
+    muted,
+    playbackRate,
+    status,
+  }), [currentTime, duration, buffered, volume, muted, playbackRate, status]);
+
+  // ─── 播放控制 ───
   const handlePlay = useCallback(async () => {
     if (!videoRef.current) return;
 
     try {
       if (videoRef.current.paused) {
         await videoRef.current.play();
-        setIsPlaying(true);
       } else {
         videoRef.current.pause();
-        setIsPlaying(false);
       }
     } catch (error) {
       console.error('播放失败:', error);
-      setIsPlaying(false);
     }
   }, []);
 
-  /** 视频进度条移动 */
-  const [left, setLeft] = useState<number>(0);
-  /** 展示关键帧图片 */
-  const [showKeyImg, setShowKeyImg] = useState<boolean>(false);
-  const keyImgWidth = useMemo(() => {
-    const currentRatio = videoRatio || Number(ratio) || 16 / 9;
-    return currentRatio < 1 ? 100 : 200;
-  }, [videoRatio, ratio]);
-
-  const handleProgressMove = useCallback((val, left, width) => {
-   // 只有在启用关键帧预览时才执行相关逻辑
-    if (!useKeyImg) return;
-    const previewVideo = previewVideoRef.current;
-    if(!previewVideo) return;
-    previewVideo.currentTime = val * duration;
-
-    // 计算预览图片的位置
-    if (left < keyImgWidth / 2) {
-      setLeft(0);
-    } else {
-      if (left < width - keyImgWidth / 2) {
-        setLeft(left - keyImgWidth / 2);
-      } else {
-        setLeft(width - keyImgWidth);
-      }
-    }
-  },[showKeyImg])
-
-
-  /** 进度条拖拽开始 */
-  const handleProgressDragStart = useCallback(() => {
-    setIsDragging(true);
-  }, []);
-
-  /** 进度条拖拽结束 */
-  const handleProgressDragEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
-
-  /** 进度条点击/拖拽 */
-  const handleProgressChange = useCallback((val: number) => {
-    if (!videoRef.current || !duration) return;
-
-    const newTime = val * duration;
-    videoRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
-
-    // 如果视频暂停状态，点击进度条后自动播放
-    if (videoRef.current.paused && isInitialLoad) {
-      handlePlay();
-    }
-  }, [duration, isInitialLoad, handlePlay]);
-
-  /** 音量控制 */
-  const [volume, setVolume] = useState<number>(100);
-  const [lastVolume, setLastVolume] = useState<number>(100);
-  const [muted, setMuted] = useState<boolean>(true);
-  const volumeSliderRef = useRef<HTMLDivElement>(null);
-  const [showVolumeSlider, setShowVolumeSlider] = useState<boolean>(false);
-
+  // ─── 音量控制 ───
   const handleVolumeChange = useCallback((val: number) => {
     if (!videoRef.current) return;
-    setVolume(val);
-    videoRef.current.volume = val / 100;
 
-    // 如果音量大于0，取消静音状态
-    if (val > 0 && muted) {
+    const newVolume = Math.max(0, Math.min(100, val));
+    setVolume(newVolume);
+    videoRef.current.volume = newVolume / 100;
+
+    if (newVolume > 0 && muted) {
       setMuted(false);
+      videoRef.current.muted = false;
     }
-  }, [muted]);
 
-  useEffect(() => {
-    if (volume !== 0) {
-      setLastVolume(volume);
-      setMuted(false);
-      setShowVolumeSlider(volume < 100);
-    }
-    if (volume === 0) {
-      setMuted(true);
-    }
-  }, [volume]);
+    onVolumeChange?.(newVolume, newVolume === 0);
+  }, [muted, onVolumeChange]);
 
-  const handleMuteChange = useCallback(() => {
+  const handleMuteToggle = useCallback(() => {
     if (!videoRef.current) return;
 
     if (muted) {
-      if (lastVolume > 0) {
-        videoRef.current.volume = lastVolume / 100;
-        setVolume(lastVolume);
-      } else {
-        videoRef.current.volume = 1;
-        setVolume(100);
-      }
+      const newVolume = lastVolume > 0 ? lastVolume : 100;
+      videoRef.current.volume = newVolume / 100;
+      videoRef.current.muted = false;
+      setVolume(newVolume);
+      setMuted(false);
+      onVolumeChange?.(newVolume, false);
     } else {
+      setLastVolume(volume);
       videoRef.current.volume = 0;
+      videoRef.current.muted = true;
       setVolume(0);
+      setMuted(true);
+      onVolumeChange?.(0, true);
     }
-    setMuted(!muted);
-  }, [muted, lastVolume]);
+  }, [muted, lastVolume, volume, onVolumeChange]);
 
-  // 视频源改变时的处理
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-
-      // 重置视频相关状态
-      setCurrentTime(0);
-      setBuffered(0);
-      setDuration(0);
-      setIsInitialLoad(true);
-      setError(false);
-      setLoss(false);
-
-      // 重置控件状态
-      setShowBack(false);
-      setShowFront(false);
-      setShowCenterPlay(false);
-      setShowKeyImg(false);
-    }
-
-    // 重置预览视频
-    if (previewVideoRef.current) {
-      previewVideoRef.current.currentTime = 0;
-    }
-  }, [src]);
-
-  useClickOutside(volumeSliderRef, () => {
-    if (showVolumeSlider) {
-      setShowVolumeSlider(false);
-    }
-  });
-
-  /** 倍数 */
-  const [rate, setRate] = useState<number>(1);
-  const handleRateChange = useCallback((val, item) => {
-    setRate(item.value);
+  // ─── 播放速率控制 ───
+  const handleRateChange = useCallback((rate: number) => {
     if (!videoRef.current) return;
-    console.log(val, videoRef.current.playbackRate);
 
-    videoRef.current.playbackRate = val;
+    videoRef.current.playbackRate = rate;
+    setPlaybackRate(rate);
+    onRateChange?.(rate);
+  }, [onRateChange]);
+
+  // ─── 循环控制 ───
+  const handleLoopChange = useCallback((newLoop: boolean) => {
+    setLoop(newLoop);
+    if (videoRef.current) {
+      videoRef.current.loop = newLoop;
+    }
   }, []);
 
-  /** 循环 */
-  const [loop, setLoop] = useState<boolean>(false);
+  // ─── 进度跳转 ───
+  const handleSeek = useCallback((progress: number) => {
+    if (!videoRef.current || !duration) return;
 
-  /** 画中画播放 */
-  const handleSmallScreen = async () => {
+    const newTime = progress * duration;
+    videoRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+    onSeek?.(newTime);
+  }, [duration, onSeek]);
+
+  // ─── 画中画 ───
+  const handlePip = useCallback(async () => {
     if (!videoRef.current) return;
-    const video = videoRef.current;
+
     try {
-      if (video !== document.pictureInPictureElement) {
-        await video.requestPictureInPicture();
-      } else {
+      if (document.pictureInPictureElement === videoRef.current) {
         await document.exitPictureInPicture();
+        onPipExit?.();
+      } else {
+        await videoRef.current.requestPictureInPicture();
+        onPipEnter?.();
       }
     } catch (error) {
-      console.error("Error with Picture-in-Picture:", error);
+      console.error('画中画操作失败:', error);
     }
-  };
+  }, [onPipEnter, onPipExit]);
 
-  /** 网页宽屏屏 */
-  const [fullWidth, setFullWidth] = useState<boolean>(false);
+  // ─── 网页全屏 ───
+  const handleWebFullscreen = useCallback(() => {
+    const newState = !isWebFullscreen;
+    setIsWebFullscreen(newState);
+    onWebFullscreenChange?.(newState);
+  }, [isWebFullscreen, onWebFullscreenChange]);
 
-  /** 网页全屏 */
-  const [fullView, setFullView] = useState<boolean>(false);
+  // ─── 系统全屏 ───
+  const handleFullscreen = useCallback(() => {
+    if (!containerRef.current) return;
 
-  /** 全屏播放 */
-  const handleFullScreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+      onFullscreenExit?.();
+    } else {
+      containerRef.current.requestFullscreen();
+      onFullscreenEnter?.();
+    }
+  }, [onFullscreenEnter, onFullscreenExit]);
+
+  // ─── 预览控制 ───
+  const handlePreviewMove = useCallback((progress: number, clientX: number, containerWidth: number) => {
+    if (!previewEnabled || !previewVideoRef.current) return;
+
+    previewVideoRef.current.currentTime = progress * duration;
+
+    // 计算预览图位置
+    const halfWidth = previewWidth / 2;
+    let left = clientX - halfWidth;
+    if (left < 0) left = 0;
+    if (left > containerWidth - previewWidth) left = containerWidth - previewWidth;
+    setPreviewLeft(left);
+  }, [previewEnabled, duration, previewWidth]);
+
+  // ─── 视频事件处理 ───
+  const handleTimeUpdate = useCallback(() => {
+    if (!videoRef.current || isDragging) return;
+
+    const video = videoRef.current;
+    setCurrentTime(video.currentTime);
+
+    if (video.buffered.length > 0) {
+      setBuffered(video.buffered.end(video.buffered.length - 1));
+    }
+
+    onTimeUpdate?.(getEventData());
+  }, [isDragging, getEventData, onTimeUpdate]);
+
+  const handleLoadedMetadata = useCallback(() => {
     if (!videoRef.current) return;
+
     const video = videoRef.current;
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
+    setDuration(video.duration);
+    setVideoRatio(video.videoWidth / video.videoHeight || 16 / 9);
+    setStatus('idle');
+
+    onLoaded?.(getEventData());
+  }, [getEventData, onLoaded]);
+
+  const handleVideoPlay = useCallback(() => {
+    setIsPlaying(true);
+    setStatus('playing');
+    onPlay?.(getEventData());
+  }, [getEventData, onPlay]);
+
+  const handleVideoPause = useCallback(() => {
+    setIsPlaying(false);
+    setStatus('paused');
+    onPause?.(getEventData());
+  }, [getEventData, onPause]);
+
+  const handleVideoEnded = useCallback(() => {
+    setIsPlaying(false);
+    setStatus('ended');
+    onEnded?.(getEventData());
+  }, [getEventData, onEnded]);
+
+  const handleVideoWaiting = useCallback(() => {
+    setStatus('buffering');
+    onWaiting?.();
+  }, [onWaiting]);
+
+  const handleVideoCanPlay = useCallback(() => {
+    if (status === 'buffering') {
+      setStatus(isPlaying ? 'playing' : 'paused');
     }
-  }, []);
+    onCanPlay?.();
+  }, [status, isPlaying, onCanPlay]);
 
-  /** 监听键盘左右箭头、空格播放 */
-  const [showBack, setShowBack] = useState<boolean>(false);
-  const [showFront, setShowFront] = useState<boolean>(false);
-  const [showCenterPlay, setShowCenterPlay] = useState<boolean>(false);
+  const handleVideoError = useCallback(() => {
+    setStatus('error');
+    onError?.(new Error('视频加载失败'));
+  }, [onError]);
 
-  useEffect(() => {
-    if (showBack) {
-      const timer = setTimeout(() => {
-        setShowBack(false);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [showBack]);
-
-  useEffect(() => {
-    if (showFront) {
-      const timer = setTimeout(() => {
-        setShowFront(false);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [showFront]);
-
-  useEffect(() => {
-    if (showCenterPlay) {
-      const timer = setTimeout(() => {
-        setShowCenterPlay(false);
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [showCenterPlay]);
-
-  // 键盘事件处理函数
+  // ─── 键盘控制 ───
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (!videoRef.current || !useKeyControls) return;
+    if (!keyboard || !videoRef.current) return;
 
     const video = videoRef.current;
+    const isVideoFocused = document.activeElement === video || 
+                          containerRef.current?.contains(document.activeElement) ||
+                          document.fullscreenElement;
 
-    // 只在视频元素获得焦点或全屏时响应键盘事件
-    if (document.activeElement !== video && !document.fullscreenElement) {
-      return;
-    }
-
-    event.preventDefault();
+    if (!isVideoFocused) return;
 
     switch (event.code) {
-      case "ArrowLeft":
-        if (video.paused) return;
-        const newTimeBack = Math.max(0, video.currentTime - forwardSecond);
-        video.currentTime = newTimeBack;
-        setCurrentTime(newTimeBack);
-        setShowBack(true);
-        break;
-
-      case "ArrowRight":
-        if (video.paused) return;
-        const newTimeFront = Math.min(video.duration, video.currentTime + forwardSecond);
-        video.currentTime = newTimeFront;
-        setCurrentTime(newTimeFront);
-        setShowFront(true);
-        break;
-
-      case "Space":
+      case 'Space':
         event.preventDefault();
         handlePlay();
-        setShowCenterPlay(true);
+        setShowCenterIcon(true);
         break;
 
-      case "KeyM":
+      case 'ArrowLeft':
         event.preventDefault();
-        handleMuteChange();
+        if (!video.paused) {
+          const newTime = Math.max(0, video.currentTime - seekStep);
+          video.currentTime = newTime;
+          setCurrentTime(newTime);
+          setShowBackward(true);
+        }
         break;
 
-      case "KeyF":
+      case 'ArrowRight':
         event.preventDefault();
-        handleFullScreen();
+        if (!video.paused) {
+          const newTime = Math.min(video.duration, video.currentTime + seekStep);
+          video.currentTime = newTime;
+          setCurrentTime(newTime);
+          setShowForward(true);
+        }
+        break;
+
+      case 'ArrowUp':
+        event.preventDefault();
+        handleVolumeChange(volume + volumeStep);
+        break;
+
+      case 'ArrowDown':
+        event.preventDefault();
+        handleVolumeChange(volume - volumeStep);
+        break;
+
+      case 'KeyM':
+        event.preventDefault();
+        handleMuteToggle();
+        break;
+
+      case 'KeyF':
+        event.preventDefault();
+        handleFullscreen();
         break;
 
       default:
         break;
     }
-  }, [useKeyControls, forwardSecond, handlePlay, handleMuteChange, handleFullScreen]);
+  }, [keyboard, handlePlay, seekStep, handleVolumeChange, volume, volumeStep, handleMuteToggle, handleFullscreen]);
 
-  // 键盘事件监听
+  // ─── 键盘事件监听 ───
   useEffect(() => {
-    if (!useKeyControls) return;
+    if (!keyboard) return;
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [keyboard, handleKeyDown]);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [useKeyControls, handleKeyDown]);
-
-  // 监听视频播放状态变化
+  // ─── 快捷键反馈自动隐藏 ───
   useEffect(() => {
-    if (!videoRef.current) return;
+    if (showBackward) {
+      const timer = setTimeout(() => setShowBackward(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [showBackward]);
 
-    const video = videoRef.current;
+  useEffect(() => {
+    if (showForward) {
+      const timer = setTimeout(() => setShowForward(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [showForward]);
 
-    const handlePlayEvent = () => {
-      setIsPlaying(true);
-      setIsInitialLoad(false);
-    };
+  useEffect(() => {
+    if (showCenterIcon) {
+      const timer = setTimeout(() => setShowCenterIcon(false), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [showCenterIcon]);
 
-    const handlePauseEvent = () => {
+  // ─── 视频源变化重置 ───
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
       setIsPlaying(false);
-    };
+      setCurrentTime(0);
+      setBuffered(0);
+      setDuration(0);
+      setStatus('idle');
+    }
+  }, [src]);
 
-    const handleEndedEvent = () => {
-      setIsPlaying(false);
-      setIsInitialLoad(true);
-    };
+  // ─── 音量滑块点击外部关闭 ───
+  useClickOutside(volumeSliderRef, () => {
+    if (showVolumeSlider) setShowVolumeSlider(false);
+  });
 
-    video.addEventListener('play', handlePlayEvent);
-    video.addEventListener('pause', handlePauseEvent);
-    video.addEventListener('ended', handleEndedEvent);
-
-    return () => {
-      video.removeEventListener('play', handlePlayEvent);
-      video.removeEventListener('pause', handlePauseEvent);
-      video.removeEventListener('ended', handleEndedEvent);
-    };
-  }, []);
-
-  const handleLoadedMetadata = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const target = e.target as HTMLVideoElement;
-    // 重新计算视频比例
-    const newRatio = target.clientWidth / target.clientHeight;
-    setVideoRatio(newRatio);
-    setDuration(target.duration);
-
-    // 重置相关状态
-    setCurrentTime(0);
-    setBuffered(0);
-    setIsInitialLoad(true);
-    setError(false);
-    setLoss(false);
-  }, []);
-
-  // 检测控件容器宽度，决定是否需要收起右侧控件
-  const checkControlsWidth = useCallback(() => {
-    if (!controlsContainerRef.current) return;
-
-    const container = controlsContainerRef.current;
-    const containerWidth = container.offsetWidth;
-
-    // 根据是否有分集按钮动态计算左侧控件所需的最小宽度
-    const baseLeftWidth = 120; // 播放按钮、时间
-    const volumeWidth = 60; // 音量控件
-    const episodeWidth = usePrevEpisode || useNextEpisode ? 80 : 0; // 分集按钮
-    const leftControlsMinWidth = baseLeftWidth + volumeWidth + episodeWidth;
-
-    // 右侧控件宽度（设置、画中画、全屏等）
-    const rightControlsWidth = 240; // 增加一些宽度，因为设置按钮有hover面板
-
-    // 如果容器宽度不足以容纳所有控件，则收起右侧控件
-    const needsCollapse = containerWidth < (leftControlsMinWidth + rightControlsWidth + 30); // 30px 缓冲空间
-    setShouldCollapseControls(needsCollapse);
-  }, [usePrevEpisode, useNextEpisode]);
-
-  // 监听容器宽度变化
+  // ─── 响应式控制栏 ───
   useEffect(() => {
-    checkControlsWidth();
+    const checkWidth = () => {
+      if (!controlsContainerRef.current) return;
 
-    const resizeObserver = new ResizeObserver(() => {
-      checkControlsWidth();
-    });
+      const containerWidth = controlsContainerRef.current.offsetWidth;
+      const leftWidth = 150 + (showPrev || showNext ? 80 : 0);
+      const rightWidth = 280;
 
+      setShouldCollapseControls(containerWidth < leftWidth + rightWidth + 30);
+    };
+
+    checkWidth();
+    const observer = new ResizeObserver(checkWidth);
     if (controlsContainerRef.current) {
-      resizeObserver.observe(controlsContainerRef.current);
+      observer.observe(controlsContainerRef.current);
     }
 
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [checkControlsWidth]);
+    return () => observer.disconnect();
+  }, [showPrev, showNext]);
 
-  // 计算最终的视频比例
-  const finalRatio = useMemo(() => {
-    if (ratio) return ratio;
-    if (videoRatio && videoRatio > 0) return videoRatio.toString();
-    return "auto";
-  }, [ratio, videoRatio]);
+  // ─── 进度条拖动热区扩展处理 ───
+  const handleContainerMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isProgressDragging || !progressBarRef.current) return;
+
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const newProgress = Math.max(0, Math.min(1, x / rect.width));
+    handleSeek(newProgress);
+  }, [isProgressDragging, handleSeek]);
+
+  const handleContainerMouseUp = useCallback(() => {
+    if (isProgressDragging) {
+      setIsProgressDragging(false);
+      setIsDragging(false);
+    }
+  }, [isProgressDragging]);
+
+  const handleContainerMouseLeave = useCallback(() => {
+    if (isProgressDragging) {
+      setIsProgressDragging(false);
+      setIsDragging(false);
+    }
+  }, [isProgressDragging]);
+
+  // ─── 点击视频区域播放/暂停 ───
+  const handleVideoAreaClick = useCallback((e: React.MouseEvent) => {
+    // 如果正在拖动进度条，不触发播放暂停
+    if (isProgressDragging || isDragging) return;
+
+    // 确保点击的是视频区域，而不是控制栏等其他元素
+    const target = e.target as HTMLElement;
+    const isControlsArea = target.closest('.land-video__controls');
+    const isButtonArea = target.closest('.land-video__button');
+    const isCenterIcon = target.closest('.land-video__center-icon');
+
+    if (isControlsArea || isButtonArea || isCenterIcon) return;
+
+    handlePlay();
+  }, [isProgressDragging, isDragging, handlePlay]);
+
+  // ─── 类名计算 ───
+  const containerClassName = useMemo(() => {
+    const classes = ['land-video'];
+    if (status === 'error') classes.push('land-video--error');
+    if (isWebFullscreen) classes.push('land-video--web-fullscreen');
+    if (className) classes.push(className);
+    return classes.join(' ');
+  }, [status, isWebFullscreen, className]);
+
+  const videoElementClassName = useMemo(() => {
+    const classes = ['land-video__player'];
+    if (videoClassName) classes.push(videoClassName);
+    return classes.join(' ');
+  }, [videoClassName]);
+
+  // ─── 渲染错误状态 ───
+  if (status === 'error') {
+    return (
+      <div
+        ref={containerRef}
+        className={containerClassName}
+        style={{
+          width,
+          height,
+          aspectRatio: String(finalRatio),
+          borderRadius: finalRadius,
+          ...style,
+        }}
+      >
+        <Alert type="error" title="视频加载失败" direction="vertical" variant="text" />
+      </div>
+    );
+  }
+
+  // ─── 渲染控制按钮 ───
+  const renderControlButtons = () => {
+    if (shouldCollapseControls) {
+      // 折叠模式：右侧只显示一个更多按钮
+      return (
+        <div className="land-video__controls-right">
+          <Dropdown
+            trigger="click"
+            placement="top"
+            alignment="left"
+            content={
+              <div className="land-video__dropdown">
+                {/* 播放速率 */}
+                {showRate && (
+                  <div className="land-video__dropdown-section">
+                    <div className="land-video__dropdown-title">播放速度</div>
+                    <div className="land-video__dropdown-rates">
+                      {rateOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          className={`land-video__dropdown-rate ${playbackRate === option.value ? 'land-video__dropdown-rate--active' : ''}`}
+                          onClick={() => handleRateChange(option.value)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 循环播放 */}
+                {showLoop && (
+                  <div className="land-video__dropdown-section">
+                    <button
+                      className={`land-video__dropdown-toggle ${loop ? 'land-video__dropdown-toggle--active' : ''}`}
+                      onClick={() => handleLoopChange(!loop)}
+                    >
+                      <Icon name="loop" size={16} />
+                      <span>循环播放</span>
+                      <div className={`land-video__dropdown-switch ${loop ? 'land-video__dropdown-switch--active' : ''}`} />
+                    </button>
+                  </div>
+                )}
+
+                <div className="land-video__dropdown-divider" />
+
+                <div className="land-video__dropdown-actions">
+                  {showPip && (
+                    <button className="land-video__dropdown-action" onClick={handlePip}>
+                      <Icon name="video-small-screen" size={20} />
+                      <span>画中画</span>
+                    </button>
+                  )}
+                  {showWebFullscreen && (
+                    <button className="land-video__dropdown-action" onClick={handleWebFullscreen}>
+                      <Icon name={isWebFullscreen ? 'zoom-out' : 'zoom-in'} size={20} />
+                      <span>{isWebFullscreen ? '退出网页全屏' : '网页全屏'}</span>
+                    </button>
+                  )}
+                  {showFullscreen && (
+                    <button className="land-video__dropdown-action" onClick={handleFullscreen}>
+                      <Icon name="zoom-in-arrow" size={20} />
+                      <span>全屏模式</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            }
+          >
+            <button className="land-video__button land-video__button--more">
+              <Icon name="more" size={20} />
+            </button>
+          </Dropdown>
+        </div>
+      );
+    }
+
+    // 展开模式
+    return (
+      <div className="land-video__controls-right">
+        {showSettings && (
+          <button className="land-video__button land-video__button--settings">
+            <Icon name="setting" size={20} />
+            <div className="land-video__settings-panel">
+              <VideoSetting
+                rateOptions={rateOptions}
+                currentRate={playbackRate}
+                onRateChange={handleRateChange}
+                loop={loop}
+                onLoopChange={handleLoopChange}
+              />
+            </div>
+          </button>
+        )}
+
+        {showPip && (
+          <button className="land-video__button" onClick={handlePip}>
+            <Icon name="video-small-screen" size={20} />
+            <PopOver content="画中画模式" theme="dark" />
+          </button>
+        )}
+
+        {showWebFullscreen && (
+          <button className="land-video__button" onClick={handleWebFullscreen}>
+            <Icon name={isWebFullscreen ? 'zoom-out' : 'zoom-in'} size={20} />
+            <PopOver content={isWebFullscreen ? '退出网页全屏' : '网页全屏'} theme="dark" />
+          </button>
+        )}
+
+        {showFullscreen && (
+          <button className="land-video__button" onClick={handleFullscreen}>
+            <Icon name="zoom-in-arrow" size={20} />
+            <PopOver content="全屏模式" theme="dark" />
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div
-      className={`land-video ${error ? "error" : ""} ${fullView ? "fullView" : ""
-        } ${className}`}
-      style={{ aspectRatio: finalRatio, ...style }}
+      ref={containerRef}
+      className={containerClassName}
+      style={{
+        width,
+        height,
+        aspectRatio: String(finalRatio),
+        borderRadius: finalRadius,
+        ...style,
+      }}
+      tabIndex={0}
+      onClick={handleVideoAreaClick}
+      onMouseMove={handleContainerMouseMove}
+      onMouseUp={handleContainerMouseUp}
+      onMouseLeave={handleContainerMouseLeave}
     >
-      {error ? (
-        <Alert type="error" title="视频错误" direction="column" noBg />
-      ) : (
-        <>
-          <video
-            ref={videoRef}
-            src={src}
-            loop={loop}
-            autoPlay={autoPlay}
-            muted={muted}
-            onTimeUpdate={handleTimeUpdate}
-            onWaiting={() => setLoss(true)}
-            onCanPlay={() => setLoss(false)}
-            onError={() => setError(true)}
-            onLoadedMetadata={handleLoadedMetadata}
-            style={{ borderRadius: radius, aspectRatio: ratio || 'auto', objectFit: ratio ? 'cover' : 'contain', ...videoStyle }}
-            className={`land-video ${videoClassName}`}
-          />
-        </>
-      )}
+      {/* 视频元素 */}
+      <video
+        ref={videoRef}
+        className={videoElementClassName}
+        src={src}
+        poster={poster}
+        loop={loop}
+        muted={muted}
+        autoPlay={autoPlay}
+        preload={preload}
+        playsInline
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onPlay={handleVideoPlay}
+        onPause={handleVideoPause}
+        onEnded={handleVideoEnded}
+        onWaiting={handleVideoWaiting}
+        onCanPlay={handleVideoCanPlay}
+        onError={handleVideoError}
+        style={{
+          borderRadius: finalRadius,
+          objectFit: fit,
+          ...videoStyle,
+        }}
+        {...videoProps}
+      >
+        {type && <source src={src} type={type} />}
+      </video>
 
-      {!error && (
-        <AffixContainer
-          onClick={handlePlay}
-          className="land-video-affix-container"
-          items={[
-            ...(showControls ? [{
-              placement: 'bottomCenter' as const,
-            content: (
-              <div
-                className={`land-video-controls ${showControls ? "show" : ""
-                  }`}
-                style={{ borderRadius: radius }}
-              >
-                {/* 进度条 */}
-                <>
-                  <VideoProgressBar
-                    curPercentage={currentTime / duration}
-                    bufferPercentage={buffered / duration}
-                    onClick={handleProgressChange}
-                    onMouseEnter={useKeyImg ? (val, left, width) => {setShowKeyImg(true);handleProgressMove(val, left, width)} : undefined}
-                    onMove={useKeyImg ? (val, left, width) =>
-                      handleProgressMove?.(val, left, width)
-                      : undefined}
-                    onMouseLeave={useKeyImg ? () => setShowKeyImg(false) : undefined}
-                    onDragStart={handleProgressDragStart}
-                    onDragEnd={handleProgressDragEnd}
+      {/* 控制栏 */}
+      {controls && (
+        <div
+          className={`land-video__controls ${controlsClassName}`}
+          style={{ borderRadius: finalRadius, ...controlsStyle }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* 进度条 */}
+          {showProgress && (
+            <div className="land-video__progress-wrapper" ref={progressBarRef}>
+              <VideoProgressBar
+                progress={duration > 0 ? currentTime / duration : 0}
+                buffered={duration > 0 ? buffered / duration : 0}
+                activeColor={progressColor}
+                onChange={handleSeek}
+                onMouseEnter={previewEnabled ? (p, x, w) => { setShowPreview(true); handlePreviewMove(p, x, w); } : undefined}
+                onMouseMove={previewEnabled ? handlePreviewMove : undefined}
+                onMouseLeave={previewEnabled ? () => setShowPreview(false) : undefined}
+                onDragStart={() => { setIsDragging(true); setIsProgressDragging(true); }}
+                onDragEnd={() => { setIsDragging(false); setIsProgressDragging(false); }}
+                isExternalDragging={isProgressDragging}
+              />
+
+              {/* 关键帧预览 */}
+              {previewEnabled && (
+                <div
+                  className="land-video__preview"
+                  style={{
+                    transform: `translateX(${previewLeft}px)`,
+                    opacity: showPreview ? 1 : 0,
+                  }}
+                >
+                  <video
+                    ref={previewVideoRef}
+                    src={src}
+                    muted
+                    preload="metadata"
+                    style={{
+                      width: previewWidth,
+                      height: previewHeight,
+                      objectFit: 'cover',
+                      borderRadius: 4,
+                    }}
                   />
-                  {useKeyImg && (
-                    <div
-                      className="land-video-controls-keyImg-container"
-                      style={{ transform: `translateX(${left}px)`, opacity: showKeyImg ? 1 : 0 }}
-                    >
-                      {/* 隐藏的预览视频元素，用于关键帧预览 */}
-                      {useKeyImg && (
-                        <video
-                          ref={previewVideoRef}
-                          src={src}
-                          muted={true}
-                          preload="metadata"
-                          style={{ width: keyImgWidth, height: keyImgWidth / (videoRatio || Number(ratio) || 16 / 9), objectFit: 'cover' }}
-                          onLoadedMetadata={() => {
-                            // 预览视频加载完成后，确保它与主视频同步
-                            if (previewVideoRef.current && videoRef.current) {
-                              previewVideoRef.current.currentTime = videoRef.current.currentTime;
-                            }
-                          }}
-                        />
-                      )}
-                    </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 控制按钮容器 */}
+          <div className="land-video__controls-bar" ref={controlsContainerRef}>
+            {/* 左侧控制 */}
+            <div className="land-video__controls-left">
+              {/* 上一集 */}
+              {showPrev && (
+                <button
+                  className={`land-video__button land-video__button--prev ${prevDisabled ? 'land-video__button--disabled' : ''}`}
+                  onClick={onPrevClick}
+                  disabled={prevDisabled}
+                >
+                  <Icon name="arrow-nav" size={20} />
+                </button>
+              )}
+
+              {/* 播放/暂停 */}
+              {showPlayButton && (
+                <button className="land-video__button land-video__button--play" onClick={handlePlay}>
+                  {isPlaying ? (
+                    <Icon name="video-play" size={20} />
+                  ) : (
+                    <Icon name="video-pause" size={32} />
                   )}
-                </>
+                </button>
+              )}
 
-                {/* 控制按钮 */}
-                <div className="land-video-controls-container" ref={controlsContainerRef}>
-                  <div className="land-video-controls-left">
-                    {usePrevEpisode && (
-                      <a
-                        className="land-video-controls-button prev"
-                        role="button"
-                        onClick={onPrevEpisodeClick}
-                      >
-                        <Icon name="arrow-nav" size={20} />
-                      </a>
+              {/* 下一集 */}
+              {showNext && (
+                <button
+                  className={`land-video__button land-video__button--next ${nextDisabled ? 'land-video__button--disabled' : ''}`}
+                  onClick={onNextClick}
+                  disabled={nextDisabled}
+                >
+                  <Icon name="arrow-nav" size={20} />
+                </button>
+              )}
+
+              {/* 时间显示 */}
+              {showTime && (
+                <div className="land-video__time">
+                  {useFormateTime(currentTime)} / {useFormateTime(duration)}
+                </div>
+              )}
+
+              {/* 音量控制 */}
+              {showVolume && (
+                <div className="land-video__volume">
+                  <button className="land-video__button" onClick={handleMuteToggle}>
+                    {muted || volume === 0 ? (
+                      <Icon name="volume-muted" size={20} />
+                    ) : (
+                      <Icon name="volume" size={20} className={volume < 50 ? 'land-video__volume-icon--low' : ''} />
                     )}
-                    <button
-                      className="land-video-controls-button play"
-                      aria-keyshortcuts="k"
-                      data-title-no-tooltip="播放"
-                      aria-label="播放 键盘快捷键 (space)"
-                      title="播放 (space)"
-                      onClick={handlePlay}
+                  </button>
+                  <div
+                    ref={volumeSliderRef}
+                    className={`land-video__volume-slider ${showVolumeSlider || volume < 100 ? 'land-video__volume-slider--show' : ''}`}
+                  >
+                    <div
+                      className="land-video__volume-track"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const percent = (e.clientX - rect.left) / rect.width;
+                        handleVolumeChange(Math.round(percent * 100));
+                      }}
                     >
-                      {!isPlaying ? (
-                        <Icon name="video-pause" size={32} />
-                      ) : (
-                        <Icon name="video-play" size={20} />
-                      )}
-                    </button>
-                    {useNextEpisode && (
-                      <a
-                        className="land-video-controls-button next"
-                        role="button"
-                        onClick={onNextEpisodeClick}
-                        title="下一个"
-                      >
-                        <Icon name="arrow-nav" size={20} />
-                      </a>
-                    )}
-                    <div className="land-video-controls-time">
-                      {useFormateTime(currentTime)} /{" "}
-                      {useFormateTime(duration)}
-                    </div>
-                    <div className="land-video-controls-volume-container"
-                    >
-                      <button
-                        className="land-video-controls-button volume"
-                        onClick={handleMuteChange}
-                        title={`${muted ? '取消静音' : '静音'} (M)`}
-                      >
-                        {muted ? (
-                          <Icon
-                            name="volume-muted"
-                            size={20}
-
-                          />
-                        ) : (
-                          <Icon
-                            name="volume"
-                            className={`${volume < 50 ? "small" : ""}`}
-                            size={20}
-
-                          />
-                        )}
-                      </button>
+                      <div className="land-video__volume-bg" />
                       <div
-                        ref={volumeSliderRef}
-                        className={`land-video-volume-slider ${showVolumeSlider ? "show" : ""
-                          }`}
-                      >
-                        <Slider
-                          value={volume}
-                          // onChange={(val: number) => handleVolumeChange(val)}
-                          defaultBg="rgba(255,255,255,0.68)"
-                          activeBg="rgba(255,255,255,1)"
-                          thumbSize={12}
-                        />
-                      </div>
+                        className="land-video__volume-fill"
+                        style={{ transform: `scaleX(${volume / 100})` }}
+                      />
+                      <div
+                        className="land-video__volume-thumb"
+                        style={{ left: `${volume}%` }}
+                      />
                     </div>
                   </div>
-
-                  {shouldCollapseControls ? (
-                    <div className="land-video-controls-right">
-                      <Dropdown
-                        trigger="click"
-                        placement="top"
-                        alignment="left"
-                        dropContent={
-                          <div className="land-video-controls-dropdown">
-                            {/* 倍速设置 */}
-                            <div className="land-video-controls-dropdown-section">
-                              <div className="land-video-controls-dropdown-section-title">播放速度</div>
-                              <div className="land-video-controls-dropdown-section-content">
-                                {[0.5, 0.75, 1, 1.25, 1.5, 2].map((speed) => (
-                                  <button
-                                    key={speed}
-                                    className={`land-video-controls-dropdown-speed-btn ${rate === speed ? 'active' : ''}`}
-                                    onClick={() => handleRateChange(speed, { value: speed })}
-                                  >
-                                    {speed}x
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* 循环设置 */}
-                            <div className="land-video-controls-dropdown-section">
-                              <button
-                                className={`land-video-controls-dropdown-toggle-btn ${loop ? 'active' : ''}`}
-                                onClick={() => setLoop(!loop)}
-                              >
-                                <Icon name="loop" size={16} />
-                                <span>循环播放</span>
-                                <div className={`land-video-controls-dropdown-toggle ${loop ? 'active' : ''}`}></div>
-                              </button>
-                            </div>
-
-                            <div className="land-video-controls-dropdown-divider"></div>
-
-                            <div className='land-video-controls-dropdown-buttons'>
-                              {/* 其他控件 */}
-                              <button
-                                className="land-video-controls-button small-screen"
-                                onClick={handleSmallScreen}
-                              >
-                                <Icon name="video-small-screen" size={20} />
-                                <span>画中画</span>
-                              </button>
-                              {onFullWidthChange && (
-                                <button
-                                  className="land-video-controls-button full-width"
-                                  onClick={() => {
-                                    setFullWidth(!fullWidth);
-                                    onFullWidthChange?.(!fullWidth);
-                                  }}
-                                >
-                                  <Icon
-                                    name="video-full-width"
-                                    size={20}
-                                    reverse={fullWidth}
-                                  />
-                                  <span>宽屏模式</span>
-                                </button>
-                              )}
-                              <button
-                                className="land-video-controls-button full-view"
-                                onClick={() => setFullView(!fullView)}
-                              >
-                                {fullView ? (
-                                  <Icon name="zoom-out" size={20} />
-                                ) : (
-                                  <Icon name="zoom-in" size={20} />
-                                )}
-                                <span>{fullView ? "退出网页全屏" : "网页全屏"}</span>
-                              </button>
-                              <button
-                                className="land-video-controls-button full-screen"
-                                onClick={handleFullScreen}
-                              >
-                                <Icon name="zoom-in-arrow" size={20} />
-                                <span>全屏模式</span>
-                              </button>
-                            </div>
-                          </div>
-                        }
-                      >
-                        <button className="land-video-controls-button more">
-                          <Icon name="more" size={20} />
-                        </button>
-                      </Dropdown>
-                    </div>
-                  ) : (
-                    <div className="land-video-controls-right">
-                      <button className="land-video-controls-button setting hover-pop">
-                        <Icon name="setting" size={20} />
-                        <div className="land-video-setting-panel">
-                          <div className="land-video-setting-content">
-                            <VideoSetting
-                              rateValue={rate}
-                              onRateChange={(val, item) =>
-                                handleRateChange?.(val, item)
-                              }
-                              loop={loop}
-                              onLoopChange={() => setLoop(!loop)}
-                            />
-                          </div>
-                        </div>
-                      </button>
-                      <button
-                        className="land-video-controls-button small-screen hover-pop"
-                        onClick={handleSmallScreen}
-                      >
-                        <Icon
-                          name="video-small-screen"
-                          size={20}
-                        />
-                        <PopOver content="画中画模式" theme="dark" />
-                      </button>
-                      {onFullWidthChange && (
-                        <button
-                          className="land-video-controls-button full-width hover-pop"
-                          onClick={() => {
-                            setFullWidth(!fullWidth);
-                            onFullWidthChange?.(!fullWidth);
-                          }}
-                        >
-                          <Icon
-                            name="video-full-width"
-                            size={20}
-
-                            reverse={fullWidth}
-                          />
-                          <PopOver content="宽屏模式" theme="dark" />
-                        </button>
-                      )}
-                      <button
-                        className="land-video-controls-button full-view hover-pop"
-                        onClick={() => setFullView(!fullView)}
-                      >
-                        {fullView ? (
-                          <Icon name="zoom-out" size={20} />
-                        ) : (
-                          <Icon name="zoom-in" size={20} />
-                        )}
-                        <PopOver
-                          content={
-                            fullView ? "退出网页全屏模式" : "网页全屏模式"
-                          }
-                          theme="dark"
-                        />
-                      </button>
-                      <button
-                        className="land-video-controls-button full-screen hover-pop"
-                        onClick={handleFullScreen}
-                        title="全屏模式 (F)"
-                      >
-                        <Icon name="zoom-in-arrow" size={20} />
-                        <PopOver content="全屏模式" theme="dark" />
-                      </button>
-                    </div>
-                  )}
                 </div>
-              </div>
-            ),
-            offset: 0,
-            display: 'hoverShow',
-          }] : []),
-          {
-            placement: 'center',
-            content:
-              loss && !isInitialLoad ? (
-                <Loading size={32} color="white" strokeSize={4} />
-              ) : (
-                <div className="land-video-tags-container">
-                  {!isPlaying ? (
-                    <Icon name="video-pause" size={32} />
-                  ) : (
-                    <Icon name="video-play" size={20} />
-                  )}
-                </div>
-              ),
-            style: {
-              opacity:
-                showCenterPlay || loss || !isPlaying ? 1 : 0,
-              pointerEvents: "none",
-            },
-          },
-          {
-            placement: 'startCenter',
-            content: (
-              <div className="land-video-tags-container">
-                <Icon name="arrow-double" className="back" size={28} />
-                {forwardSecond}秒
-              </div>
-            ),
-            style: { opacity: showBack ? 1 : 0 },
-          },
-          {
-            placement: 'endCenter',
-            content: (
-              <div className="land-video-tags-container">
-                <Icon name="arrow-double" className="front" size={28} />
-                {forwardSecond}秒
-              </div>
-            ),
-            style: { opacity: showFront ? 1 : 0 },
-          },
-        ]}
-        ></AffixContainer>
+              )}
+            </div>
+
+            {/* 右侧控制 */}
+            {renderControlButtons()}
+          </div>
+        </div>
       )}
+
+      {/* 中心图标提示 */}
+      <div
+        className="land-video__center-icon"
+        style={{ opacity: showCenterIcon || status === 'buffering' || !isPlaying ? 1 : 0 }}
+        onClick={handlePlay}
+      >
+        {status === 'buffering' ? (
+          <Loading size={32} color="white" strokeSize={4} />
+        ) : (
+          <div className="land-video__center-badge">
+            {isPlaying ? (
+              <Icon name="video-play" size={20} />
+            ) : (
+              <Icon name="video-pause" size={32} />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 快退提示 */}
+      <div className="land-video__feedback land-video__feedback--left" style={{ opacity: showBackward ? 1 : 0 }}>
+        <div className="land-video__feedback-badge">
+          <Icon name="arrow-double" size={28} className="land-video__feedback-icon--backward" />
+          {seekStep}秒
+        </div>
+      </div>
+
+      {/* 快进提示 */}
+      <div className="land-video__feedback land-video__feedback--right" style={{ opacity: showForward ? 1 : 0 }}>
+        <div className="land-video__feedback-badge">
+          <Icon name="arrow-double" size={28} className="land-video__feedback-icon--forward" />
+          {seekStep}秒
+        </div>
+      </div>
+
+      {/* 自定义叠加内容 */}
+      {children}
     </div>
   );
 };
-
 
 export default Video;

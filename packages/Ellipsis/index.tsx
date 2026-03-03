@@ -4,14 +4,22 @@ import React, {
   useRef,
   useState,
   useCallback,
+  useMemo,
 } from "react";
 import "./index.scss";
 import PopOver from "../PopOver";
 import { EllipsisProps } from "./props";
 
-// 防抖函数
+/** 类名前缀 */
+const prefixCls = 'land-ellipsis';
+
+/**
+ * 防抖函数
+ * @param func 要执行的函数
+ * @param wait 等待时间（毫秒）
+ */
 const debounce = (func: Function, wait: number) => {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout);
@@ -22,6 +30,10 @@ const debounce = (func: Function, wait: number) => {
   };
 };
 
+/**
+ * Ellipsis 文字省略组件
+ * 用于处理文本内容过长时的省略显示，支持单行和多行省略
+ */
 const Ellipsis: React.FC<EllipsisProps> = ({
   line = 1,
   text,
@@ -37,7 +49,20 @@ const Ellipsis: React.FC<EllipsisProps> = ({
   const [contentWidth, setContentWidth] = useState<number>(0);
 
   // 获取要显示的文本内容，优先使用text，其次使用children
-  const displayText = text || children || "";
+  const displayText = useMemo(() => text || children || "", [text, children]);
+
+  // 计算根元素类名
+  const rootClassName = useMemo(() => {
+    const modifierClass = line > 1 ? `${prefixCls}--multiple` : `${prefixCls}--single`;
+    return [prefixCls, modifierClass, className].filter(Boolean).join(' ');
+  }, [line, className]);
+
+  // 计算内容样式
+  const contentStyle = useMemo<CSSProperties>(() => ({
+    display: line > 1 ? "-webkit-box" : "block",
+    WebkitLineClamp: `${line}`,
+    WebkitBoxOrient: line > 1 ? "vertical" : "horizontal",
+  } as CSSProperties), [line]);
 
   // 检查是否需要显示省略号
   const checkEllipsis = useCallback(() => {
@@ -144,27 +169,26 @@ const Ellipsis: React.FC<EllipsisProps> = ({
     return () => clearTimeout(timer);
   }, [displayText, checkEllipsis]);
 
-  const ellipsisContent = (
+  // 计算 PopOver 的最大宽度
+  const popoverMaxWidth = useMemo(() => {
+    return setMaxWidth ? setMaxWidth(contentWidth) : contentWidth;
+  }, [setMaxWidth, contentWidth]);
+
+  // 渲染省略内容
+  const ellipsisContent = useMemo(() => (
     <div
-      className={`land-ellipsis ${line > 1 ? "line-multiple" : "line-single"} ${className || ""
-        }`}
+      className={rootClassName}
       style={style}
     >
       <div
         ref={ellipsisRef}
-        className="land-ellipsis-content"
-        style={
-          {
-            display: line > 1 ? "-webkit-box" : "block",
-            "-webkit-line-clamp": `${line}`,
-            "-webkit-box-orient": line > 1 ? "vertical" : "horizontal",
-          } as CSSProperties
-        }
+        className={`${prefixCls}__content`}
+        style={contentStyle}
       >
         {displayText}
       </div>
     </div>
-  );
+  ), [rootClassName, style, contentStyle, displayText]);
 
   // 如果文本没有被省略，直接返回内容
   if (!ellipsis || !open) {
@@ -178,15 +202,17 @@ const Ellipsis: React.FC<EllipsisProps> = ({
       placement="bottom"
       hideArrow
       content={displayText}
-      className="land-ellipsis-popover"
-      popoverStyle={{
-        maxWidth: setMaxWidth ? setMaxWidth(contentWidth) : contentWidth
-      }}
+      className={`${prefixCls}__popover`}
+      popoverStyle={{ maxWidth: popoverMaxWidth }}
       {...popoverProps}
     >
       {ellipsisContent}
     </PopOver>
   );
 };
+
+// 导出 useEllipsis 钩子
+export { default as useEllipsis } from './useEllipsis';
+export type { UseEllipsisOptions, UseEllipsisResult } from './useEllipsis';
 
 export default Ellipsis;

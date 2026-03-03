@@ -1,94 +1,268 @@
+// ==================== Alert 组件样式 ====================
+// 使用 BEM 命名规范
+
+// ─── CSS 变量 ───
+:root {
+  // 尺寸
+  --alert-padding-small: var(--gap-m) var(--gap-l);
+  --alert-padding-medium: var(--gap-l) var(--gap-xl);
+  --alert-padding-large: var(--gap-xl) var(--gap-2xl);
+  
+  --alert-font-size-small: var(--font-content-s);
+  --alert-font-size-medium: var(--font-content-m);
+  --alert-font-size-large: var(--font-content-l);
+
+  // 颜色
+  --alert-info-color: var(--color-primary-6);
+  --alert-info-bg: var(--color-primary-1);
+  --alert-info-border: var(--color-primary-2);
+  --alert-info-light-bg: var(--color-primary-1);
+
+  --alert-success-color: var(--color-success-6);
+  --alert-success-bg: var(--color-success-1);
+  --alert-success-border: var(--color-success-2);
+  --alert-success-light-bg: var(--color-success-1);
+
+  --alert-warning-color: var(--color-warning-6);
+  --alert-warning-bg: var(--color-warning-1);
+  --alert-warning-border: var(--color-warning-2);
+  --alert-warning-light-bg: var(--color-warning-1);
+
+  --alert-error-color: var(--color-danger-6);
+  --alert-error-bg: var(--color-danger-1);
+  --alert-error-border: var(--color-danger-2);
+  --alert-error-light-bg: var(--color-danger-1);
+
+  --alert-loading-color: var(--color-primary-6);
+  --alert-loading-bg: var(--color-bg-secondary);
+  --alert-loading-border: var(--color-border-primary);
+}
+
+// ─── 基础样式 ───
 .land-alert {
-  @apply flex items-center gap-2 w-fit rounded-lg border p-4;
-  
-  // 基础样式
-  gap: var(--gap-s);
-  background-color: var(--color-bg-secondary);
-  border-color: var(--color-border-primary);
+  display: flex;
+  align-items: flex-start;
+  width: fit-content;
   border-radius: var(--radius-m);
-  padding: var(--gap-l) var(--gap-xl);
-  
-  // 垂直布局
-  &.column {
+  transition: all var(--transition-m) ease;
+
+  // ─── 尺寸变体 ───
+  &--small {
+    padding: var(--alert-padding-small);
+    font-size: var(--alert-font-size-small);
+    gap: var(--gap-s);
+  }
+
+  &--medium {
+    padding: var(--alert-padding-medium);
+    font-size: var(--alert-font-size-medium);
+    gap: var(--gap-m);
+  }
+
+  &--large {
+    padding: var(--alert-padding-large);
+    font-size: var(--alert-font-size-large);
+    gap: var(--gap-l);
+  }
+
+  // ─── 方向变体 ───
+  &--horizontal {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &--vertical {
     flex-direction: column;
     align-items: center;
-    gap: var(--gap-m);
-    padding: var(--gap-xl);
+    text-align: center;
   }
-  
-  // 无背景样式
-  &.no-bg {
+
+  // ─── 变体样式 ───
+  &--filled {
+    &.land-alert--info {
+      background-color: var(--alert-info-color);
+      color: white;
+    }
+    &.land-alert--success {
+      background-color: var(--alert-success-color);
+      color: white;
+    }
+    &.land-alert--warning {
+      background-color: var(--alert-warning-color);
+      color: white;
+    }
+    &.land-alert--error {
+      background-color: var(--alert-error-color);
+      color: white;
+    }
+    &.land-alert--loading {
+      background-color: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+    }
+
+    .land-alert__icon svg {
+      color: white;
+    }
+  }
+
+  &--outlined {
     background-color: transparent;
-    border: none;
-    padding: 0;
-    
-    &.column {
-      background-color: transparent;
+    border-width: 1px;
+    border-style: solid;
+
+    &.land-alert--info {
+      border-color: var(--alert-info-border);
+      color: var(--alert-info-color);
+    }
+    &.land-alert--success {
+      border-color: var(--alert-success-border);
+      color: var(--alert-success-color);
+    }
+    &.land-alert--warning {
+      border-color: var(--alert-warning-border);
+      color: var(--alert-warning-color);
+    }
+    &.land-alert--error {
+      border-color: var(--alert-error-border);
+      color: var(--alert-error-color);
+    }
+    &.land-alert--loading {
+      border-color: var(--alert-loading-border);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &--light {
+    &.land-alert--info {
+      background-color: var(--alert-info-light-bg);
+      color: var(--color-text-primary);
+    }
+    &.land-alert--success {
+      background-color: var(--alert-success-light-bg);
+      color: var(--color-text-primary);
+    }
+    &.land-alert--warning {
+      background-color: var(--alert-warning-light-bg);
+      color: var(--color-text-primary);
+    }
+    &.land-alert--error {
+      background-color: var(--alert-error-light-bg);
+      color: var(--color-text-primary);
+    }
+    &.land-alert--loading {
+      background-color: var(--alert-loading-bg);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &--text {
+    background-color: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  // ─── 边框 ───
+  &--bordered {
+    &.land-alert--light,
+    &.land-alert--text {
+      &.land-alert--info {
+        border: 1px solid var(--alert-info-border);
+      }
+      &.land-alert--success {
+        border: 1px solid var(--alert-success-border);
+      }
+      &.land-alert--warning {
+        border: 1px solid var(--alert-warning-border);
+      }
+      &.land-alert--error {
+        border: 1px solid var(--alert-error-border);
+      }
+      &.land-alert--loading {
+        border: 1px solid var(--alert-loading-border);
+      }
+    }
+
+    &.land-alert--text {
       border: none;
-      padding: 0;
     }
   }
-  
-  // 主题样式
-  &.primary:not(.column) {
-    background-color: var(--color-primary-1);
-    border-color: var(--color-primary-2);
+
+  // ─── 关闭动画 ───
+  &--closing {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  &.success:not(.column) {
-    background-color: var(--color-success-lighter);
-    border-color: var(--color-success-light);
-  }
-  
-  &.warning:not(.column) {
-    background-color: var(--color-warning-lighter);
-    border-color: var(--color-warning-light);
-  }
-  
-  &.error:not(.column) {
-    background-color: var(--color-error-lighter);
-    border-color: var(--color-error-light);
-  }
-  
-  // 图标样式
-  .land-alert-icon {
-    flex-shrink: 0;
-    width: var(--icon-m);
-    height: var(--icon-m);
-  }
-  
-  // 内容样式
-  .land-alert-content {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  // 标题样式
-  .land-alert-title {
-    font-size: var(--font-content-m);
-    font-weight: 500;
-    color: var(--color-text-primary);
-    margin-bottom: var(--gap-xs);
-  }
-  
-  // 描述样式
-  .land-alert-description {
-    font-size: var(--font-content-s);
+}
+
+// ─── 图标 ───
+.land-alert__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+// ─── 内容区域 ───
+.land-alert__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.land-alert__title {
+  font-weight: 500;
+  color: inherit;
+  line-height: 1.5;
+}
+
+.land-alert__description {
+  margin-top: var(--gap-xs);
+  font-size: 0.9em;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+// ─── 操作区域 ───
+.land-alert__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+  flex-shrink: 0;
+}
+
+.land-alert__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-s) ease;
+  padding: var(--gap-xs);
+  border-radius: var(--radius-s);
+
+  &:hover {
     color: var(--color-text-secondary);
-    line-height: 1.5;
+    background-color: var(--color-bg-tertiary);
   }
-  
-  // 关闭按钮样式
-  .land-alert-close {
-    flex-shrink: 0;
-    width: var(--icon-m);
-    height: var(--icon-m);
-    color: var(--color-text-tertiary);
-    cursor: pointer;
-    transition: color var(--transition-s) ease;
-    
-    &:hover {
-      color: var(--color-text-secondary);
-    }
-  }
+}
+
+// ==================== 兼容旧版类名 ====================
+
+.land-alert.row {
+  @extend .land-alert--horizontal;
+}
+
+.land-alert.column {
+  @extend .land-alert--vertical;
+}
+
+.land-alert.no-bg {
+  @extend .land-alert--text;
+}
+
+.land-alert-title {
+  @extend .land-alert__title;
+}
+
+.land-alert-description {
+  @extend .land-alert__description;
 }

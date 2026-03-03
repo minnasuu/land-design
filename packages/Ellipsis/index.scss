@@ -1,8 +1,14 @@
-.land-ellipsis{
+// ==================== Ellipsis 组件样式 ====================
+// 采用 BEM 命名规范: land-ellipsis / land-ellipsis__element / land-ellipsis--modifier
+
+$prefix: 'land-ellipsis';
+
+.#{$prefix} {
   position: relative;
   width: 100%;
-  
-  .land-ellipsis-content{
+
+  // ==================== 内容区域 ====================
+  &__content {
     font-size: var(--font-content-m);
     color: var(--color-text-primary);
     overflow: hidden;
@@ -10,17 +16,25 @@
     cursor: default;
     word-break: break-word;
   }
-  
-  &.line-single{
-    .land-ellipsis-content{
+
+  // ==================== 弹出提示 ====================
+  &__popover {
+    max-width: 300px;
+    word-break: break-word;
+  }
+
+  // ==================== 修饰符：单行省略 ====================
+  &--single {
+    .#{$prefix}__content {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   }
-  
-  &.line-multiple{
-    .land-ellipsis-content{
+
+  // ==================== 修饰符：多行省略 ====================
+  &--multiple {
+    .#{$prefix}__content {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: inherit;
@@ -28,10 +42,5 @@
       text-overflow: ellipsis;
       word-break: break-word;
     }
-  }
-
-  .land-ellipsis-popover{
-    max-width: 300px;
-    word-break: break-word;
   }
 }

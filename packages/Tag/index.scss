@@ -1,24 +1,420 @@
-.land-tag{
-  display: flex;
+// ==================== Tag 组件样式 ====================
+// 使用 BEM 命名规范
+
+// ─── CSS 变量 ───
+:root {
+  // 尺寸
+  --tag-padding-small: 2px 6px;
+  --tag-padding-medium: 4px 8px;
+  --tag-padding-large: 6px 12px;
+
+  --tag-font-size-small: var(--font-content-s);
+  --tag-font-size-medium: var(--font-content-m);
+  --tag-font-size-large: var(--font-content-m);
+
+  --tag-icon-size-small: 12px;
+  --tag-icon-size-medium: 14px;
+  --tag-icon-size-large: 16px;
+
+  --tag-close-size-small: 10px;
+  --tag-close-size-medium: 12px;
+  --tag-close-size-large: 14px;
+
+  // 形状
+  --tag-radius-square: var(--radius-xs);
+  --tag-radius-rounded: var(--radius-s);
+  --tag-radius-pill: 999px;
+
+  // 间距
+  --tag-gap: var(--gap-xs);
+
+  // 预设颜色 - default
+  --tag-default-bg: var(--color-fill-2);
+  --tag-default-text: var(--color-text-primary);
+  --tag-default-border: var(--color-border-primary);
+  --tag-default-light-bg: var(--color-fill-1);
+
+  // 预设颜色 - primary
+  --tag-primary-bg: var(--color-primary-6);
+  --tag-primary-text: #fff;
+  --tag-primary-border: var(--color-primary-6);
+  --tag-primary-light-bg: var(--color-primary-1);
+  --tag-primary-light-text: var(--color-primary-6);
+
+  // 预设颜色 - success
+  --tag-success-bg: var(--color-success-6);
+  --tag-success-text: #fff;
+  --tag-success-border: var(--color-success-6);
+  --tag-success-light-bg: var(--color-success-1);
+  --tag-success-light-text: var(--color-success-6);
+
+  // 预设颜色 - warning
+  --tag-warning-bg: var(--color-warning-6);
+  --tag-warning-text: #fff;
+  --tag-warning-border: var(--color-warning-6);
+  --tag-warning-light-bg: var(--color-warning-1);
+  --tag-warning-light-text: var(--color-warning-6);
+
+  // 预设颜色 - error
+  --tag-error-bg: var(--color-danger-6);
+  --tag-error-text: #fff;
+  --tag-error-border: var(--color-danger-6);
+  --tag-error-light-bg: var(--color-danger-1);
+  --tag-error-light-text: var(--color-danger-6);
+
+  // 预设颜色 - info
+  --tag-info-bg: var(--color-info-6, #1890ff);
+  --tag-info-text: #fff;
+  --tag-info-border: var(--color-info-6, #1890ff);
+  --tag-info-light-bg: var(--color-info-1, #e6f7ff);
+  --tag-info-light-text: var(--color-info-6, #1890ff);
+}
+
+// ─── 基础样式 ───
+.land-tag {
+  display: inline-flex;
   align-items: center;
-  gap: var(--land-tag-gap, var(--gap-s));
-  padding: var(--land-tag-padding, 4px 8px);
-  border-radius: var(--land-tag-border-radius, var(--radius-xs));
-  font-size: var(--land-tag-font-size, var(--font-content-m));
+  gap: var(--tag-gap);
+  padding: var(--tag-padding-medium);
+  font-size: var(--tag-font-size-medium);
+  line-height: 1.4;
+  white-space: nowrap;
   user-select: none;
-  color: var(--land-tag-color, var(--color-text-primary));
-  background-color: var(--land-tag-bg-color, var(--color-bg-secondary));
-  svg.land-tag-close{
-    flex-shrink: 0;
-    cursor: pointer;
-    width: var(--land-tag-close-size, 16px);
-    height: var(--land-tag-close-size, 16px);
-    path{
-      stroke-width: var(--land-tag-close-stroke-width, 3);
+  box-sizing: border-box;
+  transition:
+    background-color var(--transition-s) ease,
+    color var(--transition-s) ease,
+    border-color var(--transition-s) ease,
+    opacity var(--transition-s) ease;
+
+  // ─── 尺寸变体 ───
+  &--small {
+    padding: var(--tag-padding-small);
+    font-size: var(--tag-font-size-small);
+
+    .land-tag__icon,
+    .land-tag__suffix-icon {
+      font-size: var(--tag-icon-size-small);
+
+      svg {
+        width: var(--tag-icon-size-small);
+        height: var(--tag-icon-size-small);
+      }
+    }
+
+    .land-tag__close svg {
+      width: var(--tag-close-size-small);
+      height: var(--tag-close-size-small);
     }
   }
-  &--white{
-    background-color: var(--land-tag-white-bg-color, var(--color-bg-primary));
-    color: var(--color-text-primary);
+
+  &--medium {
+    padding: var(--tag-padding-medium);
+    font-size: var(--tag-font-size-medium);
+
+    .land-tag__icon,
+    .land-tag__suffix-icon {
+      font-size: var(--tag-icon-size-medium);
+
+      svg {
+        width: var(--tag-icon-size-medium);
+        height: var(--tag-icon-size-medium);
+      }
+    }
+
+    .land-tag__close svg {
+      width: var(--tag-close-size-medium);
+      height: var(--tag-close-size-medium);
+    }
   }
+
+  &--large {
+    padding: var(--tag-padding-large);
+    font-size: var(--tag-font-size-large);
+
+    .land-tag__icon,
+    .land-tag__suffix-icon {
+      font-size: var(--tag-icon-size-large);
+
+      svg {
+        width: var(--tag-icon-size-large);
+        height: var(--tag-icon-size-large);
+      }
+    }
+
+    .land-tag__close svg {
+      width: var(--tag-close-size-large);
+      height: var(--tag-close-size-large);
+    }
+  }
+
+  // ─── 形状变体 ───
+  &--square {
+    border-radius: var(--tag-radius-square);
+  }
+
+  &--rounded {
+    border-radius: var(--tag-radius-rounded);
+  }
+
+  &--pill {
+    border-radius: var(--tag-radius-pill);
+  }
+
+  // ─── 变体样式 (filled) ───
+  &--filled {
+    &.land-tag--default {
+      background-color: var(--tag-bg-color, var(--tag-default-bg));
+      color: var(--tag-text-color, var(--tag-default-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--primary {
+      background-color: var(--tag-bg-color, var(--tag-primary-bg));
+      color: var(--tag-text-color, var(--tag-primary-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--success {
+      background-color: var(--tag-bg-color, var(--tag-success-bg));
+      color: var(--tag-text-color, var(--tag-success-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--warning {
+      background-color: var(--tag-bg-color, var(--tag-warning-bg));
+      color: var(--tag-text-color, var(--tag-warning-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--error {
+      background-color: var(--tag-bg-color, var(--tag-error-bg));
+      color: var(--tag-text-color, var(--tag-error-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--info {
+      background-color: var(--tag-bg-color, var(--tag-info-bg));
+      color: var(--tag-text-color, var(--tag-info-text));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+  }
+
+  // ─── 变体样式 (outlined) ───
+  &--outlined {
+    background-color: var(--tag-bg-color, transparent);
+
+    &.land-tag--default {
+      color: var(--tag-text-color, var(--tag-default-text));
+      border: 1px solid var(--tag-border-color, var(--tag-default-border));
+    }
+
+    &.land-tag--primary {
+      color: var(--tag-text-color, var(--tag-primary-light-text));
+      border: 1px solid var(--tag-border-color, var(--tag-primary-border));
+    }
+
+    &.land-tag--success {
+      color: var(--tag-text-color, var(--tag-success-light-text));
+      border: 1px solid var(--tag-border-color, var(--tag-success-border));
+    }
+
+    &.land-tag--warning {
+      color: var(--tag-text-color, var(--tag-warning-light-text));
+      border: 1px solid var(--tag-border-color, var(--tag-warning-border));
+    }
+
+    &.land-tag--error {
+      color: var(--tag-text-color, var(--tag-error-light-text));
+      border: 1px solid var(--tag-border-color, var(--tag-error-border));
+    }
+
+    &.land-tag--info {
+      color: var(--tag-text-color, var(--tag-info-light-text));
+      border: 1px solid var(--tag-border-color, var(--tag-info-border));
+    }
+  }
+
+  // ─── 变体样式 (light) ───
+  &--light {
+    border: 1px solid var(--tag-border-color, transparent);
+
+    &.land-tag--default {
+      background-color: var(--tag-bg-color, var(--tag-default-light-bg));
+      color: var(--tag-text-color, var(--tag-default-text));
+    }
+
+    &.land-tag--primary {
+      background-color: var(--tag-bg-color, var(--tag-primary-light-bg));
+      color: var(--tag-text-color, var(--tag-primary-light-text));
+    }
+
+    &.land-tag--success {
+      background-color: var(--tag-bg-color, var(--tag-success-light-bg));
+      color: var(--tag-text-color, var(--tag-success-light-text));
+    }
+
+    &.land-tag--warning {
+      background-color: var(--tag-bg-color, var(--tag-warning-light-bg));
+      color: var(--tag-text-color, var(--tag-warning-light-text));
+    }
+
+    &.land-tag--error {
+      background-color: var(--tag-bg-color, var(--tag-error-light-bg));
+      color: var(--tag-text-color, var(--tag-error-light-text));
+    }
+
+    &.land-tag--info {
+      background-color: var(--tag-bg-color, var(--tag-info-light-bg));
+      color: var(--tag-text-color, var(--tag-info-light-text));
+    }
+  }
+
+  // ─── 自定义颜色 ───
+  &--custom-color {
+    &.land-tag--filled {
+      background-color: var(--tag-bg-color, var(--tag-custom-color));
+      color: var(--tag-text-color, #fff);
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+
+    &.land-tag--outlined {
+      background-color: var(--tag-bg-color, transparent);
+      color: var(--tag-text-color, var(--tag-custom-color));
+      border: 1px solid var(--tag-border-color, var(--tag-custom-color));
+    }
+
+    &.land-tag--light {
+      background-color: var(--tag-bg-color, color-mix(in srgb, var(--tag-custom-color) 10%, transparent));
+      color: var(--tag-text-color, var(--tag-custom-color));
+      border: 1px solid var(--tag-border-color, transparent);
+    }
+  }
+
+  // ─── 加粗 ───
+  &--bold {
+    font-weight: 600;
+  }
+
+  // ─── 可点击 ───
+  &--clickable {
+    cursor: pointer;
+
+    &:hover:not(.land-tag--disabled) {
+      opacity: 0.85;
+    }
+
+    &:active:not(.land-tag--disabled) {
+      opacity: 0.7;
+    }
+  }
+
+  // ─── 可选中 ───
+  &--checkable {
+    cursor: pointer;
+
+    &:hover:not(.land-tag--disabled) {
+      opacity: 0.85;
+    }
+  }
+
+  &--checked {
+    &.land-tag--light {
+      // 选中时使用填充样式
+      &.land-tag--default {
+        background-color: var(--tag-default-bg);
+      }
+
+      &.land-tag--primary {
+        background-color: var(--tag-primary-bg);
+        color: var(--tag-primary-text);
+      }
+
+      &.land-tag--success {
+        background-color: var(--tag-success-bg);
+        color: var(--tag-success-text);
+      }
+
+      &.land-tag--warning {
+        background-color: var(--tag-warning-bg);
+        color: var(--tag-warning-text);
+      }
+
+      &.land-tag--error {
+        background-color: var(--tag-error-bg);
+        color: var(--tag-error-text);
+      }
+
+      &.land-tag--info {
+        background-color: var(--tag-info-bg);
+        color: var(--tag-info-text);
+      }
+    }
+  }
+
+  // ─── 禁用 ───
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// ─── 图标 ───
+.land-tag__icon,
+.land-tag__suffix-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+// ─── 内容 ───
+.land-tag__content {
+  display: inline-block;
+  line-height: inherit;
+}
+
+// ─── 关闭按钮 ───
+.land-tag__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  margin-left: 2px;
+  border-radius: 50%;
+  transition: background-color var(--transition-s) ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+// ─── 标签组 ───
+.land-tag-group {
+  // 基础样式已在组件内联
+}
+
+// ==================== 兼容旧版类名 ====================
+
+// 旧版主题兼容
+.land-tag--gray {
+  @extend .land-tag--default;
+  @extend .land-tag--light;
+}
+
+.land-tag--white {
+  @extend .land-tag--default;
+  @extend .land-tag--filled;
+  background-color: var(--color-bg-primary) !important;
+}
+
+// 旧版关闭图标兼容
+.land-tag-close {
+  @extend .land-tag__close;
 }

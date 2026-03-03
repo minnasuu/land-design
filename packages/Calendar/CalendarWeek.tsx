@@ -1,11 +1,10 @@
 import React, { useState, useMemo } from 'react'
 import './index.scss';
-import Select from '../Select';
 import CalendarHeader from './CalendarHeader';
 import WeekdaysRow from './WeekdaysRow';
 import Button from '../Button';
 import { DateInput, getYearRange, shouldShowYearSelector, isMonthInRange } from './utils/dateRange';
-import { getMonthWeeks, CalendarWeek as WeekData } from './utils/calendarUtils';
+import { getMonthWeeks } from './utils/calendarUtils';
 
 interface CalendarWeekProps {
   language?: "zh" | "en";
@@ -99,12 +98,11 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
     setCurrentDate(newDate);
 
     // 检查新月份是否包含当前周
-    const monthWeeks = getMonthWeeks(newDate.getFullYear(), newDate.getMonth());
-    const today = new Date();
+    const prevMonthWeeks = getMonthWeeks(newDate.getFullYear(), newDate.getMonth());
     let selectedWeekIndex = 0;
 
-    for (let i = 0; i < monthWeeks.length; i++) {
-      if (monthWeeks[i].isCurrentWeek) {
+    for (let i = 0; i < prevMonthWeeks.length; i++) {
+      if (prevMonthWeeks[i].isCurrentWeek) {
         selectedWeekIndex = i;
         break;
       }
@@ -113,7 +111,7 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
     setSelectedWeek(selectedWeekIndex + 1);
 
     // 调用回调
-    const weekDates = monthWeeks[selectedWeekIndex];
+    const weekDates = prevMonthWeeks[selectedWeekIndex];
     onWeekChange?.(weekDates.weekStart, weekDates.weekEnd, newDate.getFullYear());
   };
 
@@ -122,12 +120,11 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
     setCurrentDate(newDate);
 
     // 检查新月份是否包含当前周
-    const monthWeeks = getMonthWeeks(newDate.getFullYear(), newDate.getMonth());
-    const today = new Date();
+    const nextMonthWeeks = getMonthWeeks(newDate.getFullYear(), newDate.getMonth());
     let selectedWeekIndex = 0;
 
-    for (let i = 0; i < monthWeeks.length; i++) {
-      if (monthWeeks[i].isCurrentWeek) {
+    for (let i = 0; i < nextMonthWeeks.length; i++) {
+      if (nextMonthWeeks[i].isCurrentWeek) {
         selectedWeekIndex = i;
         break;
       }
@@ -136,7 +133,7 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
     setSelectedWeek(selectedWeekIndex + 1);
 
     // 调用回调
-    const weekDates = monthWeeks[selectedWeekIndex];
+    const weekDates = nextMonthWeeks[selectedWeekIndex];
     onWeekChange?.(weekDates.weekStart, weekDates.weekEnd, newDate.getFullYear());
   };
 
@@ -146,12 +143,11 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
       setCurrentDate(newDate);
 
       // 检查新年份对应月份是否包含当前周
-      const monthWeeks = getMonthWeeks(year, newDate.getMonth());
-      const today = new Date();
+      const yearMonthWeeks = getMonthWeeks(year, newDate.getMonth());
       let selectedWeekIndex = 0;
 
-      for (let i = 0; i < monthWeeks.length; i++) {
-        if (monthWeeks[i].isCurrentWeek) {
+      for (let i = 0; i < yearMonthWeeks.length; i++) {
+        if (yearMonthWeeks[i].isCurrentWeek) {
           selectedWeekIndex = i;
           break;
         }
@@ -159,7 +155,7 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
 
       setSelectedWeek(selectedWeekIndex + 1);
 
-      const weekDates = monthWeeks[selectedWeekIndex];
+      const weekDates = yearMonthWeeks[selectedWeekIndex];
       onWeekChange?.(weekDates.weekStart, weekDates.weekEnd, year);
     }
   };
@@ -192,10 +188,6 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
   };
 
   const monthWeeks = getMonthWeeks(year, currentDate.getMonth(), selectedWeek, minDate, maxDate);
-  const weekOptions = Array.from({ length: monthWeeks.length }, (_, i) => ({
-    key: `${i + 1}`,
-    label: `${language === "zh" ? "第" : "Week "}${i + 1}${language === "zh" ? "周" : ""}`,
-  }));
 
   // 判断是否为当前周
   const isCurrentWeekInView = monthWeeks.some(week => week.isCurrentWeek);
@@ -267,7 +259,7 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
 
       {!isCurrentWeekInView && (
         <Button
-          type="transparent"
+          variant="transparent"
           status='primary'
           block
           size='small'

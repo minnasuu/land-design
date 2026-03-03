@@ -1,4 +1,9 @@
-.land-pop-confirm {
+// ==================== PopConfirm 组件样式 ====================
+// BEM 命名规范：land-pop-confirm / land-pop-confirm__element / land-pop-confirm--modifier
+
+$prefix: 'land-pop-confirm';
+
+.#{$prefix} {
   position: absolute;
   padding: var(--padding-l);
   display: flex;
@@ -15,15 +20,43 @@
   transition: all 0.15s linear;
   z-index: 100;
 
-  .land-popConfirm-content{
+  // ==================== 修饰符 ====================
+  &--show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &--hide-arrow {
+    &.#{$prefix}--dark {
+      background-color: rgba(0, 0, 0, 0.68);
+    }
+  }
+
+  &--dark {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border: 0;
+
+    .#{$prefix}__arrow {
+      background-color: var(--color-bg-primary);
+      border: 0;
+    }
+  }
+
+  // ==================== 内容区域 ====================
+  &__content {
     padding-bottom: var(--padding-m);
   }
-  .land-popConfirm-btn{
+
+  // ==================== 按钮区域 ====================
+  &__btns {
     display: flex;
     gap: var(--gap-s);
     margin-left: auto;
   }
-  .land-popConfirm-arrow {
+
+  // ==================== 箭头 ====================
+  &__arrow {
     display: block;
     position: absolute;
     width: 12px;
@@ -32,21 +65,5 @@
     border-bottom: 1px solid var(--color-border-primary);
     border-bottom-right-radius: var(--radius-s);
     background-color: var(--color-bg-primary);
-  }
-  &.dark {
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    border: 0;
-    .land-popConfirm-arrow {
-      background-color: var(--color-bg-primary);
-      border: 0;
-    }
-  }
-  &.show{
-    opacity: 1;
-    pointer-events: auto;
-  }
-  &.hide-arrow.dark {
-    background-color:rgba(0,0,0,0.68);
   }
 }

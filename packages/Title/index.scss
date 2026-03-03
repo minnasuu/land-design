@@ -1,4 +1,9 @@
-.land-title{
+// ==================== Title 组件样式 ====================
+// 采用 BEM 命名规范: land-title / land-title__element / land-title--modifier
+
+$prefix: 'land-title';
+
+.#{$prefix} {
   position: relative;
   display: flex;
   align-items: center;
@@ -6,23 +11,39 @@
   width: fit-content;
   font-weight: 600;
   color: var(--color-text-primary);
+
+  // ==================== 标题层级样式 ====================
   h1 {
     font-size: var(--font-title-l);
   }
+
   h2 {
     font-size: var(--font-title-m);
   }
+
   h3 {
     font-size: var(--font-title-s);
   }
-  h4{
+
+  h4 {
     font-size: var(--font-title-xs);
   }
+
   p {
     font-size: var(--font-content-m);
     font-weight: 400;
   }
-  .land-title-sub {
+
+  // ==================== 子元素样式 ====================
+
+  // 前缀
+  &__prefix {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  // 角标
+  &__sub {
     position: absolute;
     top: -30%;
     right: -50%;
@@ -33,7 +54,9 @@
     background-color: var(--color-text-secondary);
     border-radius: 4px;
   }
-  .land-title-tip {
+
+  // 提示图标
+  &__tip {
     position: relative;
     display: flex;
     align-items: center;

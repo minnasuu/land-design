@@ -1,10 +1,13 @@
-import React, { useMemo, CSSProperties, useEffect } from "react";
+import React, { useMemo, CSSProperties, useEffect, useCallback } from "react";
 import './index.scss';
 import Icon from "../Icon";
 import Divider from "../Divider";
 import Button from "../Button";
 import { motion } from "motion/react";
 import { DialogProps } from "./props";
+
+const prefixCls = 'land-dialog';
+
 const Dialog: React.FC<DialogProps> = ({
   show,
   mask,
@@ -29,136 +32,145 @@ const Dialog: React.FC<DialogProps> = ({
   enableEsc = true,
   children,
   wrapStyle,
-  wrapClassName,
+  wrapClassName = '',
   contentStyle,
-  contentClassName,
+  contentClassName = '',
   bodyStyle,
-  bodyClassName,
+  bodyClassName = '',
   maskStyle,
 }) => {
+  // ─── 尺寸计算 ───
   const contentWidth = useMemo(() => {
-    let width = '320px';
     switch (size) {
-      case 'small': width = '320px'; break;
-      case 'medium': width = '600px'; break;
-      case 'large': width = '1000px'; break;
-      default: break;
+      case 'small': return '320px';
+      case 'medium': return '600px';
+      case 'large': return '1000px';
+      default: return '600px';
     }
-    return width;
   }, [size]);
 
-  // ESC key handling
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && enableEsc && show && onClose) {
-        onClose();
-      }
-    };
+  // ─── 类名计算 ───
+  const rootClassName = useMemo(() => {
+    return [
+      prefixCls,
+      show && `${prefixCls}--show`,
+      wrapClassName,
+    ].filter(Boolean).join(' ');
+  }, [show, wrapClassName]);
 
+  // ─── ESC 键处理 ───
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Escape' && enableEsc && show && onClose) {
+      onClose();
+    }
+  }, [enableEsc, show, onClose]);
+
+  useEffect(() => {
     if (show && enableEsc) {
       document.addEventListener('keydown', handleKeyDown);
     }
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [show, enableEsc, onClose]);
+  }, [show, enableEsc, handleKeyDown]);
+
+  // ─── 显示判断 ───
+  const hasHeader = useMemo(() => {
+    return headerComponent || onClose || headerLeftComponent || headerRightComponent || title;
+  }, [headerComponent, onClose, headerLeftComponent, headerRightComponent, title]);
+
+  const hasFooter = useMemo(() => {
+    return footerComponent || onSubmit || onCancel || footerLeftComponent || footerRightComponent;
+  }, [footerComponent, onSubmit, onCancel, footerLeftComponent, footerRightComponent]);
 
   return (
     <div
-      className={`land-dialog ${show ? "show" : ""} ${wrapClassName}`}
-      style={
-        {
-          "--land-dialog-content-width": contentWidth,
-          ...wrapStyle,
-        } as CSSProperties
-      }
+      className={rootClassName}
+      style={{
+        "--land-dialog-content-width": contentWidth,
+        ...wrapStyle,
+      } as CSSProperties}
     >
+      {/* 遮罩层 */}
       {mask && show && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="land-dialog-mask"
+          className={`${prefixCls}__mask`}
           style={maskStyle}
-        ></motion.div>
+        />
       )}
+
+      {/* 内容区域 */}
       {show && (
         <motion.div
-          initial={{
-            opacity: 0,
-            scale: 0.9,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          transition={{
-            duration: 0.5,
-            type: "spring",
-          }}
-          className={`land-dialog-content ${contentClassName}`}
-          style={
-            {
-              ...contentStyle,
-              width: contentWidth,
-            } as CSSProperties
-          }
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, type: "spring" }}
+          className={`${prefixCls}__content ${contentClassName}`}
+          style={{ ...contentStyle, width: contentWidth }}
         >
-          {headerComponent ||
-            (title || onClose || headerLeftComponent || headerRightComponent ? (
-              <div className="land-dialog-header">
-                {headerLeftComponent || (
-                  <div className="land-dialog-header-title">{title}</div>
-                )}
-                {headerRightComponent ||
-                  (onClose && (
-                    <div className="land-dialog-header-close">
-                      <Icon name="close" onClick={onClose} size={24} />
-                    </div>
-                  ))}
-              </div>
-            ) : null)}
-          {useHeaderDivider && <Divider />}
+          {/* 头部区域 */}
+          {headerComponent || (hasHeader && (
+            <div className={`${prefixCls}__header`}>
+              {headerLeftComponent || (
+                <div className={`${prefixCls}__title`}>{title}</div>
+              )}
+              {headerRightComponent || (onClose && (
+                <div className={`${prefixCls}__close`}>
+                  <Icon name="close" onClick={onClose} size={24} />
+                </div>
+              ))}
+            </div>
+          ))}
 
+          {useHeaderDivider && hasHeader && <Divider />}
+
+          {/* 主体区域 */}
           <div
-            className={`land-dialog-body ${bodyClassName}`}
+            className={`${prefixCls}__body ${bodyClassName}`}
             style={bodyStyle}
           >
             {children}
           </div>
 
-          {useFooterDivider && <Divider />}
-          {footerComponent || (
-            <div className="land-dialog-footer">
-              {footerRightComponent ||
-                ((cancelLabel || submitLabel || onCancel || onSubmit) && (
-                  <div className="land-dialog-footer-btn">
-                    {onCancel && (
-                      <Button variant="fill" status="default" onClick={onCancel} {...cancelButtonProps}>
-                        {cancelLabel}
-                      </Button>
-                    )}
-                    {onSubmit && (
-                      <Button
-                        variant="background"
-                        status="primary"
-                        onClick={onSubmit}
-                        disabled={submitDisabled}
-                        {...submitButtonProps}
-                      >
-                        {submitLabel}
-                      </Button>
-                    )}
-                  </div>
-                ))}
+          {/* 底部区域 */}
+          {useFooterDivider && hasFooter && <Divider />}
+          {footerComponent || (hasFooter && (
+            <div className={`${prefixCls}__footer`}>
+              {footerRightComponent || ((onCancel || onSubmit) && (
+                <div className={`${prefixCls}__footer-btns`}>
+                  {onCancel && (
+                    <Button
+                      variant="fill"
+                      status="default"
+                      onClick={onCancel}
+                      {...cancelButtonProps}
+                    >
+                      {cancelLabel}
+                    </Button>
+                  )}
+                  {onSubmit && (
+                    <Button
+                      variant="background"
+                      status="primary"
+                      onClick={onSubmit}
+                      disabled={submitDisabled}
+                      {...submitButtonProps}
+                    >
+                      {submitLabel}
+                    </Button>
+                  )}
+                </div>
+              ))}
               {footerLeftComponent}
             </div>
-          )}
+          ))}
         </motion.div>
       )}
     </div>
   );
 };
-export default Dialog;
 
+export default Dialog;

@@ -1,14 +1,16 @@
-import React from 'react';
-import Button from '../Button';
-import Icon from '../Icon';
-import Select from '../Select';
+import React, { useMemo } from "react";
+import Button from "../Button";
+import Icon from "../Icon";
+import Select from "../Select";
+import { CalendarHeaderProps } from "./props";
 
-interface CalendarHeaderProps {
+// 兼容旧版 API
+interface LegacyCalendarHeaderProps {
   language?: "zh" | "en";
   currentYear: number;
   currentMonth?: number;
-  shouldShowYearSelector: boolean;
-  yearRange: [number, number];
+  shouldShowYearSelector?: boolean;
+  yearRange?: [number, number];
   monthPrevDisabled?: boolean;
   monthNextDisabled?: boolean;
   onMonthChange?: (month: number) => void;
@@ -21,140 +23,172 @@ interface CalendarHeaderProps {
   viewMode?: "date" | "week" | "month" | "quarter" | "year";
 }
 
-const CalendarHeader: React.FC<CalendarHeaderProps> = ({
-  language = "zh",
-  currentYear,
-  currentMonth,
-  shouldShowYearSelector,
-  yearRange,
-  monthPrevDisabled = false,
-  monthNextDisabled = false,
-  onMonthChange,
-  onYearChange,
-  customYearDisplay,
-  customYearOptions,
-  rightContent,
-  className = '',
-  style,
-  viewMode = "date",
-}) => {
-  // 生成年份选项数组
-  const years = React.useMemo(() => {
-    if (!shouldShowYearSelector) return [];
+type CombinedProps = CalendarHeaderProps | LegacyCalendarHeaderProps;
 
-    if (customYearOptions) {
-      return customYearOptions;
-    }
+// 类型守卫
+function isLegacyProps(props: CombinedProps): props is LegacyCalendarHeaderProps {
+  return "currentYear" in props;
+}
+
+const CalendarHeader: React.FC<CombinedProps> = (props) => {
+  // 统一属性名
+  const language = props.language || "zh";
+  const year = isLegacyProps(props) ? props.currentYear : props.year;
+  const month = isLegacyProps(props) ? props.currentMonth : props.month;
+  const mode = isLegacyProps(props) ? props.viewMode : props.mode;
+  const showYearSelector = isLegacyProps(props) ? props.shouldShowYearSelector : props.showYearSelector;
+  const yearRange = props.yearRange || [1970, 2100];
+  const prevDisabled = isLegacyProps(props) ? props.monthPrevDisabled : props.prevDisabled;
+  const nextDisabled = isLegacyProps(props) ? props.monthNextDisabled : props.nextDisabled;
+  const yearDisplay = isLegacyProps(props) ? props.customYearDisplay : props.yearDisplay;
+  const yearOptions = isLegacyProps(props) ? props.customYearOptions : props.yearOptions;
+  const extra = isLegacyProps(props) ? props.rightContent : props.extra;
+  const onPrev = isLegacyProps(props) 
+    ? (() => props.onMonthChange?.(month !== undefined ? month - 1 : -1))
+    : props.onPrev;
+  const onNext = isLegacyProps(props)
+    ? (() => props.onMonthChange?.(month !== undefined ? month + 1 : 1))
+    : props.onNext;
+  const onYearChange = props.onYearChange;
+  const className = props.className || "";
+  const style = props.style;
+  // 生成年份选项
+  const years = useMemo(() => {
+    if (!showYearSelector) return [];
+    if (yearOptions) return yearOptions;
 
     const [startYear, endYear] = yearRange;
-    const yearCount = endYear - startYear + 1;
-
-    return Array.from({ length: yearCount }, (_, index) => ({
-      key: `${startYear + index}`,
-      label: `${startYear + index}`,
+    return Array.from({ length: endYear - startYear + 1 }, (_, i) => ({
+      key: `${startYear + i}`,
+      label: `${startYear + i}`,
     }));
-  }, [shouldShowYearSelector, yearRange, customYearOptions]);
+  }, [showYearSelector, yearRange, yearOptions]);
 
-  const enMonth = React.useMemo(() => {
-    return {
-      1: { en: "January", zh: "一月" },
-      2: { en: "February", zh: "二月" },
-      3: { en: "March", zh: "三月" },
-      4: { en: "April", zh: "四月" },
-      5: { en: "May", zh: "五月" },
-      6: { en: "June", zh: "六月" },
-      7: { en: "July", zh: "七月" },
-      8: { en: "August", zh: "八月" },
-      9: { en: "September", zh: "九月" },
-      10: { en: "October", zh: "十月" },
-      11: { en: "November", zh: "十一月" },
-      12: { en: "December", zh: "十二月" },
-    };
-  }, []);
+  // 月份名称映射
+  const monthNames = useMemo(() => ({
+    0: { en: "January", zh: "一月" },
+    1: { en: "February", zh: "二月" },
+    2: { en: "March", zh: "三月" },
+    3: { en: "April", zh: "四月" },
+    4: { en: "May", zh: "五月" },
+    5: { en: "June", zh: "六月" },
+    6: { en: "July", zh: "七月" },
+    7: { en: "August", zh: "八月" },
+    8: { en: "September", zh: "九月" },
+    9: { en: "October", zh: "十月" },
+    10: { en: "November", zh: "十一月" },
+    11: { en: "December", zh: "十二月" },
+  }), []);
 
-  // 根据视图模式判断是否显示月份
-  const shouldShowMonth = viewMode === "date" || viewMode === "week";
+  // 是否显示月份
+  const showMonth = mode === "date" || mode === "week";
 
-  // 根据视图模式判断是否显示年份导航按钮
-  const shouldShowYearNav = viewMode === "date" || viewMode === "week" || viewMode === "month" || viewMode === "quarter" || viewMode === "year";
+  // 是否显示双箭头（年份导航）
+  const showYearNav = mode === "date" || mode === "week";
 
-  // 根据视图模式判断是否显示月份导航按钮
-  const shouldShowMonthNav = viewMode === "date" || viewMode === "week";
+  // 是否显示单箭头（月份导航）
+  const showMonthNav = mode === "date" || mode === "week";
 
   return (
-    <div className={`land-calendar-header ${className}`} style={style}>
-      <div className="land-calendar-header-btn-group">
-        {/* 年份导航按钮 - 只在需要年份导航的视图中显示 */}
-        {shouldShowYearNav && (
+    <div className={`land-calendar__header ${className}`} style={style}>
+      {/* 左侧导航按钮 */}
+      <div className="land-calendar__header-nav">
+        {/* 年份后退（双箭头） */}
+        {showYearNav && (
           <Button
-            type="text"
-            size='small'
+            variant="text"
+            size="small"
             icon={<Icon name="arrow-double" />}
-            className="land-calendar-btn prev"
-            disabled={monthPrevDisabled}
-            onClick={() => onYearChange?.(currentYear - 1)}
+            className="land-calendar__nav-btn land-calendar__nav-btn--prev-year"
+            disabled={prevDisabled}
+            onClick={() => onYearChange?.(year - 1)}
           />
         )}
-        {/* 月份导航按钮 - 只在日期和周视图中显示 */}
-        {shouldShowMonthNav && (
+        {/* 月份后退（单箭头） */}
+        {showMonthNav && (
           <Button
-            type="text"
-            size='small'
+            variant="text"
+            size="small"
             icon={<Icon name="arrow" />}
-            className="land-calendar-btn prev"
-            disabled={monthPrevDisabled}
-            onClick={() => onMonthChange?.(currentMonth !== undefined ? currentMonth - 1 : -1)}
+            className="land-calendar__nav-btn land-calendar__nav-btn--prev"
+            disabled={prevDisabled}
+            onClick={onPrev}
+          />
+        )}
+        {/* 非日期/周模式的后退 */}
+        {!showMonthNav && (
+          <Button
+            variant="text"
+            size="small"
+            icon={<Icon name="arrow" />}
+            className="land-calendar__nav-btn land-calendar__nav-btn--prev"
+            disabled={prevDisabled}
+            onClick={onPrev}
           />
         )}
       </div>
-      <div className="land-calendar-header-center">
-        <div className="land-calendar-year">
-          {shouldShowYearSelector ? (
+
+      {/* 中间标题 */}
+      <div className="land-calendar__header-title">
+        {/* 年份选择/显示 */}
+        <div className="land-calendar__year">
+          {showYearSelector && years.length > 0 ? (
             <Select
-              type='transparent'
-              selected={currentYear.toString()}
-              data={years}
-              onChange={(item) => onYearChange?.(Number(item.key))}
+              variant="transparent"
+              value={year.toString()}
+              options={years}
+              onChange={(val) => onYearChange?.(Number(val))}
             />
           ) : (
-            <div className='land-calendar-year-input'>
-              {customYearDisplay || currentYear}
-            </div>
+            <span className="land-calendar__year-text">
+              {yearDisplay || year}
+            </span>
           )}
         </div>
-        {/* 月份显示 - 只在日期和周视图中显示 */}
-        {shouldShowMonth && currentMonth !== undefined && (
-          <>
-            {language === "zh" ? enMonth[currentMonth + 1].zh : enMonth[currentMonth + 1].en}
-          </>
+        {/* 月份显示 */}
+        {showMonth && month !== undefined && (
+          <span className="land-calendar__month">
+            {language === "zh" ? monthNames[month as keyof typeof monthNames].zh : monthNames[month as keyof typeof monthNames].en}
+          </span>
         )}
       </div>
-      {rightContent && (
-        <div className="land-calendar-right-content">
-          {rightContent}
-        </div>
-      )}
-      <div className="land-calendar-header-btn-group">
-        {/* 月份导航按钮 - 只在日期和周视图中显示 */}
-        {shouldShowMonthNav && (
+
+      {/* 右侧自定义内容 */}
+      {extra && <div className="land-calendar__header-extra">{extra}</div>}
+
+      {/* 右侧导航按钮 */}
+      <div className="land-calendar__header-nav">
+        {/* 月份前进（单箭头） */}
+        {showMonthNav && (
           <Button
-            type="text"
-            size='small'
+            variant="text"
+            size="small"
             icon={<Icon name="arrow" />}
-            className="land-calendar-btn next"
-            disabled={monthNextDisabled}
-            onClick={() => onMonthChange?.(currentMonth !== undefined ? currentMonth + 1 : 1)}
+            className="land-calendar__nav-btn land-calendar__nav-btn--next"
+            disabled={nextDisabled}
+            onClick={onNext}
           />
         )}
-        {/* 年份导航按钮 - 只在需要年份导航的视图中显示 */}
-        {shouldShowYearNav && (
+        {/* 非日期/周模式的前进 */}
+        {!showMonthNav && (
           <Button
-            type="text"
-            size='small'
+            variant="text"
+            size="small"
+            icon={<Icon name="arrow" />}
+            className="land-calendar__nav-btn land-calendar__nav-btn--next"
+            disabled={nextDisabled}
+            onClick={onNext}
+          />
+        )}
+        {/* 年份前进（双箭头） */}
+        {showYearNav && (
+          <Button
+            variant="text"
+            size="small"
             icon={<Icon name="arrow-double" />}
-            className="land-calendar-btn next"
-            disabled={monthNextDisabled}
-            onClick={() => onYearChange?.(currentYear + 1)}
+            className="land-calendar__nav-btn land-calendar__nav-btn--next-year"
+            disabled={nextDisabled}
+            onClick={() => onYearChange?.(year + 1)}
           />
         )}
       </div>
@@ -162,4 +196,4 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   );
 };
 
-export default CalendarHeader; 
+export default CalendarHeader;

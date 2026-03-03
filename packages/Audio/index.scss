@@ -1,118 +1,303 @@
+// ==================== Audio 主组件 ====================
+
 .land-audio {
   position: relative;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  .land-audio-play-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .land-audio-animation-icon{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    --speed: 1s;
 
-  .land-audio-animation-icon-bar {
-    width: 2px;
-    height: 100%;
-    border-radius: var(--radius-xs);
-    transition: background-color 0.3s ease;
-    transform-origin: center;
+  &__element {
+    display: none;
   }
 
-  .land-audio-animation-icon-bar:nth-child(1) {
-    animation: grow var(--speed) ease-in-out calc(var(--speed) * -0.45) infinite;
-  }
+  &__cover {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-s);
+    overflow: hidden;
 
-  .land-audio-animation-icon-bar:nth-child(2) {
-    animation: grow var(--speed) ease-in-out calc(var(--speed) * -0.3) infinite;
-  }
-
-  .land-audio-animation-icon-bar:nth-child(3) {
-    animation: grow var(--speed) ease-in-out calc(var(--speed) * -0.15) infinite;
-  }
-
-  .land-audio-animation-icon-bar:nth-child(4) {
-    animation: grow var(--speed) ease-in-out infinite;
-  }
-
-  @keyframes grow {
-    0%,
-    100% {
-      transform: scaleY(0.375);
-    }
-
-    50% {
-      transform: scaleY(1);
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__progress-area {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__time {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--color-text-3);
+    font-variant-numeric: tabular-nums;
+
+    &-separator {
+      margin: 0 2px;
+    }
+  }
+
+  // 带波形模式
+  &--with-wave {
+    .land-audio__controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .land-audio__progress-area {
+      order: -1;
+    }
+  }
+
+  // 错误状态
+  &--error {
+    opacity: 0.6;
   }
 }
 
-// AudioWave 组件样式
+// ==================== AudioButton 播放按钮 ====================
+
+.land-audio-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  border-radius: 50%;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+
+    &:hover {
+      opacity: 0.4;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+
+  &--loading {
+    cursor: wait;
+  }
+}
+
+// ==================== AudioAnimationIcon 动画图标 ====================
+
+.land-audio-animation {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  &__bar {
+    width: 2px;
+    height: 100%;
+    border-radius: 1px;
+    transform-origin: center bottom;
+    transform: scaleY(0.3);
+    transition: background-color 0.2s ease;
+  }
+
+  &--playing &__bar {
+    animation: land-audio-bar-grow 1s ease-in-out infinite;
+
+    &:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+
+    &:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+
+    &:nth-child(4) {
+      animation-delay: 0s;
+    }
+  }
+}
+
+@keyframes land-audio-bar-grow {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+// ==================== AudioProgress 进度条 ====================
+
+.land-audio-progress {
+  position: relative;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &__track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-fill-3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__buffered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-fill-4);
+    transform-origin: left center;
+    border-radius: 2px;
+  }
+
+  &__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: left center;
+    border-radius: 2px;
+    transition: none;
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    margin-top: -6px;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover &__thumb,
+  &--dragging &__thumb {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &--hover &__track,
+  &--dragging &__track {
+    height: 6px;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    .land-audio-progress__thumb {
+      display: none;
+    }
+  }
+}
+
+// ==================== AudioWave 波形组件 ====================
+
 .land-audio-wave {
   position: relative;
   width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-s);
   overflow: hidden;
-  .land-audio-wave-audio{
+
+  &__audio {
+    position: absolute;
     opacity: 0;
     pointer-events: none;
   }
-  &.bar {
-    canvas {
+
+  &__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__error {
+    font-size: 12px;
+    color: var(--color-danger-6);
+    text-align: center;
+    padding: 8px;
+  }
+
+  &--loading {
+    background-color: var(--color-fill-2);
+  }
+
+  &--error {
+    background-color: var(--color-danger-1);
+  }
+
+  // 柱状图模式
+  &--bar {
+    .land-audio-wave__canvas {
       border-radius: var(--radius-s);
     }
   }
 
-  &.line {
-    canvas {
+  // 折线图模式
+  &--line {
+    .land-audio-wave__canvas {
       border-radius: var(--radius-s);
     }
-  }
-
-  &.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    .loading-spinner {
-      color: var(--color-gray-8);
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      
-      &::before {
-        content: '';
-        width: 16px;
-        height: 16px;
-        border: 2px solid var(--color-gray-4);
-        border-top: 2px solid var(--color-primary-6);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-    }
-  }
-
-  &.error {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    .error-message {
-      color: var(--color-red-6);
-      font-size: 14px;
-      text-align: center;
-      padding: 8px;
-    }
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
   }
 }

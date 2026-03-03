@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import State from ".";
+import State from '.';
+import Button from '../Button';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
@@ -9,181 +10,271 @@ export default function StateExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
 
   const stateProps = [
-    { name: 'type', type: 'StateType (empty | offline)', desc: '状态类型', default: 'empty' },
-    { name: 'title', type: 'React.ReactNode | string', desc: '状态标题' },
-    { name: 'subTitle', type: 'React.ReactNode | string', desc: '副标题' },
-    { name: 'titleLink', type: 'string', desc: '标题链接' },
-    { name: 'subTitleLink', type: 'string', desc: '副标题链接' },
-    { name: 'button', type: 'string', desc: '按钮文本' },
-    { name: 'emptyIcon', type: 'string', desc: '空状态图标' },
-    { name: 'offlineIcon', type: 'string', desc: '离线状态图标' },
-    { name: 'onTiTleLinkClick', type: '(e: MouseEvent) => void', desc: '标题链接点击事件' },
-    { name: 'onSubTitleLinkClick', type: '(e: MouseEvent) => void', desc: '副标题链接点击事件' },
-    { name: 'onButtonClick', type: '(e: MouseEvent) => void', desc: '按钮点击事件' },
+    { name: 'type', type: '"empty" | "error" | "offline" | "forbidden" | "notFound" | "success" | "warning"', default: '"empty"', desc: '状态类型（预设图标）' },
+    { name: 'size', type: '"small" | "default" | "large"', default: '"default"', desc: '尺寸' },
+    { name: 'icon', type: 'ReactNode', desc: '自定义图标/图片' },
+    { name: 'image', type: 'string', desc: '图片地址' },
+    { name: 'imageWidth', type: 'number | string', desc: '图片宽度' },
+    { name: 'imageHeight', type: 'number | string', desc: '图片高度' },
+    { name: 'title', type: 'ReactNode', desc: '主标题' },
+    { name: 'description', type: 'ReactNode', desc: '描述文字' },
+    { name: 'actions', type: 'ReactNode', desc: '操作区域' },
+    { name: 'children', type: 'ReactNode', desc: '额外内容' },
+    { name: 'onClick', type: '(e: MouseEvent) => void', desc: '点击回调' },
+    { name: 'className', type: 'string', desc: '自定义类名' },
+    { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
+    { name: 'iconClassName', type: 'string', desc: '图标区域类名' },
+    { name: 'iconStyle', type: 'CSSProperties', desc: '图标区域样式' },
+    { name: 'titleClassName', type: 'string', desc: '标题区域类名' },
+    { name: 'titleStyle', type: 'CSSProperties', desc: '标题区域样式' },
+    { name: 'descriptionClassName', type: 'string', desc: '描述区域类名' },
+    { name: 'descriptionStyle', type: 'CSSProperties', desc: '描述区域样式' },
+    { name: 'htmlProps', type: 'HTMLAttributes', desc: '原生属性透传' },
   ];
 
   return (
     <ComponentContentLayout
-      zh='状态'
-      en='State'
-      desc='LandDesign 的状态组件，支持空状态、离线状态、自定义标题副标题等功能。'
+      zh="状态"
+      en="State"
+      desc="LandDesign 的状态组件，用于展示页面的空状态、错误状态、加载失败等场景。"
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
-
-      {/* 标签页内容 */}
       {activeTab === 'examples' && (
         <>
           {/* 基础用法 */}
           <ComponentSectionLayout
-            title='基础用法'
-            id='state-empty'
-            description='State 组件的基础用法，支持空状态和离线状态。'
+            title="基础用法"
+            id="state-basic"
+            description="State 组件的基础用法，展示不同的状态类型。"
           >
             <CodeOperationContainer>
-              <State type="empty" title="暂无内容" />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 离线状态 */}
-          <ComponentSectionLayout
-            title='离线状态'
-            id='state-offline'
-            description='通过 type 属性可以设置不同的状态类型。'
-          >
-            <CodeOperationContainer>
-              <State type="offline" title="网络错误" />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 副标题 */}
-          <ComponentSectionLayout
-            title='副标题'
-            id='state-subTitle'
-            description='通过 subTitle 和 subTitleLink 属性可以添加副标题和链接。'
-          >
-            <CodeOperationContainer>
-              <State
-                type="offline"
-                title="网络错误"
-                subTitle="请检查网络连接"
-                subTitleLink="点击重新连接"
-              />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 带按钮 */}
-          <ComponentSectionLayout
-            title='带按钮'
-            id='state-button'
-            description='通过 button 和 onButtonClick 属性可以添加按钮和点击事件。'
-          >
-            <CodeOperationContainer>
-              <State
-                type="offline"
-                title="网络错误"
-                button="重新连接"
-                onButtonClick={() => {
-                  console.log("重新连接");
-                }}
-              />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 不同状态类型 */}
-          <ComponentSectionLayout
-            title='不同状态类型'
-            id='state-types'
-            description='State 支持多种不同的状态类型。'
-          >
-            <CodeOperationContainer style={{ justifyContent: 'space-around' }}>
               <State type="empty" title="暂无数据" />
-              <State type="offline" title="网络连接失败" />
-              <State type="empty" title="暂无搜索结果" subTitle="请尝试其他关键词" />
-              <State type="offline" title="服务器错误" subTitle="请稍后重试" button="刷新页面" />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 自定义内容 */}
+          {/* 状态类型 */}
           <ComponentSectionLayout
-            title='自定义内容'
-            id='state-custom'
-            description='State 支持自定义标题和副标题内容。'
+            title="状态类型"
+            id="state-types"
+            description="通过 type 属性设置不同的预设状态类型。"
           >
-            <CodeOperationContainer style={{ gap: 60 }}>
+            <CodeOperationContainer style={{ flexWrap: 'wrap', gap: 32 }}>
+              <State type="empty" title="空状态" description="暂无数据" />
+              <State type="error" title="错误" description="加载失败" />
+              <State type="offline" title="离线" description="网络不可用" />
+              <State type="forbidden" title="无权限" description="暂无访问权限" />
+              <State type="notFound" title="404" description="页面不存在" />
+              <State type="success" title="成功" description="操作已完成" />
+              <State type="warning" title="警告" description="请注意风险" />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 尺寸 */}
+          <ComponentSectionLayout
+            title="尺寸"
+            id="state-size"
+            description="通过 size 属性设置不同的尺寸。"
+          >
+            <CodeOperationContainer style={{ gap: 48 }}>
+              <State size="small" type="empty" title="小尺寸" description="描述文字" />
+              <State size="default" type="empty" title="默认尺寸" description="描述文字" />
+              <State size="large" type="empty" title="大尺寸" description="描述文字" />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 带操作 */}
+          <ComponentSectionLayout
+            title="带操作"
+            id="state-actions"
+            description="通过 actions 属性添加操作按钮。"
+          >
+            <CodeOperationContainer style={{ gap: 48 }}>
               <State
                 type="empty"
-                title={<span style={{ color: 'var(--color-primary)' }}>自定义标题样式</span>}
-                subTitle="支持 React 节点"
+                title="暂无数据"
+                description="点击下方按钮创建"
+                actions={<Button status="primary">创建数据</Button>}
               />
               <State
-                type="offline"
-                title="网络连接失败"
-                subTitle={
-                  <div>
-                    <p>请检查网络设置</p>
-                    <p>或联系技术支持</p>
-                  </div>
+                type="error"
+                title="加载失败"
+                description="请检查网络后重试"
+                actions={
+                  <>
+                    <Button>返回首页</Button>
+                    <Button status="primary">重新加载</Button>
+                  </>
                 }
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 带链接 */}
+          {/* 自定义图标 */}
           <ComponentSectionLayout
-            title='带链接'
-            id='state-links'
-            description='通过 titleLink 和 subTitleLink 属性可以添加链接功能。'
+            title="自定义图标"
+            id="state-custom-icon"
+            description="通过 icon 属性自定义图标。"
           >
-            <CodeOperationContainer style={{ gap: 60 }}>
+            <CodeOperationContainer style={{ gap: 48 }}>
               <State
-                type="empty"
-                title="暂无内容"
-                titleLink="创建内容"
-                onTiTleLinkClick={() => console.log('点击创建内容')}
+                icon={<span style={{ fontSize: 48 }}>🎉</span>}
+                title="自定义 Emoji"
+                description="支持任意 ReactNode"
               />
               <State
-                type="offline"
-                title="网络错误"
-                subTitle="请检查网络连接"
-                subTitleLink="查看帮助文档"
-                onSubTitleLinkClick={() => console.log('点击查看帮助')}
+                icon={
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="20" stroke="var(--color-primary)" strokeWidth="3" />
+                    <path d="M24 14V26" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" />
+                    <path d="M24 24L32 32" stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                }
+                title="自定义 SVG"
+                description="支持自定义 SVG 图标"
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 不同样式 */}
+          {/* 自定义图片 */}
           <ComponentSectionLayout
-            title='不同样式'
-            id='state-styles'
-            description='通过 style 属性可以自定义状态组件的样式。'
+            title="自定义图片"
+            id="state-image"
+            description="通过 image 属性设置图片地址。"
           >
-            <CodeOperationContainer style={{ gap: 60 }}>
+            <CodeOperationContainer>
+              <State
+                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                imageWidth={120}
+                imageHeight={80}
+                title="自定义图片"
+                description="支持使用图片作为状态图标"
+              />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 自定义样式 */}
+          <ComponentSectionLayout
+            title="自定义样式"
+            id="state-custom-style"
+            description="通过 style 属性自定义组件样式。"
+          >
+            <CodeOperationContainer style={{ gap: 32 }}>
               <State
                 type="empty"
-                title="自定义样式"
+                title="带边框"
+                description="自定义边框样式"
                 style={{
                   border: '1px solid var(--color-border-secondary)',
-                  borderRadius: '8px',
-                  padding: '24px'
+                  borderRadius: 8,
+                  padding: 24,
+                  minWidth: 200,
                 }}
               />
               <State
-                type="offline"
-                title="自定义背景"
+                type="success"
+                title="带背景"
+                description="自定义背景色"
                 style={{
-                  backgroundColor: 'var(--color-bg-secondary)',
-                  borderRadius: '12px',
-                  padding: '32px'
+                  backgroundColor: 'var(--color-green-1)',
+                  borderRadius: 12,
+                  padding: 32,
+                  minWidth: 200,
                 }}
               />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 带额外内容 */}
+          <ComponentSectionLayout
+            title="带额外内容"
+            id="state-children"
+            description="通过 children 属性添加额外内容。"
+          >
+            <CodeOperationContainer>
+              <State
+                type="offline"
+                title="网络错误"
+                description="请检查网络连接"
+                actions={<Button status="primary">重新连接</Button>}
+              >
+                <div
+                  style={{
+                    marginTop: 16,
+                    padding: '8px 12px',
+                    fontSize: 12,
+                    color: 'var(--color-text-tertiary)',
+                    backgroundColor: 'var(--color-fill-quaternary)',
+                    borderRadius: 4,
+                  }}
+                >
+                  错误代码: ERR_NETWORK_DISCONNECTED
+                </div>
+              </State>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 完整示例 */}
+          <ComponentSectionLayout
+            title="完整示例"
+            id="state-full"
+            description="组合使用各种属性的完整示例。"
+          >
+            <CodeOperationContainer style={{ gap: 32 }}>
+              <div
+                style={{
+                  border: '1px solid var(--color-border-secondary)',
+                  borderRadius: 12,
+                  padding: 32,
+                  minWidth: 280,
+                }}
+              >
+                <State
+                  size="large"
+                  type="empty"
+                  title="搜索结果为空"
+                  description='没有找到与"关键词"相关的内容，请尝试其他搜索条件'
+                  actions={
+                    <>
+                      <Button>清空搜索</Button>
+                      <Button status="primary">浏览全部</Button>
+                    </>
+                  }
+                />
+              </div>
+              <div
+                style={{
+                  border: '1px solid var(--color-border-secondary)',
+                  borderRadius: 12,
+                  padding: 32,
+                  minWidth: 280,
+                }}
+              >
+                <State
+                  size="large"
+                  type="error"
+                  title="服务器错误"
+                  description="服务暂时不可用，我们正在紧急修复中"
+                  actions={<Button status="primary">刷新页面</Button>}
+                >
+                  <div
+                    style={{
+                      marginTop: 12,
+                      fontSize: 12,
+                      color: 'var(--color-text-quaternary)',
+                    }}
+                  >
+                    如问题持续，请联系客服
+                  </div>
+                </State>
+              </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </>
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className="flex flex-col gap-12">
           <ComponentPropsTable props={stateProps} />
         </div>
       )}

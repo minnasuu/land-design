@@ -1,91 +1,149 @@
-import React, { CSSProperties } from 'react';
-import { CommonProps } from '../types';
+import { CSSProperties, ReactNode, HTMLAttributes, MouseEvent } from 'react';
+
+// ==================== 基础类型定义 ====================
 
 /**
- * Badge组件属性类型定义
- * 包含所有Badge组件支持的属性及其详细说明
+ * 徽标外观变体
+ * - standard: 标准样式，实心背景（默认）
+ * - outline: 描边样式，透明背景有边框
+ * - light: 浅色样式，浅色背景深色文字
  */
+export type BadgeVariant = 'standard' | 'outline' | 'light';
+
+/**
+ * 徽标语义状态/颜色
+ * - default: 默认红色
+ * - primary: 主色调蓝色
+ * - success: 成功绿色
+ * - warning: 警告橙色
+ * - danger: 危险红色
+ * - info: 信息灰色
+ */
+export type BadgeStatus = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
+
+/**
+ * 徽标位置（相对于子元素）
+ * - top-right: 右上角（默认）
+ * - top-left: 左上角
+ * - bottom-right: 右下角
+ * - bottom-left: 左下角
+ */
+export type BadgePlacement = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 // ==================== 属性接口定义 ====================
 
 /**
- * Badge基础属性
- * 包含徽标的基本配置和内容属性
+ * Badge 组件属性
  */
-export interface BadgeBaseProps extends CommonProps {
-  /** 
-   * 子元素
-   * 可以传入React节点作为徽标的内容
+export interface BadgeProps {
+  // ─── 外观属性 ───
+  /**
+   * 徽标外观变体
+   * @default 'standard'
    */
-  children?: React.ReactNode;
+  variant?: BadgeVariant;
 
-  /** 
-   * 其他内容徽标
-   * 可以传入React节点作为徽标的显示内容
+  /**
+   * 徽标语义状态/颜色
+   * @default 'default'
    */
-  content?: React.ReactNode;
-}
+  status?: BadgeStatus;
 
-/**
- * Badge显示属性
- * 用于配置徽标的显示方式
- */
-export interface BadgeDisplayProps {
-  /** 
-   * 是否为点
-   * 设置为true时显示为圆点，false时显示为数字或内容
+  /**
+   * 徽标位置（相对于子元素）
+   * @default 'top-right'
    */
-  isDot?: boolean;
+  placement?: BadgePlacement;
 
-  /** 
+  // ─── 内容属性 ───
+  /**
    * 徽标数值
-   * 显示的数字，当isDot为false时生效
+   * - 当为 0 时默认隐藏，可通过 showZero 显示
    */
   count?: number;
 
-  /** 
-   * 显示的最大数
-   * 超过此数值时会缩略显示，如99+
+  /**
+   * 封顶数值，超过后显示 `{max}+`
+   * @default 99
    */
-  exceedCount?: number;
-}
+  max?: number;
 
-/**
- * Badge样式属性
- * 用于配置徽标的视觉样式
- */
-export interface BadgeStyleProps {
-  /** 
+  /**
+   * 是否显示为小圆点
+   * @default false
+   */
+  dot?: boolean;
+
+  /**
+   * 自定义徽标内容（优先级高于 count）
+   */
+  content?: ReactNode;
+
+  /**
+   * 当 count 为 0 时是否显示徽标
+   * @default false
+   */
+  showZero?: boolean;
+
+  /**
+   * 包裹的子元素
+   */
+  children?: ReactNode;
+
+  // ─── 状态属性 ───
+  /**
+   * 是否隐藏徽标
+   * @default false
+   */
+  hidden?: boolean;
+
+  /**
+   * 徽标相对于子元素的偏移量 [x, y]
+   * - 正值向内偏移，负值向外偏移
+   */
+  offset?: [number, number];
+
+  // ─── 事件属性 ───
+  /**
+   * 徽标点击回调
+   */
+  onClick?: (e: MouseEvent<HTMLSpanElement>) => void;
+
+  // ─── 样式属性 ───
+  /**
+   * 自定义类名
+   */
+  className?: string;
+
+  /**
    * 自定义样式
-   * 可以传入CSS样式对象来自定义徽标外观
    */
   style?: CSSProperties;
 
-  /** 
-   * 自定义类名
-   * 可以传入额外的CSS类名
+  /**
+   * 徽标自定义类名
    */
-  className?: string;
+  badgeClassName?: string;
+
+  /**
+   * 徽标自定义样式
+   */
+  badgeStyle?: CSSProperties;
+
+  /**
+   * 原生 HTML 属性透传
+   */
+  htmlProps?: HTMLAttributes<HTMLSpanElement>;
 }
 
-/**
- * Badge组件完整属性类型
- * 合并了所有属性接口
- */
-export type BadgeProps = BadgeBaseProps &
-  BadgeDisplayProps &
-  BadgeStyleProps;
+// ==================== 默认属性 ====================
 
-/**
- * 属性优先级说明：
- * 1. children是徽标的主要内容，徽标会显示在children的右上角
- * 2. isDot控制徽标的显示方式（圆点或数字/内容）
- * 3. count设置徽标显示的数字
- * 4. exceedCount控制数字的最大显示值
- * 5. content可以传入自定义内容替代数字显示
- * 6. 显示优先级：content > count > isDot
- * 7. 当isDot为true时，count和content会被忽略
- * 8. 当count超过exceedCount时，会显示为"exceedCount+"
- * 9. style和className会覆盖默认样式
- * 10. 徽标通常用于显示通知数量、状态标识等
- */ 
+export const defaultBadgeProps: Partial<BadgeProps> = {
+  variant: 'standard',
+  status: 'default',
+  placement: 'top-right',
+  max: 99,
+  dot: false,
+  showZero: false,
+  hidden: false,
+};

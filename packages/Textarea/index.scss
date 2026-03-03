@@ -1,204 +1,293 @@
-.land-textarea {
+// ─── 变量定义 ───
+$textarea-prefix: 'land-textarea';
+$textarea-transition: 0.2s;
+$textarea-padding: 10px 12px;
+$textarea-font-size: 14px;
+$textarea-line-height: 1.5;
+
+// ─── 根容器 ───
+.#{$textarea-prefix} {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--gap-s, 8px);
+  font-family: inherit;
+  box-sizing: border-box;
+
+  // ─── 块级模式 ───
+  &--block {
+    display: flex;
+    width: 100%;
+  }
+
+  // ─── 外观变体 ───
+  &--outline {
+    .#{$textarea-prefix}__body {
+      border: 1px solid var(--color-border, #d9d9d9);
+      background-color: var(--color-bg-primary, #fff);
+    }
+
+    &:hover:not(.#{$textarea-prefix}--disabled):not(.#{$textarea-prefix}--readonly) {
+      .#{$textarea-prefix}__body {
+        border-color: var(--color-primary, #1677ff);
+      }
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        border-color: var(--color-primary, #1677ff);
+        box-shadow: 0 0 0 2px var(--color-primary-light, rgba(22, 119, 255, 0.1));
+      }
+    }
+  }
+
+  &--filled {
+    .#{$textarea-prefix}__body {
+      border: 1px solid transparent;
+      background-color: var(--color-bg-secondary, #f5f5f5);
+    }
+
+    &:hover:not(.#{$textarea-prefix}--disabled):not(.#{$textarea-prefix}--readonly) {
+      .#{$textarea-prefix}__body {
+        background-color: var(--color-bg-tertiary, #e8e8e8);
+      }
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        background-color: var(--color-bg-primary, #fff);
+        border-color: var(--color-primary, #1677ff);
+        box-shadow: 0 0 0 2px var(--color-primary-light, rgba(22, 119, 255, 0.1));
+      }
+    }
+  }
+
+  &--transparent {
+    .#{$textarea-prefix}__body {
+      border: none;
+      background-color: transparent;
+      padding-left: 0;
+      padding-right: 0;
+      border-radius: 0;
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        box-shadow: none;
+      }
+    }
+  }
+
+  // ─── 状态变体 ───
+  &--primary {
+    .#{$textarea-prefix}__body {
+      border-color: var(--color-primary, #1677ff);
+    }
+  }
+
+  &--warning {
+    .#{$textarea-prefix}__body {
+      border-color: var(--color-warning, #faad14);
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        box-shadow: 0 0 0 2px var(--color-warning-light, rgba(250, 173, 20, 0.1));
+      }
+    }
+  }
+
+  &--danger,
+  &--over-limit {
+    .#{$textarea-prefix}__body {
+      border-color: var(--color-error, #ff4d4f);
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        box-shadow: 0 0 0 2px var(--color-error-light, rgba(255, 77, 79, 0.1));
+      }
+    }
+  }
+
+  &--success {
+    .#{$textarea-prefix}__body {
+      border-color: var(--color-success, #52c41a);
+    }
+
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__body {
+        box-shadow: 0 0 0 2px var(--color-success-light, rgba(82, 196, 26, 0.1));
+      }
+    }
+  }
+
+  // ─── 文字对齐 ───
+  &--align-left textarea {
+    text-align: left;
+  }
+
+  &--align-center textarea {
+    text-align: center;
+  }
+
+  &--align-right textarea {
+    text-align: right;
+  }
+
+  // ─── 禁用状态 ───
+  &--disabled {
+    opacity: var(--opacity-disabled, 0.5);
+    cursor: not-allowed;
+
+    .#{$textarea-prefix}__body {
+      background-color: var(--color-bg-secondary, #f5f5f5);
+    }
+
+    textarea {
+      cursor: not-allowed;
+      color: var(--color-text-disabled, #bfbfbf);
+    }
+  }
+
+  // ─── 只读状态 ───
+  &--readonly {
+    .#{$textarea-prefix}__body {
+      background-color: var(--color-bg-secondary, #f5f5f5);
+    }
+
+    textarea {
+      cursor: default;
+    }
+  }
+
+  // ─── 清除按钮可见性 ───
+  &--clearable {
+    &:hover,
+    &.#{$textarea-prefix}--focused {
+      .#{$textarea-prefix}__clear--visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+}
+
+// ─── 主体容器 ───
+.#{$textarea-prefix}__body {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--land-textarea-gap, var(--gap-s));
-  border-radius: var(--land-textarea-border-radius, var(--radius-m));
-  transition: background-color var(--transition-s) linear;
+  padding: $textarea-padding;
+  border-radius: var(--radius-m, 6px);
+  transition: all $textarea-transition ease;
   box-sizing: border-box;
-  
-  &.transparent {
-    border-radius: 0px;
-    &.land-textarea {
-      background-color: transparent;
-    }
+}
+
+// ─── 输入框包装器 ───
+.#{$textarea-prefix}__wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+// ─── 原生 textarea ───
+.#{$textarea-prefix} textarea {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: $textarea-font-size;
+  line-height: $textarea-line-height;
+  color: var(--color-text-primary, #262626);
+  caret-color: var(--color-primary, #1677ff);
+  // resize 由组件 style 属性控制
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--color-text-secondary, #8c8c8c);
   }
-  
-  &.border {
-    &:hover:not(.disabled) {
-      .land-textarea-content {
-        background-color: var(--land-textarea-hover-bg-color, var(--color-bg-secondary));
-      }
-    }
-    &:focus-within:not(.disabled) {
-      .land-textarea-content {
-        border-color: var(--land-textarea-focus-border-color, var(--color-primary));
-        background-color: var(--land-textarea-focus-bg-color, var(--color-bg-primary));
-      }
-    }
+
+  &::selection {
+    background-color: var(--color-primary-light, rgba(22, 119, 255, 0.2));
   }
-  
-  &.background {
-    .land-textarea-content {
-      background-color: var(--land-textarea-bg-color, var(--color-bg-secondary));
-    }
-    &:hover:not(.disabled) {
-      .land-textarea-content {
-        background-color: var(--land-textarea-hover-bg-color, var(--color-bg-tertiary));
-      }
-    }
-    &:focus:not(.disabled),
-    &:focus-within:not(.disabled) {
-      .land-textarea-content {
-        background-color: var(--land-textarea-focus-bg-color, var(--color-bg-tertiary));
-      }
-    }
-  }
-  
-  &.text-center {
-    textarea {
-      text-align: center;
-    }
-  }
-  
-  &.text-right {
-    textarea {
-      text-align: right;
-    }
-  }
-  
-  &.text-left {
-    textarea {
-      text-align: left;
-    }
-  }
-  
-  &.disabled {
-    opacity: var(--land-textarea-disabled-opacity, var(--opacity-disabled));
-    cursor: not-allowed;
-    pointer-events: none;
-    
-    .land-textarea-content {
-      background-color: var(--land-textarea-disabled-bg-color, var(--color-bg-secondary));
-    }
-    
-    textarea {
-      cursor: not-allowed;
-    }
-  }
-  
-  .land-textarea-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    border-radius: var(--land-textarea-border-radius, var(--radius-m));
-    padding: var(--land-textarea-padding, var(--gap-m));
-    transition: all var(--transition-s) linear;
-    min-height: 80px;
-  }
-  
-  .textarea-input-wrapper {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  textarea {
-    padding: 0;
-    width: 100%;
-    flex: 1;
-    min-height: 60px;
-    background-color: transparent;
-    appearance: none;
-    -moz-appearance: none;
+
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
     border: none;
     outline: none;
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--land-textarea-color, var(--color-text-primary));
-    caret-color: var(--land-textarea-caret-color, var(--color-primary));
-    font-family: inherit;
-    
-    &:focus-within,
-    &:focus,
-    &:focus-visible,
-    &:active,
-    &:target {
-      border: none;
-      box-shadow: none;
-      background-color: transparent;
-    }
-    
-    &::selection {
-      background-color: var(--land-textarea-selection-bg-color, var(--color-primary-light));
-    }
-    
-    &::placeholder {
-      color: var(--land-textarea-placeholder-color, var(--color-text-secondary));
-    }
-    
-    &:disabled {
-      color: var(--land-textarea-disabled-color, var(--color-text-disabled));
-    }
+    box-shadow: none;
   }
-  
-  .textarea-beforeContent {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: var(--gap-s);
+
+  &:disabled {
+    color: var(--color-text-disabled, #bfbfbf);
   }
-  
-  .textarea-afterContent {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: var(--gap-s);
+}
+
+// ─── 清除按钮 ───
+.#{$textarea-prefix}__clear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity $textarea-transition ease, color $textarea-transition ease;
+  color: var(--color-text-secondary, #8c8c8c);
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
-  
-  .land-textarea-clear-icon {
-    position: absolute;
-    top: var(--gap-m);
-    right: var(--gap-m);
-    width: var(--land-textarea-clear-icon-size, 16px);
-    height: var(--land-textarea-clear-icon-size, 16px);
-    opacity: 0;
-    transition: opacity 0.2s linear;
-    pointer-events: none;
-    color: var(--land-textarea-clear-icon-color, var(--color-text-secondary));
-    cursor: pointer;
-    z-index: 2;
-    
-    svg {
-      width: var(--land-textarea-clear-icon-size, 16px);
-      height: var(--land-textarea-clear-icon-size, 16px);
-    }
-    
-    &:hover {
-      color: var(--land-textarea-clear-icon-hover-color, var(--color-text-primary));
-    }
-    
-    &.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-  
-  .land-textarea-count {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 4px 8px;
-    font-size: var(--land-textarea-count-font-size, var(--font-content-xs));
-    color: var(--land-textarea-count-color, var(--color-text-secondary));
-    
-    .error {
-      color: var(--land-textarea-count-error-color, var(--color-error));
-    }
-  }
-  
+
   &:hover {
-    .land-textarea-clear-icon:not(.hide) {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    color: var(--color-text-primary, #262626);
   }
-  
-  &:focus-within {
-    .land-textarea-clear-icon:not(.hide) {
-      opacity: 1;
-      pointer-events: auto;
-    }
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
   }
+}
+
+// ─── 字数统计 ───
+.#{$textarea-prefix}__count {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: var(--gap-xs, 4px);
+  font-size: 12px;
+  color: var(--color-text-secondary, #8c8c8c);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+
+  &--error {
+    color: var(--color-error, #ff4d4f);
+  }
+}
+
+// ─── 前置内容 ───
+.#{$textarea-prefix}__before {
+  display: flex;
+  align-items: flex-start;
+  color: var(--color-text-primary, #262626);
+}
+
+// ─── 后置内容 ───
+.#{$textarea-prefix}__after {
+  display: flex;
+  align-items: flex-start;
+  color: var(--color-text-secondary, #8c8c8c);
 }

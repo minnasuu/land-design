@@ -1,20 +1,27 @@
-.land-skeleton{
+// ==================== Skeleton 组件样式 ====================
+// BEM 命名规范：land-skeleton / land-skeleton__element / land-skeleton--modifier
+
+$prefix: 'land-skeleton';
+
+.#{$prefix} {
   position: relative;
   overflow: hidden;
-  
-  .land-skeleton-content {
+
+  // ==================== 内容区域 ====================
+  &__content {
     width: 500%;
     height: 100%;
     transform: translateX(-60%);
     animation: skeleton-loading 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
-  
-  @keyframes skeleton-loading {
-    0% {
-      transform: translateX(-60%);
-    }
-    100% {
-      transform: translateX(0%);
-    }
+}
+
+// ==================== 动画 ====================
+@keyframes skeleton-loading {
+  0% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(0%);
   }
 }

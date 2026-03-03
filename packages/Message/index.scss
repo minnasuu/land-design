@@ -1,0 +1,241 @@
+// ==================== Message 组件样式 ====================
+// 使用 BEM 命名规范
+
+// ─── CSS 变量 ───
+:root {
+  --message-padding: var(--gap-l) var(--gap-xl);
+  --message-gap: var(--gap-m);
+  --message-font-size: var(--font-content-m);
+  --message-border-radius: var(--radius-m);
+  --message-shadow: var(--shadow-card);
+  --message-max-width: 400px;
+
+  // 颜色
+  --message-info-color: var(--color-primary-6);
+  --message-info-bg: var(--color-bg-primary);
+  --message-info-light-bg: var(--color-primary-1);
+
+  --message-success-color: var(--color-success-6);
+  --message-success-bg: var(--color-bg-primary);
+  --message-success-light-bg: var(--color-success-1);
+
+  --message-warning-color: var(--color-warning-6);
+  --message-warning-bg: var(--color-bg-primary);
+  --message-warning-light-bg: var(--color-warning-1);
+
+  --message-error-color: var(--color-danger-6);
+  --message-error-bg: var(--color-bg-primary);
+  --message-error-light-bg: var(--color-danger-1);
+
+  --message-loading-color: var(--color-primary-6);
+  --message-loading-bg: var(--color-bg-primary);
+}
+
+// ─── 基础样式 ───
+.land-message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--message-gap);
+  padding: var(--message-padding);
+  max-width: var(--message-max-width);
+  font-size: var(--message-font-size);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  border-radius: var(--message-border-radius);
+  box-shadow: var(--message-shadow);
+  word-wrap: break-word;
+  user-select: none;
+  pointer-events: auto;
+  transition: all var(--transition-m) ease;
+
+  // ─── 变体样式 ───
+  &--light {
+    background-color: var(--color-bg-primary);
+    box-shadow: var(--message-shadow);
+  }
+
+  &--filled {
+    &.land-message--info {
+      background-color: var(--message-info-color);
+      color: white;
+    }
+    &.land-message--success {
+      background-color: var(--message-success-color);
+      color: white;
+    }
+    &.land-message--warning {
+      background-color: var(--message-warning-color);
+      color: white;
+    }
+    &.land-message--error {
+      background-color: var(--message-error-color);
+      color: white;
+    }
+    &.land-message--loading {
+      background-color: var(--color-bg-secondary);
+    }
+
+    .land-message__icon svg {
+      color: white;
+    }
+  }
+
+  &--outlined {
+    background-color: transparent;
+    box-shadow: none;
+    border: 1px solid var(--color-border-primary);
+
+    &.land-message--info {
+      border-color: var(--message-info-color);
+    }
+    &.land-message--success {
+      border-color: var(--message-success-color);
+    }
+    &.land-message--warning {
+      border-color: var(--message-warning-color);
+    }
+    &.land-message--error {
+      border-color: var(--message-error-color);
+    }
+  }
+
+  // ─── 简洁版样式 ───
+  &--simple {
+    padding: var(--gap-m) var(--gap-l);
+    background-color: var(--color-bg-secondary);
+    box-shadow: none;
+    border-radius: var(--radius-s);
+  }
+}
+
+// ─── 图标 ───
+.land-message__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+// ─── 内容 ───
+.land-message__content {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.5;
+}
+
+// ─── 关闭按钮 ───
+.land-message__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: color var(--transition-s) ease;
+  padding: var(--gap-xs);
+  margin: calc(var(--gap-xs) * -1);
+  border-radius: var(--radius-s);
+
+  &:hover {
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg-tertiary);
+  }
+}
+
+// ─── 消息容器（用于 Plugin）───
+.land-message-container {
+  position: fixed;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-s);
+  pointer-events: none;
+
+  &--top {
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &--top-left {
+    top: 24px;
+    left: 24px;
+    align-items: flex-start;
+  }
+
+  &--top-right {
+    top: 24px;
+    right: 24px;
+    align-items: flex-end;
+  }
+
+  &--bottom {
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column-reverse;
+  }
+
+  &--bottom-left {
+    bottom: 24px;
+    left: 24px;
+    align-items: flex-start;
+    flex-direction: column-reverse;
+  }
+
+  &--bottom-right {
+    bottom: 24px;
+    right: 24px;
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+
+  &--center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// ─── 消息动画 ───
+.land-message-item {
+  animation: messageSlideIn var(--transition-m) ease;
+
+  &--closing {
+    animation: messageSlideOut var(--transition-m) ease forwards;
+  }
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes messageSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+// ==================== 兼容旧版 ====================
+
+// styled-components 生成的类名兼容
+.StyleToastContainer {
+  @extend .land-message;
+
+  &.simple {
+    @extend .land-message--simple;
+  }
+}

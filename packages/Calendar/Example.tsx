@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Calendar from ".";
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
@@ -7,52 +7,67 @@ import ComponentSectionLayout from '../../example/components/ComponentSectionLay
 
 export default function CalendarExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
-  const [selectedDate, setSelectedDate] = useState<string>('');
-  const [selectedWeek, setSelectedWeek] = useState<string>('');
-  const [selectedMonth, setSelectedMonth] = useState<string>('');
-  const [selectedQuarter, setSelectedQuarter] = useState<string>('');
-  const [selectedYear, setSelectedYear] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedWeek, setSelectedWeek] = useState<Date | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState<Date | null>(null);
+  const [selectedQuarter, setSelectedQuarter] = useState<Date | null>(null);
+  const [selectedYear, setSelectedYear] = useState<Date | null>(null);
 
-  // 事件处理函数
-  const handleDayChange = (day: number, month: number, year: number) => {
-    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    setSelectedDate(dateStr);
-    console.log('选择的日期:', { day, month, year });
+  // 格式化显示
+  const formatDate = (date: Date | null): string => {
+    if (!date) return '未选择';
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
   };
 
-  const handleWeekChange = (weekStart: Date, weekEnd: Date, year: number) => {
-    const weekStr = `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
-    setSelectedWeek(weekStr);
-    console.log('选择的周:', { weekStart, weekEnd, year });
+  const formatWeek = (date: Date | null): string => {
+    if (!date) return '未选择';
+    const year = date.getFullYear();
+    const startOfYear = new Date(year, 0, 1);
+    const days = Math.floor((date.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000));
+    const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    return `${year}年第${weekNumber}周`;
   };
 
-  const handleMonthChange = (month: number, year: number) => {
-    const monthStr = `${year}-${month.toString().padStart(2, '0')}`;
-    setSelectedMonth(monthStr);
-    console.log('选择的月份:', { month, year });
+  const formatMonth = (date: Date | null): string => {
+    if (!date) return '未选择';
+    return `${date.getFullYear()}年${date.getMonth() + 1}月`;
   };
 
-  const handleQuarterChange = (quarter: number, year: number) => {
-    const quarterStr = `${year}年第${quarter}季度`;
-    setSelectedQuarter(quarterStr);
-    console.log('选择的季度:', { quarter, year });
+  const formatQuarter = (date: Date | null): string => {
+    if (!date) return '未选择';
+    const quarter = Math.floor(date.getMonth() / 3) + 1;
+    return `${date.getFullYear()}年第${quarter}季度`;
   };
 
-  const handleYearChange = (year: number) => {
-    setSelectedYear(year.toString());
-    console.log('选择的年份:', { year });
+  const formatYear = (date: Date | null): string => {
+    if (!date) return '未选择';
+    return `${date.getFullYear()}年`;
   };
 
   const calendarProps = [
-    { name: 'viewMode', type: 'CalendarViewMode (date | week | month | quarter | year)', desc: '视图模式', default: 'date' },
-    { name: 'language', type: 'CalendarLanguage (zh | en)', desc: '语言设置', default: 'zh' },
-    { name: 'minDate', type: 'DateInput', desc: '最小日期' },
-    { name: 'maxDate', type: 'DateInput', desc: '最大日期' },
-    { name: 'onDayChange', type: '(day: number, month: number, year: number) => void', desc: '日期选择事件' },
-    { name: 'onWeekChange', type: '(weekStart: Date, weekEnd: Date, year: number) => void', desc: '周选择事件' },
-    { name: 'onMonthChange', type: '(month: number, year: number) => void', desc: '月选择事件' },
-    { name: 'onQuarterChange', type: '(quarter: number, year: number) => void', desc: '季度选择事件' },
-    { name: 'onYearChange', type: '(year: number) => void', desc: '年选择事件' },
+    { name: 'value', type: 'Date | null', desc: '当前选中值（受控模式）' },
+    { name: 'defaultValue', type: 'Date | null', desc: '默认选中值（非受控模式）' },
+    { name: 'mode', type: '"date" | "week" | "month" | "quarter" | "year"', default: '"date"', desc: '视图模式' },
+    { name: 'language', type: '"zh" | "en"', default: '"zh"', desc: '语言设置' },
+    { name: 'size', type: '"small" | "default" | "large"', default: '"default"', desc: '尺寸' },
+    { name: 'minDate', type: 'DateInput', desc: '最小可选日期' },
+    { name: 'maxDate', type: 'DateInput', desc: '最大可选日期' },
+    { name: 'disabledDate', type: '(date: Date) => boolean', desc: '禁用日期判断函数' },
+    { name: 'weekStartDay', type: '0 | 1 | 2 | 3 | 4 | 5 | 6', default: '0', desc: '星期起始日（0=周日）' },
+    { name: 'showHolidays', type: 'boolean', default: 'false', desc: '是否显示节假日标记' },
+    { name: 'showWeekNumber', type: 'boolean', default: 'false', desc: '是否显示周数' },
+    { name: 'showTodayButton', type: 'boolean', default: 'true', desc: '是否显示返回今天按钮' },
+    { name: 'showOtherMonthDays', type: 'boolean', default: 'true', desc: '是否显示其他月份日期' },
+    { name: 'allowOtherMonthSelect', type: 'boolean', default: 'true', desc: '是否允许点击其他月份日期' },
+    { name: 'headerRender', type: '(props) => ReactNode', desc: '自定义头部内容' },
+    { name: 'dateRender', type: '(date: DateInfo) => ReactNode', desc: '自定义日期单元格内容' },
+    { name: 'onChange', type: '(value: Date, info) => void', desc: '值变化回调' },
+    { name: 'onDateSelect', type: '(date: Date, info) => void', desc: '日期选择回调（date模式）' },
+    { name: 'onWeekSelect', type: '(weekStart: Date, info) => void', desc: '周选择回调（week模式）' },
+    { name: 'onMonthSelect', type: '(month, year, info) => void', desc: '月份选择回调（month模式）' },
+    { name: 'onQuarterSelect', type: '(quarter, year, info) => void', desc: '季度选择回调（quarter模式）' },
+    { name: 'onYearSelect', type: '(year, info) => void', desc: '年份选择回调（year模式）' },
+    { name: 'onPanelChange', type: '(date: Date, mode) => void', desc: '面板变化回调' },
   ];
 
   return (
@@ -63,68 +78,85 @@ export default function CalendarExample() {
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
-
-      {/* 标签页内容 */}
       {activeTab === 'examples' && (
         <>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
-            id='calendar-normal'
-            description='Calendar 组件的基础用法，默认显示日期视图。'
+            id='calendar-basic'
+            description='Calendar 组件的基础用法，默认显示日期视图。支持受控和非受控两种模式。'
           >
             <div className="fs-12 color-gray-4 mb-8">
-              当前选择: {selectedDate || '未选择'}
+              当前选择: {formatDate(selectedDate)}
             </div>
             <CodeOperationContainer>
               <Calendar
-                viewMode="date"
-                onDayChange={handleDayChange}
+                mode="date"
+                value={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
               />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 尺寸 */}
+          <ComponentSectionLayout
+            title='尺寸'
+            id='calendar-size'
+            description='通过 size 属性设置日历尺寸。'
+          >
+            <CodeOperationContainer column>
+              <div>
+                <div className="fs-12 color-gray-4 mb-8">小尺寸 (small)</div>
+                <Calendar size="small" mode="date" />
+              </div>
+              <div>
+                <div className="fs-12 color-gray-4 mb-8">默认尺寸 (default)</div>
+                <Calendar size="default" mode="date" />
+              </div>
+              <div>
+                <div className="fs-12 color-gray-4 mb-8">大尺寸 (large)</div>
+                <Calendar size="large" mode="date" />
+              </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
           {/* 视图模式 */}
           <ComponentSectionLayout
             title='视图模式'
-            id='calendar-view-mode'
-            description='Calendar 支持多种不同的视图模式。'
+            id='calendar-mode'
+            description='Calendar 支持多种视图模式：日期、周、月、季度、年。'
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  当前选择: {selectedWeek || '未选择'}
-                </div>
+                <div className="fs-12 color-gray-4 mb-8">周视图 - 当前选择: {formatWeek(selectedWeek)}</div>
                 <Calendar
-                  viewMode="week"
-                  onWeekChange={handleWeekChange}
+                  mode="week"
+                  value={selectedWeek}
+                  onChange={(date) => setSelectedWeek(date)}
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  当前选择: {selectedMonth || '未选择'}
-                </div>
+                <div className="fs-12 color-gray-4 mb-8">月视图 - 当前选择: {formatMonth(selectedMonth)}</div>
                 <Calendar
-                  viewMode="month"
-                  onMonthChange={handleMonthChange}
+                  mode="month"
+                  value={selectedMonth}
+                  onChange={(date) => setSelectedMonth(date)}
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  当前选择: {selectedQuarter || '未选择'}
-                </div>
+                <div className="fs-12 color-gray-4 mb-8">季度视图 - 当前选择: {formatQuarter(selectedQuarter)}</div>
                 <Calendar
-                  viewMode="quarter"
-                  onQuarterChange={handleQuarterChange}
+                  mode="quarter"
+                  value={selectedQuarter}
+                  onChange={(date) => setSelectedQuarter(date)}
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  当前选择: {selectedYear || '未选择'}
-                </div>
+                <div className="fs-12 color-gray-4 mb-8">年视图 - 当前选择: {formatYear(selectedYear)}</div>
                 <Calendar
-                  viewMode="year"
-                  onYearChange={handleYearChange}
+                  mode="year"
+                  value={selectedYear}
+                  onChange={(date) => setSelectedYear(date)}
                 />
               </div>
             </CodeOperationContainer>
@@ -134,119 +166,76 @@ export default function CalendarExample() {
           <ComponentSectionLayout
             title='语言设置'
             id='calendar-language'
-            description='通过 language 属性可以设置日历的语言。'
+            description='通过 language 属性设置日历的语言。'
           >
             <CodeOperationContainer column>
               <div>
                 <div className="fs-12 color-gray-4 mb-8">中文（默认）</div>
-                <Calendar
-                  viewMode="date"
-                  language="zh"
-                  onDayChange={handleDayChange}
-                />
+                <Calendar mode="date" language="zh" />
               </div>
               <div>
                 <div className="fs-12 color-gray-4 mb-8">英文</div>
-                <Calendar
-                  viewMode="date"
-                  language="en"
-                  onDayChange={handleDayChange}
-                />
+                <Calendar mode="date" language="en" />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 日期范围设置 */}
+          {/* 日期范围限制 */}
           <ComponentSectionLayout
-            title='日期范围设置'
-            id='calendar-date-range'
-            description='通过 minDate 和 maxDate 属性可以限制可选择的日期范围。'
+            title='日期范围限制'
+            id='calendar-range'
+            description='通过 minDate 和 maxDate 属性限制可选择的日期范围。'
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  限制选择范围：2020年1月1日 - 2025年12月31日
-                </div>
+                <div className="fs-12 color-gray-4 mb-8">限制范围：2024年1月1日 - 2025年12月31日</div>
                 <Calendar
-                  viewMode="date"
-                  minDate="2020-01-01"
-                  maxDate="2025-12-31"
-                  onDayChange={handleDayChange}
-                />
-              </div>
-              <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  从2020年1月1日开始
-                </div>
-                <Calendar
-                  viewMode="date"
-                  minDate="2020-01-01"
-                  onDayChange={handleDayChange}
-                />
-              </div>
-              <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  到2030年12月31日结束
-                </div>
-                <Calendar
-                  viewMode="date"
-                  maxDate="2030-12-31"
-                  onDayChange={handleDayChange}
-                />
-              </div>
-              <div>
-                <div className="fs-12 color-gray-4 mb-8">
-                  固定在2024年1月1日，不显示年份选择器
-                </div>
-                <Calendar
-                  viewMode="date"
+                  mode="date"
                   minDate="2024-01-01"
-                  maxDate="2024-01-01"
-                  onDayChange={handleDayChange}
+                  maxDate="2025-12-31"
+                />
+              </div>
+              <div>
+                <div className="fs-12 color-gray-4 mb-8">仅限今年</div>
+                <Calendar
+                  mode="date"
+                  minDate={new Date(new Date().getFullYear(), 0, 1)}
+                  maxDate={new Date(new Date().getFullYear(), 11, 31)}
                 />
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 英文版本示例 */}
+          {/* 其他月份日期点击 */}
           <ComponentSectionLayout
-            title='英文版本示例'
-            id='calendar-language-en'
-            description='Calendar 的英文版本示例。'
+            title='其他月份日期点击'
+            id='calendar-other-month'
+            description='点击其他月份的日期可以自动跳转到对应月份并选中。通过 allowOtherMonthSelect 控制。'
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">英文周视图</div>
-                <Calendar
-                  viewMode="week"
-                  language="en"
-                  onWeekChange={handleWeekChange}
-                />
+                <div className="fs-12 color-gray-4 mb-8">允许点击其他月份（默认）</div>
+                <Calendar mode="date" allowOtherMonthSelect={true} />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">英文月视图</div>
-                <Calendar
-                  viewMode="month"
-                  language="en"
-                  onMonthChange={handleMonthChange}
-                />
+                <div className="fs-12 color-gray-4 mb-8">禁止点击其他月份</div>
+                <Calendar mode="date" allowOtherMonthSelect={false} />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">英文季度视图</div>
-                <Calendar
-                  viewMode="quarter"
-                  language="en"
-                  onQuarterChange={handleQuarterChange}
-                />
+                <div className="fs-12 color-gray-4 mb-8">隐藏其他月份日期</div>
+                <Calendar mode="date" showOtherMonthDays={false} />
               </div>
-              <div>
-                <div className="fs-12 color-gray-4 mb-8">英文年视图</div>
-                <Calendar
-                  viewMode="year"
-                  language="en"
-                  onYearChange={handleYearChange}
-                />
-              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 隐藏返回今天按钮 */}
+          <ComponentSectionLayout
+            title='隐藏返回今天按钮'
+            id='calendar-today-button'
+            description='通过 showTodayButton 属性控制是否显示返回今天按钮。'
+          >
+            <CodeOperationContainer>
+              <Calendar mode="date" showTodayButton={false} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </>

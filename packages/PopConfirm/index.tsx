@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Button from '../Button';
 import { PopConfirmProps } from './props';
 import './index.scss';
+
+const prefixCls = 'land-pop-confirm';
 
 const PopConfirm: React.FC<PopConfirmProps> = ({
   show,
@@ -18,70 +20,109 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
   style,
   className = "",
 }) => {
+  // ─── 类名计算 ───
+  const rootClassName = useMemo(() => {
+    return [
+      prefixCls,
+      show && `${prefixCls}--show`,
+      hideArrow && `${prefixCls}--hide-arrow`,
+      theme === 'dark' && `${prefixCls}--dark`,
+      className,
+    ].filter(Boolean).join(' ');
+  }, [show, hideArrow, theme, className]);
+
+  // ─── 位置样式计算 ───
+  const positionStyle = useMemo(() => {
+    const styles: React.CSSProperties = {};
+
+    // 设置定位
+    switch (placement) {
+      case 'top':
+        styles.bottom = '100%';
+        styles.left = '50%';
+        styles.transform = 'translate(-50%, -12px)';
+        break;
+      case 'bottom':
+        styles.top = '100%';
+        styles.left = '50%';
+        styles.transform = 'translate(-50%, 12px)';
+        break;
+      case 'left':
+        styles.right = '100%';
+        styles.top = '50%';
+        styles.transform = 'translate(-12px, -50%)';
+        break;
+      case 'right':
+        styles.left = '100%';
+        styles.top = '50%';
+        styles.transform = 'translate(12px, -50%)';
+        break;
+    }
+
+    return { ...styles, ...style };
+  }, [placement, style]);
+
+  // ─── 箭头样式计算 ───
+  const arrowStyle = useMemo(() => {
+    const styles: React.CSSProperties = {};
+
+    switch (placement) {
+      case 'top':
+        styles.left = '50%';
+        styles.top = '100%';
+        styles.transform = 'translate(-50%, -50%) rotate(45deg)';
+        break;
+      case 'bottom':
+        styles.left = '50%';
+        styles.bottom = '100%';
+        styles.transform = 'translate(-50%, 50%) rotate(-135deg)';
+        break;
+      case 'left':
+        styles.left = '100%';
+        styles.top = '50%';
+        styles.transform = 'translate(-50%, -50%) rotate(-45deg)';
+        break;
+      case 'right':
+        styles.left = '0';
+        styles.top = '50%';
+        styles.transform = 'translate(-50%, -50%) rotate(135deg)';
+        break;
+    }
+
+    return styles;
+  }, [placement]);
+
   return (
-    <div
-      className={`land-pop-confirm ${show ? 'show' : ''} ${hideArrow ? 'hide-arrow' : ''} ${theme} ${className}`}
-      style={{
-        top:
-          placement === "bottom"
-            ? "100%"
-            : placement === "top"
-              ? "auto"
-              : "50%",
-        bottom: placement === "top" ? "100%" : "",
-        left:
-          placement === "right"
-            ? "100%"
-            : placement === "left"
-              ? "auto"
-              : "50%",
-        right: placement === "left" ? "100%" : "",
-        transform: `translate(${placement === "top" || placement === "bottom"
-          ? "-50%"
-          : placement === "left"
-            ? "-12px"
-            : "12px"
-          }, ${placement === "top"
-            ? "-12px"
-            : placement === "bottom"
-              ? "12px"
-              : "-50%"
-          })`,
-        ...style,
-      }}
-    >
-      <div className='land-popConfirm-content'>{content}</div>
-      <div className='land-popConfirm-btn'>
-        <Button variant='fill' size='small' onClick={onCancel} {...cancelButtonProps}>{cancelLabel}</Button>
-        <Button variant='background' size='small' onClick={onSubmit} {...submitButtonProps}>{submitLabel}</Button>
+    <div className={rootClassName} style={positionStyle}>
+      {/* 内容区域 */}
+      <div className={`${prefixCls}__content`}>{content}</div>
+
+      {/* 按钮区域 */}
+      <div className={`${prefixCls}__btns`}>
+        <Button
+          variant="fill"
+          size="small"
+          onClick={onCancel}
+          {...cancelButtonProps}
+        >
+          {cancelLabel}
+        </Button>
+        <Button
+          variant="background"
+          size="small"
+          onClick={onSubmit}
+          {...submitButtonProps}
+        >
+          {submitLabel}
+        </Button>
       </div>
-      {!hideArrow && <div
-        className="land-popConfirm-arrow"
-        style={{
-          left:
-            placement === "left" ? "100%" : placement === "right" ? "0" : "50%",
-          top:
-            placement === "top"
-              ? "100%"
-              : placement === "bottom"
-                ? "0px"
-                : "50%",
-          bottom: placement === "bottom" ? "100%" : "",
-          transform: `translate(${placement === "left"
-            ? "-50%"
-            : placement === "right"
-              ? "-50%"
-              : "-50%"
-            }, ${placement === "top"
-              ? "-50%"
-              : placement === "bottom"
-                ? "-50%"
-                : "-50%"
-            }) rotate(${placement === 'top' ? '45' : placement === 'bottom' ? '-135' : placement === 'right' ? '135' : '-45'}deg)`,
-        }}
-      ></div>}
+
+      {/* 箭头 */}
+      {!hideArrow && (
+        <div className={`${prefixCls}__arrow`} style={arrowStyle} />
+      )}
     </div>
   );
 };
 
-export default PopConfirm
+export default PopConfirm;

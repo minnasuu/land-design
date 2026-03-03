@@ -179,7 +179,7 @@ const CalendarQuarter: React.FC<CalendarQuarterProps> = ({
 
       {!isCurrentQuarterInView && (
         <Button
-          type="transparent"
+          variant="transparent"
           status='primary'
           block
           size='small'

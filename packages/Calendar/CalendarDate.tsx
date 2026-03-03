@@ -6,6 +6,7 @@ import CalendarCell from './CalendarCell';
 import Button from '../Button';
 import { DateInput, getYearRange, shouldShowYearSelector, isMonthInRange } from './utils/dateRange';
 import { getMonthDaysGrid, getHolidays, CalendarDay } from './utils/calendarUtils';
+import Icon from '../Icon';
 
 interface CalendarDateProps {
   language?: "zh" | "en";
@@ -90,7 +91,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
     const currentYear = currentDate.getFullYear();
     
     // 计算上一个月的年份和月份
-    let prevMonth, prevYear;
+    let prevMonth: number, prevYear: number;
     if (currentMonth === 0) {
       // 从1月切换到上一年的12月
       prevMonth = 11;
@@ -120,7 +121,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
     const currentYear = currentDate.getFullYear();
     
     // 计算下一个月的年份和月份
-    let nextMonth, nextYear;
+    let nextMonth: number, nextYear: number;
     if (currentMonth === 11) {
       // 从12月切换到下一年的1月
       nextMonth = 0;
@@ -203,6 +204,19 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
     }
   };
 
+  // 处理其他月份日期点击（跳转到对应月份并选中）
+  const handleOtherMonthDayClick = (day: CalendarDay) => {
+    // 更新当前日期到目标月份
+    setCurrentDate(new Date(day.year, day.month, 1));
+    setInputYear(day.year);
+    
+    // 设置选中日期
+    setSelected(day.dayNumber);
+    
+    // 触发日期变更回调
+    onDayChange?.(day.dayNumber, day.month, day.year);
+  };
+
   // 处理日期悬浮事件
   const handleDayMouseOver = (day: CalendarDay, e: React.MouseEvent) => {
     if (day.isCurrentMonth) {
@@ -251,6 +265,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
             key={`${day.year}-${day.month}-${day.dayNumber}-${index}`}
             day={day}
             onDayClick={handleDayClick}
+            onOtherMonthDayClick={handleOtherMonthDayClick}
             onDayMouseOver={handleDayMouseOver}
             onDayMouseOut={handleDayMouseOut}
             onDayMouseEnter={handleDayMouseEnter}
@@ -265,10 +280,11 @@ const CalendarDate: React.FC<CalendarDateProps> = ({
 
       {!isCurrentDate && (
         <Button
-          type="transparent"
+           variant="transparent"
           status='primary'
           block
           size='small'
+          icon={<Icon name='last-step'/>}
           text={language === "zh" ? "返回今天" : "Today"}
           className="land-calendar-btn back"
           onClick={handleBackToDate}

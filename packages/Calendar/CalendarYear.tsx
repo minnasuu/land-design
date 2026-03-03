@@ -171,7 +171,7 @@ const CalendarYear: React.FC<CalendarYearProps> = ({
 
       {!isCurrentYearInView && (
         <Button
-          type="transparent"
+          variant="transparent"
           status='primary'
           block
           size='small'

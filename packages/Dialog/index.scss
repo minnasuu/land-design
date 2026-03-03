@@ -1,4 +1,9 @@
-.land-dialog{
+// ==================== Dialog 组件样式 ====================
+// BEM 命名规范：land-dialog / land-dialog__element / land-dialog--modifier
+
+$prefix: 'land-dialog';
+
+.#{$prefix} {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,10 +14,14 @@
   height: 100vh;
   z-index: 1000;
   pointer-events: none;
-  &.show{
+
+  // ==================== 修饰符 ====================
+  &--show {
     pointer-events: auto;
   }
-  .land-dialog-mask{
+
+  // ==================== 遮罩层 ====================
+  &__mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -20,7 +29,9 @@
     height: 100%;
     background-color: var(--color-bg-mask);
   }
-  .land-dialog-content{
+
+  // ==================== 内容区域 ====================
+  &__content {
     position: relative;
     width: var(--land-dialog-content-width);
     max-width: 90vw;
@@ -28,52 +39,63 @@
     color: var(--color-text-primary);
     box-shadow: var(--shadow-modal);
     border-radius: var(--radius-l);
-    .land-dialog-header{
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 var(--gap-xl);
-      height: 48px;
-      .land-dialog-header-title{
-        font-size: var(--font-content-l);
-        font-weight: bold;
-        color: var(--color-text-primary);
-      }
-      .land-dialog-header-close{
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        aspect-ratio: 1;
-        color: var(--color-text-primary);
-        transition: color var(--transition-s) linear;
-        cursor: pointer;
-        svg{
-          width: var(--icon-size-l);
-          height: var(--icon-size-l);
-        }
-        &:hover{
-          color: var(--color-text-secondary);
-        }
-      }
+  }
+
+  // ==================== 头部区域 ====================
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--gap-xl);
+    height: 48px;
+  }
+
+  &__title {
+    font-size: var(--font-content-l);
+    font-weight: bold;
+    color: var(--color-text-primary);
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1;
+    color: var(--color-text-primary);
+    transition: color var(--transition-s) linear;
+    cursor: pointer;
+
+    svg {
+      width: var(--icon-size-l);
+      height: var(--icon-size-l);
     }
-    .land-dialog-body{
-      padding: var(--gap-l) var(--gap-xl);
+
+    &:hover {
+      color: var(--color-text-secondary);
     }
-    .land-dialog-footer{
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--gap-l) var(--gap-xl) var(--gap-xl);
-      .land-dialog-footer-btn{
-        display: flex;
-        gap: var(--gap-m);
-      }
-    }
+  }
+
+  // ==================== 主体区域 ====================
+  &__body {
+    padding: var(--gap-l) var(--gap-xl);
+  }
+
+  // ==================== 底部区域 ====================
+  &__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gap-l) var(--gap-xl) var(--gap-xl);
+  }
+
+  &__footer-btns {
+    display: flex;
+    gap: var(--gap-m);
   }
 }

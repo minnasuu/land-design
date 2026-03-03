@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Image from ".";
-import Icon from "../Icon";
+import Image from '.';
+import Icon from '../Icon';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
@@ -11,176 +11,277 @@ export default function ImageExample() {
 
   // 自定义兜底内容
   const customFallback = (
-    <div className="flex column items-center justify-center gap-8 fs-14" style={{ height: '100%', color: '#999' }}>
+    <div
+      className="flex flex-col items-center justify-center gap-8"
+      style={{ height: '100%', color: 'var(--color-text-quaternary)' }}
+    >
       <Icon name="image" size={32} />
-      <span>图片加载失败</span>
+      <span style={{ fontSize: 12 }}>图片加载失败</span>
     </div>
   );
 
   const imageProps = [
-    { name: 'url', type: 'string', desc: '图片地址' },
-    { name: 'alt', type: 'string', desc: '图片描述' },
-    { name: 'fallbackUrl', type: 'string', desc: '兜底图片地址' },
+    { name: 'src', type: 'string', desc: '图片地址' },
+    { name: 'alt', type: 'string', default: '""', desc: '图片描述（无障碍）' },
+    { name: 'width', type: 'number | string', desc: '图片宽度' },
+    { name: 'height', type: 'number | string', desc: '图片高度' },
+    { name: 'fit', type: '"cover" | "contain" | "fill" | "none" | "scale-down"', default: '"cover"', desc: '图片填充模式' },
+    { name: 'position', type: '"center" | "top" | "bottom" | "left" | "right" | ...', default: '"center"', desc: '图片位置' },
+    { name: 'ratio', type: 'number', desc: '宽高比' },
+    { name: 'radius', type: 'number | string', desc: '圆角' },
+    { name: 'round', type: 'boolean', default: 'false', desc: '是否为圆形' },
+    { name: 'lazy', type: 'boolean', default: 'false', desc: '是否懒加载' },
+    { name: 'preview', type: 'string', desc: '预览图地址' },
+    { name: 'fallbackSrc', type: 'string', desc: '兜底图片地址' },
     { name: 'fallback', type: 'ReactNode', desc: '兜底内容' },
-    { name: 'ratio', type: 'number', desc: '图片比例' },
-    { name: 'style', type: 'CSSProperties', desc: '组件样式' },
-    { name: 'className', type: 'string', desc: '组件类名' },
-    { name: 'imgStyle', type: 'CSSProperties', desc: '图片样式' },
-    { name: 'imgClassName', type: 'string', desc: '图片类名' },
+    { name: 'placeholder', type: 'ReactNode', desc: '加载中占位内容' },
+    { name: 'showSkeleton', type: 'boolean', default: 'true', desc: '是否显示骨架屏' },
+    { name: 'showError', type: 'boolean', default: 'true', desc: '是否显示错误状态' },
+    { name: 'onLoad', type: '(e: SyntheticEvent) => void', desc: '加载成功回调' },
+    { name: 'onError', type: '(e: SyntheticEvent) => void', desc: '加载失败回调' },
+    { name: 'onClick', type: '(e: MouseEvent) => void', desc: '点击回调' },
+    { name: 'className', type: 'string', desc: '自定义类名' },
+    { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
+    { name: 'imgClassName', type: 'string', desc: '图片元素类名' },
+    { name: 'imgStyle', type: 'CSSProperties', desc: '图片元素样式' },
+    { name: 'htmlProps', type: 'HTMLAttributes', desc: '原生属性透传' },
+    { name: 'imgProps', type: 'ImgHTMLAttributes', desc: '原生 img 属性透传' },
   ];
+
+  const sampleImage = 'https://picsum.photos/400/300';
+  const sampleImage2 = 'https://picsum.photos/300/400';
 
   return (
     <ComponentContentLayout
-      zh='图片'
-      en='Image'
-      desc='LandDesign 的图片组件，支持自动比例、加载状态、兜底内容、错误处理等功能。'
+      zh="图片"
+      en="Image"
+      desc="LandDesign 的图片组件，支持自动比例、加载状态、兜底内容、错误处理等功能。"
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
-
-      {/* 标签页内容 */}
       {activeTab === 'examples' && (
         <>
           {/* 基础用法 */}
           <ComponentSectionLayout
-            title='基础用法'
-            id='image-normal'
-            description='Image 组件的基础用法，支持自动获取比例和设置比例。'
+            title="基础用法"
+            id="image-basic"
+            description="Image 组件的基础用法。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://cdn-bastani.stunning.kr/prod/portfolios/2184d516-dbcc-47d2-b015-2b50be43e3da/contents/h2JHxgM98gfQG6NT.%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202025-06-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.11.00.png"
-                  style={{ width: '200px' }}
-                />
-                <p className='fs-12 text-center'>自动获取比例</p>
+              <Image src={sampleImage} width={200} ratio={4 / 3} />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 填充模式 */}
+          <ComponentSectionLayout
+            title="填充模式"
+            id="image-fit"
+            description="通过 fit 属性设置图片填充模式。"
+          >
+            <CodeOperationContainer style={{ flexWrap: 'wrap', gap: 16 }}>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={120} height={120} fit="cover" />
+                <span className="fs-12">cover</span>
               </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://cdn-bastani.stunning.kr/prod/portfolios/2184d516-dbcc-47d2-b015-2b50be43e3da/contents/h2JHxgM98gfQG6NT.%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202025-06-23%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.11.00.png"
-                  ratio={625 / 1048}
-                  style={{ width: '200px' }}
-                />
-                <p className='fs-12 text-center'>设置比例</p>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={120} height={120} fit="contain" />
+                <span className="fs-12">contain</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={120} height={120} fit="fill" />
+                <span className="fs-12">fill</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={120} height={120} fit="none" />
+                <span className="fs-12">none</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={120} height={120} fit="scale-down" />
+                <span className="fs-12">scale-down</span>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 图片位置 */}
+          <ComponentSectionLayout
+            title="图片位置"
+            id="image-position"
+            description="通过 position 属性设置 fit=cover 时的图片位置。"
+          >
+            <CodeOperationContainer style={{ flexWrap: 'wrap', gap: 16 }}>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={100} height={100} position="top" />
+                <span className="fs-12">top</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={100} height={100} position="center" />
+                <span className="fs-12">center</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage2} width={100} height={100} position="bottom" />
+                <span className="fs-12">bottom</span>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 宽高比 */}
+          <ComponentSectionLayout
+            title="宽高比"
+            id="image-ratio"
+            description="通过 ratio 属性设置固定宽高比。"
+          >
+            <CodeOperationContainer>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={150} ratio={16 / 9} />
+                <span className="fs-12">16:9</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={150} ratio={4 / 3} />
+                <span className="fs-12">4:3</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={150} ratio={1} />
+                <span className="fs-12">1:1</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={150} ratio={3 / 4} />
+                <span className="fs-12">3:4</span>
+              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 圆角与圆形 */}
+          <ComponentSectionLayout
+            title="圆角与圆形"
+            id="image-radius"
+            description="通过 radius 和 round 属性设置圆角。"
+          >
+            <CodeOperationContainer>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={100} height={100} radius={0} />
+                <span className="fs-12">无圆角</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={100} height={100} radius={8} />
+                <span className="fs-12">小圆角</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={100} height={100} radius={16} />
+                <span className="fs-12">大圆角</span>
+              </div>
+              <div className="flex flex-col items-center gap-8">
+                <Image src={sampleImage} width={100} height={100} round />
+                <span className="fs-12">圆形</span>
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
           {/* 加载失败 */}
           <ComponentSectionLayout
-            title='加载失败'
-            id='image-error'
-            description='当图片地址错误或加载失败时的处理。'
+            title="加载失败"
+            id="image-error"
+            description="图片加载失败时显示错误状态。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  style={{ width: '200px' }}
-                />
-                <p className='fs-12 text-center'>默认错误状态</p>
+              <div className="flex flex-col items-center gap-8">
+                <Image src="https://invalid-url.com/image.jpg" width={150} height={100} />
+                <span className="fs-12">默认错误状态</span>
               </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  style={{ width: '200px' }}
-                  ratio={625 / 1048}
-                />
-                <p className='fs-12 text-center'>设置比例的错误状态</p>
+              <div className="flex flex-col items-center gap-8">
+                <Image src="https://invalid-url.com/image.jpg" width={150} height={100} showError={false} />
+                <span className="fs-12">隐藏错误状态</span>
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 兜底图 */}
+          {/* 兜底图片 */}
           <ComponentSectionLayout
-            title='兜底图'
-            id='image-fallback'
-            description='通过 fallbackUrl 和 fallback 属性可以设置兜底内容。'
+            title="兜底图片"
+            id="image-fallback-src"
+            description="通过 fallbackSrc 设置兜底图片。"
           >
-            <CodeOperationContainer style={{ gap: 24, flexWrap: 'wrap' }}>
-              <div className="flex flex-col items-center justify-center gap-8">
+            <CodeOperationContainer>
+              <div className="flex flex-col items-center gap-8">
                 <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  fallbackUrl="https://qzonestyle.gdtimg.com/gdt_ui_proj/imghub/dist/icon-game-default.svg?max_age=31536000"
-                  style={{ width: '120px' }}
+                  src="https://invalid-url.com/image.jpg"
+                  fallbackSrc={sampleImage}
+                  width={150}
+                  height={100}
                 />
-                <p className='fs-12 text-center'>主图失败，兜底图成功</p>
+                <span className="fs-12">主图失败，显示兜底图</span>
               </div>
-              <div className="flex flex-col items-center justify-center gap-8">
+              <div className="flex flex-col items-center gap-8">
                 <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  fallbackUrl="https://another-invalid-url.com/fallback.jpg"
-                  style={{ width: '120px' }}
+                  src="https://invalid-url.com/image.jpg"
+                  fallbackSrc="https://another-invalid.com/image.jpg"
+                  width={150}
+                  height={100}
                 />
-                <p className='fs-12 text-center'>主图和兜底图都失败</p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  fallbackUrl="https://another-invalid-url.com/fallback.jpg"
-                  fallback={customFallback}
-                  style={{ width: '120px' }}
-                />
-                <p className='fs-12 text-center'>fallbackUrl失败，自定义节点</p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  fallback={customFallback}
-                  style={{ width: '120px' }}
-                />
-                <p className='fs-12 text-center'>只有fallback，直接显示</p>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://invalid-url-that-will-fail.com/image.jpg"
-                  fallbackUrl="https://qzonestyle.gdtimg.com/gdt_ui_proj/imghub/dist/icon-game-default.svg?max_age=31536000"
-                  fallback={customFallback}
-                  style={{ width: '120px' }}
-                />
-                <p className='fs-12 text-center'>fallbackUrl成功，不显示fallback</p>
+                <span className="fs-12">兜底图也失败</span>
               </div>
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 不同比例 */}
+          {/* 自定义兜底 */}
           <ComponentSectionLayout
-            title='不同比例'
-            id='image-ratio'
-            description='通过 ratio 属性可以设置不同的图片比例。'
+            title="自定义兜底"
+            id="image-fallback"
+            description="通过 fallback 属性自定义兜底内容。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center justify-center gap-8">
+              <div className="flex flex-col items-center gap-8">
                 <Image
-                  url="https://picsum.photos/300/200"
-                  ratio={3 / 2}
-                  style={{ width: '150px' }}
+                  src="https://invalid-url.com/image.jpg"
+                  fallback={customFallback}
+                  width={150}
+                  height={100}
                 />
-                <p className='fs-12 text-center'>3:2 比例</p>
+                <span className="fs-12">自定义兜底内容</span>
               </div>
-              <div className="flex flex-col items-center justify-center gap-8">
+              <div className="flex flex-col items-center gap-8">
                 <Image
-                  url="https://picsum.photos/300/300"
-                  ratio={1}
-                  style={{ width: '150px' }}
+                  src="https://invalid-url.com/image.jpg"
+                  fallbackSrc="https://also-invalid.com/image.jpg"
+                  fallback={customFallback}
+                  width={150}
+                  height={100}
                 />
-                <p className='fs-12 text-center'>1:1 比例</p>
+                <span className="fs-12">fallbackSrc 失败后显示 fallback</span>
               </div>
-              <div className="flex flex-col items-center justify-center gap-8">
-                <Image
-                  url="https://picsum.photos/300/400"
-                  ratio={3 / 4}
-                  style={{ width: '150px' }}
-                />
-                <p className='fs-12 text-center'>3:4 比例</p>
-              </div>
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 懒加载 */}
+          <ComponentSectionLayout
+            title="懒加载"
+            id="image-lazy"
+            description="通过 lazy 属性开启懒加载。"
+          >
+            <CodeOperationContainer>
+              <Image src={sampleImage} width={200} ratio={4 / 3} lazy />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 点击事件 */}
+          <ComponentSectionLayout
+            title="点击事件"
+            id="image-click"
+            description="通过 onClick 属性处理点击事件。"
+          >
+            <CodeOperationContainer>
+              <Image
+                src={sampleImage}
+                width={200}
+                ratio={4 / 3}
+                onClick={() => alert('图片被点击')}
+              />
             </CodeOperationContainer>
           </ComponentSectionLayout>
         </>
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className="flex flex-col gap-12">
           <ComponentPropsTable props={imageProps} />
         </div>
       )}

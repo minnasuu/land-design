@@ -1,181 +1,388 @@
+// ==================== Table 组件样式 ====================
+// 使用 BEM 命名规范
+
+// ─── CSS 变量 ───
+:root {
+  --table-border-color: var(--color-border-primary);
+  --table-header-bg: var(--color-bg-secondary);
+  --table-body-bg: var(--color-bg-primary);
+  --table-row-hover-bg: var(--color-bg-secondary);
+  --table-row-striped-bg: var(--color-bg-secondary);
+  --table-cross-highlight-color: rgba(24, 144, 255, 0.08);
+  --table-sticky-header-offset: 0px;
+
+  // 尺寸变量
+  --table-padding-small: 6px 10px;
+  --table-padding-medium: 10px 16px;
+  --table-padding-large: 14px 20px;
+
+  --table-font-size-small: var(--font-content-s);
+  --table-font-size-medium: var(--font-content-m);
+  --table-font-size-large: var(--font-content-l);
+}
+
+// ─── 容器 ───
 .land-table-wrapper {
   position: relative;
   display: inline-block;
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-s);
   width: fit-content;
   max-width: 100%;
-  overflow: hidden;
+  font-size: var(--table-font-size-medium);
 
-  // 表头固定样式
-  &.land-table-wrapper--head-fixed {
+  // 尺寸变体
+  &--small {
+    font-size: var(--table-font-size-small);
+
+    .land-table__header-cell,
+    .land-table__cell {
+      padding: var(--table-padding-small);
+    }
+  }
+
+  &--medium {
+    font-size: var(--table-font-size-medium);
+
+    .land-table__header-cell,
+    .land-table__cell {
+      padding: var(--table-padding-medium);
+    }
+  }
+
+  &--large {
+    font-size: var(--table-font-size-large);
+
+    .land-table__header-cell,
+    .land-table__cell {
+      padding: var(--table-padding-large);
+    }
+  }
+
+  // 边框样式
+  &--bordered {
+    border: 1px solid var(--table-border-color);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+
+    .land-table__header-cell:not(:last-child),
+    .land-table__cell:not(:last-child) {
+      border-right: 1px solid var(--table-border-color);
+    }
+
+    .land-table__cell {
+      border-top: 1px solid var(--table-border-color);
+    }
+  }
+
+  // 固定表头
+  &--sticky-header {
     overflow-y: auto;
   }
 
-  // 固定列样式
-  &.land-table-wrapper--fixed-columns {
+  // 固定列
+  &--fixed-columns {
     overflow-x: auto;
     overflow-y: auto;
   }
-}
 
-.land-table{
-  width: fit-content;
-  position: relative;
-  border-spacing: 0px;
-    border-radius: var(--radius-s);
-    font-size: var(--font-content-m);
-    overflow: auto;
-    thead {
-        background-color: var(--color-bg-secondary);
-        td {
-            text-align: center;
-        }
+  // 十字高亮
+  &--cross-highlight {
+    .land-table__row-overlay,
+    .land-table__col-overlay {
+      position: absolute;
+      pointer-events: none;
+      background-color: var(--table-cross-highlight-color);
+      z-index: 10;
+      transition: all 0.15s ease-in-out;
+      box-sizing: border-box;
     }
 
-    // 表头固定样式
-    &.land-table--head-fixed {
-      thead {
-        position: sticky;
-        top: 0;
-        z-index: 2;
-        background-color: var(--color-bg-secondary);
+    .land-table__row-overlay {
+      left: 0;
+      right: 0;
+    }
+
+    .land-table__col-overlay {
+      top: 0;
+      bottom: 0;
+    }
+
+    // 当启用十字高亮时，覆盖原有的hover样式
+    &.land-table-wrapper--bordered {
+      .land-table--row-hover .land-table__row:hover .land-table__cell {
+        background-color: transparent;
       }
     }
-
-    // 固定列样式
-    &.land-table--fixed-columns {
-      .land-table__cell--fixed {
-        position: sticky;
-        z-index: 1;
-      }
-
-      thead .land-table__cell--fixed {
-        z-index: 3;
-        background-color: var(--color-bg-secondary);
-      }
-
-      tbody .land-table__cell--fixed {
-        z-index: 1;
-      }
-
-      // 为固定列添加右边框
-      // .land-table__cell--fixed {
-      //   border-right: 2px solid var(--color-border-primary);
-      // }
-
-      // 设置每列的left位置
-      th:nth-child(1).land-table__cell--fixed { left: var(--fixed-col-0-left, 0px); }
-      th:nth-child(2).land-table__cell--fixed { left: var(--fixed-col-1-left, 0px); }
-      th:nth-child(3).land-table__cell--fixed { left: var(--fixed-col-2-left, 0px); }
-      th:nth-child(4).land-table__cell--fixed { left: var(--fixed-col-3-left, 0px); }
-      th:nth-child(5).land-table__cell--fixed { left: var(--fixed-col-4-left, 0px); }
-      th:nth-child(6).land-table__cell--fixed { left: var(--fixed-col-5-left, 0px); }
-      th:nth-child(7).land-table__cell--fixed { left: var(--fixed-col-6-left, 0px); }
-      th:nth-child(8).land-table__cell--fixed { left: var(--fixed-col-7-left, 0px); }
-      th:nth-child(9).land-table__cell--fixed { left: var(--fixed-col-8-left, 0px); }
-      th:nth-child(10).land-table__cell--fixed { left: var(--fixed-col-9-left, 0px); }
-
-      td:nth-child(1).land-table__cell--fixed { left: var(--fixed-col-0-left, 0px); }
-      td:nth-child(2).land-table__cell--fixed { left: var(--fixed-col-1-left, 0px); }
-      td:nth-child(3).land-table__cell--fixed { left: var(--fixed-col-2-left, 0px); }
-      td:nth-child(4).land-table__cell--fixed { left: var(--fixed-col-3-left, 0px); }
-      td:nth-child(5).land-table__cell--fixed { left: var(--fixed-col-4-left, 0px); }
-      td:nth-child(6).land-table__cell--fixed { left: var(--fixed-col-5-left, 0px); }
-      td:nth-child(7).land-table__cell--fixed { left: var(--fixed-col-6-left, 0px); }
-      td:nth-child(8).land-table__cell--fixed { left: var(--fixed-col-7-left, 0px); }
-      td:nth-child(9).land-table__cell--fixed { left: var(--fixed-col-8-left, 0px); }
-      td:nth-child(10).land-table__cell--fixed { left: var(--fixed-col-9-left, 0px); }
-    }
-    tbody tr td{
-      transition: background-color var(--transition-s) linear;
-    }
-    thead th,
-    tbody tr td{
-      font-size: var(--font-content-m);
-      padding: 8px 16px;
-    }
-    tbody tr td{
-        border-top: 1px solid var(--color-border-primary);
-    }
-    thead tr th:not(:last-child),
-    tbody tr td:not(:last-child) {
-        border-right: 1px solid var(--color-border-primary);
-    }
-    td,th {
-        padding: var(--padding-s);
-        box-sizing: border-box;
-        color: var(--color-text-primary);
-        line-height: 1.5em;
-    }
-
-    td{
-      background-color: var(--color-bg-primary);
-    }
-    tbody tr:hover td{
-      background-color: var(--color-bg-secondary);
   }
-    // 隔行背景样式
-    &.land-table--striped {
-        tbody tr:nth-child(even) td{
-            background-color: var(--color-bg-secondary);
-        }
-        tbody tr:nth-child(odd) td{
-            background-color: var(--color-bg-primary);
-        }
-        tbody tr:hover td{
-            background-color: var(--color-bg-secondary);
-        }
-    }
-}
 
-// 十字高亮蒙层样式
-.land-table-wrapper--cross-highlight {
-  .land-table__row-overlay,
-  .land-table__col-overlay {
-    position: absolute;
+  // 加载中
+  &--loading {
     pointer-events: none;
-    background-color: rgba(24, 144, 255, 0.08);
-    z-index: 1;
-    transition: all 0.15s ease-in-out;
-    box-sizing: border-box;
-  }
 
-  .land-table__row-overlay {
-    left: 0;
-    right: 0;
-  }
-
-  .land-table__col-overlay {
-    top: 0;
-    bottom: 0;
-  }
-
-  // 当启用十字高亮时，覆盖原有的hover样式
-  .land-table tbody tr:hover {
-    background-color: transparent;
+    .land-table {
+      opacity: 0.6;
+    }
   }
 }
 
-// 表头固定与十字高亮兼容
-.land-table-wrapper--head-fixed.land-table-wrapper--cross-highlight {
+// ─── 表格主体 ───
+.land-table {
+  width: fit-content;
+  min-width: 100%;
+  position: relative;
+  border-spacing: 0;
+  border-collapse: collapse;
+  table-layout: auto;
+
+  // 固定表头
+  &--sticky-header {
+    .land-table__header {
+      position: sticky;
+      top: var(--table-sticky-header-offset);
+      z-index: 20;
+    }
+  }
+
+  // 固定列样式
+  &--fixed-columns {
+    .land-table__cell--fixed,
+    .land-table__header-cell.land-table__cell--fixed {
+      position: sticky;
+      z-index: 15;
+    }
+
+    .land-table__header-cell.land-table__cell--fixed {
+      z-index: 25;
+    }
+
+    // 动态设置每列的 left 位置
+    @for $i from 0 through 9 {
+      .land-table__header-cell:nth-child(#{$i + 1}).land-table__cell--fixed,
+      .land-table__cell:nth-child(#{$i + 1}).land-table__cell--fixed {
+        left: var(--fixed-col-#{$i}-left, 0px);
+      }
+    }
+  }
+
+  // 行悬停
+  &--row-hover {
+    .land-table__row:hover .land-table__cell {
+      background-color: var(--table-row-hover-bg);
+    }
+  }
+
+  // 斑马纹
+  &--striped {
+    .land-table__row--striped .land-table__cell {
+      background-color: var(--table-row-striped-bg);
+    }
+  }
+}
+
+// ─── 表头 ───
+.land-table__header {
+  background-color: var(--table-header-bg);
+}
+
+.land-table__header-row {
+  // 表头行样式
+}
+
+.land-table__header-cell {
+  padding: var(--table-padding-medium);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-align: left;
+  white-space: nowrap;
+  background-color: var(--table-header-bg);
+  line-height: 1.5;
+  box-sizing: border-box;
+  user-select: none;
+
+  // 可排序
+  &--sortable {
+    cursor: pointer;
+    transition: background-color var(--transition-s) ease;
+
+    &:hover {
+      background-color: var(--color-bg-tertiary);
+    }
+  }
+
+  // 排序激活
+  &--sorted-ascend,
+  &--sorted-descend {
+    background-color: var(--color-bg-tertiary);
+  }
+}
+
+.land-table__header-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// ─── 排序图标 ───
+.land-table__sorter {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 4px;
+  line-height: 0;
+}
+
+.land-table__sorter-icon {
+  font-size: 8px;
+  color: var(--color-text-quaternary);
+  line-height: 1;
+  transition: color var(--transition-s) ease;
+
+  &--ascend {
+    margin-bottom: -2px;
+  }
+
+  &--descend {
+    margin-top: -2px;
+  }
+
+  &--active {
+    color: var(--color-primary-6);
+  }
+}
+
+// ─── 表格主体 ───
+.land-table__body {
+  // 表格主体样式
+}
+
+.land-table__row {
+  transition: background-color var(--transition-s) ease;
+}
+
+.land-table__cell {
+  padding: var(--table-padding-medium);
+  color: var(--color-text-primary);
+  text-align: left;
+  line-height: 1.5;
+  box-sizing: border-box;
+  background-color: var(--table-body-bg);
+  transition: background-color var(--transition-s) ease;
+
+  // 固定列背景
+  &--fixed {
+    background-color: var(--table-body-bg);
+  }
+
+  // 文本省略
+  &--ellipsis {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// ─── 空状态 ───
+.land-table__empty-row {
+  // 空行样式
+}
+
+.land-table__empty-cell {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  background-color: var(--table-body-bg);
+}
+
+// ─── 总结行 ───
+.land-table__summary {
+  background-color: var(--table-header-bg);
+
+  td {
+    padding: var(--table-padding-medium);
+    font-weight: 500;
+    border-top: 1px solid var(--table-border-color);
+  }
+}
+
+// ─── 标题和脚注 ───
+.land-table__title {
+  padding: 12px 16px;
+  font-weight: 500;
+  font-size: 1.1em;
+  border-bottom: 1px solid var(--table-border-color);
+  background-color: var(--table-header-bg);
+}
+
+.land-table__footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--table-border-color);
+  background-color: var(--table-header-bg);
+}
+
+// ─── 加载状态 ───
+.land-table__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 100;
+}
+
+.land-table__loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border-primary);
+  border-top-color: var(--color-primary-6);
+  border-radius: 50%;
+  animation: land-table-spin 0.8s linear infinite;
+}
+
+.land-table__loading-text {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-content-s);
+}
+
+@keyframes land-table-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ─── 固定表头与十字高亮兼容 ───
+.land-table-wrapper--sticky-header.land-table-wrapper--cross-highlight {
   .land-table__row-overlay,
   .land-table__col-overlay {
-    z-index: 3; // 确保蒙层在固定表头之上
+    z-index: 30;
   }
 }
 
-// 固定列与十字高亮兼容
+// ─── 固定列与十字高亮兼容 ───
 .land-table-wrapper--fixed-columns.land-table-wrapper--cross-highlight {
   .land-table__row-overlay,
   .land-table__col-overlay {
-    z-index: 4; // 确保蒙层在固定列之上
+    z-index: 30;
   }
 }
 
-// 表头固定与固定列兼容
-.land-table-wrapper--head-fixed.land-table-wrapper--fixed-columns {
-  thead .land-table__cell--fixed {
-    z-index: 5; // 固定表头+固定列的最高层级
+// ─── 固定表头与固定列兼容 ───
+.land-table-wrapper--sticky-header.land-table-wrapper--fixed-columns {
+  .land-table__header-cell.land-table__cell--fixed {
+    z-index: 35;
   }
+}
+
+// ─── 兼容旧版类名 ───
+.land-table-wrapper--head-fixed {
+  @extend .land-table-wrapper--sticky-header;
+}
+
+.land-table--head-fixed {
+  @extend .land-table--sticky-header;
 }

@@ -150,7 +150,7 @@ const CalendarMonth: React.FC<CalendarMonthProps> = ({
 
       {!isCurrentMonthInView && (
         <Button
-          type="transparent"
+          variant="transparent"
           status='primary'
           block
           size='small'

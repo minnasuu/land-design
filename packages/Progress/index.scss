@@ -1,101 +1,107 @@
-.land-progress {
+// ==================== Progress 组件样式 ====================
+// BEM 命名规范：land-progress / land-progress__element / land-progress--modifier
+
+$prefix: 'land-progress';
+
+.#{$prefix} {
   width: 100%;
-  
-  // Line类型进度条
-  &.line {
-    .land-progress-content{
+
+  // ==================== 线性进度条 ====================
+  &--line {
+    .#{$prefix}__content {
       position: relative;
       display: flex;
       align-items: center;
       gap: 8px;
       width: 100%;
-      padding-bottom: 20px; // 为label预留空间
-      
-      .land-progress-label{
-        position: absolute;
-        top: -24px; // 调整到进度条上方
-        font-size: 14px;
-        color: var(--color-gray-10);
-        z-index: 2;
-        white-space: nowrap; // 防止文字换行
-      }
-      
-      .land-progress-bar{
-        position: relative;
-        width: 100%;
-        height: 8px;
-        border-radius: 12px;
-        background-color: var(--color-border-primary);
-        overflow: hidden;
-        .land-progress-bar-finished{
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          border-radius: 12px;
-          background-color: var(--color-primary);
-          transform-origin: left;
-          transition: transform 0.3s ease;
-        }
-      }
-      
-      .land-progress-status-icon {
-        width: 16px;
-        height: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      padding-bottom: 20px;
+    }
+
+    .#{$prefix}__label {
+      position: absolute;
+      top: -24px;
+      font-size: 14px;
+      color: var(--color-gray-10);
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    .#{$prefix}__bar {
+      position: relative;
+      width: 100%;
+      height: 8px;
+      border-radius: 12px;
+      background-color: var(--color-border-primary);
+      overflow: hidden;
+    }
+
+    .#{$prefix}__bar-finished {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      background-color: var(--color-primary);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .#{$prefix}__status-icon {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
-  
-  // Circle类型进度条
-  &.circle {
+
+  // ==================== 圆形进度条 ====================
+  &--circle {
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    .land-progress-content{
+
+    .#{$prefix}__content {
       position: relative;
       width: 80px;
       height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      
-      .land-progress-circle-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        .land-progress-circle-svg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 1;
-        }
-        
-        .land-progress-circle-label {
-          position: absolute;
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--color-text-secondary);
-          z-index: 2;
-          text-align: center;
-        }
-        
-        .land-progress-status-icon {
-          position: absolute;
-          width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 3;
-        }
-      }
+    }
+
+    .#{$prefix}__circle-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .#{$prefix}__circle-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .#{$prefix}__circle-label {
+      position: absolute;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      z-index: 2;
+      text-align: center;
+    }
+
+    .#{$prefix}__status-icon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
     }
   }
 }

@@ -1,4 +1,9 @@
-.land-drawer{
+// ==================== Drawer 组件样式 ====================
+// BEM 命名规范：land-drawer / land-drawer__element / land-drawer--modifier
+
+$prefix: 'land-drawer';
+
+.#{$prefix} {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,22 +15,28 @@
   pointer-events: none;
   overflow: hidden;
   z-index: 1000;
-  &.show{
+
+  // ==================== 修饰符 ====================
+  &--show {
     pointer-events: auto;
   }
-  &.right{
-    .land-drawer-content{
+
+  &--right {
+    .#{$prefix}__content {
       border-radius: 16px 0 0 16px;
     }
   }
-  &.bottom{
-    .land-drawer-content{
+
+  &--bottom {
+    .#{$prefix}__content {
       border-radius: 16px 16px 0 0;
       max-width: unset;
       min-width: unset;
     }
   }
-  .land-drawer-mask{
+
+  // ==================== 遮罩层 ====================
+  &__mask {
     position: absolute;
     top: 0;
     left: 0;
@@ -33,68 +44,85 @@
     height: 100%;
     background-color: var(--color-bg-mask);
   }
-  .land-drawer-content{
+
+  // ==================== 内容区域 ====================
+  &__content {
     position: relative;
     display: flex;
     flex-direction: column;
     background-color: var(--color-bg-primary);
     box-shadow: var(--shadow-modal);
     height: 100%;
-    .land-drawer-header-wrapper{
-      display: flex;
-      align-items: center;
-      padding: 0 var(--gap-xl);
-      height: 48px;
+  }
+
+  // ==================== 头部包装区域 ====================
+  &__header-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--gap-xl);
+    height: 48px;
+  }
+
+  // ==================== 关闭按钮 ====================
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 100%;
+    color: var(--color-text-primary);
+    transition: color var(--transition-s) linear;
+    flex-shrink: 0;
+    cursor: pointer;
+
+    svg {
+      width: var(--icon-size-l);
+      height: var(--icon-size-l);
     }
-    .land-drawer-header-close{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 100%;
-        color: var(--color-text-primary);
-        transition: color var(--transition-s) linear;
-        flex-shrink: 0;
-        cursor: pointer;
-        svg{
-          width: var(--icon-size-l);
-          height: var(--icon-size-l);
-        }
-        &:hover{
-          color: var(--color-text-secondary);
-        }
-      }
-    .land-drawer-header{
-      flex: 1;
-      position: relative;
-      display: flex;
-      align-items: center;
-      height: 100%;
-      flex-shrink: 0;
-      .land-drawer-header-title{
-        font-size: var(--font-content-l);
-        font-weight: bold;
-        color: var(--color-text-primary);
-      }
-      .land-drawer-header-right{
-        margin-left: auto;
-      }
+
+    &:hover {
+      color: var(--color-text-secondary);
     }
-    .land-drawer-body{
-      flex: 1;
-      height: 1%;
-      color: var(--color-text-primary);
-    }
-    .land-drawer-footer{
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--gap-l) var(--gap-xl);
-      .land-drawer-footer-btn{
-        display: flex;
-        gap: var(--gap-m);
-      }
-    }
+  }
+
+  // ==================== 头部区域 ====================
+  &__header {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: var(--font-content-l);
+    font-weight: bold;
+    color: var(--color-text-primary);
+  }
+
+  &__header-right {
+    margin-left: auto;
+  }
+
+  // ==================== 主体区域 ====================
+  &__body {
+    flex: 1;
+    height: 1%;
+    color: var(--color-text-primary);
+  }
+
+  // ==================== 底部区域 ====================
+  &__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gap-l) var(--gap-xl);
+  }
+
+  &__footer-btns {
+    display: flex;
+    gap: var(--gap-m);
   }
 }

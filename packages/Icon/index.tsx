@@ -225,6 +225,7 @@ import {
   IconArrowTriangle,
 } from "./Arrow";
 import { IconCamera, IconApple } from "./DeviceTool";
+import { IconNumber, IconNumberStroke, IconNumberFill, IconNumberProps } from "./Number";
 
 
 
@@ -400,6 +401,11 @@ const iconMap = {
   camera: IconCamera,
   apple: IconApple,
 
+  // Number
+  'number': IconNumber,
+  'number-stroke': IconNumberStroke,
+  'number-fill': IconNumberFill,
+
   // Style
   'align-bottom': IconAlignBottom,
   'align-top': IconAlignTop,
@@ -461,11 +467,15 @@ const iconMap = {
   tail: IconTail,
 };
 
-const Icon: React.FC<IconDefaultProps> = ({ name, ...restProps }) => {
+const Icon: React.FC<IconDefaultProps & { value?: number }> = ({ name, value, ...restProps }) => {
   const IconComponent = iconMap[name];
   if (!IconComponent) {
     console.warn(`Icon "${name}" not found`);
     return <IconError {...restProps} />;
+  }
+  // 数字图标需要传递 value 属性
+  if (name === 'number' || name === 'number-stroke' || name === 'number-fill') {
+    return <IconComponent value={value} {...restProps} />;
   }
   return <IconComponent {...restProps} />;
 };

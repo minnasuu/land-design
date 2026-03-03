@@ -1,434 +1,425 @@
-import React, { useMemo, useState, useCallback } from "react";
-import './index.scss';
+import React, { useCallback, useMemo, useState, useEffect, useRef, CSSProperties } from "react";
+import "./index.scss";
 import Dropdown from "../Dropdown";
 import Calendar from "../Calendar";
 import Icon from "../Icon";
-import { DatePickerProps } from "./props";
 import Input from "../Input";
 import Button from "../Button";
+import {
+  DatePickerProps,
+  defaultDatePickerProps,
+  getDefaultPlaceholder,
+  defaultFormatDate,
+  parseInputDate,
+  DatePickerType,
+} from "./props";
+import { CalendarViewMode, DateInfo, WeekInfo, MonthInfo, QuarterInfo, YearInfo } from "../Calendar/props";
 
-const DatePicker: React.FC<DatePickerProps> = ({
-  disabled,
-  onChange,
-  style,
-  className = "",
-  dropdownProps,
-  inputProps,
-  calendarProps,
-  pickerType = "date",
-  value,
-  placeholder,
-  showConfirmButton,
-  allowInput = false
-}) => {
-  const [open, setOpen] = useState(false);
-  const [tempValue, setTempValue] = useState<Date | null>(value ? new Date(value) : null);
-  const [displayValue, setDisplayValue] = useState<string>("");
-  const [inputValue, setInputValue] = useState<string>("");
+const DatePicker: React.FC<DatePickerProps> = (props) => {
+  const {
+    value,
+    defaultValue,
+    type = defaultDatePickerProps.type!,
+    language = defaultDatePickerProps.language || "zh",
+    size = defaultDatePickerProps.size!,
+    variant = defaultDatePickerProps.variant!,
+    minDate,
+    maxDate,
+    disabledDate,
+    placeholder,
+    format,
+    allowClear = defaultDatePickerProps.allowClear!,
+    allowInput = defaultDatePickerProps.allowInput!,
+    showConfirm = defaultDatePickerProps.showConfirm!,
+    confirmText,
+    cancelText,
+    showToday = defaultDatePickerProps.showToday!,
+    todayText,
+    showIcon = defaultDatePickerProps.showIcon!,
+    icon,
+    suffixIcon,
+    disabled = defaultDatePickerProps.disabled!,
+    readOnly = defaultDatePickerProps.readOnly!,
+    open: controlledOpen,
+    defaultOpen = false,
+    autoFocus = defaultDatePickerProps.autoFocus!,
+    onChange,
+    onOpenChange,
+    onPanelChange,
+    onFocus,
+    onBlur,
+    onClear,
+    onConfirm,
+    dropdownProps,
+    inputProps,
+    calendarProps,
+    width,
+    autoWidth = defaultDatePickerProps.autoWidth!,
+    minWidth = defaultDatePickerProps.minWidth!,
+    style,
+    className = "",
+    dropdownStyle,
+    dropdownClassName,
+    children,
+    // 兼容旧 API
+    ...restProps
+  } = props;
+
+  // 兼容旧 API
+  const pickerType = (restProps as any).pickerType || type;
+  const showConfirmButton = (restProps as any).showConfirmButton ?? showConfirm;
+  const clearable = (restProps as any).clearable ?? allowClear;
+
+  // ─── 状态管理 ───
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const [selectedValue, setSelectedValue] = useState<Date | null>(() => {
+    const v = value ?? defaultValue ?? (restProps as any).value;
+    return v ? new Date(v) : null;
+  });
+  const [tempValue, setTempValue] = useState<Date | null>(null);
+  const [inputText, setInputText] = useState("");
   const [isInputMode, setIsInputMode] = useState(false);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [autoWidthValue, setAutoWidthValue] = useState<number | undefined>(undefined);
 
-  // 优化：在禁用状态下强制关闭下拉菜单
-  useMemo(() => {
-    if (disabled && open) {
-      setOpen(false);
-    }
-  }, [disabled, open]);
+  // 受控/非受控模式
+  const isControlled = value !== undefined || (restProps as any).value !== undefined;
+  const isOpenControlled = controlledOpen !== undefined;
+  const currentValue = isControlled ? (value ?? (restProps as any).value ? new Date(value ?? (restProps as any).value) : null) : selectedValue;
+  const isOpen = isOpenControlled ? controlledOpen : internalOpen;
 
-  // 格式化日期显示
-  const formatDisplayValue = useCallback((date: Date | null, type: string) => {
+  // ─── 格式化函数 ───
+  const formatValue = useCallback((date: Date | null): string => {
     if (!date) return "";
-
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    switch (type) {
-      case "year":
-        return `${year}年`;
-      case "month":
-        return `${year}年${month}月`;
-      case "quarter":
-        const quarter = Math.ceil(month / 3);
-        return `${year}年第${quarter}季度`;
-      case "week":
-        // 计算周数
-        const startOfYear = new Date(year, 0, 1);
-        const days = Math.floor((date.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000));
-        const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
-        return `${year}年第${weekNumber}周`;
-      case "date":
-      default:
-        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    
+    if (typeof format === "function") {
+      return format(date, pickerType, language);
     }
-  }, []);
+    
+    // TODO: 支持格式化字符串
+    return defaultFormatDate(date, pickerType, language);
+  }, [format, pickerType, language]);
 
-  // 解析用户输入的日期
-  const parseInputDate = useCallback((input: string): Date | null => {
-    if (!input.trim()) return null;
+  // 显示值
+  const displayValue = useMemo(() => {
+    return formatValue(currentValue);
+  }, [currentValue, formatValue]);
 
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentDay = currentDate.getDate();
+  // 占位符
+  const currentPlaceholder = useMemo(() => {
+    return placeholder || getDefaultPlaceholder(pickerType, language);
+  }, [placeholder, pickerType, language]);
 
-    // 支持多种日期格式
-    const patterns = [
-      // YYYY-MM-DD
-      {
-        pattern: /^(\d{4})-(\d{1,2})-(\d{1,2})$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: parseInt(match[1]),
-          month: parseInt(match[2]),
-          day: parseInt(match[3])
-        })
-      },
-      // YYYY/MM/DD
-      {
-        pattern: /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: parseInt(match[1]),
-          month: parseInt(match[2]),
-          day: parseInt(match[3])
-        })
-      },
-      // YYYY年MM月DD日
-      {
-        pattern: /^(\d{4})年(\d{1,2})月(\d{1,2})日$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: parseInt(match[1]),
-          month: parseInt(match[2]),
-          day: parseInt(match[3])
-        })
-      },
-      // YYYY年MM月
-      {
-        pattern: /^(\d{4})年(\d{1,2})月$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: parseInt(match[1]),
-          month: parseInt(match[2]),
-          day: 1
-        })
-      },
-      // YYYY年
-      {
-        pattern: /^(\d{4})年$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: parseInt(match[1]),
-          month: 1,
-          day: 1
-        })
-      },
-      // MM月DD日
-      {
-        pattern: /^(\d{1,2})月(\d{1,2})日$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: currentYear,
-          month: parseInt(match[1]),
-          day: parseInt(match[2])
-        })
-      },
-      // DD日
-      {
-        pattern: /^(\d{1,2})日$/,
-        extract: (match: RegExpMatchArray) => ({
-          year: currentYear,
-          month: currentMonth,
-          day: parseInt(match[1])
-        })
-      }
-    ];
+  // 日历视图模式
+  const calendarMode: CalendarViewMode = useMemo(() => {
+    const modeMap: Record<DatePickerType, CalendarViewMode> = {
+      date: "date",
+      week: "week",
+      month: "month",
+      quarter: "quarter",
+      year: "year",
+    };
+    return modeMap[pickerType];
+  }, [pickerType]);
 
-    for (const { pattern, extract } of patterns) {
-      const match = input.match(pattern);
-      if (match) {
-        try {
-          const { year, month, day } = extract(match);
-
-          // 验证日期有效性
-          const date = new Date(year, month - 1, day);
-          if (date.getFullYear() === year &&
-            date.getMonth() === month - 1 &&
-            date.getDate() === day) {
-            return date;
-          }
-        } catch (error) {
-          // 解析失败，继续下一个模式
-          continue;
-        }
-      }
+  // ─── 事件处理 ───
+  // 打开/关闭下拉框
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (disabled || readOnly) return;
+    
+    if (!isOpenControlled) {
+      setInternalOpen(open);
     }
+    onOpenChange?.(open);
 
-    return null;
-  }, []);
-
-  // 初始化显示值 - 只在组件初始化时设置，后续通过手动控制
-  useMemo(() => {
-    if (value) {
-      setDisplayValue(formatDisplayValue(new Date(value), pickerType));
-    } else {
-      setDisplayValue("");
+    if (!open && showConfirmButton) {
+      // 关闭时重置临时值
+      setTempValue(null);
     }
-  }, [value, pickerType, formatDisplayValue]);
+  }, [disabled, readOnly, isOpenControlled, showConfirmButton, onOpenChange]);
 
-  // 处理日历选择事件
-  const handleCalendarChange = useCallback((...args: any[]) => {
-    // 优化：在禁用状态下阻止日历选择
-    if (disabled) return;
+  const handleOpen = useCallback(() => {
+    handleOpenChange(true);
+  }, [handleOpenChange]);
 
-    let selectedDate: Date | null = null;
+  const handleClose = useCallback(() => {
+    handleOpenChange(false);
+  }, [handleOpenChange]);
 
-    switch (pickerType) {
-      case "year":
-        const yearValue = args[0];
-        selectedDate = new Date(yearValue, 0, 1);
-        break;
-      case "month":
-        const [monthValue, yearForMonth] = args;
-        selectedDate = new Date(yearForMonth, monthValue - 1, 1);
-        break;
-      case "quarter":
-        const [quarterValue, yearForQuarter] = args;
-        const startMonth = (quarterValue - 1) * 3;
-        selectedDate = new Date(yearForQuarter, startMonth, 1);
-        break;
-      case "week":
-        // 周选择返回的是周开始日期
-        selectedDate = args[0];
-        break;
-      case "date":
-      default:
-        const [day, monthVal, yearVal] = args;
-        // 修复：Calendar组件传递的月份已经是0-11的索引，不需要再减1
-        selectedDate = new Date(yearVal, monthVal, day);
-        break;
-    }
+  // 日历选择
+  const handleCalendarChange = useCallback((date: Date, info?: DateInfo | WeekInfo | MonthInfo | QuarterInfo | YearInfo) => {
+    if (disabled || readOnly) return;
 
-    // 更新临时值
-    setTempValue(selectedDate);
-
-    // 如果需要确认按钮，只暂存值；否则直接确认选择
-    if (!showConfirmButton) {
-      setDisplayValue(formatDisplayValue(selectedDate, pickerType));
-      onChange?.(selectedDate);
-      setOpen(false);
-    }
-  }, [pickerType, showConfirmButton, formatDisplayValue, onChange, disabled]);
-
-  // 处理确认按钮点击
-  const handleConfirm = useCallback(() => {
-    // 优化：在禁用状态下阻止确认
-    if (disabled) return;
-
-    if (tempValue) {
-      setDisplayValue(formatDisplayValue(tempValue, pickerType));
-      onChange?.(tempValue);
-    }
-    setOpen(false);
-  }, [tempValue, pickerType, formatDisplayValue, onChange, disabled]);
-
-  // 处理取消
-  const handleCancel = useCallback(() => {
-    // 优化：在禁用状态下阻止取消操作
-    if (disabled) return;
-
-    setTempValue(value ? new Date(value) : null);
-    setOpen(false);
-  }, [value, disabled]);
-
-  const handleDropdownOpen = useCallback(() => {
-    if (disabled) return;
-    setOpen(true);
-  }, [disabled]);
-
-  const handleDropdownClose = useCallback(() => {
-    if (disabled) {
-      setOpen(false);
-      return;
-    }
     if (showConfirmButton) {
-      setTempValue(value ? new Date(value) : null);
-    }
-    setOpen(false);
-  }, [showConfirmButton, value, disabled]);
-
-  // 处理输入框清除
-  const handleClear = useCallback(() => {
-    // 优化：在禁用状态下阻止清除
-    if (disabled) return;
-
-    setTempValue(null);
-    setDisplayValue("");
-    setInputValue("");
-    onChange?.(null);
-  }, [onChange, disabled]);
-
-  // 处理输入框变化
-  const handleInputChange = useCallback((val: string, e?: React.ChangeEvent<HTMLInputElement>) => {
-    // 优化：在禁用状态下阻止输入变化
-    if (disabled) return;
-
-    setInputValue(val);
-  }, [disabled]);
-
-  // 处理输入框聚焦
-  const handleInputFocus = useCallback(() => {
-    if (!disabled) {
-      if (allowInput && pickerType === "date") {
-        setIsInputMode(true);
-        setInputValue(displayValue);
-      } else {
-        setOpen(true);
+      // 需要确认时，先暂存
+      setTempValue(date);
+    } else {
+      // 直接确认
+      if (!isControlled) {
+        setSelectedValue(date);
       }
+      onChange?.(date, info);
+      handleClose();
     }
-  }, [disabled, allowInput, pickerType, displayValue]);
+  }, [disabled, readOnly, showConfirmButton, isControlled, onChange, handleClose]);
 
-  // 处理输入框失焦
-  const handleInputBlur = useCallback(() => {
-    // 优化：在禁用状态下阻止失焦处理
+  // 确认按钮
+  const handleConfirm = useCallback(() => {
     if (disabled) return;
+
+    const valueToConfirm = tempValue || currentValue;
+    if (!isControlled && tempValue) {
+      setSelectedValue(tempValue);
+    }
+    onChange?.(valueToConfirm);
+    onConfirm?.(valueToConfirm);
+    setTempValue(null);
+    handleClose();
+  }, [disabled, tempValue, currentValue, isControlled, onChange, onConfirm, handleClose]);
+
+  // 取消按钮
+  const handleCancel = useCallback(() => {
+    setTempValue(null);
+    handleClose();
+  }, [handleClose]);
+
+  // 清除
+  const handleClear = useCallback(() => {
+    if (disabled || readOnly) return;
+
+    if (!isControlled) {
+      setSelectedValue(null);
+    }
+    onChange?.(null);
+    onClear?.();
+    setInputText("");
+  }, [disabled, readOnly, isControlled, onChange, onClear]);
+
+  // 输入框处理
+  const handleInputChange = useCallback((val: string) => {
+    if (disabled || readOnly || !allowInput || pickerType !== "date") return;
+    setInputText(val);
+  }, [disabled, readOnly, allowInput, pickerType]);
+
+  const handleInputFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    if (disabled || readOnly) return;
+
+    if (allowInput && pickerType === "date") {
+      setIsInputMode(true);
+      setInputText(displayValue);
+    } else {
+      handleOpen();
+    }
+    onFocus?.(e);
+  }, [disabled, readOnly, allowInput, pickerType, displayValue, handleOpen, onFocus]);
+
+  const handleInputBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    if (disabled || readOnly) return;
 
     if (allowInput && pickerType === "date") {
       setIsInputMode(false);
 
-      // 尝试解析并确认输入的值
-      if (inputValue.trim()) {
-        const parsedDate = parseInputDate(inputValue);
+      if (inputText.trim()) {
+        const parsedDate = parseInputDate(inputText);
         if (parsedDate) {
-          // 输入值合法，确认选择
-          setTempValue(parsedDate);
-          setDisplayValue(formatDisplayValue(parsedDate, pickerType));
+          if (!isControlled) {
+            setSelectedValue(parsedDate);
+          }
           onChange?.(parsedDate);
-        } else {
-          // 输入值不合法，恢复原值
-          setDisplayValue(formatDisplayValue(tempValue, pickerType));
         }
-      } else {
-        // 输入为空，清除选择
-        setTempValue(null);
-        setDisplayValue("");
-        onChange?.(null);
+      } else if (inputText === "") {
+        handleClear();
       }
-
-      setInputValue("");
+      setInputText("");
     }
-  }, [allowInput, pickerType, inputValue, parseInputDate, tempValue, formatDisplayValue, onChange, disabled]);
+    onBlur?.(e);
+  }, [disabled, readOnly, allowInput, pickerType, inputText, isControlled, onChange, handleClear, onBlur]);
 
-  // 处理输入框回车
   const handleInputEnter = useCallback((val: string) => {
-    // 优化：在禁用状态下阻止回车处理
-    if (disabled) return;
+    if (disabled || readOnly || !allowInput || pickerType !== "date") return;
 
-    if (allowInput && pickerType === "date" && val.trim()) {
+    if (val.trim()) {
       const parsedDate = parseInputDate(val);
       if (parsedDate) {
-        // 输入值合法，确认选择并关闭输入模式
-        setTempValue(parsedDate);
-        setDisplayValue(formatDisplayValue(parsedDate, pickerType));
+        if (!isControlled) {
+          setSelectedValue(parsedDate);
+        }
         onChange?.(parsedDate);
         setIsInputMode(false);
-        setInputValue("");
+        setInputText("");
       }
     }
-  }, [allowInput, pickerType, parseInputDate, formatDisplayValue, onChange, disabled]);
+  }, [disabled, readOnly, allowInput, pickerType, isControlled, onChange]);
 
-  // 生成占位符文本
-  const newPlaceholder = useMemo(() => {
-    if (placeholder) return placeholder;
-    switch (pickerType) {
-      case 'year': return "请选择年份";
-      case 'month': return "请选择月份";
-      case 'week': return "请选择周";
-      case 'quarter': return "请选择季度";
-      case 'date':
-      default: return "请选择日期";
-    }
-  }, [pickerType, placeholder]);
+  // 今天按钮
+  const handleToday = useCallback(() => {
+    if (disabled || readOnly) return;
 
-  // 根据选择器类型设置日历视图模式
-  const calendarViewMode = useMemo(() => {
-    switch (pickerType) {
-      case "year": return "year";
-      case "month": return "month";
-      case "quarter": return "quarter";
-      case "week": return "week";
-      case "date":
-      default: return "date";
+    const today = new Date();
+    if (!isControlled) {
+      setSelectedValue(today);
     }
-  }, [pickerType]);
+    onChange?.(today);
+    handleClose();
+  }, [disabled, readOnly, isControlled, onChange, handleClose]);
 
-  // 根据选择器类型设置日历事件处理
-  const calendarEventHandlers = useMemo(() => {
-    switch (pickerType) {
-      case "year":
-        return { onYearChange: handleCalendarChange };
-      case "month":
-        return { onMonthChange: handleCalendarChange };
-      case "quarter":
-        return { onQuarterChange: handleCalendarChange };
-      case "week":
-        return { onWeekChange: handleCalendarChange };
-      case "date":
-      default:
-        return { onDayChange: handleCalendarChange };
+  // 面板变化
+  const handlePanelChange = useCallback((date: Date, mode: CalendarViewMode) => {
+    onPanelChange?.(date, mode);
+  }, [onPanelChange]);
+
+  // ─── 副作用 ───
+  // 禁用时关闭下拉框
+  useEffect(() => {
+    if (disabled && isOpen) {
+      handleClose();
     }
-  }, [pickerType, handleCalendarChange]);
+  }, [disabled, isOpen, handleClose]);
+
+  // 自适应宽度计算
+  useEffect(() => {
+    if (autoWidth && measureRef.current) {
+      const textToMeasure = displayValue || currentPlaceholder;
+      measureRef.current.textContent = textToMeasure;
+      const measuredWidth = measureRef.current.offsetWidth;
+      // 添加图标宽度(24px) + 左右 padding(24px) + 一些额外间距(16px)
+      const calculatedWidth = measuredWidth + 64;
+      const minWidthNum = typeof minWidth === "number" ? minWidth : parseInt(minWidth as string, 10) || 120;
+      setAutoWidthValue(Math.max(calculatedWidth, minWidthNum));
+    }
+  }, [autoWidth, displayValue, currentPlaceholder, minWidth]);
+
+  // ─── 渲染 ───
+  // 图标
+  const renderIcon = () => {
+    if (!showIcon) return null;
+    if (suffixIcon) return suffixIcon;
+    if (icon) return icon;
+    return <Icon name="calendar" />;
+  };
+
+  // 下拉内容
+  const renderDropdownContent = () => (
+    <div className={`land-date-picker__dropdown ${dropdownClassName || ""}`} style={dropdownStyle}>
+      <Calendar
+        mode={calendarMode}
+        language={language}
+        value={tempValue || currentValue}
+        minDate={minDate}
+        maxDate={maxDate}
+        disabledDate={disabledDate}
+        showTodayButton={false}
+        onChange={handleCalendarChange}
+        onPanelChange={handlePanelChange}
+        {...calendarProps}
+      />
+      
+      {/* 底部操作栏 */}
+      {(showConfirmButton || showToday) && (
+        <div className="land-date-picker__footer">
+          {showToday && (
+            <Button
+              variant="text"
+              size="small"
+              text={todayText || (language === "zh" ? "今天" : "Today")}
+              onClick={handleToday}
+            />
+          )}
+          {showConfirmButton && (
+            <div className="land-date-picker__actions">
+              <Button
+                variant="outline"
+                size="small"
+                text={cancelText || (language === "zh" ? "取消" : "Cancel")}
+                onClick={handleCancel}
+              />
+              <Button
+                variant="background"
+                size="small"
+                text={confirmText || (language === "zh" ? "确定" : "Confirm")}
+                onClick={handleConfirm}
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  // 触发器
+  const renderTrigger = () => {
+    if (children) {
+      return children;
+    }
+
+    return (
+      <div 
+        className={`land-date-picker__trigger ${displayValue ? "" : "land-date-picker__trigger--empty"} ${isInputMode ? "land-date-picker__trigger--input" : ""}`}
+      >
+        <Input
+          variant="transparent"
+          size={size}
+          placeholder={currentPlaceholder}
+          value={isInputMode ? inputText : displayValue}
+          disabled={disabled}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+          onChange={allowInput && pickerType === "date" ? handleInputChange : undefined}
+          onClear={clearable ? handleClear : undefined}
+          onEnter={handleInputEnter}
+          className="land-date-picker__input"
+          htmlProps={{ readOnly: readOnly || !allowInput || pickerType !== "date" }}
+          {...inputProps}
+        />
+        <span className="land-date-picker__icon">
+          {renderIcon()}
+        </span>
+      </div>
+    );
+  };
+
+  // ─── 根类名 ───
+  const rootClassName = [
+    "land-date-picker",
+    `land-date-picker--${size}`,
+    `land-date-picker--${variant}`,
+    autoWidth && "land-date-picker--auto-width",
+    disabled && "land-date-picker--disabled",
+    readOnly && "land-date-picker--readonly",
+    isOpen && "land-date-picker--open",
+    className,
+  ].filter(Boolean).join(" ");
+
+  const rootStyle: CSSProperties = {
+    ...style,
+    ...(width ? { width: typeof width === "number" ? `${width}px` : width } : {}),
+    ...(autoWidth && autoWidthValue ? { width: `${autoWidthValue}px` } : {}),
+  };
 
   return (
-    <div
-      className={`land-date-picker ${className}`}
-      style={style}
-    >
+    <div className={rootClassName} style={rootStyle}>
+      {/* 隐藏的测量元素 */}
+      {autoWidth && (
+        <span
+          ref={measureRef}
+          className="land-date-picker__measure"
+          aria-hidden="true"
+        />
+      )}
       <Dropdown
-        open={open}
+        open={isOpen}
         disabled={disabled}
         trigger="click"
-        onOpen={handleDropdownOpen}
-        onClose={handleDropdownClose}
-        content={
-          <div className="land-date-picker-dropdown-content">
-            <Calendar
-              viewMode={calendarViewMode}
-              {...calendarEventHandlers}
-              {...calendarProps}
-            />
-            {showConfirmButton && (
-              <div className="land-date-picker-dropdown-actions">
-                <Button
-                  text="取消"
-                  variant="outline"
-                  className="land-date-picker-dropdown-cancel-button"
-                  onClick={handleCancel}
-                />
-                <Button
-                  text="确定"
-                  variant="background"
-                  className="land-date-picker-dropdown-confirm-button"
-                  onClick={handleConfirm}
-                />
-              </div>
-            )}
-          </div>
-        }
+        onOpen={handleOpen}
+        onClose={handleClose}
+        content={renderDropdownContent()}
         {...dropdownProps}
       >
-        <div className={`land-date-picker-input ${displayValue ? "" : "empty"} ${isInputMode ? "input-mode" : ""} `}>
-          <Input
-            variant="transparent"
-            className="land-date-picker-input-value"
-            placeholder={newPlaceholder}
-            value={isInputMode ? inputValue : displayValue}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            onChange={allowInput && pickerType === "date" && !disabled ? handleInputChange : undefined}
-            onClear={handleClear}
-            onEnter={handleInputEnter}
-            {...inputProps}
-          />
-          <Icon name="calendar" className="land-date-picker-icon" />
-        </div>
+        {renderTrigger()}
       </Dropdown>
     </div>
   );
 };
 
 export default DatePicker;
+export * from "./props";
