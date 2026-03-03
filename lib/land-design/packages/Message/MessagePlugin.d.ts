@@ -56,10 +56,6 @@ declare class MessagePlugin {
      */
     error(content: string, options?: Partial<MessagePluginOptions>): MessageInstance;
     /**
-     * 失败消息
-     */
-    fail(content: string, options?: Partial<MessagePluginOptions>): MessageInstance;
-    /**
      * 警告消息
      */
     warning(content: string, options?: Partial<MessagePluginOptions>): MessageInstance;

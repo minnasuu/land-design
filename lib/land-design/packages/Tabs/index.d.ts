@@ -1,3 +1,4 @@
+import { default as React } from 'react';
 import { TabsProps } from './props';
-declare function Tabs({ width, checked, data, useDivider, onChange, activeClassName, className, switchDisabled, style, }: TabsProps): import("react/jsx-runtime").JSX.Element;
+declare const Tabs: React.FC<TabsProps>;
 export default Tabs;

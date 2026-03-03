@@ -1,186 +1,171 @@
-import { default as React, CSSProperties } from 'react';
-import { CommonProps } from '../types';
+import { CSSProperties, ReactNode } from 'react';
 import { DropdownProps } from '../Dropdown/props';
 import { PopOverProps } from '../PopOver/props';
 /**
- * Select组件属性类型定义
- * 包含所有Select组件支持的属性及其详细说明
+ * 选择器外观变体
+ * - outline: 描边样式（默认）
+ * - fill: 填充样式
+ * - text: 文本样式
+ * - transparent: 透明样式
  */
-/** 选择器类型 */
-export type SelectType = "border" | "background" | "transparent" | "text";
+export type SelectVariant = 'outline' | 'fill' | 'text' | 'transparent';
 /**
- * SelectItem选择项类型
- * 定义单个选择项的配置信息
+ * @deprecated 使用 SelectVariant 代替
  */
-export type SelectItemType = {
-    /**
-     * 唯一标识
-     * 选择项的值，可以是字符串或数字
-     */
-    key: string;
-    /**
-     * 标签
-     * 可以传入React节点作为选择项的显示内容
-     */
-    label: React.ReactNode;
-    /**
-     * 选项提示内容
-     * 可以传入React节点作为选择项的提示信息
-     */
-    tip?: React.ReactNode;
-    /**
-     * 选项图标类型提示
-     * 可以传入React节点作为选择项的图标
-     */
-    iconTip?: React.ReactNode;
-    /**
-     * 是否禁用
-     * 设置为true时该选项不可选择
-     */
+export type SelectType = 'border' | 'background' | 'transparent' | 'text';
+/**
+ * 选择器尺寸
+ * - small: 小尺寸
+ * - default: 默认尺寸
+ * - large: 大尺寸
+ */
+export type SelectSize = 'small' | 'default' | 'large';
+/**
+ * 选项数据项类型
+ */
+export interface SelectOption {
+    /** 选项唯一标识 */
+    key: string | number;
+    /** 选项显示文本 */
+    label: ReactNode;
+    /** 选项提示内容（悬停整个选项显示） */
+    tip?: ReactNode;
+    /** 选项图标提示（悬停图标显示） */
+    iconTip?: ReactNode;
+    /** 是否禁用 */
     disabled?: boolean;
-};
-/**
- * Select基础属性
- * 包含选择器的基本配置和内容属性
- */
-export interface SelectBaseProps extends CommonProps {
-    /**
-     * 子元素
-     * 可以传入React节点作为选择器的内容
-     */
-    children?: React.ReactNode;
-    /**
-     * 数据
-     * 包含所有选择项的配置信息
-     */
-    data?: SelectItemType[];
-    /**
-     * 当前选中项
-     * 当前选中的选项值（单选模式）
-     */
-    selected?: string | number;
-    /**
-     * 是否支持多选
-     * 设置为true时支持多选功能
-     */
-    multiple?: boolean;
-    /**
-     * 当前选中的多个值
-     * 多选模式下的选中值数组
-     */
-    selectedValues?: (string | number)[];
-    /**
-     * 分隔符
-     * 多选模式下显示选中项时使用的分隔符，默认为逗号
-     */
-    separator?: string;
-    /**
-     * 最大显示个数
-     * 多选模式下最多显示的选中项个数，超过则显示为"n个"
-     */
-    maxDisplayCount?: number;
-    /**
-     * 自定义显示内容
-     * 自定义选择结果的展示内容
-     * @param props.values 选中的值数组
-     * @param props.items 选中的完整选项数组
-     * @param props.isMultiple 是否为多选模式
-     * @param props.placeholder 占位符文本
-     */
-    customValueDisplay?: (props: {
-        values: (string | number)[];
-        items: SelectItemType[];
-        isMultiple: boolean;
-        placeholder: string;
-    }) => React.ReactNode;
-}
-/**
- * Select显示属性
- * 用于配置选择器的显示方式
- */
-export interface SelectDisplayProps {
-    /**
-     * 占位符
-     * 当没有选中项时显示的提示文本
-     */
-    placeholder?: string;
-    /**
-     * 选框提示内容
-     * 可以传入React节点作为选择框的提示信息
-     */
-    tip?: React.ReactNode;
-    /**
-     * 选框提示内容
-     * 可以传入React节点作为选择框的提示信息
-     */
-    tipProps?: PopOverProps;
-    /**
-     * 是否禁用
-     * 设置为true时选择器不可用
-     */
-    disabled?: boolean;
-    /**
-     * 是否展开
-     * 控制下拉选项的展开状态
-     */
-    open?: boolean;
-    /**
-     * 类型
-     * - border: 边框样式
-     * - background: 背景样式
-     * - transparent: 透明样式
-     * - text: 文本样式
-     */
-    type?: SelectType;
-    /**
-     * 是否显示复选框
-     * 多选模式下是否在选项前显示checkbox勾选框
-     */
-    showCheckbox?: boolean;
-}
-/**
- * Select样式属性
- * 用于配置选择器的视觉样式
- */
-export interface SelectStyleProps {
-    /**
-     * 自定义样式
-     * 可以传入CSS样式对象来自定义选择器外观
-     */
+    /** 自定义样式 */
     style?: CSSProperties;
-    /**
-     * 自定义类名
-     * 可以传入额外的CSS类名
-     */
+    /** 自定义类名 */
     className?: string;
 }
 /**
- * Select事件属性
- * 用于配置选择器的交互事件
+ * @deprecated 使用 SelectOption 代替
  */
-export interface SelectEventProps {
-    /**
-     * 选择变化事件
-     * 当选择项发生变化时触发
-     * @param item 被选择的选项（单选模式）
-     * @param items 被选择的选项数组（多选模式）
-     */
-    onChange?: (item: SelectItemType, items?: SelectItemType[]) => void;
+export type SelectItemType = SelectOption;
+/**
+ * 自定义显示回调参数
+ */
+export interface CustomDisplayParams {
+    /** 选中的值数组 */
+    values: (string | number)[];
+    /** 选中的选项数组 */
+    items: SelectOption[];
+    /** 是否为多选模式 */
+    isMultiple: boolean;
+    /** 占位符文本 */
+    placeholder: string;
 }
-/**
- * Select组件完整属性类型
- * 合并了所有属性接口
- */
-export type SelectProps = SelectBaseProps & SelectDisplayProps & SelectStyleProps & SelectEventProps & DropdownProps;
-/**
- * 属性优先级说明：
- * 1. data包含所有可选择的选项
- * 2. selected控制当前选中的选项
- * 3. placeholder显示在没有选中项时的提示
- * 4. type控制选择器的视觉样式
- * 5. disabled控制选择器是否可用
- * 6. open控制下拉选项的展开状态
- * 7. onChange处理选项变化事件
- * 8. style和className会覆盖默认样式
- * 9. 选项优先级：selected > placeholder > 默认显示
- */ 
+export interface SelectProps extends Omit<DropdownProps, 'content' | 'children' | 'onChange'> {
+    /**
+     * 选项数据
+     */
+    options?: SelectOption[];
+    /**
+     * @deprecated 使用 options 代替
+     */
+    data?: SelectOption[];
+    /**
+     * 当前选中值（单选）
+     */
+    value?: string | number;
+    /**
+     * @deprecated 使用 value 代替
+     */
+    selected?: string | number;
+    /**
+     * 当前选中值数组（多选）
+     */
+    values?: (string | number)[];
+    /**
+     * @deprecated 使用 values 代替
+     */
+    selectedValues?: (string | number)[];
+    /**
+     * 是否多选模式
+     * @default false
+     */
+    multiple?: boolean;
+    /**
+     * 占位符
+     * @default '请选择'
+     */
+    placeholder?: string;
+    /**
+     * 外观变体
+     * @default 'outline'
+     */
+    variant?: SelectVariant;
+    /**
+     * @deprecated 使用 variant 代替
+     */
+    type?: SelectType;
+    /**
+     * 尺寸
+     * @default 'default'
+     */
+    size?: SelectSize;
+    /**
+     * 是否禁用
+     * @default false
+     */
+    disabled?: boolean;
+    /**
+     * 宽度
+     */
+    width?: number | string;
+    /**
+     * 多选时是否显示复选框
+     * @default false
+     */
+    showCheckbox?: boolean;
+    /**
+     * 多选时的分隔符
+     * @default '，'
+     */
+    separator?: string;
+    /**
+     * 多选时最大显示数量，超出显示"等N个选项"
+     */
+    maxDisplayCount?: number;
+    /**
+     * 选择框提示内容
+     */
+    tip?: ReactNode;
+    /**
+     * 选择框提示配置
+     */
+    tipProps?: PopOverProps;
+    /**
+     * 自定义选中内容显示
+     */
+    customValueDisplay?: (params: CustomDisplayParams) => ReactNode;
+    /**
+     * 自定义选项渲染
+     */
+    renderOption?: (option: SelectOption, isSelected: boolean) => ReactNode;
+    /**
+     * 空数据时的显示内容
+     * @default '暂无数据'
+     */
+    emptyContent?: ReactNode;
+    /** 自定义类名 */
+    className?: string;
+    /** 自定义样式 */
+    style?: CSSProperties;
+    /** 下拉面板类名 */
+    dropdownClassName?: string;
+    /** 下拉面板样式 */
+    dropdownStyle?: CSSProperties;
+    /**
+     * 选中变化回调
+     * @param value 当前选中值（单选为单个值，多选为数组）
+     * @param option 当前操作的选项
+     * @param selectedOptions 所有选中的选项（多选时）
+     */
+    onChange?: (value: string | number | (string | number)[], option: SelectOption, selectedOptions?: SelectOption[]) => void;
+    /**
+     * @deprecated 使用 Dropdown 的 open 属性代替
+     */
+    open?: boolean;
+}

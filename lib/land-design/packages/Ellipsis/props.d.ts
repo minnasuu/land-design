@@ -29,11 +29,13 @@ export interface EllipsisDisplayProps {
     /**
      * 显示行数
      * 设置文本显示的最大行数，超过时显示省略号
+     * @default 1
      */
     line?: number;
     /**
      * 是否启用hover提示
      * 设置为true时，当文本被省略时hover会显示完整内容
+     * @default true
      */
     open?: boolean;
 }
@@ -53,6 +55,10 @@ export interface EllipsisStyleProps {
      */
     className?: string;
 }
+/**
+ * Ellipsis Popover属性
+ * 用于配置悬浮提示的相关属性
+ */
 export interface EllipsisPopoverProps {
     /**
      * PopOver组件属性
@@ -71,25 +77,34 @@ export interface EllipsisPopoverProps {
  * 合并了所有属性接口
  */
 export type EllipsisProps = EllipsisBaseProps & EllipsisDisplayProps & EllipsisStyleProps & EllipsisPopoverProps;
+export type { UseEllipsisOptions, UseEllipsisResult } from './useEllipsis';
 /**
  * 属性优先级说明：
  * 1. children和text都可以作为文本内容，text优先级更高
  * 2. line设置文本显示的最大行数，默认为1行
+ * 3. open控制是否在省略时显示hover提示，默认为true
  * 4. 当line为1时，文本超出宽度会显示省略号
  * 5. 当line大于1时，文本超出指定行数会显示省略号
- * 7. 组件会自动监听容器大小变化，动态判断是否需要省略
- * 8. 使用ResizeObserver监听容器变化，性能更优
- * 9. 支持窗口大小变化时的重新计算
- * 10. 当text和children同时存在时，优先使用text
- * 11. 增强的监听机制：
+ * 6. 组件会自动监听容器大小变化，动态判断是否需要省略
+ * 7. 使用ResizeObserver监听容器变化，性能更优
+ * 8. 支持窗口大小变化时的重新计算
+ * 9. 当text和children同时存在时，优先使用text
+ * 10. 增强的监听机制：
  *    - 监听当前容器大小变化
  *    - 监听所有父级容器大小变化
  *    - 监听DOM结构变化（如父级容器被动态添加/删除）
  *    - 监听样式属性变化（style、class）
  *    - 使用防抖机制优化性能，避免频繁计算
- * 12. 自动适应各种布局变化场景，确保省略号状态始终正确
- * 13. maxWidth扩展性：
+ * 11. 自动适应各种布局变化场景，确保省略号状态始终正确
+ * 12. maxWidth扩展性：
  *    - 默认使用contentWidth作为PopOver的最大宽度
  *    - 通过setMaxWidth回调函数透传contentWidth到外部
  *    - 支持自定义maxWidth处理逻辑，如限制最大宽度、按比例缩放等
- */ 
+ *
+ * useEllipsis 钩子说明：
+ * - 提供独立的省略检测功能，不依赖Ellipsis组件
+ * - 支持单行和多行检测
+ * - 返回ref、省略状态和元素尺寸信息
+ * - 自动监听容器变化、窗口大小和DOM变化
+ * - 支持手动触发检查
+ */

@@ -1,83 +1,126 @@
-import { default as React, CSSProperties } from 'react';
-import { CommonProps } from '../types';
+import { CSSProperties, ReactNode, HTMLAttributes, MouseEvent, KeyboardEvent } from 'react';
 /**
- * Collapse组件属性类型定义
- * 包含所有Collapse组件支持的属性及其详细说明
+ * 折叠面板外观变体
+ * - default: 默认样式，无边框
+ * - bordered: 带边框样式
+ * - card: 卡片样式，有背景和阴影
  */
+export type CollapseVariant = 'default' | 'bordered' | 'card';
 /**
- * Collapse基础属性
- * 包含折叠面板的基本配置和内容属性
+ * 箭头图标位置
+ * - start: 标题前方（默认）
+ * - end: 标题后方
  */
-export interface CollapseBaseProps extends CommonProps {
-    /**
-     * 子元素
-     * 可以传入React节点作为折叠面板的内容
-     */
-    children?: React.ReactNode;
-    /**
-     * 是否展开
-     * 控制折叠面板的展开状态
-     */
-    open?: boolean;
-}
+export type CollapseArrowPosition = 'start' | 'end';
 /**
- * Collapse内容属性
- * 用于配置折叠面板的显示内容
+ * Collapse 组件属性
  */
-export interface CollapseContentProps {
+export interface CollapseProps {
     /**
-     * 标题
-     * 可以传入字符串或React节点作为折叠面板的标题
+     * 折叠面板外观变体
+     * @default 'default'
      */
-    title?: string | React.ReactNode;
+    variant?: CollapseVariant;
     /**
-     * 内容
-     * 可以传入字符串或React节点作为折叠面板的内容
+     * 箭头图标位置
+     * @default 'start'
      */
-    content?: string | React.ReactNode;
-}
-/**
- * Collapse显示属性
- * 用于配置折叠面板的显示方式
- */
-export interface CollapseDisplayProps {
+    arrowPosition?: CollapseArrowPosition;
     /**
-     * 是否隐藏图标
-     * 设置为true时会隐藏展开/收起的图标
+     * 折叠面板标题
      */
-    hideIcon?: boolean;
-}
-/**
- * Collapse样式属性
- * 用于配置折叠面板的视觉样式
- */
-export interface CollapseStyleProps {
+    title?: ReactNode;
+    /**
+     * 折叠面板内容（与 children 二选一）
+     */
+    content?: ReactNode;
+    /**
+     * 折叠面板内容（优先级高于 content）
+     */
+    children?: ReactNode;
+    /**
+     * 标题右侧额外内容
+     */
+    extra?: ReactNode;
+    /**
+     * 自定义箭头图标
+     * @param expanded 当前是否展开
+     */
+    arrow?: ReactNode | ((expanded: boolean) => ReactNode);
+    /**
+     * 是否展开（受控）
+     */
+    expanded?: boolean;
+    /**
+     * 默认是否展开（非受控）
+     * @default false
+     */
+    defaultExpanded?: boolean;
+    /**
+     * 是否禁用
+     * @default false
+     */
+    disabled?: boolean;
+    /**
+     * 是否隐藏箭头图标
+     * @default false
+     */
+    hideArrow?: boolean;
+    /**
+     * 展开时是否销毁内容 DOM
+     * @default false
+     */
+    destroyOnCollapse?: boolean;
+    /**
+     * 是否启用动画
+     * @default true
+     */
+    animated?: boolean;
+    /**
+     * 动画持续时间（毫秒）
+     * @default 200
+     */
+    duration?: number;
+    /**
+     * 展开/收起状态变化回调
+     * @param expanded 当前是否展开
+     */
+    onChange?: (expanded: boolean) => void;
+    /**
+     * 标题点击回调
+     */
+    onHeaderClick?: (e: MouseEvent<HTMLDivElement>) => void;
+    /**
+     * 键盘事件回调
+     */
+    onKeyDown?: (e: KeyboardEvent<HTMLDivElement>) => void;
+    /**
+     * 自定义类名
+     */
+    className?: string;
     /**
      * 自定义样式
-     * 可以传入CSS样式对象来自定义折叠面板外观
      */
     style?: CSSProperties;
     /**
-     * 自定义类名
-     * 可以传入额外的CSS类名
+     * 标题区域自定义类名
      */
-    className?: string;
+    headerClassName?: string;
+    /**
+     * 标题区域自定义样式
+     */
+    headerStyle?: CSSProperties;
+    /**
+     * 内容区域自定义类名
+     */
+    contentClassName?: string;
+    /**
+     * 内容区域自定义样式
+     */
+    contentStyle?: CSSProperties;
+    /**
+     * 原生 HTML 属性透传
+     */
+    htmlProps?: HTMLAttributes<HTMLDivElement>;
 }
-/**
- * Collapse组件完整属性类型
- * 合并了所有属性接口
- */
-export type CollapseProps = CollapseBaseProps & CollapseContentProps & CollapseDisplayProps & CollapseStyleProps;
-/**
- * 属性优先级说明：
- * 1. open控制折叠面板的展开/收起状态
- * 2. title显示在折叠面板的标题区域
- * 3. content显示在折叠面板的内容区域
- * 4. hideIcon控制是否显示展开/收起图标
- * 5. style和className会覆盖默认样式
- * 6. 当open为true时，内容区域展开显示
- * 7. 当open为false时，内容区域收起隐藏
- * 8. 当hideIcon为true时，不显示展开/收起图标
- * 9. title和content都支持字符串和React节点
- * 10. 组件支持点击标题切换展开状态
- */ 
+export declare const defaultCollapseProps: Partial<CollapseProps>;

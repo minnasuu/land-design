@@ -1,90 +1,141 @@
-import { default as React, CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { CommonProps } from '../types';
 /**
- * Checkbox组件属性类型定义
- * 包含所有Checkbox组件支持的属性及其详细说明
+ * 复选框尺寸
+ * - small: 小尺寸
+ * - default: 默认尺寸
+ * - large: 大尺寸
  */
-/**
- * Checkbox基础属性
- * 包含复选框的基本配置和交互属性
- */
-export interface CheckboxBaseProps extends CommonProps {
+export type CheckboxSize = 'small' | 'default' | 'large';
+export interface CheckboxProps extends CommonProps {
     /**
-     * 是否选中
-     * 控制复选框的选中状态
+     * 复选框的值
+     * @description 用于表单提交和 CheckboxGroup 中标识选项
+     */
+    value?: string | number;
+    /**
+     * 表单字段名
+     * @description 原生 name 属性，用于表单提交
+     */
+    name?: string;
+    /**
+     * 是否选中（受控）
+     * @description 控制复选框的选中状态
+     * @default false
      */
     checked?: boolean;
     /**
-     * 是否半选
-     * 控制复选框的半选状态
+     * 默认是否选中（非受控）
+     * @description 非受控模式下的初始选中状态
+     * @default false
+     */
+    defaultChecked?: boolean;
+    /**
+     * 是否半选状态
+     * @description 通常用于父子关联选择时的中间状态
+     * @default false
      */
     indeterminate?: boolean;
     /**
-     * 复选框标签
-     * 显示在复选框旁边的文本内容
-     */
-    label?: string;
-    /**
      * 是否禁用
-     * 设置为true时复选框不可点击
+     * @description 设置为 true 时复选框不可点击
+     * @default false
      */
     disabled?: boolean;
     /**
-     * 是否启用动画效果
-     * 控制选中时的动画效果，默认为true
+     * 标签内容
+     * @description 显示在复选框旁边的内容，支持 ReactNode
+     */
+    label?: ReactNode;
+    /**
+     * 子元素
+     * @description 可作为 label 的替代方案
+     */
+    children?: ReactNode;
+    /**
+     * 尺寸
+     * @default 'default'
+     */
+    size?: CheckboxSize;
+    /**
+     * 是否启用动画
+     * @description 控制选中时的过渡动画效果
+     * @default true
      */
     animated?: boolean;
-}
-/**
- * Checkbox提示属性
- * 用于配置复选框的提示信息
- */
-export interface CheckboxTipProps {
     /**
      * 提示内容
-     * 可以传入字符串作为复选框的提示信息
+     * @description 鼠标悬停时显示的提示信息
      */
-    tip?: string;
-}
-/**
- * Checkbox样式属性
- * 用于配置复选框的视觉样式
- */
-export interface CheckboxStyleProps {
-    /**
-     * 自定义样式
-     * 可以传入CSS样式对象来自定义复选框外观
-     */
-    style?: CSSProperties;
-    /**
-     * 自定义类名
-     * 可以传入额外的CSS类名
-     */
+    tip?: ReactNode;
+    /** 自定义类名 */
     className?: string;
-}
-/**
- * Checkbox事件属性
- * 用于配置复选框的交互事件
- */
-export interface CheckboxEventProps {
+    /** 自定义样式 */
+    style?: CSSProperties;
+    /** 标签自定义类名 */
+    labelClassName?: string;
+    /** 标签自定义样式 */
+    labelStyle?: CSSProperties;
     /**
-     * 状态变化事件
-     * 当复选框状态发生变化时触发
+     * 选中状态变化回调
+     * @param checked - 新的选中状态
+     * @param e - 鼠标事件对象
      */
     onCheckedChange?: (checked: boolean, e: React.MouseEvent) => void;
+    /**
+     * @deprecated 建议使用 onCheckedChange 代替
+     */
+    onChange?: (checked: boolean, e: React.MouseEvent) => void;
 }
 /**
- * Checkbox组件完整属性类型
- * 合并了所有属性接口
+ * Checkbox 组件默认属性
  */
-export type CheckboxProps = CheckboxBaseProps & CheckboxTipProps & CheckboxStyleProps & CheckboxEventProps;
+export declare const checkboxDefaultProps: Partial<CheckboxProps>;
 /**
- * 属性优先级说明：
- * 1. checked和onChange配合使用实现受控组件
- * 2. label显示在复选框旁边的文本内容
- * 3. disabled属性会禁用所有交互功能
- * 4. tip提供额外的提示信息
- * 5. style和className会覆盖默认样式
- * 6. 当disabled为true时，onChange事件不会触发
- * 7. 当label为空时，复选框只显示图标
- */ 
+ * Checkbox 属性使用说明
+ *
+ * 1. 受控 vs 非受控模式：
+ *    - 受控模式：使用 checked + onCheckedChange
+ *    - 非受控模式：使用 defaultChecked
+ *
+ * 2. 表单集成：
+ *    - value: 在 CheckboxGroup 中标识选项
+ *    - name: 原生表单字段名
+ *
+ * 3. 标签内容：
+ *    - 优先使用 children，其次 label
+ *
+ * 4. 半选状态：
+ *    - indeterminate 用于父子关联选择的中间状态
+ *    - 半选状态时 checked 属性会被忽略显示
+ *
+ * @example
+ * // 受控模式
+ * <Checkbox
+ *   checked={isChecked}
+ *   onCheckedChange={(checked) => setIsChecked(checked)}
+ * >
+ *   同意协议
+ * </Checkbox>
+ *
+ * @example
+ * // 非受控模式
+ * <Checkbox defaultChecked label="默认选中" />
+ *
+ * @example
+ * // 在 CheckboxGroup 中使用
+ * <CheckboxGroup value={values} onChange={setValues}>
+ *   <Checkbox value="a" label="选项A" />
+ *   <Checkbox value="b" label="选项B" />
+ * </CheckboxGroup>
+ *
+ * @example
+ * // 半选状态（全选控制）
+ * <Checkbox
+ *   indeterminate={someChecked && !allChecked}
+ *   checked={allChecked}
+ *   onCheckedChange={handleSelectAll}
+ * >
+ *   全选
+ * </Checkbox>
+ */

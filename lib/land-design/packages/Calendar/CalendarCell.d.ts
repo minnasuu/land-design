@@ -1,8 +1,10 @@
 import { default as React } from 'react';
+import { CalendarCellProps } from './props';
 import { CalendarDay } from './utils/calendarUtils';
-interface CalendarCellProps {
+interface LegacyCalendarCellProps {
     day: CalendarDay;
     onDayClick?: (day: CalendarDay) => void;
+    onOtherMonthDayClick?: (day: CalendarDay) => void;
     onDayMouseOver?: (day: CalendarDay, e: React.MouseEvent) => void;
     onDayMouseOut?: (day: CalendarDay, e: React.MouseEvent) => void;
     onDayMouseEnter?: (day: CalendarDay, e: React.MouseEvent) => void;
@@ -10,5 +12,6 @@ interface CalendarCellProps {
     children?: React.ReactNode;
     className?: string;
 }
-declare const CalendarCell: React.FC<CalendarCellProps>;
+type CombinedProps = CalendarCellProps | LegacyCalendarCellProps;
+declare const CalendarCell: React.FC<CombinedProps>;
 export default CalendarCell;

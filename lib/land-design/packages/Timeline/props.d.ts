@@ -1,101 +1,204 @@
 import { default as React, CSSProperties } from 'react';
 import { CommonProps } from '../types';
 /**
- * Timeline组件属性类型定义
- * 包含所有Timeline组件支持的属性及其详细说明
+ * 时间线方向
  */
-/** 时间线方向 */
-export type TimelineDirection = "row" | "column";
+export type TimelineDirection = 'vertical' | 'horizontal';
 /**
- * TimelineItem时间线项类型
- * 定义单个时间线项的配置信息
+ * 时间线模式
+ * - left: 内容在左侧（垂直时在左，水平时在上）
+ * - right: 内容在右侧（垂直时在右，水平时在下）
+ * - alternate: 内容交替显示
  */
-export type TimelineItemType = {
+export type TimelineMode = 'left' | 'right' | 'alternate';
+/**
+ * 节点状态/颜色
+ */
+export type TimelineItemStatus = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+/**
+ * 连接线类型
+ */
+export type TimelineLineType = 'solid' | 'dashed' | 'dotted';
+/**
+ * 时间线项配置
+ */
+export interface TimelineItem {
+    /**
+     * 唯一标识
+     */
+    key?: React.Key;
     /**
      * 标题
-     * 时间线项的主要标题
      */
-    title?: string | React.ReactNode;
+    title?: React.ReactNode;
     /**
-     * 副标题
-     * 时间线项的次要标题
+     * 副标题（通常用于显示时间）
      */
-    subTitle?: string | React.ReactNode;
+    subTitle?: React.ReactNode;
     /**
-     * 描述
-     * 时间线项的详细描述信息
+     * 描述内容
      */
-    desc?: string | React.ReactNode;
+    desc?: React.ReactNode;
     /**
-     * 自定义图标
-     * 可以传入React节点作为时间线项的图标
+     * 额外内容（显示在描述下方）
+     */
+    extra?: React.ReactNode;
+    /**
+     * 自定义节点图标
+     * 优先级高于全局 icon
      */
     icon?: React.ReactNode;
-};
+    /**
+     * 节点颜色/状态
+     * @default 'default'
+     */
+    color?: TimelineItemStatus | string;
+    /**
+     * 是否为当前激活项
+     */
+    active?: boolean;
+    /**
+     * 是否禁用
+     */
+    disabled?: boolean;
+    /**
+     * 自定义节点样式
+     */
+    dotStyle?: CSSProperties;
+    /**
+     * 自定义内容样式
+     */
+    contentStyle?: CSSProperties;
+    /**
+     * 自定义类名
+     */
+    className?: string;
+    /**
+     * 点击回调
+     */
+    onClick?: (e: React.MouseEvent) => void;
+}
 /**
- * Timeline基础属性
- * 包含时间线组件的基本配置和内容属性
+ * Timeline 基础属性
  */
 export interface TimelineBaseProps extends CommonProps {
     /**
-     * 子元素
-     * 可以传入React节点作为时间线组件的内容
+     * 子元素（支持 Timeline.Item）
      */
     children?: React.ReactNode;
     /**
-     * 数据
-     * 包含所有时间线项的配置信息
+     * 数据源（与 children 二选一）
      */
-    data?: TimelineItemType[];
+    items?: TimelineItem[];
+    /**
+     * 全局默认图标
+     */
+    icon?: React.ReactNode;
+    /**
+     * 是否显示待完成项（最后一项显示为 pending 状态）
+     */
+    pending?: boolean | React.ReactNode;
+    /**
+     * pending 项的图标
+     */
+    pendingIcon?: React.ReactNode;
+    /**
+     * 是否倒序显示
+     * @default false
+     */
+    reverse?: boolean;
 }
 /**
- * Timeline布局属性
- * 用于配置时间线组件的布局方式
+ * Timeline 布局属性
  */
 export interface TimelineLayoutProps {
     /**
      * 方向
-     * - row: 水平布局
-     * - column: 垂直布局（默认）
+     * @default 'vertical'
      */
     direction?: TimelineDirection;
+    /**
+     * 内容位置模式
+     * @default 'right'
+     */
+    mode?: TimelineMode;
+    /**
+     * 节点间距
+     */
+    gap?: number | string;
 }
 /**
- * Timeline样式属性
- * 用于配置时间线组件的视觉样式
+ * Timeline 样式属性
  */
 export interface TimelineStyleProps {
     /**
      * 自定义样式
-     * 可以传入CSS样式对象来自定义时间线组件外观
      */
     style?: CSSProperties;
     /**
      * 自定义类名
-     * 可以传入额外的CSS类名
      */
     className?: string;
     /**
-     * 全局自定义图标
-     * 可以传入React节点作为所有时间线项的默认图标
+     * 连接线类型
+     * @default 'solid'
      */
-    icon?: React.ReactNode;
+    lineType?: TimelineLineType;
+    /**
+     * 连接线颜色
+     */
+    lineColor?: string;
+    /**
+     * 连接线宽度
+     */
+    lineWidth?: number;
+    /**
+     * 节点大小
+     */
+    dotSize?: number;
+    /**
+     * 默认节点颜色
+     */
+    dotColor?: string;
+    /**
+     * 是否显示连接线
+     * @default true
+     */
+    showLine?: boolean;
 }
 /**
- * Timeline组件完整属性类型
- * 合并了所有属性接口
+ * Timeline 事件属性
  */
-export type TimelineProps = TimelineBaseProps & TimelineLayoutProps & TimelineStyleProps;
+export interface TimelineEventProps {
+    /**
+     * 点击项回调
+     */
+    onItemClick?: (item: TimelineItem, index: number, e: React.MouseEvent) => void;
+}
 /**
- * 属性优先级说明：
- * 1. data包含所有时间线项的配置信息
- * 2. direction控制时间线的布局方向
- * 3. icon设置全局默认图标
- * 4. 每个TimelineItemType可以有自己的icon，优先级高于全局icon
- * 5. title、subTitle、desc分别显示不同层级的信息
- * 6. style和className会覆盖默认样式
- * 7. 当direction为row时，时间线水平排列
- * 8. 当direction为column时，时间线垂直排列
- * 9. 图标优先级：TimelineItemType.icon > 全局icon > 默认图标
- * 10. 组件支持混合使用data和children
- */ 
+ * Timeline 组件完整属性
+ */
+export type TimelineProps = TimelineBaseProps & TimelineLayoutProps & TimelineStyleProps & TimelineEventProps;
+/**
+ * Timeline.Item 组件属性
+ */
+export interface TimelineItemProps extends Omit<TimelineItem, 'key'> {
+    /**
+     * 子元素（作为内容）
+     */
+    children?: React.ReactNode;
+}
+/**
+ * 旧版 TimelineItemType
+ * @deprecated 请使用 TimelineItem
+ */
+export type TimelineItemType = TimelineItem;
+/**
+ * 旧版属性兼容
+ */
+export interface LegacyTimelineProps {
+    /**
+     * @deprecated 请使用 items
+     */
+    data?: TimelineItem[];
+}

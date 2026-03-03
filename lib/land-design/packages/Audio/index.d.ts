@@ -1,15 +1,18 @@
+import { default as React } from 'react';
 import { default as AudioButton } from './AudioButton';
 import { default as AudioAnimationIcon } from './AudioAnimationIcon';
 import { default as AudioWave } from './AudioWave';
+import { default as AudioProgress } from './AudioProgress';
 import { AudioProps } from './props';
-import { default as React } from 'react';
 declare const Audio: React.FC<AudioProps> & {
-    AudioButton: typeof AudioButton;
-    AudioAnimationIcon: typeof AudioAnimationIcon;
-    AudioWave: typeof AudioWave;
+    Button: typeof AudioButton;
+    AnimationIcon: typeof AudioAnimationIcon;
+    Wave: typeof AudioWave;
+    Progress: typeof AudioProgress;
 };
 export * from './props';
 export { default as AudioWave } from './AudioWave';
 export { default as AudioButton } from './AudioButton';
 export { default as AudioAnimationIcon } from './AudioAnimationIcon';
+export { default as AudioProgress } from './AudioProgress';
 export default Audio;

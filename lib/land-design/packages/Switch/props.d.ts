@@ -1,137 +1,188 @@
-import { default as React, CSSProperties } from 'react';
-import { CommonProps } from '../types';
+import { CSSProperties, ReactNode } from 'react';
 import { PopOverProps } from '../PopOver/props';
 /**
- * Switch组件属性类型定义
- * 包含所有Switch组件支持的属性及其详细说明
+ * Switch 尺寸
+ * - small: 小尺寸
+ * - default: 默认尺寸
+ * - large: 大尺寸
  */
+export type SwitchSize = "small" | "default" | "large";
 /**
- * Switch基础属性
- * 包含开关的基本配置和内容属性
+ * 标签位置
+ * - left: 标签在左侧
+ * - right: 标签在右侧（默认）
  */
-export interface SwitchBaseProps extends CommonProps {
+export type SwitchLabelPosition = "left" | "right";
+/**
+ * Switch 基础属性
+ */
+export interface SwitchBaseProps {
     /**
-     * 子元素
-     * 可以传入React节点作为开关的内容
-     */
-    children?: React.ReactNode;
-    /**
-     * 是否开启
-     * 控制开关的开启状态
+     * 受控模式的开关状态
+     * @description 使用时组件变为受控模式
      */
     checked?: boolean;
+    /**
+     * 非受控模式的默认状态
+     * @default false
+     */
+    defaultChecked?: boolean;
+    /**
+     * 表单字段名
+     */
+    name?: string;
+    /**
+     * 开关值（用于表单）
+     * @default true
+     */
+    value?: string | number | boolean;
 }
 /**
- * Switch内容属性
- * 用于配置开关的显示内容
+ * Switch 内容属性
  */
 export interface SwitchContentProps {
     /**
-     * 描述文字
-     * 开关的描述文本
+     * 标签文字
+     * @description 开关旁边的描述文字
      */
-    label?: string;
+    label?: ReactNode;
     /**
-     * 开启后的描述文字
-     * 开关开启状态下的描述文本
+     * 开启状态的标签文字
+     * @description 如果设置，开启时显示此标签
      */
-    checkedLabel?: string;
+    checkedLabel?: ReactNode;
     /**
-     * 默认图标
-     * 可以传入React节点作为默认状态的图标
+     * 关闭状态显示的内容（轨道内）
+     * @description 显示在开关轨道内的内容
      */
-    icon?: React.ReactNode;
+    uncheckedContent?: ReactNode;
     /**
-     * 开启后的图标
-     * 可以传入React节点作为开启状态的图标
+     * 开启状态显示的内容（轨道内）
+     * @description 显示在开关轨道内的内容
      */
-    checkedIcon?: React.ReactNode;
+    checkedContent?: ReactNode;
+    /**
+     * 关闭状态的图标（滑块内）
+     */
+    icon?: ReactNode;
+    /**
+     * 开启状态的图标（滑块内）
+     */
+    checkedIcon?: ReactNode;
 }
 /**
- * Switch提示属性
- * 用于配置开关的提示信息
+ * Switch 提示属性
  */
 export interface SwitchTipProps {
     /**
      * 整体提示内容
-     * 可以传入React节点作为整体的提示信息
+     * @description hover 时显示的提示
      */
-    tip?: React.ReactNode;
+    tip?: ReactNode;
     /**
      * 图标提示内容
-     * 可以传入React节点作为图标的提示信息
+     * @description 在开关旁边显示一个信息图标，hover 显示提示
      */
-    iconTip?: React.ReactNode;
+    iconTip?: ReactNode;
     /**
-     * 提示内容属性
-     * 可以传入PopOverProps来配置整体提示
+     * 整体提示的 PopOver 属性
      */
-    tipProps?: PopOverProps;
+    tipProps?: Partial<PopOverProps>;
     /**
-     * 图标提示内容属性
-     * 可以传入PopOverProps来配置图标提示
+     * 图标提示的 PopOver 属性
      */
-    iconTipProps?: PopOverProps;
+    iconTipProps?: Partial<PopOverProps>;
 }
 /**
- * Switch显示属性
- * 用于配置开关的显示方式
+ * Switch 外观属性
  */
-export interface SwitchDisplayProps {
+export interface SwitchAppearanceProps {
     /**
-     * 暗黑模式
-     * 设置为true时使用暗黑主题
+     * 尺寸
+     * @default "default"
      */
-    dark?: boolean;
+    size?: SwitchSize;
     /**
-     * 禁用
-     * 设置为true时开关不可用
+     * 标签位置
+     * @default "right"
+     */
+    labelPosition?: SwitchLabelPosition;
+    /**
+     * 加载中状态
+     * @default false
+     */
+    loading?: boolean;
+}
+/**
+ * Switch 状态属性
+ */
+export interface SwitchStateProps {
+    /**
+     * 是否禁用
+     * @default false
      */
     disabled?: boolean;
+    /**
+     * 只读模式
+     * @default false
+     */
+    readOnly?: boolean;
 }
 /**
- * Switch样式属性
- * 用于配置开关的视觉样式
+ * Switch 样式属性
  */
 export interface SwitchStyleProps {
     /**
+     * 自定义类名
+     */
+    className?: string;
+    /**
      * 自定义样式
-     * 可以传入CSS样式对象来自定义开关外观
      */
     style?: CSSProperties;
     /**
-     * 自定义类名
-     * 可以传入额外的CSS类名
+     * 轨道自定义类名
      */
-    className?: string;
+    trackClassName?: string;
+    /**
+     * 轨道自定义样式
+     */
+    trackStyle?: CSSProperties;
+    /**
+     * 滑块自定义类名
+     */
+    thumbClassName?: string;
+    /**
+     * 滑块自定义样式
+     */
+    thumbStyle?: CSSProperties;
 }
 /**
- * Switch事件属性
- * 用于配置开关的交互事件
+ * Switch 事件属性
  */
 export interface SwitchEventProps {
     /**
-     * 状态变化事件
-     * 当开关状态发生变化时触发
+     * 状态变化回调
      * @param checked 新的开关状态
+     * @param event 触发的事件
      */
-    onChange?: (checked: boolean) => void;
+    onChange?: (checked: boolean, event: React.MouseEvent | React.KeyboardEvent) => void;
+    /**
+     * 点击事件
+     */
+    onClick?: (event: React.MouseEvent) => void;
+    /**
+     * 获得焦点事件
+     */
+    onFocus?: (event: React.FocusEvent) => void;
+    /**
+     * 失去焦点事件
+     */
+    onBlur?: (event: React.FocusEvent) => void;
 }
 /**
- * Switch组件完整属性类型
- * 合并了所有属性接口
+ * Switch 组件完整属性
  */
-export type SwitchProps = SwitchBaseProps & SwitchContentProps & SwitchTipProps & SwitchDisplayProps & SwitchStyleProps & SwitchEventProps;
-/**
- * 属性优先级说明：
- * 1. checked控制开关的开启状态
- * 2. label和checkedLabel分别显示不同状态的描述
- * 3. icon和checkedIcon分别显示不同状态的图标
- * 4. tip和iconTip提供提示信息
- * 5. tipProps和iconTipProps配置提示的显示方式
- * 6. dark控制是否使用暗黑主题
- * 7. disabled控制开关是否可用
- * 8. onChange处理状态变化事件
- * 9. style和className会覆盖默认样式
- * 10. 当disabled为true时，onChange不会触发
- */ 
+export interface SwitchProps extends SwitchBaseProps, SwitchContentProps, SwitchTipProps, SwitchAppearanceProps, SwitchStateProps, SwitchStyleProps, SwitchEventProps {
+}
+export declare const switchDefaultProps: Partial<SwitchProps>;

@@ -1,5 +1,6 @@
 import { CSSProperties, ReactNode } from 'react';
 import { CommonProps } from '../types';
+import { ButtonProps } from '../Button/props';
 /**
  * Dialog组件属性类型定义
  * 包含所有Dialog组件支持的属性及其详细说明
@@ -110,6 +111,16 @@ export interface DialogFooterProps {
      * 确定按钮是否禁用
      */
     submitDisabled?: boolean;
+    /**
+       * 取消按钮属性
+       * 可以传入ButtonProps来配置取消按钮
+       */
+    cancelButtonProps?: ButtonProps;
+    /**
+     * 确定按钮属性
+     * 可以传入ButtonProps来配置确定按钮
+     */
+    submitButtonProps?: ButtonProps;
 }
 /**
  * Dialog样式属性

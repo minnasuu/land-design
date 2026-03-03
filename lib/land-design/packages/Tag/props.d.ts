@@ -1,90 +1,253 @@
 import { default as React, CSSProperties } from 'react';
 import { CommonProps } from '../types';
 /**
- * Tag组件属性类型定义
- * 包含所有Tag组件支持的属性及其详细说明
+ * 标签尺寸
  */
+export type TagSize = 'small' | 'medium' | 'large';
 /**
- * Tag基础属性
- * 包含标签的基本配置和交互属性
+ * 标签类型/变体
+ */
+export type TagVariant = 'filled' | 'outlined' | 'light';
+/**
+ * 预设颜色
+ */
+export type TagColor = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | string;
+/**
+ * 标签形状
+ */
+export type TagShape = 'square' | 'rounded' | 'pill';
+/**
+ * Tag 基础属性
  */
 export interface TagBaseProps extends CommonProps {
     /**
      * 标签内容
-     * 可以传入React节点作为标签的显示内容
      */
     children?: React.ReactNode;
     /**
-     * 标签图标
-     * 可以传入React节点作为标签的图标
+     * 前置图标
      */
     icon?: React.ReactNode;
     /**
-     * 是否可删除
-     * 设置为true时会显示删除按钮
+     * 后置图标 (不包括关闭图标)
      */
-    canDelete?: boolean;
+    suffixIcon?: React.ReactNode;
+    /**
+     * 是否可见 (受控)
+     * @default true
+     */
+    visible?: boolean;
+    /**
+     * 默认是否可见 (非受控)
+     * @default true
+     */
+    defaultVisible?: boolean;
 }
 /**
- * Tag样式属性
- * 用于配置标签的视觉样式
+ * Tag 样式属性
  */
 export interface TagStyleProps {
     /**
-     * 主题
-     * 设置标签的主题
+     * 标签尺寸
+     * @default 'medium'
      */
-    theme?: 'gray' | 'white';
+    size?: TagSize;
+    /**
+     * 标签变体
+     * - filled: 填充背景
+     * - outlined: 边框样式
+     * - light: 浅色背景
+     * @default 'light'
+     */
+    variant?: TagVariant;
+    /**
+     * 预设颜色或自定义颜色
+     * @default 'default'
+     */
+    color?: TagColor;
+    /**
+     * 标签形状
+     * @default 'rounded'
+     */
+    shape?: TagShape;
+    /**
+     * 是否加粗
+     * @default false
+     */
+    bold?: boolean;
+    /**
+     * 自定义背景色 (优先级高于 color)
+     */
+    backgroundColor?: string;
+    /**
+     * 自定义文字色 (优先级高于 color)
+     */
+    textColor?: string;
+    /**
+     * 自定义边框色 (优先级高于 color)
+     */
+    borderColor?: string;
+    /**
+     * 自定义边框样式
+     * @example '1px solid #ccc'
+     * @example '2px dashed #1890ff'
+     */
+    border?: string;
     /**
      * 自定义样式
-     * 可以传入CSS样式对象来自定义标签外观
      */
     style?: CSSProperties;
     /**
      * 自定义类名
-     * 可以传入额外的CSS类名
      */
     className?: string;
-    /**
-     * 标签颜色
-     * 设置标签的文字颜色
-     */
-    color?: string;
-    /**
-     * 边框颜色
-     * 设置标签的边框颜色
-     */
-    border?: string;
-    /**
-     * 背景颜色
-     * 设置标签的背景颜色
-     */
-    background?: string;
 }
 /**
- * Tag事件属性
- * 用于配置标签的交互事件
+ * Tag 交互属性
+ */
+export interface TagInteractiveProps {
+    /**
+     * 是否可关闭/删除
+     * @default false
+     */
+    closable?: boolean;
+    /**
+     * 是否可点击 (显示 hover 效果和 cursor: pointer)
+     * @default false
+     */
+    clickable?: boolean;
+    /**
+     * 是否可选中 (显示选中样式)
+     * @default false
+     */
+    checkable?: boolean;
+    /**
+     * 是否选中 (受控)
+     */
+    checked?: boolean;
+    /**
+     * 默认是否选中 (非受控)
+     * @default false
+     */
+    defaultChecked?: boolean;
+    /**
+     * 是否禁用
+     * @default false
+     */
+    disabled?: boolean;
+    /**
+     * 自定义关闭图标
+     */
+    closeIcon?: React.ReactNode;
+}
+/**
+ * Tag 事件属性
  */
 export interface TagEventProps {
     /**
-     * 删除事件
-     * 当用户点击删除按钮时触发
+     * 点击事件
+     */
+    onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+    /**
+     * 关闭/删除事件
      * @param e 事件对象
      */
-    onDelete?: (e: React.MouseEvent) => void;
+    onClose?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+    /**
+     * 可见性变化事件
+     * @param visible 是否可见
+     */
+    onVisibleChange?: (visible: boolean) => void;
+    /**
+     * 选中状态变化事件 (checkable 模式)
+     * @param checked 是否选中
+     */
+    onCheck?: (checked: boolean) => void;
 }
 /**
- * Tag组件完整属性类型
- * 合并了所有属性接口
+ * Tag 组件完整属性
  */
-export type TagProps = TagBaseProps & TagStyleProps & TagEventProps;
+export type TagProps = TagBaseProps & TagStyleProps & TagInteractiveProps & TagEventProps;
 /**
- * 属性优先级说明：
- * 1. children是标签的主要内容，可以是文本或其他React节点
- * 2. icon会在标签内容前显示图标
- * 3. canDelete和onDelete配合使用，canDelete为true时才会显示删除按钮
- * 4. color、border、background分别控制标签的不同样式属性
- * 5. style和className会覆盖默认样式
- * 6. 当canDelete为false时，onDelete事件不会触发
- * 7. 样式属性的优先级：style > background/border/color > 默认样式
- */ 
+ * 可选中标签属性
+ */
+export interface CheckableTagProps extends Omit<TagProps, 'checkable' | 'closable'> {
+    /**
+     * 是否选中 (受控)
+     */
+    checked?: boolean;
+    /**
+     * 默认是否选中 (非受控)
+     * @default false
+     */
+    defaultChecked?: boolean;
+    /**
+     * 选中状态变化事件
+     */
+    onChange?: (checked: boolean) => void;
+}
+/**
+ * 标签组属性
+ */
+export interface TagGroupProps extends CommonProps {
+    /**
+     * 子元素
+     */
+    children?: React.ReactNode;
+    /**
+     * 标签间距
+     * @default 8
+     */
+    gap?: number | string;
+    /**
+     * 是否换行
+     * @default true
+     */
+    wrap?: boolean;
+    /**
+     * 对齐方式
+     * @default 'flex-start'
+     */
+    align?: 'flex-start' | 'center' | 'flex-end';
+    /**
+     * 最大显示数量，超出显示 +N
+     */
+    maxCount?: number;
+    /**
+     * 超出数量的渲染
+     */
+    maxCountRender?: (count: number) => React.ReactNode;
+    /**
+     * 自定义样式
+     */
+    style?: CSSProperties;
+    /**
+     * 自定义类名
+     */
+    className?: string;
+}
+/**
+ * @deprecated 请使用 'default' | 'primary' 等预设颜色
+ */
+export type TagTheme = 'gray' | 'white';
+/**
+ * 旧版属性兼容
+ */
+export interface LegacyTagProps {
+    /**
+     * @deprecated 请使用 closable
+     */
+    canDelete?: boolean;
+    /**
+     * @deprecated 请使用 onClose
+     */
+    onDelete?: (e: React.MouseEvent) => void;
+    /**
+     * @deprecated 请使用 color + variant
+     */
+    theme?: TagTheme;
+    /**
+     * @deprecated 请使用 backgroundColor
+     */
+    background?: string;
+}

@@ -1,10 +1,11 @@
 import { default as React } from 'react';
-interface CalendarHeaderProps {
+import { CalendarHeaderProps } from './props';
+interface LegacyCalendarHeaderProps {
     language?: "zh" | "en";
     currentYear: number;
     currentMonth?: number;
-    shouldShowYearSelector: boolean;
-    yearRange: [number, number];
+    shouldShowYearSelector?: boolean;
+    yearRange?: [number, number];
     monthPrevDisabled?: boolean;
     monthNextDisabled?: boolean;
     onMonthChange?: (month: number) => void;
@@ -19,5 +20,6 @@ interface CalendarHeaderProps {
     style?: React.CSSProperties;
     viewMode?: "date" | "week" | "month" | "quarter" | "year";
 }
-declare const CalendarHeader: React.FC<CalendarHeaderProps>;
+type CombinedProps = CalendarHeaderProps | LegacyCalendarHeaderProps;
+declare const CalendarHeader: React.FC<CombinedProps>;
 export default CalendarHeader;

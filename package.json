@@ -32,7 +32,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "build:styles": "node scripts/build-styles.js",
-    "build:lib": "npm run build:styles && tsc -p tsconfig.lib.json && vite build --config vite.config.lib.ts",
+    "build:lib": "tsc -p tsconfig.lib.json && vite build --config vite.config.lib.ts",
     "lib": "bash updateVersion.sh --auto && npm run build:lib && pnpm publish --no-git-checks",
     "publish": "bash scripts/publish.sh",
     "deploy": "gh-pages -d dist",

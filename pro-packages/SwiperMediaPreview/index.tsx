@@ -124,7 +124,7 @@ const MsPreviewSwiperLayout: React.FC<SwiperMediaPreviewProps> = ({
                   }}
                 >
                   <Image
-                    url={j.url}
+                    src={j.url}
                     ratio={1}
                     style={{ width: '80px', borderRadius: '8px' }}
                     imgStyle={{ objectFit: 'cover', borderRadius: '8px' }}

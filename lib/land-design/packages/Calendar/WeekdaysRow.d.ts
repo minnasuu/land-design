@@ -1,7 +1,4 @@
 import { default as React } from 'react';
-interface WeekdaysRowProps {
-    language?: "zh" | "en";
-    className?: string;
-}
+import { WeekdaysRowProps } from './props';
 declare const WeekdaysRow: React.FC<WeekdaysRowProps>;
 export default WeekdaysRow;
