@@ -30,6 +30,7 @@ const Dialog: React.FC<DialogProps> = ({
   onSubmit,
   onCancel,
   enableEsc = true,
+  enableEnter = false,
   children,
   wrapStyle,
   wrapClassName = '',
@@ -58,21 +59,31 @@ const Dialog: React.FC<DialogProps> = ({
     ].filter(Boolean).join(' ');
   }, [show, wrapClassName]);
 
-  // ─── ESC 键处理 ───
+  // ─── 键盘事件处理 ───
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    // ESC 键关闭
     if (event.key === 'Escape' && enableEsc && show && onClose) {
       onClose();
     }
-  }, [enableEsc, show, onClose]);
+    // Enter 键确定
+    if (event.key === 'Enter' && enableEnter && show && onSubmit && !submitDisabled) {
+      // 避免在输入框等元素中触发
+      const target = event.target as HTMLElement;
+      const isInputElement = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+      if (!isInputElement) {
+        onSubmit();
+      }
+    }
+  }, [enableEsc, enableEnter, show, onClose, onSubmit, submitDisabled]);
 
   useEffect(() => {
-    if (show && enableEsc) {
+    if (show && (enableEsc || enableEnter)) {
       document.addEventListener('keydown', handleKeyDown);
     }
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [show, enableEsc, handleKeyDown]);
+  }, [show, enableEsc, enableEnter, handleKeyDown]);
 
   // ─── 显示判断 ───
   const hasHeader = useMemo(() => {

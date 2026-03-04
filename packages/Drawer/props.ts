@@ -265,6 +265,12 @@ export interface DrawerEventProps {
    * 设置为true时按ESC键可以关闭抽屉（默认true）
    */
   enableEsc?: boolean;
+
+  /** 
+   * 是否启用Enter键确定
+   * 设置为true时按Enter键可以触发onSubmit（默认false）
+   */
+  enableEnter?: boolean;
 }
 
 /**

@@ -129,9 +129,12 @@ const Textarea: React.FC<TextareaProps> = ({
   const handleCompositionEnd = useCallback((e: React.CompositionEvent<HTMLTextAreaElement>) => {
     isComposing.current = false;
     const newValue = (e.target as HTMLTextAreaElement).value;
-    setInnerValue(newValue);
+    // 只在非受控模式下更新内部状态
+    if (value === undefined) {
+      setInnerValue(newValue);
+    }
     onChange?.(newValue);
-  }, [onChange]);
+  }, [value, onChange]);
 
   const handleClear = useCallback(() => {
     if (value === undefined) {
