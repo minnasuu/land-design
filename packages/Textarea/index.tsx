@@ -40,16 +40,15 @@ const Textarea: React.FC<TextareaProps> = ({
 }) => {
   // ─── 状态管理 ───
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [innerValue, setInnerValue] = useState(value ?? defaultValue ?? '');
+  // 只在非受控模式下维护内部状态
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? '');
   const [isFocused, setIsFocused] = useState(false);
   const isComposing = useRef(false);
 
-  // ─── 同步受控值 ───
-  useEffect(() => {
-    if (value !== undefined && !isComposing.current) {
-      setInnerValue(value);
-    }
-  }, [value]);
+  // 判断是否受控模式
+  const isControlled = value !== undefined;
+  // 实际显示的值：受控模式用外部value，非受控模式用内部state
+  const innerValue = isControlled ? value : uncontrolledValue;
 
   // ─── 自动调整高度 ───
   const adjustHeight = useCallback(() => {
@@ -99,11 +98,12 @@ const Textarea: React.FC<TextareaProps> = ({
   // ─── 事件处理 ───
   const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
-    if (value === undefined) {
-      setInnerValue(newValue);
+    // 非受控模式下更新内部状态
+    if (!isControlled) {
+      setUncontrolledValue(newValue);
     }
     onChange?.(newValue, e);
-  }, [value, onChange]);
+  }, [isControlled, onChange]);
 
   const handleFocus = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
     setIsFocused(true);
@@ -129,19 +129,20 @@ const Textarea: React.FC<TextareaProps> = ({
   const handleCompositionEnd = useCallback((e: React.CompositionEvent<HTMLTextAreaElement>) => {
     isComposing.current = false;
     const newValue = (e.target as HTMLTextAreaElement).value;
-    // 只在非受控模式下更新内部状态
-    if (value === undefined) {
-      setInnerValue(newValue);
+    // 非受控模式下更新内部状态
+    if (!isControlled) {
+      setUncontrolledValue(newValue);
     }
     onChange?.(newValue);
-  }, [value, onChange]);
+  }, [isControlled, onChange]);
 
   const handleClear = useCallback(() => {
-    if (value === undefined) {
-      setInnerValue('');
+    if (!isControlled) {
+      setUncontrolledValue('');
     }
+    onChange?.('');
     onClear?.();
-  }, [value, onClear]);
+  }, [isControlled, onChange, onClear]);
 
   // ─── 计算值 ───
   const currentLength = innerValue.length;
