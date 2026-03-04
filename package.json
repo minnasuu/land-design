@@ -1,7 +1,7 @@
 {
   "name": "@suminhan/land-design",
   "private": false,
-  "version": "0.0.107",
+  "version": "0.0.108",
   "author": {
     "name": "suminhan"
   },
@@ -35,6 +35,7 @@
     "build:lib": "tsc -p tsconfig.lib.json && vite build --config vite.config.lib.ts",
     "lib": "bash updateVersion.sh --auto && npm run build:lib && pnpm publish --no-git-checks",
     "publish": "bash scripts/publish.sh",
+    "publish:quick": "bash scripts/publish.sh -q",
     "deploy": "gh-pages -d dist",
     "test": "vitest",
     "new": "node scripts/create-component.js"
