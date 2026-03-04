@@ -5,6 +5,8 @@ import ComponentContentLayout from '../../example/components/ComponentContentLay
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import Link from '../Link';
+import Icon from '../Icon';
+import PopOver from '../PopOver';
 
 export default function TabsExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
@@ -31,7 +33,7 @@ export default function TabsExample() {
     },
     { name: "activeClassName", type: "string", desc: "选中项类名" },
     {
-      name: "switchDisabled",
+      name: "disabled",
       type: "boolean",
       desc: "是否禁用切换",
       default: "false",
@@ -43,15 +45,9 @@ export default function TabsExample() {
       name: "TabsItemType",
       data: [
         { name: "key", type: "string", desc: "唯一标识" },
-        { name: "label", type: "string | Element", desc: "选项值" },
-        { name: "tip", type: "Element", desc: "选项提示内容" },
-        { name: "iconTip", type: "Element", desc: "选项图标类型提示" },
-        {
-          name: "showIcon",
-          type: "boolean",
-          desc: "是否显示图标",
-          default: "false",
-        },
+        { name: "label", type: "ReactNode | ((item, isSelected) => ReactNode)", desc: "选项内容，支持字符串、节点或渲染函数" },
+        { name: "tip", type: "string", desc: "选项提示内容" },
+        { name: "disabled", type: "boolean", desc: "是否禁用", default: "false" },
       ],
     },
   ];
@@ -62,15 +58,47 @@ export default function TabsExample() {
     { key: "3", label: "模块3" },
   ];
 
-  const tabsDataWithTips = [
-    { key: "1", label: "模块1", tip: "模块 1 的提示" },
+  // 自定义节点示例
+  const tabsDataWithCustomLabel = [
+    { key: "1", label: "模块1" },
     {
       key: "2",
-      label: "模块2",
-      showIcon: true,
-      iconTip: "模块 2 的图标提示",
+      label: (
+        <span className="hover-pop" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          模块2
+          <PopOver content="这是模块2的提示" theme="dark" ><Icon name="info-stroke" size={14} /></PopOver>
+        </span>
+      ),
     },
     { key: "3", label: "模块3" },
+  ];
+
+  // 渲染函数示例
+  const tabsDataWithRenderLabel = [
+    {
+      key: "1",
+      label: (item: any, isSelected: boolean) => (
+       <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+          模块1 {isSelected && <Icon name="check-fill" size={14} />}
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (item: any, isSelected: boolean) => (
+        <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+          模块2 {isSelected && <Icon name="check-fill" size={14} />}
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: (item: any, isSelected: boolean) => (
+       <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+          模块3 {isSelected && <Icon name="check-fill" size={14} />}
+        </div>
+      ),
+    },
   ];
 
   const tabsDataWithDisabled = [
@@ -83,7 +111,7 @@ export default function TabsExample() {
     <ComponentContentLayout
       zh='标签页'
       en='Tabs'
-      desc='LandDesign 的标签页组件，支持模块切换功能，提供提示信息和禁用状态。'
+      desc='LandDesign 的标签页组件，支持模块切换功能，label 支持自定义节点和渲染函数。'
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
@@ -107,16 +135,32 @@ export default function TabsExample() {
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 包含提示 */}
+          {/* 自定义节点 */}
           <ComponentSectionLayout
-            title='包含提示'
-            id='tabs-tip'
-            description='通过 tip 和 iconTip 属性可以为标签页添加提示信息。'
+            title='自定义节点'
+            id='tabs-custom-label'
+            description='label 支持传入自定义 React 节点，可以添加图标、提示等内容。'
           >
             <CodeOperationContainer>
               <Tabs
                 checked={value}
-                data={tabsDataWithTips}
+                data={tabsDataWithCustomLabel}
+                onChange={(val) => setValue(val)}
+                width="300px"
+              />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 渲染函数 */}
+          <ComponentSectionLayout
+            title='渲染函数'
+            id='tabs-render-label'
+            description='label 支持传入渲染函数，可以根据选中状态动态渲染内容。'
+          >
+            <CodeOperationContainer>
+              <Tabs
+                checked={value}
+                data={tabsDataWithRenderLabel}
                 onChange={(val) => setValue(val)}
                 width="300px"
               />
@@ -141,7 +185,7 @@ export default function TabsExample() {
                 data={tabsData}
                 onChange={(val) => setValue(val)}
                 width="300px"
-                switchDisabled
+                disabled
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -181,35 +225,6 @@ export default function TabsExample() {
                 data={tabsData}
                 onChange={(val) => setValue(val)}
                 width="400px"
-              />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
-          {/* 不同样式 */}
-          <ComponentSectionLayout
-            title='不同样式'
-            id='tabs-styles'
-            description='Tabs 支持不同的样式变体。'
-          >
-            <CodeOperationContainer>
-              <Tabs
-                checked={value}
-                data={tabsData}
-                onChange={(val) => setValue(val)}
-                width="300px"
-              />
-              <Tabs
-                checked={value}
-                data={tabsDataWithTips}
-                onChange={(val) => setValue(val)}
-                width="300px"
-              />
-              <Tabs
-                checked={value}
-                data={tabsData}
-                onChange={(val) => setValue(val)}
-                width="300px"
-                useDivider
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>

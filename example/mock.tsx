@@ -766,11 +766,9 @@ export const INPUT_COMPONENTS_DATA = [
     desc: "模块切换用于接收用户选择的信息。",
     anchors: [
       { key: "tabs-normal", title: "基础用法" },
-      { key: "tabs-tip", title: "包含提示" },
       { key: "tabs-disabled", title: "禁用状态" },
       { key: "tabs-divider", title: "使用分割线" },
       { key: "tabs-width", title: "不同宽度" },
-      { key: "tabs-styles", title: "不同样式" },
     ],
     example: <TabsExample />,
     demo: (
@@ -880,7 +878,7 @@ export const INPUT_COMPONENTS_DATA = [
       { key: "color-picker-custom", title: "自定义样式" },
     ],
     example: <ColorPickerExample />,
-    demo: <ColorPicker color="#ff6b6b" />,
+    demo: <ColorPicker value="#ff6b6b" />,
   },
   {
     id: "datePicker",
@@ -907,7 +905,7 @@ export const INPUT_COMPONENTS_DATA = [
       { key: "basic-usage", title: "基础用法" },
     ],
     example: <TextareaExample />,
-    demo: <Textarea>示例内容</Textarea>,
+    demo: <Textarea placeholder="请输入内容"></Textarea>,
   },,
 ];
 
@@ -926,7 +924,7 @@ export const DISPLAY_COMPONENTS_DATA = [
     ],
     example: <BadgeExample />,
     demo: (
-      <Badge count={100} exceedCount={99}>
+      <Badge count={100}>
         <div
           className="radius-8"
           style={{
@@ -970,7 +968,7 @@ export const DISPLAY_COMPONENTS_DATA = [
     example: <CollapseExample />,
     demo: (
       <Collapse
-        open
+      defaultExpanded
         title="折叠标题"
         content="这部分是每个折叠面板折叠或展开的内容这部分是每个折叠面板折叠或展开的内容"
         style={{ width: '70%' }}
@@ -1012,7 +1010,7 @@ export const DISPLAY_COMPONENTS_DATA = [
       <Image
         style={{ width: "100%" }}
         ratio={1}
-        url="https://picsum.photos/200/200?random=1"
+        src="https://picsum.photos/200/200?random=1"
       />
     ),
   },
@@ -1033,7 +1031,7 @@ export const DISPLAY_COMPONENTS_DATA = [
       <Video
         src="https://picsum.videos/200/300?random=1"
         videoClassName="rounded-[8px]"
-        showControls={false}
+        controls={false}
         style={{ width: '70%' }}
       />
     ),
@@ -1052,7 +1050,7 @@ export const DISPLAY_COMPONENTS_DATA = [
       { key: "custom-style", title: "自定义样式" },
     ],
     example: <AudioExample />,
-    demo: <Audio audioUrl="https://suminhan.cn/land-design/dapxiang.mp3" />,
+    demo: <Audio src="https://suminhan.cn/land-design/dapxiang.mp3" />,
   },
   {
     id: "popOver",

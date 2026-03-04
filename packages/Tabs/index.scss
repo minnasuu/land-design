@@ -129,4 +129,11 @@ $tabs-transition: var(--land-tabs-transition, all var(--transition-s) linear);
       opacity: 0;
     }
   }
+  &--disabled{
+    cursor: not-allowed;
+    .land-tabs__item{
+      color: $tabs-item-disabled-color;
+      pointer-events: none;
+    }
+  }
 }

@@ -130,8 +130,8 @@ export default function IconExample() {
             onChange={(val) => setStroke(val)}
           />
           <ColorPicker
-            color={color}
-            onChange={(currentColor) => setColor(currentColor)}
+            value={color}
+            onChange={(currentColor) => setColor(currentColor?.color)}
           />
         </Flex>
         <Flex gap={24} column className="w-full">

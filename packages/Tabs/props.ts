@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { CommonProps } from "../types";
 
 /**
@@ -17,10 +17,10 @@ export type TabsItemType = {
   key: string;
 
   /** 
-   * 标签页显示文本
+   * 标签页显示内容
    * 可以是字符串或React节点
    */
-  label: string;
+  label: ReactNode | ((item: TabsItemType, isSelected: boolean) => ReactNode);
 
   /** 
    * 是否禁用
@@ -33,18 +33,6 @@ export type TabsItemType = {
    * 可以传入字符串或React节点作为提示
    */
   tip?: string;
-
-  /** 
-   * 图标提示内容
-   * 可以传入字符串或React节点作为图标提示
-   */
-  iconTip?: string;
-
-  /** 
-   * 是否显示图标
-   * 设置为true时会显示图标
-   */
-  showIcon?: boolean;
 };
 
 // ==================== 属性接口定义 ====================
@@ -70,7 +58,7 @@ export interface TabsBaseProps extends CommonProps {
    * 是否禁用切换
    * 设置为true时标签页不可切换
    */
-  switchDisabled?: boolean;
+  disabled?: boolean;
 }
 
 /**

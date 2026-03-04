@@ -1,8 +1,6 @@
 import React, { Fragment, useMemo, useCallback } from "react";
 import './index.scss';
 import Divider from "../Divider";
-import PopOver from "../PopOver";
-import Icon from "../Icon";
 import { TabsProps, TabsItemType } from "./props";
 
 const prefixCls = 'land-tabs';
@@ -15,20 +13,24 @@ const Tabs: React.FC<TabsProps> = ({
   onChange,
   activeClassName = "",
   className = "",
-  switchDisabled = false,
+  disabled = false,
   style,
 }) => {
   // ─── 类名计算 ───
   const rootClassName = useMemo(() => {
-    return [prefixCls, className].filter(Boolean).join(' ');
-  }, [className]);
+    return [
+      prefixCls,
+      disabled && `${prefixCls}--disabled`,
+      className,
+    ].filter(Boolean).join(' ');
+  }, [disabled, className]);
 
   // ─── 事件处理 ───
   const handleItemClick = useCallback((item: TabsItemType, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (item.disabled || switchDisabled) return;
+    if (item.disabled || disabled) return;
     onChange?.(item.key, item);
-  }, [switchDisabled, onChange]);
+  }, [disabled, onChange]);
 
   // ─── 判断分割线是否隐藏 ───
   const isDividerHidden = useCallback((index: number, itemKey: string) => {
@@ -39,7 +41,7 @@ const Tabs: React.FC<TabsProps> = ({
   // ─── 获取 item 类名 ───
   const getItemClassName = useCallback((item: TabsItemType) => {
     const isSelected = checked === item.key;
-    const isDisabled = item.disabled || switchDisabled;
+    const isDisabled = item.disabled || disabled;
 
     return [
       `${prefixCls}__item`,
@@ -47,7 +49,16 @@ const Tabs: React.FC<TabsProps> = ({
       isSelected && activeClassName,
       !isSelected && isDisabled && `${prefixCls}__item--disabled`,
     ].filter(Boolean).join(' ');
-  }, [checked, switchDisabled, activeClassName]);
+  }, [checked, disabled, activeClassName]);
+
+  // ─── 渲染 label 内容 ───
+  const renderLabel = useCallback((item: TabsItemType) => {
+    const isSelected = checked === item.key;
+    if (typeof item.label === 'function') {
+      return item.label(item, isSelected);
+    }
+    return item.label;
+  }, [checked]);
 
   return (
     <div className={rootClassName} style={{ width, ...style }}>
@@ -65,13 +76,7 @@ const Tabs: React.FC<TabsProps> = ({
             className={getItemClassName(item)}
             onClick={(e) => handleItemClick(item, e)}
           >
-            <span className={`${prefixCls}__item-label`}>{item.label}</span>
-            {item.showIcon && (
-              <div className={`${prefixCls}__item-icon hover-pop`}>
-                <Icon name="info-stroke" size={16} />
-                <PopOver content={item.iconTip} theme="dark" />
-              </div>
-            )}
+            <span className={`${prefixCls}__item-label`}>{renderLabel(item)}</span>
           </div>
         </Fragment>
       ))}
