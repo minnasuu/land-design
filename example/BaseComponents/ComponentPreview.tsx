@@ -32,6 +32,7 @@ const ComponentPreview: React.FC<Props> = ({ onClick }) => {
           >
             {item.data?.map((items) => (
               <div
+              key={items.id}
                 className="flex flex-col gap-2 rounded-lg cursor-pointer transition-colors duration-200"
                 onClick={(e) => {
                   e.stopPropagation();

@@ -1621,17 +1621,17 @@ export const PRO_INPUT_COMPONENTS_DATA = [
     desc: "宽度高度自适应输入框",
     example: <AutoWidthHeightTextareaExample />,
   },
-  {
-    id: "mentionTextarea",
-    en: "MentionTextarea",
-    zh: "@输入框",
-    desc: "@唤起列表，一键输入提及信息",
-    anchors: [
-      { key: "basic-usage", title: "基础用法" },
-    ],
-    example: <MentionTextareaExample />,
-    demo: <MentionTextarea>示例内容</MentionTextarea>,
-  },,
+  // {
+  //   id: "mentionTextarea",
+  //   en: "MentionTextarea",
+  //   zh: "@输入框",
+  //   desc: "@唤起列表，一键输入提及信息",
+  //   anchors: [
+  //     { key: "basic-usage", title: "基础用法" },
+  //   ],
+  //   example: <MentionTextareaExample />,
+  //   demo: <MentionTextarea>示例内容</MentionTextarea>,
+  // },
 ];
 
 export const PRO_DISPLAY_COMPONENTS_DATA = [
