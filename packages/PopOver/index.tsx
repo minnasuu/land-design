@@ -419,11 +419,6 @@ const PopOver: React.FC<PopOverProps> = ({
     };
   }, [isBodyAttach, position, parentPositionStyle, isVisible, popoverStyle, isPositioned]);
 
-  // ─── 无内容时直接返回子元素 ───
-  if (!content) {
-    return <>{children}</>;
-  }
-
   // ─── 判断是否应该显示气泡 ───
   const shouldShowBubble = useMemo(() => {
     if (!isBodyAttach) return isVisible;
@@ -492,6 +487,12 @@ const PopOver: React.FC<PopOverProps> = ({
     delay: 0.15,
     ease: [0.65,0.05,0.36,1] as const, // Material Design 标准缓动曲线
   }), []);
+
+  // ─── 无内容时直接返回子元素 ───
+  if (!content) {
+    return <>{children}</>;
+  }
+
   // ─── 渲染气泡 ───
   const renderBubble = () => (
     <motion.div

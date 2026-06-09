@@ -1,0 +1,377 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+      - text: Land Design Seeds
+    - generic [ref=e11]:
+      - button "基础组件 基础组件" [ref=e13] [cursor=pointer]:
+        - paragraph [ref=e15]: 基础组件 基础组件
+      - button "进阶组件 进阶组件" [ref=e17] [cursor=pointer]:
+        - paragraph [ref=e19]: 进阶组件 进阶组件
+    - switch [ref=e21] [cursor=pointer]
+  - generic [ref=e25]:
+    - generic [ref=e26]:
+      - img [ref=e28] [cursor=pointer]
+      - generic [ref=e30]:
+        - button "组件概览 组件概览" [ref=e32] [cursor=pointer]:
+          - paragraph [ref=e34]: 组件概览 组件概览
+        - generic [ref=e37]:
+          - button "通用型 通用型" [ref=e38]:
+            - paragraph [ref=e40]: 通用型 通用型
+          - generic [ref=e43]:
+            - button "Icon Icon 图标" [ref=e45] [cursor=pointer]:
+              - generic [ref=e46]:
+                - paragraph [ref=e47]: Icon Icon
+                - generic [ref=e48]: 图标
+            - button "Button Button 按钮" [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]:
+                - paragraph [ref=e52]: Button Button
+                - generic [ref=e53]: 按钮
+            - button "Link Link 链接" [ref=e55] [cursor=pointer]:
+              - generic [ref=e56]:
+                - paragraph [ref=e57]: Link Link
+                - generic [ref=e58]: 链接
+            - button "Divider Divider 分割线" [ref=e60] [cursor=pointer]:
+              - generic [ref=e61]:
+                - paragraph [ref=e62]: Divider Divider
+                - generic [ref=e63]: 分割线
+        - generic [ref=e64]:
+          - button "导航型 导航型" [ref=e65]:
+            - paragraph [ref=e67]: 导航型 导航型
+          - generic [ref=e70]:
+            - button "affixContainer affixContainer 图钉" [ref=e72] [cursor=pointer]:
+              - generic [ref=e73]:
+                - paragraph [ref=e74]: affixContainer affixContainer
+                - generic [ref=e75]: 图钉
+            - button "anchor anchor 锚点" [ref=e77] [cursor=pointer]:
+              - generic [ref=e78]:
+                - paragraph [ref=e79]: anchor anchor
+                - generic [ref=e80]: 锚点
+            - button "Breadcrumb Breadcrumb 面包屑" [ref=e82] [cursor=pointer]:
+              - generic [ref=e83]:
+                - paragraph [ref=e84]: Breadcrumb Breadcrumb
+                - generic [ref=e85]: 面包屑
+            - button "Menu Menu 导航菜单" [ref=e87] [cursor=pointer]:
+              - generic [ref=e88]:
+                - paragraph [ref=e89]: Menu Menu
+                - generic [ref=e90]: 导航菜单
+            - button "Pagination Pagination 分页" [ref=e92] [cursor=pointer]:
+              - generic [ref=e93]:
+                - paragraph [ref=e94]: Pagination Pagination
+                - generic [ref=e95]: 分页
+            - button "Steps Steps 步骤条" [ref=e97] [cursor=pointer]:
+              - generic [ref=e98]:
+                - paragraph [ref=e99]: Steps Steps
+                - generic [ref=e100]: 步骤条
+            - button "Dropdown Dropdown 下拉菜单" [ref=e102] [cursor=pointer]:
+              - generic [ref=e103]:
+                - paragraph [ref=e104]: Dropdown Dropdown
+                - generic [ref=e105]: 下拉菜单
+            - button "BackToTop BackToTop 返回顶部" [ref=e107] [cursor=pointer]:
+              - generic [ref=e108]:
+                - paragraph [ref=e109]: BackToTop BackToTop
+                - generic [ref=e110]: 返回顶部
+        - generic [ref=e111]:
+          - button "数据输入型 数据输入型" [ref=e112]:
+            - paragraph [ref=e114]: 数据输入型 数据输入型
+          - generic [ref=e117]:
+            - button "Input Input 输入框" [ref=e119] [cursor=pointer]:
+              - generic [ref=e120]:
+                - paragraph [ref=e121]: Input Input
+                - generic [ref=e122]: 输入框
+            - button "TagInput TagInput 标签输入框" [ref=e124] [cursor=pointer]:
+              - generic [ref=e125]:
+                - paragraph [ref=e126]: TagInput TagInput
+                - generic [ref=e127]: 标签输入框
+            - button "Select Select 选择器" [ref=e129] [cursor=pointer]:
+              - generic [ref=e130]:
+                - paragraph [ref=e131]: Select Select
+                - generic [ref=e132]: 选择器
+            - button "SelectTree SelectTree 层级选择器" [ref=e134] [cursor=pointer]:
+              - generic [ref=e135]:
+                - paragraph [ref=e136]: SelectTree SelectTree
+                - generic [ref=e137]: 层级选择器
+            - button "Radio Radio 单选列表" [ref=e139] [cursor=pointer]:
+              - generic [ref=e140]:
+                - paragraph [ref=e141]: Radio Radio
+                - generic [ref=e142]: 单选列表
+            - button "Checkbox Checkbox 多选框" [ref=e144] [cursor=pointer]:
+              - generic [ref=e145]:
+                - paragraph [ref=e146]: Checkbox Checkbox
+                - generic [ref=e147]: 多选框
+            - button "Tabs Tabs 模块切换" [ref=e149] [cursor=pointer]:
+              - generic [ref=e150]:
+                - paragraph [ref=e151]: Tabs Tabs
+                - generic [ref=e152]: 模块切换
+            - button "NumberInput NumberInput 数字输入框" [ref=e154] [cursor=pointer]:
+              - generic [ref=e155]:
+                - paragraph [ref=e156]: NumberInput NumberInput
+                - generic [ref=e157]: 数字输入框
+            - button "Switch Switch 开关" [ref=e159] [cursor=pointer]:
+              - generic [ref=e160]:
+                - paragraph [ref=e161]: Switch Switch
+                - generic [ref=e162]: 开关
+            - button "Slider Slider 滑动输入条" [ref=e164] [cursor=pointer]:
+              - generic [ref=e165]:
+                - paragraph [ref=e166]: Slider Slider
+                - generic [ref=e167]: 滑动输入条
+            - button "Rate Rate 评分" [ref=e169] [cursor=pointer]:
+              - generic [ref=e170]:
+                - paragraph [ref=e171]: Rate Rate
+                - generic [ref=e172]: 评分
+            - button "Upload Upload 上传框" [ref=e174] [cursor=pointer]:
+              - generic [ref=e175]:
+                - paragraph [ref=e176]: Upload Upload
+                - generic [ref=e177]: 上传框
+            - button "ColorPicker ColorPicker 颜色选择器" [ref=e179] [cursor=pointer]:
+              - generic [ref=e180]:
+                - paragraph [ref=e181]: ColorPicker ColorPicker
+                - generic [ref=e182]: 颜色选择器
+            - button "DatePicker DatePicker 日期选择器" [ref=e184] [cursor=pointer]:
+              - generic [ref=e185]:
+                - paragraph [ref=e186]: DatePicker DatePicker
+                - generic [ref=e187]: 日期选择器
+            - button "Textarea Textarea 多行文本输入框" [ref=e189] [cursor=pointer]:
+              - generic [ref=e190]:
+                - paragraph [ref=e191]: Textarea Textarea
+                - generic [ref=e192]: 多行文本输入框
+        - generic [ref=e193]:
+          - button "数据展示型 数据展示型" [ref=e194]:
+            - paragraph [ref=e196]: 数据展示型 数据展示型
+          - generic [ref=e199]:
+            - button "Badge Badge 徽标数" [ref=e201] [cursor=pointer]:
+              - generic [ref=e202]:
+                - paragraph [ref=e203]: Badge Badge
+                - generic [ref=e204]: 徽标数
+            - button "Calendar Calendar 日历" [ref=e206] [cursor=pointer]:
+              - generic [ref=e207]:
+                - paragraph [ref=e208]: Calendar Calendar
+                - generic [ref=e209]: 日历
+            - button "Collapse Collapse 折叠面板" [ref=e211] [cursor=pointer]:
+              - generic [ref=e212]:
+                - paragraph [ref=e213]: Collapse Collapse
+                - generic [ref=e214]: 折叠面板
+            - button "State State 状态" [ref=e216] [cursor=pointer]:
+              - generic [ref=e217]:
+                - paragraph [ref=e218]: State State
+                - generic [ref=e219]: 状态
+            - button "Image Image 图片" [ref=e221] [cursor=pointer]:
+              - generic [ref=e222]:
+                - paragraph [ref=e223]: Image Image
+                - generic [ref=e224]: 图片
+            - button "Video Video 视频" [ref=e226] [cursor=pointer]:
+              - generic [ref=e227]:
+                - paragraph [ref=e228]: Video Video
+                - generic [ref=e229]: 视频
+            - button "Audio Audio 音频" [ref=e231] [cursor=pointer]:
+              - generic [ref=e232]:
+                - paragraph [ref=e233]: Audio Audio
+                - generic [ref=e234]: 音频
+            - button "PopOver PopOver 气泡" [ref=e236] [cursor=pointer]:
+              - generic [ref=e237]:
+                - paragraph [ref=e238]: PopOver PopOver
+                - generic [ref=e239]: 气泡
+            - button "Statistic Statistic 数值统计" [ref=e241] [cursor=pointer]:
+              - generic [ref=e242]:
+                - paragraph [ref=e243]: Statistic Statistic
+                - generic [ref=e244]: 数值统计
+            - button "Table Table 表格" [ref=e246] [cursor=pointer]:
+              - generic [ref=e247]:
+                - paragraph [ref=e248]: Table Table
+                - generic [ref=e249]: 表格
+            - button "Tag Tag 标签" [ref=e251] [cursor=pointer]:
+              - generic [ref=e252]:
+                - paragraph [ref=e253]: Tag Tag
+                - generic [ref=e254]: 标签
+            - button "Timeline Timeline 时间轴" [ref=e256] [cursor=pointer]:
+              - generic [ref=e257]:
+                - paragraph [ref=e258]: Timeline Timeline
+                - generic [ref=e259]: 时间轴
+        - generic [ref=e260]:
+          - button "反馈型 反馈型" [ref=e261]:
+            - paragraph [ref=e263]: 反馈型 反馈型
+          - generic [ref=e266]:
+            - button "Alert Alert 警告提示" [ref=e268] [cursor=pointer]:
+              - generic [ref=e269]:
+                - paragraph [ref=e270]: Alert Alert
+                - generic [ref=e271]: 警告提示
+            - button "Message Message 全局提示" [ref=e273] [cursor=pointer]:
+              - generic [ref=e274]:
+                - paragraph [ref=e275]: Message Message
+                - generic [ref=e276]: 全局提示
+            - button "Dialog Dialog 弹窗" [ref=e278] [cursor=pointer]:
+              - generic [ref=e279]:
+                - paragraph [ref=e280]: Dialog Dialog
+                - generic [ref=e281]: 弹窗
+            - button "Drawer Drawer 抽屉" [ref=e283] [cursor=pointer]:
+              - generic [ref=e284]:
+                - paragraph [ref=e285]: Drawer Drawer
+                - generic [ref=e286]: 抽屉
+            - button "PopConfirm PopConfirm 气泡提示框" [ref=e288] [cursor=pointer]:
+              - generic [ref=e289]:
+                - paragraph [ref=e290]: PopConfirm PopConfirm
+                - generic [ref=e291]: 气泡提示框
+            - button "Progress Progress 进度条" [ref=e293] [cursor=pointer]:
+              - generic [ref=e294]:
+                - paragraph [ref=e295]: Progress Progress
+                - generic [ref=e296]: 进度条
+            - button "Skeleton Skeleton 骨架屏" [ref=e298] [cursor=pointer]:
+              - generic [ref=e299]:
+                - paragraph [ref=e300]: Skeleton Skeleton
+                - generic [ref=e301]: 骨架屏
+            - button "Loading Loading 加载" [ref=e303] [cursor=pointer]:
+              - generic [ref=e304]:
+                - paragraph [ref=e305]: Loading Loading
+                - generic [ref=e306]: 加载
+            - button "Watermark Watermark 水印" [ref=e308] [cursor=pointer]:
+              - generic [ref=e309]:
+                - paragraph [ref=e310]: Watermark Watermark
+                - generic [ref=e311]: 水印
+        - generic [ref=e312]:
+          - button "文字型 文字型" [ref=e313]:
+            - paragraph [ref=e315]: 文字型 文字型
+          - generic [ref=e318]:
+            - button "Title Title 标题" [ref=e320] [cursor=pointer]:
+              - generic [ref=e321]:
+                - paragraph [ref=e322]: Title Title
+                - generic [ref=e323]: 标题
+            - button "Ellipsis Ellipsis 缩略显示" [ref=e325] [cursor=pointer]:
+              - generic [ref=e326]:
+                - paragraph [ref=e327]: Ellipsis Ellipsis
+                - generic [ref=e328]: 缩略显示
+        - generic [ref=e329]:
+          - button "其他 其他" [ref=e330]:
+            - paragraph [ref=e332]: 其他 其他
+          - button "AutoContainer AutoContainer 媒体自适应容器" [ref=e337] [cursor=pointer]:
+            - generic [ref=e338]:
+              - paragraph [ref=e339]: AutoContainer AutoContainer
+              - generic [ref=e340]: 媒体自适应容器
+    - generic [ref=e342]:
+      - navigation "Anchor navigation" [ref=e344]:
+        - list [ref=e345]:
+          - listitem [ref=e346]:
+            - generic [ref=e347] [cursor=pointer]: 常规面包屑
+          - listitem [ref=e348]:
+            - generic [ref=e349] [cursor=pointer]: 滚动蒙层
+          - listitem [ref=e350]:
+            - generic [ref=e351] [cursor=pointer]: 设置省略项的最大宽度
+          - listitem [ref=e352]:
+            - generic [ref=e353] [cursor=pointer]: hover 显示全部内容
+          - listitem [ref=e354]:
+            - generic [ref=e355] [cursor=pointer]: 设置选项提示内容
+      - generic [ref=e359]:
+        - generic [ref=e361]:
+          - generic [ref=e363]:
+            - heading "面包屑 BreadCrumb" [level=1] [ref=e365]
+            - generic [ref=e366]: LandDesign 的面包屑组件，用于显示页面层级导航。支持自定义样式、遮罩效果、悬停预览等功能。
+          - generic [ref=e367]:
+            - generic [ref=e369] [cursor=pointer]: 示例
+            - generic [ref=e371] [cursor=pointer]: API
+        - generic [ref=e374]:
+          - generic [ref=e375]:
+            - generic [ref=e376]:
+              - heading "常规面包屑" [level=3] [ref=e378]
+              - paragraph [ref=e379]: BreadCrumb 组件的基础用法，显示页面层级导航。
+            - generic [ref=e380]:
+              - generic [ref=e383]:
+                - generic [ref=e385] [cursor=pointer]: 页面页面页面页面1-1-2
+                - generic [ref=e386]:
+                  - generic [ref=e387] [cursor=pointer]: 页面页面页面页面1-1
+                  - img [ref=e388]
+                - generic [ref=e390]:
+                  - generic [ref=e391] [cursor=pointer]: 页面1
+                  - img [ref=e392]
+              - group [ref=e394]:
+                - generic "显示组件代码" [ref=e395]:
+                  - button [ref=e396] [cursor=pointer]:
+                    - img [ref=e398]
+                  - generic [ref=e401]:
+                    - button [ref=e402] [cursor=pointer]:
+                      - img [ref=e404]
+                    - generic: 显示组件代码
+          - generic [ref=e408]:
+            - generic [ref=e409]:
+              - heading "滚动蒙层" [level=3] [ref=e411]
+              - paragraph [ref=e412]: 通过 showMask 属性可以显示遮罩效果，提升视觉层次。
+            - generic [ref=e413]:
+              - generic [ref=e416]:
+                - generic [ref=e418] [cursor=pointer]: 页面页面页面页面1-1-2
+                - generic [ref=e419]:
+                  - generic [ref=e420] [cursor=pointer]: 页面页面页面页面1-1
+                  - img [ref=e421]
+                - generic [ref=e423]:
+                  - generic [ref=e424] [cursor=pointer]: 页面1
+                  - img [ref=e425]
+              - group [ref=e427]:
+                - generic "显示组件代码" [ref=e428]:
+                  - button [ref=e429] [cursor=pointer]:
+                    - img [ref=e431]
+                  - generic [ref=e434]:
+                    - button [ref=e435] [cursor=pointer]:
+                      - img [ref=e437]
+                    - generic: 显示组件代码
+          - generic [ref=e441]:
+            - generic [ref=e442]:
+              - heading "设置省略项的最大宽度" [level=3] [ref=e444]
+              - paragraph [ref=e445]: 通过 maxWidth 属性可以设置面包屑项的最大宽度。
+            - generic [ref=e446]:
+              - generic [ref=e449]:
+                - generic [ref=e451] [cursor=pointer]: 页面页面页面页面1-1-2
+                - generic [ref=e452]:
+                  - generic [ref=e453] [cursor=pointer]: 页面页面页面页面1-1
+                  - img [ref=e454]
+                - generic [ref=e456]:
+                  - generic [ref=e457] [cursor=pointer]: 页面1
+                  - img [ref=e458]
+              - group [ref=e460]:
+                - generic "显示组件代码" [ref=e461]:
+                  - button [ref=e462] [cursor=pointer]:
+                    - img [ref=e464]
+                  - generic [ref=e467]:
+                    - button [ref=e468] [cursor=pointer]:
+                      - img [ref=e470]
+                    - generic: 显示组件代码
+          - generic [ref=e474]:
+            - generic [ref=e475]:
+              - heading "hover 显示全部内容" [level=3] [ref=e477]
+              - paragraph [ref=e478]: 当内容过长时，可以通过 hoverPreview 属性在悬停时显示完整内容。
+            - generic [ref=e479]:
+              - generic [ref=e482]:
+                - generic [ref=e484] [cursor=pointer]: 页面页面页面页面1-1-2
+                - generic [ref=e485]:
+                  - generic [ref=e486] [cursor=pointer]: 页面页面页面页面1-1
+                  - img [ref=e487]
+                - generic [ref=e489]:
+                  - generic [ref=e490] [cursor=pointer]: 页面1
+                  - img [ref=e491]
+              - group [ref=e493]:
+                - generic "显示组件代码" [ref=e494]:
+                  - button [ref=e495] [cursor=pointer]:
+                    - img [ref=e497]
+                  - generic [ref=e500]:
+                    - button [ref=e501] [cursor=pointer]:
+                      - img [ref=e503]
+                    - generic: 显示组件代码
+          - generic [ref=e507]:
+            - generic [ref=e508]:
+              - heading "设置选项提示内容" [level=3] [ref=e510]
+              - paragraph [ref=e511]: 可以通过 tip 属性为面包屑项添加提示内容。
+            - generic [ref=e512]:
+              - generic [ref=e515]:
+                - generic [ref=e518] [cursor=pointer]: 页面页面页面页面1-1-2
+                - generic [ref=e520]:
+                  - generic [ref=e521] [cursor=pointer]: 页面页面页面页面1-1
+                  - img [ref=e522]
+                - generic [ref=e525]:
+                  - generic [ref=e526] [cursor=pointer]: 页面1
+                  - img [ref=e527]
+              - group [ref=e529]:
+                - generic "显示组件代码" [ref=e530]:
+                  - button [ref=e531] [cursor=pointer]:
+                    - img [ref=e533]
+                  - generic [ref=e536]:
+                    - button [ref=e537] [cursor=pointer]:
+                      - img [ref=e539]
+                    - generic: 显示组件代码
+    - generic "Back to top":
+      - img

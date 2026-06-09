@@ -42,6 +42,7 @@ export default function InputExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
   const [value, setValue] = useState('');
   const [value2, setValue2] = useState('1, 200');
+  const [value3, setValue3] = useState('');
 
   return (
     <ComponentContentLayout
@@ -169,7 +170,7 @@ export default function InputExample() {
           {/* 宽度自适应 */}
           <ComponentSectionLayout title='宽度自适应' id='input-auto-width' description='autoWidth 时输入框宽度自适应内容。'>
             <CodeOperationContainer>
-              <Input autoWidth value={value} onChange={(val) => setValue(val)} placeholder="宽度自适应" />
+              <Input autoWidth value={value3} onChange={(val) => setValue3(val)} placeholder="宽度自适应" />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 

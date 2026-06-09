@@ -229,9 +229,6 @@
   // ─── 副标题 ───
   &__sub-title {
     --land-menu-sub-title-font-size: var(--font-content-s);
-
-    flex: 1;
-    width: 1%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

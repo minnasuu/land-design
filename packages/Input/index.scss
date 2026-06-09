@@ -357,25 +357,6 @@ $theme-bg-hover-colors: (
     width: 100%;
   }
 
-  &--auto-width {
-    width: auto;
-    display: inline-flex;
-
-    .land-input__body {
-      flex: 0 0 auto;
-      position: relative;
-    }
-
-    input {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      flex: none;
-    }
-  }
-
   // ─────────────────────────────────────────────────────────────────────────
   // SUBSECTION: 文字对齐 (Text Alignment)
   // ─────────────────────────────────────────────────────────────────────────
@@ -448,6 +429,27 @@ $theme-bg-hover-colors: (
 
   input {
     @include reset-native-input;
+  }
+
+  // ─── 自动宽度布局（需在 reset-native-input 之后，确保覆盖） ───
+
+  &--auto-width {
+    width: auto;
+    display: inline-flex;
+
+    .land-input__body {
+      flex: 0 0 auto;
+      position: relative;
+    }
+
+    input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      flex: none;
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────────────

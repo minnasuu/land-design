@@ -1655,7 +1655,7 @@ export const IconCode: React.FC<IconProps> = ({
   className={`code ${className}`}
   onClick={onClick}
 >
-    <path d="M16 13L4 25.4322L16 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" stroke-linejoin="round" />
-    <path d="M32 13L44 25.4322L32 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" stroke-linejoin="round" />
-    <path d="M28 13L21 37" stroke={color} stroke-width={strokeWidth} strokeLinecap="round" />
+    <path d="M16 13L4 25.4322L16 37" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M32 13L44 25.4322L32 37" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M28 13L21 37" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
   </svg>
