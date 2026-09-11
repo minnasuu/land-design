@@ -40,7 +40,7 @@ export default function MessageExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -48,7 +48,7 @@ export default function MessageExample() {
             description='Message 组件的基础用法，展示不同类型的全局提示。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Message type="info" text="全局提示（info）" />
                 <Message type="success" text="全局提示（success）" />
                 <Message type="fail" text="全局提示（fail）" />
@@ -76,8 +76,8 @@ export default function MessageExample() {
             description='推荐使用函数式调用方式，更加简洁和灵活。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
-                <div className="flex gap-12">
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-3">
                   <Button onClick={() => message.info("全局提示（info）")}>全局提示（info）</Button>
                   <Button onClick={() => message.success("全局提示（success）")}>全局提示（success）</Button>
                   <Button onClick={() => message.fail("全局提示（fail）")}>全局提示（fail）</Button>
@@ -100,7 +100,7 @@ export default function MessageExample() {
             description='可以自定义消息的显示时长。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-12">
+              <div className="flex gap-3">
                 <Button onClick={() => message.success("短时间提示", { duration: 1000 })}>
                   1秒提示
                 </Button>
@@ -121,7 +121,7 @@ export default function MessageExample() {
             description='消息内容支持复杂的文本和格式化。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-12">
+              <div className="flex gap-3">
                 <Button onClick={() => message.success("✅ 操作成功！数据已保存到云端。")}>
                   带图标的消息
                 </Button>
@@ -142,7 +142,7 @@ export default function MessageExample() {
             description='可以连续调用多个消息，它们会依次显示。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-12">
+              <div className="flex gap-3">
                 <Button onClick={() => {
                   message.info("开始处理...");
                   setTimeout(() => message.success("处理完成！"), 1000);
@@ -167,7 +167,7 @@ export default function MessageExample() {
             description='可以通过 style 属性自定义消息的样式。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-12">
+              <div className="flex gap-3">
                 <Button onClick={() => message.info("自定义样式的消息", { 
                   style: {
                     backgroundColor: '#1890ff',
@@ -194,9 +194,9 @@ export default function MessageExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={messageProps} />
-          <h3 className="mt-24 mb-12">Message Plugin API</h3>
+          <h3 className="mt-6 mb-3">Message Plugin API</h3>
           <ComponentPropsTable props={messagePluginProps} />
         </div>
       )}

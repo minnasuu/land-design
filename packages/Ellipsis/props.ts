@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import { CommonProps } from "../types";
-import { PopOverProps } from "../PopOver/props";
+import { TooltipProps } from "../Tooltip/props";
 
 /**
  * Ellipsis组件属性类型定义
@@ -66,15 +66,15 @@ export interface EllipsisStyleProps {
 }
 
 /**
- * Ellipsis Popover属性
+ * Ellipsis Tooltip属性
  * 用于配置悬浮提示的相关属性
  */
-export interface EllipsisPopoverProps {
+export interface EllipsisTooltipProps {
   /** 
-   * PopOver组件属性
+   * Tooltip组件属性
    * 用于自定义hover提示的显示方式
    */
-  popoverProps?: PopOverProps;
+  tooltipProps?: TooltipProps;
 
   /** 
    * 设置maxWidth的回调函数
@@ -91,7 +91,7 @@ export interface EllipsisPopoverProps {
 export type EllipsisProps = EllipsisBaseProps &
   EllipsisDisplayProps &
   EllipsisStyleProps &
-  EllipsisPopoverProps;
+  EllipsisTooltipProps;
 
 // ==================== useEllipsis 钩子类型（重导出）====================
 
@@ -117,7 +117,7 @@ export type { UseEllipsisOptions, UseEllipsisResult } from './useEllipsis';
  *    - 使用防抖机制优化性能，避免频繁计算
  * 11. 自动适应各种布局变化场景，确保省略号状态始终正确
  * 12. maxWidth扩展性：
- *    - 默认使用contentWidth作为PopOver的最大宽度
+ *    - 默认使用contentWidth作为Tooltip的最大宽度
  *    - 通过setMaxWidth回调函数透传contentWidth到外部
  *    - 支持自定义maxWidth处理逻辑，如限制最大宽度、按比例缩放等
  * 

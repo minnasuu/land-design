@@ -1,5 +1,4 @@
 import { CSSProperties, MouseEvent, ReactNode, ButtonHTMLAttributes } from 'react';
-import { PopOverProps } from '../PopOver/props';
 
 // ==================== 基础类型定义 ====================
 
@@ -67,10 +66,6 @@ export interface ButtonProps {
   hoverAnimation?: boolean;
   /** 是否启用点击缩放动画 */
   activeAnimation?: boolean;
-  /** 气泡提示内容 */
-  tip?: ReactNode | string;
-  /** 气泡提示配置，透传 PopOver 属性 */
-  popoverProps?: PopOverProps;
   /** 点击事件 */
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   /** 子元素 */

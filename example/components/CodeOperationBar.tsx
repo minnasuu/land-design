@@ -15,26 +15,28 @@ const codeTransformData = [
   },
 ]
 
-export default function CodeOperationBar({label='组件源码', reactTsxCodeStr, reactScssCodeStr }: {label?:string; reactTsxCodeStr: string, reactScssCodeStr?: string }) {
+export default function CodeOperationBar({ label = '组件源码', reactTsxCodeStr, reactScssCodeStr }: { label?: string; reactTsxCodeStr: string, reactScssCodeStr?: string }) {
   const [showCodeTransform, setShowCodeTransform] = useState(false);
   const [active, setActive] = useState<string>('react');
   return (
-    <details className="flex flex-col justify-between border-box" open={showCodeTransform}>
-      <summary
-        className="flex items-center gap-16"
-      >
+    <div className="flex flex-col justify-between border-box">
+      <div className="flex items-center gap-4">
         <div
-          className={`flex items-center gap-8 h-[40px] cursor-pointer border border-border-primary overflow-hidden ${showCodeTransform ? '' : 'hover:bg-bg-secondary'} transition-colors`}
+          className={`flex items-center gap-2 h-[40px] border border-border-primary overflow-hidden ${showCodeTransform ? '' : 'hover:bg-bg-secondary'} transition-colors`}
           style={{
             width: showCodeTransform ? '100%' : '124px',
             borderRadius: showCodeTransform ? '8px 8px 0px 0px' : '8px'
           }}
-          onClick={(e) => {
-            e.preventDefault();
-            setShowCodeTransform(!showCodeTransform);
-          }}
         >
-          <div className='flex items-center gap-4 flex-shrink-0 px-16 text-14'><Icon name="code" size={16} />{label}</div>
+          <div className='flex items-center gap-1 flex-shrink-0 px-4 text-14'>
+            <span
+              className='cursor-pointer flex items-center'
+              onClick={() => setShowCodeTransform(!showCodeTransform)}
+            >
+              <Icon name="code" size={16} />
+            </span>
+            {label}
+          </div>
           <Flex className='h-full' justify='end' gap={0} style={{ opacity: showCodeTransform ? 1 : 0, pointerEvents: showCodeTransform ? 'auto' : 'none' }}>
             {codeTransformData.map((item) => (
               <Button
@@ -57,7 +59,7 @@ export default function CodeOperationBar({label='组件源码', reactTsxCodeStr,
             ))}
           </Flex>
         </div>
-      </summary>
+      </div>
       <div className='translate-y-[-1px] border border-border-primary rounded-b-[8px] overflow-hidden'>
         {showCodeTransform && <div>
           <CodeTransform
@@ -67,6 +69,6 @@ export default function CodeOperationBar({label='组件源码', reactTsxCodeStr,
           />
         </div>}
       </div>
-    </details>
+    </div>
   )
 }

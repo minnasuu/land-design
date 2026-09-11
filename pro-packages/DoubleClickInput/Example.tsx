@@ -35,7 +35,7 @@ export default function DoubleClickInputExample() {
       />
 
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 单行双击输入 */}
           <ComponentSectionLayout
             title='单行双击输入'
@@ -73,7 +73,7 @@ export default function DoubleClickInputExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={doubleClickInputProps} />
         </div>
       )}

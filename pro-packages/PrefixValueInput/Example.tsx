@@ -34,7 +34,7 @@ export default function PrefixValueInputExample() {
       />
 
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           <ComponentSectionLayout
             title='基础用法'
             id='basic-usage'
@@ -66,7 +66,7 @@ export default function PrefixValueInputExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={prefixValueInputProps} />
         </div>
       )}

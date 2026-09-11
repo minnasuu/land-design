@@ -23,7 +23,7 @@ const linkProps = [
   { name: 'startIcon', type: 'boolean | ReactNode', desc: '起始图标，true 时自动识别内/外链' },
   { name: 'endIcon', type: 'boolean | ReactNode', desc: '末尾图标，true 时自动识别内/外链' },
   { name: 'tip', type: 'ReactNode | string', desc: '气泡提示内容' },
-  { name: 'popoverProps', type: 'PopOverProps', desc: '气泡提示配置，透传 PopOver 属性' },
+  { name: 'tooltipProps', type: 'TooltipProps', desc: '气泡提示配置，透传 Tooltip 属性' },
   { name: 'onClick', type: '(e: MouseEvent<HTMLAnchorElement>) => void', desc: '点击事件回调' },
   { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
   { name: 'className', type: 'string', desc: '自定义类名' },
@@ -43,7 +43,7 @@ export default function LinkExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -156,7 +156,7 @@ export default function LinkExample() {
             <CodeOperationContainer>
               <Flex gap={24} justify='center'>
                 <Link tip="链接提示">包含提示的链接</Link>
-                <Link tip="链接提示" popoverProps={{ theme: 'dark' }}>包含提示的链接</Link>
+                <Link tip="链接提示" tooltipProps={{ theme: 'dark' }}>包含提示的链接</Link>
               </Flex>
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -164,7 +164,7 @@ export default function LinkExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={linkProps} />
         </div>
       )}

@@ -75,7 +75,7 @@ export const CollapseMeta = {
     },
   ],
 
-  relatedComponents: ['Accordion', 'Menu', 'Tabs'],
+  relatedComponents: ['Accordion', 'Nav', 'Tabs'],
 
   notes: [
     '使用 expanded + onChange 实现受控模式',

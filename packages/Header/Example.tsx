@@ -27,7 +27,7 @@ const headerProps = [
   { name: "applications", type: "element", desc: "应用" },
   { name: "fixed", type: "boolean", desc: "是否固定", default: "false" },
   { name: "filter", type: "number", desc: "过滤器", default: "0" },
-  { name: "menuProps", type: "MenuProps", desc: "菜单属性" },
+  { name: "menuProps", type: "NavProps", desc: "导航属性" },
   { name: "rightComponent", type: "element", desc: "右侧组件" },
   { name: "mobileSize", type: "number", desc: "移动端断点", default: "768" },
   { name: "style", type: "CSSProperties", desc: "自定义样式" },
@@ -46,7 +46,7 @@ export default function HeaderExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 设置网站 Logo和名称 */}
           <ComponentSectionLayout
             title='设置网站 Logo和名称'
@@ -54,7 +54,7 @@ export default function HeaderExample() {
             description='Header 组件的基础用法，设置Logo和网站名称。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 bg-gray p-32">
+              <div className="flex justify-center gap-6 bg-gray p-8">
                 <Header logo={<>🌷🌷🌷</>} name='Web Site' />
               </div>
             </CodeOperationContainer>
@@ -67,7 +67,7 @@ export default function HeaderExample() {
             description='通过 menuProps 属性可以设置导航菜单。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 bg-gray p-32">
+              <div className="flex justify-center gap-6 bg-gray p-8">
                 <Header logo={<>🌷🌷🌷</>} name='Web Site' menuProps={{
                   items: [
                     {
@@ -96,7 +96,7 @@ export default function HeaderExample() {
             description='通过 rightComponent 属性可以设置右侧组件，如登录注册按钮。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 bg-gray p-32">
+              <div className="flex justify-center gap-6 bg-gray p-8">
                 <Header
                   logo={<>🌷🌷🌷</>}
                   name='Web Site'
@@ -117,7 +117,7 @@ export default function HeaderExample() {
                     ],
                     active: 'home',
                   }}
-                  rightComponent={<div className="flex gap-12">
+                  rightComponent={<div className="flex gap-3">
                     <Button text="登陆" variant="fill" />
                     <Button text="注册" variant="background" />
                   </div>}
@@ -134,7 +134,7 @@ export default function HeaderExample() {
             description='通过 applications 属性可以设置聚合应用列表。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 p-32" style={{ backgroundColor: 'var(--color-bg-3)' }}>
+              <div className="flex justify-center gap-6 p-8" style={{ backgroundColor: 'var(--color-bg-3)' }}>
                 <Header logo={<>🌷🌷🌷</>} name='Web Site' menuProps={{
                   items: [
                     {
@@ -161,7 +161,7 @@ export default function HeaderExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={headerProps} />
         </div>
       )}

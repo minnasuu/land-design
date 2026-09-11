@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect, useState } from "react";
 import './index.scss';
 import Divider from "../Divider";
-import Menu from "../Menu";
+import Nav from "../Nav";
 import Button from "../Button";
 import Icon from "../Icon";
 import { HeaderProps } from "./props";
@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({
           justifyContent: align,
         }}
       >
-        {menuProps && <Menu
+        {menuProps && <Nav
           border={false}
           {...menuProps}
           onChange={item => { menuProps.onChange?.(item); setShowMobileNav(false) }}

@@ -22,7 +22,7 @@ function UseEllipsisSingleDemo() {
       >
         这是一段使用 useEllipsis 钩子的长文本内容，用于演示单行省略检测功能。
       </div>
-      <div className="mt-8 flex items-center gap-8">
+      <div className="mt-2 flex items-center gap-2">
         <Tag color={isEllipsis ? 'warning' : 'success'}>
           {isEllipsis ? '已省略' : '未省略'}
         </Tag>
@@ -51,7 +51,7 @@ function UseEllipsisMultipleDemo() {
       >
         这是一段使用 useEllipsis 钩子的长文本内容，用于演示多行省略检测功能。当文本超出两行时，会被自动省略，并且钩子会返回 isEllipsis 为 true。
       </div>
-      <div className="mt-8 flex items-center gap-8">
+      <div className="mt-2 flex items-center gap-2">
         <Tag color={isEllipsis ? 'warning' : 'success'}>
           {isEllipsis ? '已省略' : '未省略'}
         </Tag>
@@ -69,7 +69,7 @@ function UseEllipsisResponsiveDemo() {
 
   return (
     <div
-      className="border border-border-primary p-16"
+      className="border border-border-primary p-4"
       style={{
         width: '300px',
         resize: 'horizontal',
@@ -89,13 +89,13 @@ function UseEllipsisResponsiveDemo() {
       >
         这是一段响应式文本内容，使用 useEllipsis 钩子检测省略状态。拖动容器右边框调整宽度，观察省略状态的变化。钩子会自动监听容器大小变化并更新状态。
       </div>
-      <div className="mt-12 flex items-center gap-8 flex-wrap">
+      <div className="mt-3 flex items-center gap-2 flex-wrap">
         <Tag color={isEllipsis ? 'warning' : 'success'}>
           {isEllipsis ? '已省略' : '未省略'}
         </Tag>
         <span className="text-text-secondary text-12">容器宽度: {width}px</span>
         <button
-          className="px-8 py-4 text-12 bg-fill-secondary rounded-4 hover:bg-fill-tertiary transition-colors"
+          className="px-2 py-1 text-12 bg-fill-secondary rounded-4 hover:bg-fill-tertiary transition-colors"
           onClick={check}
         >
           手动检查
@@ -115,7 +115,7 @@ export default function EllipsisExample() {
     { name: 'open', type: 'boolean', desc: '是否启用hover提示，设置为true时，当文本被省略时hover会显示完整内容', default: 'true' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式，可以传入CSS样式对象来自定义省略号组件外观' },
     { name: 'className', type: 'string', desc: '自定义类名，可以传入额外的CSS类名' },
-    { name: 'popoverProps', type: 'PopOverProps', desc: 'PopOver组件属性，用于自定义hover提示的显示方式' },
+    { name: 'tooltipProps', type: 'TooltipProps', desc: 'Tooltip组件属性，用于自定义hover提示的显示方式' },
     { name: 'setMaxWidth', type: '(contentWidth: number) => number', desc: '设置maxWidth的回调函数，接收contentWidth作为参数，返回自定义的maxWidth值' },
   ];
 
@@ -192,7 +192,7 @@ export default function EllipsisExample() {
             description='组件会自动监听容器大小变化，动态判断是否需要省略。'
           >
             <CodeOperationContainer>
-              <div className="border border-border-primary p-16" style={{
+              <div className="border border-border-primary p-4" style={{
                 width: '300px',
                 resize: 'horizontal',
                 overflow: 'auto',
@@ -215,11 +215,11 @@ export default function EllipsisExample() {
           >
             <CodeOperationContainer style={{ alignItems: 'flex-start', gap: '32px', flexWrap: 'wrap' }}>
               <div>
-                <h4 className="mb-12 text-14 font-medium">单行检测</h4>
+                <h4 className="mb-3 text-14 font-medium">单行检测</h4>
                 <UseEllipsisSingleDemo />
               </div>
               <div>
-                <h4 className="mb-12 text-14 font-medium">多行检测</h4>
+                <h4 className="mb-3 text-14 font-medium">多行检测</h4>
                 <UseEllipsisMultipleDemo />
               </div>
             </CodeOperationContainer>
@@ -239,19 +239,19 @@ export default function EllipsisExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           <div>
-            <h3 className="text-16 font-medium mb-12">Ellipsis 组件属性</h3>
+            <h3 className="text-16 font-medium mb-3">Ellipsis 组件属性</h3>
             <ComponentPropsTable props={ellipsisProps} />
           </div>
           
           <div>
-            <h3 className="text-16 font-medium mb-12">useEllipsis 钩子参数</h3>
+            <h3 className="text-16 font-medium mb-3">useEllipsis 钩子参数</h3>
             <ComponentPropsTable props={useEllipsisOptions} />
           </div>
           
           <div>
-            <h3 className="text-16 font-medium mb-12">useEllipsis 返回值</h3>
+            <h3 className="text-16 font-medium mb-3">useEllipsis 返回值</h3>
             <ComponentPropsTable props={useEllipsisReturns} />
           </div>
         </div>

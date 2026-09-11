@@ -226,13 +226,13 @@ const Rate: React.FC<RateProps> = (props) => {
   // ─── 样式计算 ───
   const rootStyle = useMemo(
     () =>
-      ({
-        "--land-rate-gap": typeof gap === "number" ? `${gap}px` : gap,
-        "--land-rate-inactive-color": inactiveColor,
-        "--land-rate-active-color": activeColor,
-        "--land-rate-hover-color": hoverColor || activeColor,
-        ...style,
-      } as React.CSSProperties),
+    ({
+      "--land-rate-gap": typeof gap === "number" ? `${gap}px` : gap,
+      "--land-rate-inactive-color": inactiveColor,
+      "--land-rate-active-color": activeColor,
+      "--land-rate-hover-color": hoverColor || activeColor,
+      ...style,
+    } as React.CSSProperties),
     [gap, inactiveColor, activeColor, hoverColor, style]
   );
 
@@ -245,12 +245,19 @@ const Rate: React.FC<RateProps> = (props) => {
       const isHalfActive = isLeftActive && !isRightActive;
       const tooltipText = getTooltipText(index);
 
+      // 逐颗延迟：填充从左到右（先近 frontier），清空从右到左（尾部先剥离，避免回退时拖尾）
+      const displayValue = hoverValue ?? currentValue;
+      const step = 30;
+      const fillDelay =
+        index < displayValue
+          ? index * step
+          : (count - 1 - index) * step;
+
       const starContent = (
         <div
           key={index}
-          className={`land-rate__character ${characterClassName || ""} ${
-            isFullActive ? "land-rate__character--active" : ""
-          } ${isHalfActive ? "land-rate__character--half" : ""}`}
+          className={`land-rate__character ${characterClassName || ""} ${isFullActive ? "land-rate__character--active" : ""
+            } ${isHalfActive ? "land-rate__character--half" : ""}`}
           style={characterStyle}
           title={tooltipText}
         >
@@ -266,9 +273,8 @@ const Rate: React.FC<RateProps> = (props) => {
 
           {/* 半星右侧区域 / 整星区域 */}
           <div
-            className={`land-rate__character-half land-rate__character-half--second ${
-              !allowHalf ? "land-rate__character-half--full" : ""
-            }`}
+            className={`land-rate__character-half land-rate__character-half--second ${!allowHalf ? "land-rate__character-half--full" : ""
+              }`}
             onClick={() => handleClick(index, false)}
             onMouseEnter={() => handleMouseEnter(index, false)}
             onMouseLeave={handleMouseLeave}
@@ -285,7 +291,8 @@ const Rate: React.FC<RateProps> = (props) => {
               className="land-rate__character-icon-active"
               style={{
                 width: isHalfActive ? "50%" : isFullActive ? "100%" : "0%",
-              }}
+                "--land-rate-fill-delay": `${fillDelay}ms`,
+              } as React.CSSProperties}
             >
               {getCharacter(index, true)}
             </div>
@@ -305,6 +312,9 @@ const Rate: React.FC<RateProps> = (props) => {
       handleMouseEnter,
       handleMouseLeave,
       getCharacter,
+      count,
+      currentValue,
+      hoverValue,
     ]
   );
 

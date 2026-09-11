@@ -6,7 +6,7 @@
 
 import { CSSProperties, ReactNode } from 'react';
 import { DropdownProps } from '../Dropdown/props';
-import { PopOverProps } from '../PopOver/props';
+import { TooltipProps } from "../Tooltip/props";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SECTION: 基础类型定义
@@ -181,7 +181,7 @@ export interface SelectProps extends Omit<DropdownProps, 'content' | 'children' 
   /**
    * 选择框提示配置
    */
-  tipProps?: PopOverProps;
+  tipProps?: TooltipProps;
 
   // ─── 自定义渲染 ───
 
@@ -214,6 +214,14 @@ export interface SelectProps extends Omit<DropdownProps, 'content' | 'children' 
 
   /** 下拉面板样式 */
   dropdownStyle?: CSSProperties;
+
+  /**
+   * 下拉框宽度模式
+   * - match: 与触发器等宽（默认），选项文字超出时截断省略
+   * - auto: 自适应内容宽度（不小于触发器宽度）
+   * @default 'match'
+   */
+  dropdownWidth?: 'match' | 'auto';
 
   // ─── 事件属性 ───
 

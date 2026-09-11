@@ -86,7 +86,7 @@ export default function CalendarExample() {
             id='calendar-basic'
             description='Calendar 组件的基础用法，默认显示日期视图。支持受控和非受控两种模式。'
           >
-            <div className="fs-12 color-gray-4 mb-8">
+            <div className="fs-12 color-gray-4 mb-2">
               当前选择: {formatDate(selectedDate)}
             </div>
             <CodeOperationContainer>
@@ -106,15 +106,15 @@ export default function CalendarExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">小尺寸 (small)</div>
+                <div className="fs-12 color-gray-4 mb-2">小尺寸 (small)</div>
                 <Calendar size="small" mode="date" />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">默认尺寸 (default)</div>
+                <div className="fs-12 color-gray-4 mb-2">默认尺寸 (default)</div>
                 <Calendar size="default" mode="date" />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">大尺寸 (large)</div>
+                <div className="fs-12 color-gray-4 mb-2">大尺寸 (large)</div>
                 <Calendar size="large" mode="date" />
               </div>
             </CodeOperationContainer>
@@ -128,7 +128,7 @@ export default function CalendarExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">周视图 - 当前选择: {formatWeek(selectedWeek)}</div>
+                <div className="fs-12 color-gray-4 mb-2">周视图 - 当前选择: {formatWeek(selectedWeek)}</div>
                 <Calendar
                   mode="week"
                   value={selectedWeek}
@@ -136,7 +136,7 @@ export default function CalendarExample() {
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">月视图 - 当前选择: {formatMonth(selectedMonth)}</div>
+                <div className="fs-12 color-gray-4 mb-2">月视图 - 当前选择: {formatMonth(selectedMonth)}</div>
                 <Calendar
                   mode="month"
                   value={selectedMonth}
@@ -144,7 +144,7 @@ export default function CalendarExample() {
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">季度视图 - 当前选择: {formatQuarter(selectedQuarter)}</div>
+                <div className="fs-12 color-gray-4 mb-2">季度视图 - 当前选择: {formatQuarter(selectedQuarter)}</div>
                 <Calendar
                   mode="quarter"
                   value={selectedQuarter}
@@ -152,7 +152,7 @@ export default function CalendarExample() {
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">年视图 - 当前选择: {formatYear(selectedYear)}</div>
+                <div className="fs-12 color-gray-4 mb-2">年视图 - 当前选择: {formatYear(selectedYear)}</div>
                 <Calendar
                   mode="year"
                   value={selectedYear}
@@ -170,11 +170,11 @@ export default function CalendarExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">中文（默认）</div>
+                <div className="fs-12 color-gray-4 mb-2">中文（默认）</div>
                 <Calendar mode="date" language="zh" />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">英文</div>
+                <div className="fs-12 color-gray-4 mb-2">英文</div>
                 <Calendar mode="date" language="en" />
               </div>
             </CodeOperationContainer>
@@ -188,7 +188,7 @@ export default function CalendarExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">限制范围：2024年1月1日 - 2025年12月31日</div>
+                <div className="fs-12 color-gray-4 mb-2">限制范围：2024年1月1日 - 2025年12月31日</div>
                 <Calendar
                   mode="date"
                   minDate="2024-01-01"
@@ -196,7 +196,7 @@ export default function CalendarExample() {
                 />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">仅限今年</div>
+                <div className="fs-12 color-gray-4 mb-2">仅限今年</div>
                 <Calendar
                   mode="date"
                   minDate={new Date(new Date().getFullYear(), 0, 1)}
@@ -214,15 +214,15 @@ export default function CalendarExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">允许点击其他月份（默认）</div>
+                <div className="fs-12 color-gray-4 mb-2">允许点击其他月份（默认）</div>
                 <Calendar mode="date" allowOtherMonthSelect={true} />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">禁止点击其他月份</div>
+                <div className="fs-12 color-gray-4 mb-2">禁止点击其他月份</div>
                 <Calendar mode="date" allowOtherMonthSelect={false} />
               </div>
               <div>
-                <div className="fs-12 color-gray-4 mb-8">隐藏其他月份日期</div>
+                <div className="fs-12 color-gray-4 mb-2">隐藏其他月份日期</div>
                 <Calendar mode="date" showOtherMonthDays={false} />
               </div>
             </CodeOperationContainer>
@@ -242,7 +242,7 @@ export default function CalendarExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={calendarProps} />
         </div>
       )}

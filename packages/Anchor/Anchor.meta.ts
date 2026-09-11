@@ -83,7 +83,7 @@ export const AnchorMeta = {
     },
   ],
 
-  relatedComponents: ['Menu', 'Tabs', 'BackToTop'],
+  relatedComponents: ['Nav', 'Tabs', 'BackToTop'],
 
   notes: [
     'items 中的 key 必须对应页面中元素的 id',

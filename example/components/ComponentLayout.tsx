@@ -1,6 +1,6 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
 import Header from '../../packages/Header';
-import { ClickType, MenuItem } from '../../packages/Menu/props';
+import { ClickType, NavItem } from '../../packages/Nav/props';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Switch from '../../packages/Switch';
@@ -21,7 +21,7 @@ export const debounce = (func: Function, wait: number) => {
 type Props = {
   active?: string;
   children?: React.ReactNode;
-  menuData?: MenuItem[];
+  menuData?: NavItem[];
 }
 const ComponentLayout: React.FC<Props> = ({
   active,
@@ -66,7 +66,7 @@ const ComponentLayout: React.FC<Props> = ({
             navigate(item.href ?? '/')
           },
           style: {
-            '--land-menu-title-font-size': '12px'
+            '--land-nav-title-font-size': '12px'
           } as CSSProperties
         }}
         align="end"

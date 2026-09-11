@@ -28,7 +28,7 @@ export default function SkeletonExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -47,17 +47,17 @@ export default function SkeletonExample() {
             description='可以自定义骨架屏的宽度和高度。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">小尺寸</h4>
+                  <h4 className="mb-2">小尺寸</h4>
                   <Skeleton width={100} height={20} className="radius-4" />
                 </div>
                 <div>
-                  <h4 className="mb-8">中等尺寸</h4>
+                  <h4 className="mb-2">中等尺寸</h4>
                   <Skeleton width={200} height={40} className="radius-6" />
                 </div>
                 <div>
-                  <h4 className="mb-8">大尺寸</h4>
+                  <h4 className="mb-2">大尺寸</h4>
                   <Skeleton width={300} height={60} className="radius-8" />
                 </div>
               </div>
@@ -71,7 +71,7 @@ export default function SkeletonExample() {
             description='通过 className 可以设置不同的圆角效果。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-16">
+              <div className="flex gap-4">
                 <Skeleton width={100} height={100} className="radius-4" />
                 <Skeleton width={100} height={100} className="radius-6" />
                 <Skeleton width={100} height={100} className="radius-8" />
@@ -87,9 +87,9 @@ export default function SkeletonExample() {
             description='通过 start 和 stop 属性可以自定义骨架屏的渐变颜色。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">主题色渐变</h4>
+                  <h4 className="mb-2">主题色渐变</h4>
                   <Skeleton
                     width={200}
                     height={40}
@@ -99,8 +99,8 @@ export default function SkeletonExample() {
                   />
                 </div>
                 <div>
-                  <h4 className="mb-8">自定义颜色渐变</h4>
-                  <div className="flex gap-16">
+                  <h4 className="mb-2">自定义颜色渐变</h4>
+                  <div className="flex gap-4">
                     <Skeleton
                       width={100}
                       height={40}
@@ -135,27 +135,27 @@ export default function SkeletonExample() {
             description='可以组合多个骨架屏来模拟真实内容的布局。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">模拟卡片</h4>
-                  <div className="border p-16 radius-8" style={{ width: '300px' }}>
-                    <Skeleton width="100%" height={20} className="radius-4 mb-12" />
-                    <Skeleton width="80%" height={16} className="radius-4 mb-8" />
-                    <Skeleton width="60%" height={16} className="radius-4 mb-12" />
-                    <div className="flex gap-8">
+                  <h4 className="mb-2">模拟卡片</h4>
+                  <div className="border p-4 radius-8" style={{ width: '300px' }}>
+                    <Skeleton width="100%" height={20} className="radius-4 mb-3" />
+                    <Skeleton width="80%" height={16} className="radius-4 mb-2" />
+                    <Skeleton width="60%" height={16} className="radius-4 mb-3" />
+                    <div className="flex gap-2">
                       <Skeleton width={60} height={32} className="radius-4" />
                       <Skeleton width={60} height={32} className="radius-4" />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8">模拟列表</h4>
-                  <div className="flex flex-col gap-8">
+                  <h4 className="mb-2">模拟列表</h4>
+                  <div className="flex flex-col gap-2">
                     {[1, 2, 3].map(i => (
-                      <div key={i} className="flex gap-12 items-center">
+                      <div key={i} className="flex gap-3 items-center">
                         <Skeleton width={40} height={40} className="radius-50" />
                         <div className="flex-1">
-                          <Skeleton width="60%" height={16} className="radius-4 mb-4" />
+                          <Skeleton width="60%" height={16} className="radius-4 mb-1" />
                           <Skeleton width="40%" height={12} className="radius-4" />
                         </div>
                       </div>
@@ -169,7 +169,7 @@ export default function SkeletonExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={skeletonProps} />
         </div>
       )}

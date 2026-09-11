@@ -110,10 +110,11 @@ $select-transition: var(--land-select-transition, all 0.2s ease-in-out);
       background-color: $select-outline-bg;
       border: $select-outline-border;
 
-      &:hover:not(.land-select__trigger--disabled) {
+      &:hover:not(.land-select__trigger--disabled):not(.land-select__trigger--open) {
         border: $select-outline-border-hover;
       }
 
+      // 展开态优先于 hover，始终展示 focus 边框
       &.land-select__trigger--open {
         border: $select-outline-border-focus;
       }
@@ -172,7 +173,7 @@ $select-transition: var(--land-select-transition, all 0.2s ease-in-out);
     // ─── 展开状态 ───
     &--open {
       .land-select__arrow {
-        transform: rotate(180deg);
+        transform: scale(1, -1);
       }
     }
   }
@@ -217,6 +218,36 @@ $select-transition: var(--land-select-transition, all 0.2s ease-in-out);
     display: flex;
     flex-direction: column;
     gap: $select-dropdown-gap;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 下拉框宽度模式
+  // ───────────────────────────────────────────────────────────────────────────
+
+  // match：与触发器等宽（默认），选项文字超出时截断省略
+  &--dropdown-match {
+    .land-dropdown__panel {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .land-dropdown__content {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .land-select__option-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // auto：自适应内容宽度（不小于触发器宽度）
+  &--dropdown-auto {
+    .land-dropdown__panel {
+      min-width: 100%;
+    }
   }
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -285,6 +316,6 @@ $select-transition: var(--land-select-transition, all 0.2s ease-in-out);
 
 .land-dropdown--open {
   .land-select__arrow {
-    transform: rotate(180deg);
+    transform: scale(1, -1);
   }
 }

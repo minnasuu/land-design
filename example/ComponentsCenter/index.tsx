@@ -44,13 +44,13 @@ export default function ComponentsCenter() {
     
   return (
     <div className='flex flex-col' style={{ height: '100vh' }}>
-      <div className='flex-1 flex flex-col items-center justify-center gap-12 px-24 w-fit-content'>
+      <div className='flex-1 flex flex-col items-center justify-center gap-3 px-6 w-fit-content'>
 
         {/* Categories Section */}
         <div className='flex flex-wrap gap-[24px]' style={{ maxWidth: '100%' }}>
           {CATEGORIES_DATA.map(category => (
-            <StyledCategoryCard className='flex-1 flex flex-col gap-12' style={{ minWidth: '324px' }} key={category.id} onClick={() => handleCategoryClick(category.route)}>
-              <div className='flex items-center gap-4'>
+            <StyledCategoryCard className='flex-1 flex flex-col gap-3' style={{ minWidth: '324px' }} key={category.id} onClick={() => handleCategoryClick(category.route)}>
+              <div className='flex items-center gap-1'>
                 <div style={{
                   width: '32px',
                   height: '32px',
@@ -83,7 +83,7 @@ export default function ComponentsCenter() {
 
       </div>
 
-      <div className='flex flex-col justify-center items-center gap-2 py-8'>
+      <div className='flex flex-col justify-center items-center gap-0.5 py-2'>
         <div className='text-sm font-semibold'>Land Design</div>
         <div className='text-xs text-gray-8'>一个 Land：存放那些年实现过的组件。</div>
       </div>

@@ -1,31 +1,31 @@
 // ============================================================================
-// SelectTree 组件
-// @description 树形选择器组件，支持单选和多选模式
+// Cascader 组件
+// @description 级联选择器（多列树形选择器）组件，支持单选和多选模式
 // @author Land Design System
 // ============================================================================
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import Dropdown from '../Dropdown'
-import PopOver from '../PopOver'
+import Tooltip from '../Tooltip'
 import {
-  SelectTreeOption,
-  SelectTreeProps,
-  selectTreeDefaultProps,
+  CascaderOption,
+  CascaderProps,
+  cascaderDefaultProps,
   typeToVariantMap,
-  SelectTreeType,
+  CascaderType,
 } from './props'
 import Icon from '../Icon'
 import Checkbox from '../Checkbox'
 import './index.scss'
 
-const prefixCls = 'land-select-tree';
+const prefixCls = 'land-cascader';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SECTION: 工具函数
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** 获取所有子节点的 key */
-const getAllChildrenKeys = (item: SelectTreeOption): string[] => {
+const getAllChildrenKeys = (item: CascaderOption): string[] => {
   const keys: string[] = [];
   if (item.children) {
     item.children.forEach(child => {
@@ -37,8 +37,8 @@ const getAllChildrenKeys = (item: SelectTreeOption): string[] => {
 };
 
 /** 获取所有子节点 */
-const getAllChildren = (item: SelectTreeOption): SelectTreeOption[] => {
-  const children: SelectTreeOption[] = [];
+const getAllChildren = (item: CascaderOption): CascaderOption[] => {
+  const children: CascaderOption[] = [];
   if (item.children) {
     item.children.forEach(child => {
       children.push(child);
@@ -49,7 +49,7 @@ const getAllChildren = (item: SelectTreeOption): SelectTreeOption[] => {
 };
 
 /** 根据 key 在树中查找选项 */
-const findOptionByKey = (options: SelectTreeOption[], key: string): SelectTreeOption | undefined => {
+const findOptionByKey = (options: CascaderOption[], key: string): CascaderOption | undefined => {
   for (const option of options) {
     if (option.key === key) return option;
     if (option.children) {
@@ -61,15 +61,30 @@ const findOptionByKey = (options: SelectTreeOption[], key: string): SelectTreeOp
 };
 
 /** 根据 keys 数组获取选项数组 */
-const getOptionsByKeys = (options: SelectTreeOption[], keys: string[]): SelectTreeOption[] => {
-  return keys.map(key => findOptionByKey(options, key)).filter(Boolean) as SelectTreeOption[];
+const getOptionsByKeys = (options: CascaderOption[], keys: string[]): CascaderOption[] => {
+  return keys.map(key => findOptionByKey(options, key)).filter(Boolean) as CascaderOption[];
+};
+
+/** 判断用户是否开启「减弱动态效果」 */
+const isReducedMotion = (): boolean => {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
+/** 面板列描述：key 为层级稳定标识（列壳不因同级切换而卸载），parentKey 用于列内内容切换动画 */
+type CascaderColumn = {
+  key: string;
+  level: number;
+  data: CascaderOption[];
+  /** 该列数据的父节点 key，同级切换时驱动列内容区做切换动画 */
+  parentKey: string;
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SECTION: 组件实现
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SelectTree: React.FC<SelectTreeProps> = ({
+const Cascader: React.FC<CascaderProps> = ({
   // 核心属性（新）
   options,
   value,
@@ -81,24 +96,24 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   selected,
   selectedValues: legacySelectedValues,
   // 通用属性
-  multiple = selectTreeDefaultProps.multiple,
-  placeholder = selectTreeDefaultProps.placeholder,
+  multiple = cascaderDefaultProps.multiple,
+  placeholder = cascaderDefaultProps.placeholder,
   // 外观属性
   variant,
   type,
-  size = selectTreeDefaultProps.size,
-  disabled = selectTreeDefaultProps.disabled,
+  size = cascaderDefaultProps.size,
+  disabled = cascaderDefaultProps.disabled,
   width,
   // 多选属性
-  separator = selectTreeDefaultProps.separator,
-  maxDisplayCount = selectTreeDefaultProps.maxDisplayCount,
+  separator = cascaderDefaultProps.separator,
+  maxDisplayCount = cascaderDefaultProps.maxDisplayCount,
   // 提示属性
   tip,
   tipProps,
   // 自定义渲染
   customValueDisplay,
   renderOption,
-  emptyContent = selectTreeDefaultProps.emptyContent,
+  emptyContent = cascaderDefaultProps.emptyContent,
   // 样式属性
   className = '',
   style,
@@ -114,7 +129,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   // ─── 计算有效变体 ───
   const effectiveVariant = useMemo(() => {
     if (variant) return variant;
-    if (type) return typeToVariantMap[type as SelectTreeType] ?? 'outline';
+    if (type) return typeToVariantMap[type as CascaderType] ?? 'outline';
     return 'outline';
   }, [variant, type]);
 
@@ -128,7 +143,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
 
   // 多选值
   const [innerValues, setInnerValues] = useState<string[]>(() => {
-    if (values !== undefined) return values;
+    if (values !== undefined) return values.filter(v => v != null);
     if (legacySelectedValues !== undefined && legacySelectedValues !== null && Array.isArray(legacySelectedValues)) {
       return legacySelectedValues.filter(item => item != null).map(item => item.key);
     }
@@ -146,7 +161,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
 
   useEffect(() => {
     if (values !== undefined) {
-      setInnerValues(values);
+      setInnerValues(values.filter(v => v != null));
     } else if (legacySelectedValues !== undefined && legacySelectedValues !== null && Array.isArray(legacySelectedValues)) {
       setInnerValues(legacySelectedValues.filter(item => item != null).map(item => item.key));
     }
@@ -154,6 +169,12 @@ const SelectTree: React.FC<SelectTreeProps> = ({
 
   // ─── 展开路径状态 ───
   const [expandedPath, setExpandedPath] = useState<string[]>([]);
+
+  // ─── 列收起动画状态 ───
+  // 离场列缓存：列从展开路径中移除时先缓存在此播放收起动画，动画结束后再真正卸载
+  const [leavingColumns, setLeavingColumns] = useState<CascaderColumn[]>([]);
+  const prevColumnsRef = useRef<CascaderColumn[]>([]);
+  const skipLeaveRef = useRef(false);
 
   // ─── 获取选中的选项数据 ───
   const selectedOptions = useMemo(() => {
@@ -207,7 +228,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   }, [customValueDisplay, renderDisplayContent, multiple, innerValues, innerValue, selectedOptions, placeholder]);
 
   // ─── 获取当前层级数据 ───
-  const getCurrentLevelData = useCallback((level: number): SelectTreeOption[] => {
+  const getCurrentLevelData = useCallback((level: number): CascaderOption[] => {
     if (level === 0) return effectiveOptions;
 
     let currentData = effectiveOptions;
@@ -224,7 +245,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   }, [effectiveOptions, expandedPath]);
 
   // ─── 判断是否选中 ───
-  const isItemSelected = useCallback((item: SelectTreeOption): boolean => {
+  const isItemSelected = useCallback((item: CascaderOption): boolean => {
     if (multiple) {
       return innerValues.includes(item.key);
     }
@@ -232,7 +253,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   }, [multiple, innerValues, innerValue]);
 
   // ─── 判断是否半选 ───
-  const isItemIndeterminate = useCallback((item: SelectTreeOption): boolean => {
+  const isItemIndeterminate = useCallback((item: CascaderOption): boolean => {
     if (!multiple || !item.children) return false;
 
     const childrenKeys = getAllChildrenKeys(item);
@@ -245,8 +266,8 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   const updateParentStates = useCallback((keys: string[]): string[] => {
     let updatedKeys = [...keys];
 
-    const getAllParentNodes = (items: SelectTreeOption[]): SelectTreeOption[] => {
-      const parents: SelectTreeOption[] = [];
+    const getAllParentNodes = (items: CascaderOption[]): CascaderOption[] => {
+      const parents: CascaderOption[] = [];
       items.forEach(item => {
         if (item.children && item.children.length > 0) {
           parents.push(item);
@@ -274,13 +295,13 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   }, [effectiveOptions]);
 
   // ─── 处理标签点击 ───
-  const handleLabelClick = useCallback((item: SelectTreeOption, level: number) => {
+  const handleLabelClick = useCallback((item: CascaderOption, level: number) => {
     if (item.children && item.children.length > 0) {
       const isCurrentlyExpanded = expandedPath[level] === item.key;
       const newPath = isCurrentlyExpanded
         ? expandedPath.slice(0, level)
         : [...expandedPath.slice(0, level), item.key];
-      
+
       setExpandedPath(newPath);
       onExpand?.(newPath);
     } else {
@@ -303,7 +324,7 @@ const SelectTree: React.FC<SelectTreeProps> = ({
   }, [expandedPath, multiple, isItemSelected, innerValues, onChange, updateParentStates, effectiveOptions, onExpand]);
 
   // ─── 处理复选框变化 ───
-  const handleCheckedChange = useCallback((item: SelectTreeOption) => {
+  const handleCheckedChange = useCallback((item: CascaderOption) => {
     if (!multiple) return;
 
     let newKeys = [...innerValues];
@@ -330,6 +351,9 @@ const SelectTree: React.FC<SelectTreeProps> = ({
 
   // ─── 处理下拉关闭 ───
   const handleDropdownClose = useCallback(() => {
+    // 关闭面板时跳过列收起动画，直接重置
+    skipLeaveRef.current = true;
+    setLeavingColumns([]);
     setExpandedPath([]);
   }, []);
 
@@ -343,6 +367,49 @@ const SelectTree: React.FC<SelectTreeProps> = ({
       return { level, levelData };
     }).filter(({ levelData }) => levelData.length > 0);
   }, [expandedPath, getCurrentLevelData]);
+
+  // ─── 列展开/收起动画 ───
+  // 列以层级为稳定 key：切换同级选项时列壳不卸载（仅内容区做切换动画），
+  // 只有真正新增/移除的深层列才播放进出动画，避免相邻列反向位移动画叠加
+  const columns = useMemo<CascaderColumn[]>(() => {
+    const cols: CascaderColumn[] = [{ key: 'level-0', level: 0, data: currentLevelData, parentKey: '' }];
+    subsequentLevels.forEach(({ level, levelData }) => {
+      cols.push({ key: `level-${level}`, level, data: levelData, parentKey: expandedPath[level - 1] });
+    });
+    return cols;
+  }, [currentLevelData, subsequentLevels, expandedPath]);
+
+  // 列从在场序列中移除时移入离场缓存，播放收起动画
+  useEffect(() => {
+    const prevColumns = prevColumnsRef.current;
+    prevColumnsRef.current = columns;
+    if (skipLeaveRef.current) {
+      skipLeaveRef.current = false;
+      return;
+    }
+    if (isReducedMotion()) return;
+    const removed = prevColumns.filter(prev => !columns.some(col => col.key === prev.key));
+    if (removed.length > 0) {
+      setLeavingColumns(prevLeaving => [
+        ...prevLeaving.filter(l => !removed.some(r => r.key === l.key)),
+        ...removed,
+      ]);
+    }
+  }, [columns]);
+
+  // 收起动画结束后卸载离场列
+  const handleColumnLeaveEnd = useCallback((key: string) => {
+    setLeavingColumns(prev => prev.filter(col => col.key !== key));
+  }, []);
+
+  // 渲染序列：按层级排序，离场列排在同级在场列之后，形成「旧列收起、新列滑入」的衔接
+  const renderColumns = useMemo(() => {
+    const active = columns.map(col => ({ ...col, leaving: false }));
+    const leaving = leavingColumns.map(col => ({ ...col, leaving: true }));
+    return [...active, ...leaving].sort(
+      (a, b) => a.level - b.level || Number(a.leaving) - Number(b.leaving)
+    );
+  }, [columns, leavingColumns]);
 
   // ─── 根容器类名 ───
   const rootClassName = useMemo(() => {
@@ -395,24 +462,11 @@ const SelectTree: React.FC<SelectTreeProps> = ({
               <div className={`${prefixCls}__empty`}>{emptyContent}</div>
             ) : (
               <>
-                <TreeList
-                  prefixCls={prefixCls}
-                  data={currentLevelData}
-                  multiple={multiple}
-                  level={0}
-                  expandedPath={expandedPath}
-                  onClick={handleLabelClick}
-                  onCheckedChange={handleCheckedChange}
-                  isItemSelected={isItemSelected}
-                  isItemIndeterminate={isItemIndeterminate}
-                  renderOption={renderOption}
-                />
-
-                {subsequentLevels.map(({ level, levelData }) => (
+                {renderColumns.map(({ key, level, data, parentKey, leaving }) => (
                   <TreeList
-                    key={`level-${level}`}
+                    key={leaving ? `${key}--leaving` : key}
                     prefixCls={prefixCls}
-                    data={levelData}
+                    data={data}
                     multiple={multiple}
                     level={level}
                     expandedPath={expandedPath}
@@ -421,6 +475,10 @@ const SelectTree: React.FC<SelectTreeProps> = ({
                     isItemSelected={isItemSelected}
                     isItemIndeterminate={isItemIndeterminate}
                     renderOption={renderOption}
+                    motion={leaving ? 'leave' : level > 0 ? 'enter' : 'none'}
+                    contentKey={parentKey}
+                    animateContent={level > 0 && !leaving}
+                    onLeaveEnd={leaving ? () => handleColumnLeaveEnd(key) : undefined}
                   />
                 ))}
               </>
@@ -432,8 +490,8 @@ const SelectTree: React.FC<SelectTreeProps> = ({
           <div className={`${prefixCls}__content`}>
             {customValueDisplay ? handleCustomDisplay() : renderDisplayContent()}
           </div>
-          <Icon name="arrow-triangle" className={`${prefixCls}__arrow`} size={16} />
-          {tip && <PopOver attach="body" content={tip} theme="dark" {...tipProps} />}
+          <Icon name="arrow" className={`${prefixCls}__arrow`} size={16} />
+          {tip && <Tooltip attach="body" content={tip} theme="dark" {...tipProps} />}
         </div>
       </Dropdown>
     </div>
@@ -446,15 +504,22 @@ const SelectTree: React.FC<SelectTreeProps> = ({
 
 type TreeListProps = {
   prefixCls: string
-  data: SelectTreeOption[]
+  data: CascaderOption[]
   multiple?: boolean
   level: number
   expandedPath: string[]
-  onClick: (item: SelectTreeOption, level: number) => void
-  onCheckedChange: (item: SelectTreeOption) => void
-  isItemSelected: (item: SelectTreeOption) => boolean
-  isItemIndeterminate: (item: SelectTreeOption) => boolean
-  renderOption?: SelectTreeProps['renderOption']
+  onClick: (item: CascaderOption, level: number) => void
+  onCheckedChange: (item: CascaderOption) => void
+  isItemSelected: (item: CascaderOption) => boolean
+  isItemIndeterminate: (item: CascaderOption) => boolean
+  renderOption?: CascaderProps['renderOption']
+  /** 列进出动画状态：enter=新列滑入，leave=收起后由 onLeaveEnd 卸载，none=无动画（首列） */
+  motion?: 'enter' | 'leave' | 'none'
+  onLeaveEnd?: () => void
+  /** 列内容区标识（父节点 key）：变化时内容区重挂载并播放切换动画 */
+  contentKey?: string
+  /** 是否启用内容区切换动画 */
+  animateContent?: boolean
 }
 
 const TreeList: React.FC<TreeListProps> = React.memo(({
@@ -468,14 +533,39 @@ const TreeList: React.FC<TreeListProps> = React.memo(({
   isItemSelected,
   isItemIndeterminate,
   renderOption,
+  motion = 'none',
+  onLeaveEnd,
+  contentKey = '',
+  animateContent = false,
 }) => {
+  // 进入动画结束后移除动画类，恢复自然布局（避免 keyframes 持有的 overflow: hidden 常驻）
+  const [entering, setEntering] = useState(motion === 'enter');
+
+  const listClassName = useMemo(() => {
+    return [
+      `${prefixCls}__list`,
+      entering && `${prefixCls}__list--enter`,
+      motion === 'leave' && `${prefixCls}__list--leave`,
+    ].filter(Boolean).join(' ');
+  }, [prefixCls, entering, motion]);
+
+  const handleAnimationEnd = useCallback((e: React.AnimationEvent<HTMLDivElement>) => {
+    // 只响应列表自身的动画，忽略子元素（如 Checkbox）冒泡的 animationend
+    if (e.target !== e.currentTarget) return;
+    if (motion === 'leave') {
+      onLeaveEnd?.();
+    } else if (entering) {
+      setEntering(false);
+    }
+  }, [motion, onLeaveEnd, entering]);
+
   // ─── 事件处理 ───
-  const handleClick = useCallback((e: React.MouseEvent, item: SelectTreeOption) => {
+  const handleClick = useCallback((e: React.MouseEvent, item: CascaderOption) => {
     e.stopPropagation();
     onClick(item, level);
   }, [onClick, level]);
 
-  const handleCheckboxChange = useCallback((item: SelectTreeOption, e?: React.MouseEvent) => {
+  const handleCheckboxChange = useCallback((item: CascaderOption, e?: React.MouseEvent) => {
     if (item.children && e) {
       e.stopPropagation();
     }
@@ -500,8 +590,16 @@ const TreeList: React.FC<TreeListProps> = React.memo(({
   }, [prefixCls]);
 
   return (
-    <div className={`${prefixCls}__list`}>
-      {data?.map(item => {
+    <div className={listClassName} onAnimationEnd={handleAnimationEnd}>
+      {/* 内容区以父节点 key 为标识：同级切换时仅内容区重挂载播放淡入，列壳（宽度/边框）保持稳定 */}
+      <div
+        key={contentKey}
+        className={[
+          `${prefixCls}__list-inner`,
+          animateContent && `${prefixCls}__list-inner--animate`,
+        ].filter(Boolean).join(' ')}
+      >
+        {data?.map(item => {
         const isExpanded = expandedPath[level] === item.key;
         const hasChildren = item.children && item.children.length > 0;
         const isSelected = isItemSelected(item);
@@ -543,17 +641,18 @@ const TreeList: React.FC<TreeListProps> = React.memo(({
             </div>
             {hasChildren && (
               <Icon
-                name='arrow-triangle'
+                name='arrow'
                 className={getArrowClassName(isExpanded)}
               />
             )}
           </div>
         );
       })}
+      </div>
     </div>
   );
 });
 
 TreeList.displayName = 'TreeList';
 
-export default SelectTree;
+export default Cascader;

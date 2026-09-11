@@ -40,19 +40,19 @@ export default function TitleExample() {
           >
             <CodeOperationContainer style={{ gap: '32px' }}>
               <div>
-                <h4 className="mb-8">一级标题 (h1)</h4>
+                <h4 className="mb-2">一级标题 (h1)</h4>
                 <Title title="页面主标题" type="h1" />
               </div>
               <div>
-                <h4 className="mb-8">二级标题 (h2)</h4>
+                <h4 className="mb-2">二级标题 (h2)</h4>
                 <Title title="章节标题" type="h2" />
               </div>
               <div>
-                <h4 className="mb-8">三级标题 (h3)</h4>
+                <h4 className="mb-2">三级标题 (h3)</h4>
                 <Title title="小节标题" type="h3" />
               </div>
               <div>
-                <h4 className="mb-8">四级标题 (h4)</h4>
+                <h4 className="mb-2">四级标题 (h4)</h4>
                 <Title title="子标题" type="h4" />
               </div>
             </CodeOperationContainer>
@@ -61,7 +61,7 @@ export default function TitleExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={titleProps} />
         </div>
       )}

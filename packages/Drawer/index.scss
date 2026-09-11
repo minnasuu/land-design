@@ -22,12 +22,18 @@ $prefix: 'land-drawer';
   }
 
   &--right {
+    justify-content: flex-end;
+    align-items: stretch;
+
     .#{$prefix}__content {
       border-radius: 16px 0 0 16px;
     }
   }
 
   &--bottom {
+    align-items: flex-end;
+    justify-content: center;
+
     .#{$prefix}__content {
       border-radius: 16px 16px 0 0;
       max-width: unset;
@@ -52,7 +58,9 @@ $prefix: 'land-drawer';
     flex-direction: column;
     background-color: var(--color-bg-primary);
     box-shadow: var(--shadow-modal);
+    min-height: 0;
     height: 100%;
+    overflow: hidden;
   }
 
   // ==================== 头部包装区域 ====================
@@ -108,7 +116,9 @@ $prefix: 'land-drawer';
   // ==================== 主体区域 ====================
   &__body {
     flex: 1;
-    height: 1%;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--gap-l) var(--gap-xl);
     color: var(--color-text-primary);
   }
 

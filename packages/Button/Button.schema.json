@@ -75,17 +75,6 @@
       "description": "是否启用点击缩放动画",
       "default": false
     },
-    "tip": {
-      "description": "气泡提示内容",
-      "oneOf": [
-        { "type": "string" },
-        { "type": "ReactNode" }
-      ]
-    },
-    "popoverProps": {
-      "type": "object",
-      "description": "气泡提示配置"
-    },
     "onClick": {
       "type": "function",
       "description": "点击事件回调"
@@ -126,13 +115,6 @@
       "description": "图标按钮",
       "value": {
         "icon": "<Icon name='search' />"
-      }
-    },
-    {
-      "description": "带提示的按钮",
-      "value": {
-        "text": "保存",
-        "tip": "保存当前更改"
       }
     }
   ],

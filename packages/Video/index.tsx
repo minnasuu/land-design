@@ -3,7 +3,7 @@ import Icon from '../Icon';
 import VideoProgressBar from './VideoProgressBar';
 import VideoSetting from './VideoSetting';
 import Loading from '../Loading';
-import PopOver from '../PopOver';
+import Tooltip from '../Tooltip';
 import Dropdown from '../Dropdown';
 import Alert from '../Alert';
 import useFormateTime from '../hooks/useFormateTime';
@@ -661,21 +661,21 @@ const Video: React.FC<VideoProps> = ({
         {showPip && (
           <button className="land-video__button" onClick={handlePip}>
             <Icon name="video-small-screen" size={20} />
-            <PopOver content="画中画模式" theme="dark" />
+            <Tooltip content="画中画模式" theme="dark" />
           </button>
         )}
 
         {showWebFullscreen && (
           <button className="land-video__button" onClick={handleWebFullscreen}>
             <Icon name={isWebFullscreen ? 'zoom-out' : 'zoom-in'} size={20} />
-            <PopOver content={isWebFullscreen ? '退出网页全屏' : '网页全屏'} theme="dark" />
+            <Tooltip content={isWebFullscreen ? '退出网页全屏' : '网页全屏'} theme="dark" />
           </button>
         )}
 
         {showFullscreen && (
           <button className="land-video__button" onClick={handleFullscreen}>
             <Icon name="zoom-in-arrow" size={20} />
-            <PopOver content="全屏模式" theme="dark" />
+            <Tooltip content="全屏模式" theme="dark" />
           </button>
         )}
       </div>

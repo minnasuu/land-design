@@ -58,7 +58,7 @@ export default function DropdownExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* hover 下拉 */}
           <ComponentSectionLayout
             title='hover 下拉'
@@ -66,7 +66,7 @@ export default function DropdownExample() {
             description='默认使用 hover 触发方式显示下拉菜单。'
           >
             <CodeOperationContainer>
-              <div className='flex column items-center gap-24'>
+              <div className='flex column items-center gap-6'>
                 <Dropdown items={sampleData} onChange={(item) => console.log('选中:', item)}>
                   <Button text="hover试试" />
                 </Dropdown>
@@ -81,7 +81,7 @@ export default function DropdownExample() {
             description='通过 trigger="click" 可以设置点击触发方式。'
           >
             <CodeOperationContainer>
-              <div className='flex column items-center gap-24'>
+              <div className='flex column items-center gap-6'>
                 <Dropdown trigger='click' items={sampleData} onChange={(item) => console.log('选中:', item)}>
                   <Button text="click试试" />
                 </Dropdown>
@@ -96,7 +96,7 @@ export default function DropdownExample() {
             description='通过 alignment 属性可以设置下拉菜单的对齐方式。'
           >
             <CodeOperationContainer>
-              <div className='flex items-center justify-center gap-24'>
+              <div className='flex items-center justify-center gap-6'>
                 <Dropdown trigger='click' items={sampleData} alignment='center' onChange={(item) => console.log('选中:', item)}>
                   <Button text="居中对齐" />
                 </Dropdown>
@@ -117,7 +117,7 @@ export default function DropdownExample() {
             description='通过 placement 属性可以设置下拉菜单的展开方向。'
           >
             <CodeOperationContainer>
-              <div className='flex items-center justify-center gap-24'>
+              <div className='flex items-center justify-center gap-6'>
                 <Dropdown trigger='click' items={sampleData} placement='bottom' onChange={(item) => console.log('选中:', item)}>
                   <Button text="向下展开" />
                 </Dropdown>
@@ -135,7 +135,7 @@ export default function DropdownExample() {
             description='通过 attach="body" 将面板挂载到 body，脱离父容器层叠上下文。'
           >
             <CodeOperationContainer>
-              <div className='flex items-center justify-center gap-24'>
+              <div className='flex items-center justify-center gap-6'>
                 <Dropdown attach="body" items={sampleData} onChange={(item) => console.log('选中:', item)}>
                   <Button text="body-左对齐" />
                 </Dropdown>
@@ -156,14 +156,14 @@ export default function DropdownExample() {
             description='通过 attach 属性传入 CSS 选择器或 HTMLElement，将面板挂载到指定容器。'
           >
             <CodeOperationContainer>
-              <div className='flex flex-col gap-16'>
+              <div className='flex flex-col gap-4'>
                 <div
                   ref={customContainerRef}
                   style={{ position: 'relative', padding: '16px', border: '2px dashed var(--color-border-primary)', borderRadius: '8px', minHeight: '60px' }}
                 >
                   <span style={{ color: 'var(--color-text-secondary)', fontSize: '12px' }}>自定义挂载容器（面板会渲染在此区域内）</span>
                 </div>
-                <div className='flex items-center gap-12'>
+                <div className='flex items-center gap-3'>
                   <Dropdown
                     trigger='click'
                     attach={customContainerRef.current || undefined}
@@ -184,7 +184,7 @@ export default function DropdownExample() {
             description='测试不同对齐方式在边界情况下的表现。'
           >
             <CodeOperationContainer>
-              <div className='flex items-center justify-between gap-24'>
+              <div className='flex items-center justify-between gap-6'>
                 <Dropdown trigger='click' items={sampleData} alignment='left' onChange={(item) => console.log('选中:', item)}>
                   <Button text="左边界测试" />
                 </Dropdown>
@@ -281,7 +281,7 @@ export default function DropdownExample() {
             description='通过 content 属性可以自定义下拉菜单的内容。'
           >
             <CodeOperationContainer>
-              <div className='flex column items-center gap-24'>
+              <div className='flex column items-center gap-6'>
                 <Dropdown
                   trigger='click'
                   content={
@@ -308,8 +308,8 @@ export default function DropdownExample() {
             description='通过 disabled 属性可以禁用下拉菜单。'
           >
             <CodeOperationContainer>
-              <div className='flex column items-center gap-24'>
-                <div className='flex items-center gap-12'>
+              <div className='flex column items-center gap-6'>
+                <div className='flex items-center gap-3'>
                   <Dropdown items={sampleData} disabled onChange={(item) => console.log('选中:', item)}>
                     <Button text="禁用-hover" />
                   </Dropdown>
@@ -321,7 +321,7 @@ export default function DropdownExample() {
                   </Dropdown>
                 </div>
 
-                <div className='flex items-center gap-12'>
+                <div className='flex items-center gap-3'>
                   <Dropdown items={sampleData} disabled open onChange={(item) => console.log('选中:', item)}>
                     <Button text="禁用-强制展开" />
                   </Dropdown>
@@ -335,10 +335,10 @@ export default function DropdownExample() {
         </div>
       )}
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={dropdownProps} />
           {dropdownTypes.map(i => (
-            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
               <h3 className='text-sm font-bold'>{i.name}</h3>
               <ComponentPropsTable props={i.data as any} />
             </div>

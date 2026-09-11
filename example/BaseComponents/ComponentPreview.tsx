@@ -32,21 +32,21 @@ const ComponentPreview: React.FC<Props> = ({ onClick }) => {
           >
             {item.data?.map((items) => (
               <div
-              key={items.id}
-                className="flex flex-col gap-2 rounded-lg cursor-pointer transition-colors duration-200"
+                key={items?.id}
+                className="flex flex-col gap-0.5 rounded-lg cursor-pointer transition-colors duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   onClick?.(items, item);
                 }}
               >
-                {items.demo && (
+                {items?.demo && (
                   <div className="relative flex items-center justify-center rounded-lg border border-border-primary hover:bg-bg-secondary hover:-translate-y-1 aspect-square transition-all duration-200 bg-bg-primary">
-                    {items.demo}
+                    {items?.demo}
                   </div>
                 )}
                 <Flex align="center" gap={8}>
-                  <div className='text-sm font-semibold text-text-primary'>{items.en}</div>
-                  <div className='text-xs text-text-secondary'>{items.zh}</div>
+                  <div className='text-sm font-semibold text-text-primary'>{items?.en}</div>
+                  <div className='text-xs text-text-secondary'>{items?.zh}</div>
                 </Flex>
               </div>
             ))}

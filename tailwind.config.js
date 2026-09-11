@@ -154,16 +154,6 @@ export default {
         '48': 'var(--font-size-48)',
         '64': 'var(--font-size-64)',
       },
-      spacing: {
-        '2': 'var(--spacing-2)',
-        '4': 'var(--spacing-4)',
-        '8': 'var(--spacing-8)',
-        '12': 'var(--spacing-12)',
-        '16': 'var(--spacing-16)',
-        '20': 'var(--spacing-20)',
-        '24': 'var(--spacing-24)',
-        '32': 'var(--spacing-32)',
-      },
       borderRadius: {
         '2': 'var(--radius-2)',
         '4': 'var(--radius-4)',

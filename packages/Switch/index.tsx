@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import Icon from "../Icon";
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import { SwitchProps, switchDefaultProps } from "./props";
 import "./index.scss";
 import Loading from "../Loading";
@@ -175,9 +175,9 @@ const Switch: React.FC<SwitchProps> = (props) => {
 
     return (
       <div className="land-switch__icon-tip">
-        <PopOver content={iconTip} theme="dark" {...iconTipProps}>
+        <Tooltip content={iconTip} theme="dark" {...iconTipProps}>
           <Icon name="info-stroke" size={size === "small" ? 14 : 16} />
-        </PopOver>
+        </Tooltip>
       </div>
     );
   };
@@ -241,12 +241,12 @@ const Switch: React.FC<SwitchProps> = (props) => {
     </div>
   );
 
-  // ─── 如果有 tip，用 PopOver 包裹 ───
+  // ─── 如果有 tip，用 Tooltip 包裹 ───
   if (tip) {
     return (
-      <PopOver content={tip} theme="dark" {...tipProps}>
+      <Tooltip content={tip} theme="dark" {...tipProps}>
         {switchContent}
-      </PopOver>
+      </Tooltip>
     );
   }
 

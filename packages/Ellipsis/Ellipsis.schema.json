@@ -22,9 +22,9 @@
       "description": "是否启用悬停提示",
       "default": true
     },
-    "popoverProps": {
+    "tooltipProps": {
       "type": "object",
-      "description": "PopOver 组件属性"
+      "description": "Tooltip 组件属性"
     },
     "setMaxWidth": {
       "type": "function",

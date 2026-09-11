@@ -20,7 +20,6 @@ export const ButtonMeta = {
     '支持图标按钮和文字按钮',
     '支持主文案和次文案',
     '支持悬停加粗和动画效果',
-    '支持气泡提示',
     '支持胶囊形状',
   ],
 
@@ -83,11 +82,6 @@ export const ButtonMeta = {
       code: `<Button text="确认" subText="(Ctrl+Enter)" />`,
     },
     {
-      title: '带提示的按钮',
-      description: '悬停显示提示信息',
-      code: `<Button text="保存" tip="保存当前更改" />`,
-    },
-    {
       title: '胶囊按钮',
       description: '圆角更大的胶囊形状',
       code: `<Button text="胶囊按钮" capsule />`,
@@ -110,11 +104,10 @@ export const ButtonMeta = {
     },
   ],
 
-  relatedComponents: ['Link', 'Icon', 'PopOver'],
+  relatedComponents: ['Link', 'Icon'],
 
   notes: [
     '只有 icon 时自动呈现纯图标按钮样式',
-    'tip 属性会自动包裹 PopOver 组件',
     'variant="transparent" 时 hoverBold 效果会自动启用',
     'disabled 状态下点击事件不会触发',
   ],

@@ -26,7 +26,7 @@ export default function AutoContainerExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 常规输入框 */}
           <ComponentSectionLayout
             title='常规输入框'
@@ -35,7 +35,7 @@ export default function AutoContainerExample() {
           >
             <CodeOperationContainer>
               <div
-                className="flex justify-center gap-6 bg-bg-secondary p-8 rounded-[12px]"
+                className="flex justify-center gap-1.5 bg-bg-secondary p-2 rounded-[12px]"
                 style={{ height: "400px" }}
               >
                 <AutoContainer ratio={1 / 1} className="flex items-center justify-center">
@@ -53,7 +53,7 @@ export default function AutoContainerExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={autoContainerProps} />
         </div>
       )}

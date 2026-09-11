@@ -8,7 +8,7 @@ const status = ['default', 'primary', 'success', 'danger', 'warning'];
 
 export default function LinkVariants() {
   return (
-    <div className='flex flex-col gap-24'>
+    <div className='flex flex-col gap-6'>
       <ComponentSectionLayout title='默认动态波浪下划线' id='link-wave-style' >
         <CodeOperationContainer>
           {status.map((statusItem, index) => (

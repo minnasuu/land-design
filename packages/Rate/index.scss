@@ -12,6 +12,11 @@ $rate-active-color: var(--land-rate-active-color, var(--color-warning));
 $rate-hover-color: var(--land-rate-hover-color, var(--color-warning));
 $rate-transition: var(--transition-normal);
 
+// 按压反馈：即时响应（Apple §1 反馈要即时，press 在 100ms 级）
+$rate-press-transition: 100ms cubic-bezier(0.2, 0, 0, 1);
+// 选中填充：轻微回弹、可被悬停打断重定目标（Apple §3/§4）
+$rate-fill-transition: 200ms cubic-bezier(0.34, 1.2, 0.64, 1);
+
 // ==================== 根容器 ====================
 
 .land-rate {
@@ -29,16 +34,19 @@ $rate-transition: var(--transition-normal);
     height: $rate-size-default;
     flex-shrink: 0;
     cursor: pointer;
-    transition: transform $rate-transition;
+    // 悬停/按压反馈：用快速回弹曲线而非慢速过渡（Apple §1 §4）
+    transition: transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    will-change: transform;
 
-    // 悬停放大效果
+    // 悬停放大（轻微 pop，连续扫过时有节奏感）
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
 
-    // 点击缩小效果
+    // 按压缩小（即时响应，比悬停更快）
     &:active {
-      transform: scale(0.95);
+      transform: scale(0.92);
+      transition: transform $rate-press-transition;
     }
 
     // ─── 半星点击区域 ───
@@ -99,7 +107,10 @@ $rate-transition: var(--transition-normal);
         height: 100%;
         overflow: hidden;
         color: $rate-active-color;
-        transition: width $rate-transition, color $rate-transition;
+        // 逐颗延迟：hover 时从左到右快速逐个填充（Apple §8 手势方向提示）
+        // 注：延迟拆成 transition-delay 长写法，避免 var() 在 transition 简写里被构建管线丢弃
+        transition: width $rate-fill-transition, color $rate-transition;
+        transition-delay: var(--land-rate-fill-delay, 0ms), 0ms;
 
         svg,
         img {
@@ -211,6 +222,23 @@ $rate-transition: var(--transition-normal);
       .land-rate__character-icon-active {
         color: $rate-hover-color;
       }
+    }
+  }
+
+  // ==================== 无障碍：降低动态效果（Apple §14） ====================
+  @media (prefers-reduced-motion: reduce) {
+    &__character {
+      transition: color $rate-transition;
+      will-change: auto;
+
+      &:hover,
+      &:active {
+        transform: none;
+      }
+    }
+
+    &__character-icon-active {
+      transition: color $rate-transition;
     }
   }
 }

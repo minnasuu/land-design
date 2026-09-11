@@ -12,7 +12,7 @@ export default function ImageExample() {
   // 自定义兜底内容
   const customFallback = (
     <div
-      className="flex flex-col items-center justify-center gap-8"
+      className="flex flex-col items-center justify-center gap-2"
       style={{ height: '100%', color: 'var(--color-text-quaternary)' }}
     >
       <Icon name="image" size={32} />
@@ -79,23 +79,23 @@ export default function ImageExample() {
             description="通过 fit 属性设置图片填充模式。"
           >
             <CodeOperationContainer style={{ flexWrap: 'wrap', gap: 16 }}>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={120} height={120} fit="cover" />
                 <span className="fs-12">cover</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={120} height={120} fit="contain" />
                 <span className="fs-12">contain</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={120} height={120} fit="fill" />
                 <span className="fs-12">fill</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={120} height={120} fit="none" />
                 <span className="fs-12">none</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={120} height={120} fit="scale-down" />
                 <span className="fs-12">scale-down</span>
               </div>
@@ -109,15 +109,15 @@ export default function ImageExample() {
             description="通过 position 属性设置 fit=cover 时的图片位置。"
           >
             <CodeOperationContainer style={{ flexWrap: 'wrap', gap: 16 }}>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={100} height={100} position="top" />
                 <span className="fs-12">top</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={100} height={100} position="center" />
                 <span className="fs-12">center</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage2} width={100} height={100} position="bottom" />
                 <span className="fs-12">bottom</span>
               </div>
@@ -131,19 +131,19 @@ export default function ImageExample() {
             description="通过 ratio 属性设置固定宽高比。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={150} ratio={16 / 9} />
                 <span className="fs-12">16:9</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={150} ratio={4 / 3} />
                 <span className="fs-12">4:3</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={150} ratio={1} />
                 <span className="fs-12">1:1</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={150} ratio={3 / 4} />
                 <span className="fs-12">3:4</span>
               </div>
@@ -157,19 +157,19 @@ export default function ImageExample() {
             description="通过 radius 和 round 属性设置圆角。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={100} height={100} radius={0} />
                 <span className="fs-12">无圆角</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={100} height={100} radius={8} />
                 <span className="fs-12">小圆角</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={100} height={100} radius={16} />
                 <span className="fs-12">大圆角</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src={sampleImage} width={100} height={100} round />
                 <span className="fs-12">圆形</span>
               </div>
@@ -183,11 +183,11 @@ export default function ImageExample() {
             description="图片加载失败时显示错误状态。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src="https://invalid-url.com/image.jpg" width={150} height={100} />
                 <span className="fs-12">默认错误状态</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image src="https://invalid-url.com/image.jpg" width={150} height={100} showError={false} />
                 <span className="fs-12">隐藏错误状态</span>
               </div>
@@ -201,7 +201,7 @@ export default function ImageExample() {
             description="通过 fallbackSrc 设置兜底图片。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image
                   src="https://invalid-url.com/image.jpg"
                   fallbackSrc={sampleImage}
@@ -210,7 +210,7 @@ export default function ImageExample() {
                 />
                 <span className="fs-12">主图失败，显示兜底图</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image
                   src="https://invalid-url.com/image.jpg"
                   fallbackSrc="https://another-invalid.com/image.jpg"
@@ -229,7 +229,7 @@ export default function ImageExample() {
             description="通过 fallback 属性自定义兜底内容。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image
                   src="https://invalid-url.com/image.jpg"
                   fallback={customFallback}
@@ -238,7 +238,7 @@ export default function ImageExample() {
                 />
                 <span className="fs-12">自定义兜底内容</span>
               </div>
-              <div className="flex flex-col items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
                 <Image
                   src="https://invalid-url.com/image.jpg"
                   fallbackSrc="https://also-invalid.com/image.jpg"
@@ -281,7 +281,7 @@ export default function ImageExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={imageProps} />
         </div>
       )}

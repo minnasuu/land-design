@@ -3,7 +3,7 @@ import { CommonProps } from '../types';
 
 // ==================== 基础类型定义 ====================
 
-/** 菜单项点击类型 */
+/** 导航项点击类型 */
 export enum ClickType {
   /** 当前页面切换 */
   SELF = 'self',
@@ -15,8 +15,8 @@ export enum ClickType {
   DISABLED = 'disabled',
 }
 
-/** 菜单项 */
-export interface MenuItem {
+/** 导航项 */
+export interface NavItem {
   /** 唯一标识 */
   key: string;
   /** 标题文本 */
@@ -27,18 +27,16 @@ export interface MenuItem {
   subText?: string;
   /** 前置图标，字符串为图片 URL */
   icon?: string | ReactNode;
-  /** 角标内容，true 时显示 "NEW" */
-  isNew?: string | ReactNode | boolean;
   /** 外部链接地址 */
   href?: string;
   /** 点击行为类型 */
   clickType?: ClickType;
-  /** 下拉菜单是否展开（内嵌模式） */
+  /** 下拉导航是否展开（内嵌模式） */
   open?: boolean;
   /** 标题作为副级显示 */
   titleDeputy?: boolean;
-  /** 子菜单数据 */
-  children?: MenuItem[];
+  /** 子导航数据 */
+  children?: NavItem[];
   /** 是否禁用 */
   disabled?: boolean;
   /** 扩展属性 */
@@ -47,10 +45,10 @@ export interface MenuItem {
 
 // ==================== 属性接口定义 ====================
 
-/** Menu 组件属性 */
-export interface MenuProps extends CommonProps {
-  /** 菜单数据 */
-  items?: MenuItem[];
+/** Nav 组件属性 */
+export interface NavProps extends CommonProps {
+  /** 导航数据 */
+  items?: NavItem[];
   /** 当前激活项的 key */
   active?: string;
   /**
@@ -75,14 +73,21 @@ export interface MenuProps extends CommonProps {
    * @default false
    */
   scrollToView?: boolean;
-  /** 菜单项自定义样式 */
+  /**
+   * 子导航展开方式
+   * - dropdown：悬浮时以浮层（absolute）显示，横向导航向下展开、纵向导航向右展开
+   * - inline：平铺展开，占据实际位置，点击父项展开/收起（适合侧边栏树形导航）
+   * @default 'dropdown'
+   */
+  expandType?: 'dropdown' | 'inline';
+  /** 导航项自定义样式 */
   itemStyle?: CSSProperties;
-  /** 菜单项自定义类名 */
+  /** 导航项自定义类名 */
   itemClassName?: string;
-  /** 菜单项点击回调 */
-  onChange?: (item: MenuItem) => void;
-  /** 下拉菜单项点击回调 */
-  onDropChange?: (item: MenuItem, parentItem: MenuItem) => void;
-  /** 子菜单透传属性 */
-  dropProps?: MenuProps;
+  /** 导航项点击回调 */
+  onChange?: (item: NavItem) => void;
+  /** 下拉导航项点击回调 */
+  onDropChange?: (item: NavItem, parentItem: NavItem) => void;
+  /** 子导航透传属性 */
+  dropProps?: NavProps;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Icon from '../../packages/Icon';
 import Button from '../../packages/Button';
+import Tooltip from '../../packages/Tooltip';
 import CodeHighlightContainer from './CodeHighlightContainer';
 import Flex from '../../packages/Flex';
 
@@ -337,27 +338,27 @@ const CodeOperationContainer: React.FC<{
 
   return (
     <div className="flex flex-col w-full border border-border-primary rounded-lg">
-      <Flex className={`p-24 text-xs ${className}`} bothCenter gap={12} style={style} column={column}>
+      <Flex className={`p-6 text-xs ${className}`} bothCenter gap={12} style={style} column={column}>
         {children}
       </Flex>
-      <details className="w-full flex flex-col justify-between border-box" style={{ marginTop: '-1px' }} open={showCode}>
-        <summary className="flex items-center justify-end gap-8 p-8">
-          <Button icon={<Icon name="copy" />} variant='text' size='small' onClick={handleCopy} />
-          <Button
-            icon={<Icon className={showCode ? "rotate-180" : ""} name={showCode ? "arrow-double" : "code"} size={16} />}
-            variant='text'
-            size='small'
-            tip={showCode ? "收起" : "显示组件代码"}
-            onClick={(e) => {
-              e.preventDefault();
-              setShowCode(!showCode);
-            }}
-          />
-        </summary>
-        <div className='bg-bg-secondary rounded-b-lg p-16'>
-          <CodeHighlightContainer language='tsx' codeStr={childrenString} />
+      <div className="w-full flex flex-col justify-between border-box" style={{ marginTop: '-1px' }}>
+        <div className="flex items-center justify-end gap-2 p-2">
+          <Tooltip content="复制代码">
+            <Button icon={<Icon name="copy" />} variant='text' size='small' onClick={handleCopy} />
+          </Tooltip>
+          <Tooltip content={showCode ? "收起" : "显示组件代码"}>
+            <Button
+              icon={<Icon className={showCode ? "rotate-180" : ""} name={showCode ? "arrow-double" : "code"} size={16} />}
+              variant='text'
+              size='small'
+              onClick={() => setShowCode(!showCode)}
+            />
+          </Tooltip>
         </div>
-      </details>
+        {showCode && <div className='bg-bg-secondary rounded-b-lg p-4'>
+          <CodeHighlightContainer language='tsx' codeStr={childrenString} />
+        </div>}
+      </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import { CommonProps } from "../types";
-import { MenuProps } from "../Menu/props";
+import { NavProps } from "../Nav/props";
 
 /**
  * Header组件属性类型定义
@@ -89,9 +89,9 @@ export interface HeaderContentProps {
 
   /** 
    * 导航项配置
-   * 可以传入MenuProps来配置导航菜单
+   * 可以传入NavProps来配置导航菜单
    */
-  menuProps?: MenuProps;
+  menuProps?: NavProps;
 
   /** 
    * 右侧元素

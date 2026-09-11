@@ -90,9 +90,9 @@ const CodePreview: React.FC<CodePreviewProps> = ({
   const renderPreview = () => {
     if (isLoading) {
       return (
-        <div className="w-full h-64 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <div className="w-full h-16 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-1">
+            <div className="animate-spin rounded-full h-2 w-2 border-b-2 border-blue-500"></div>
             <p className="text-gray-600">正在生成预览...</p>
           </div>
         </div>
@@ -101,8 +101,8 @@ const CodePreview: React.FC<CodePreviewProps> = ({
 
     if (error) {
       return (
-        <div className="w-full h-64 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-4 text-red-500">
+        <div className="w-full h-16 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-1 text-red-500">
             <Icon name="error" size={24} />
             <p className="text-center">预览生成失败: {error}</p>
           </div>
@@ -112,14 +112,14 @@ const CodePreview: React.FC<CodePreviewProps> = ({
 
     if (!htmlResult) {
       return (
-        <div className="w-full h-64 flex items-center justify-center">
+        <div className="w-full h-16 flex items-center justify-center">
           <p className="text-gray-500">暂无预览内容</p>
         </div>
       );
     }
 
     return (
-      <div className="w-full h-64 border border-border-primary rounded-lg overflow-hidden">
+      <div className="w-full h-16 border border-border-primary rounded-lg overflow-hidden">
         <iframe
           src={previewUrl}
           className="w-full h-full"
@@ -133,7 +133,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
   const renderCode = () => {
     if (!htmlResult) {
       return (
-        <div className="w-full h-64 flex items-center justify-center">
+        <div className="w-full h-16 flex items-center justify-center">
           <p className="text-gray-500">暂无代码内容</p>
         </div>
       );
@@ -143,7 +143,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
       <div className="w-full bg-bg-secondary" style={{ maxHeight: '480px' }}>
         {/* HTML代码 */}
         <div className="flex-1 flex flex-col">
-          <Flex justify="space-between" align="center" className="pl-16 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
+          <Flex justify="space-between" align="center" className="pl-4 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
             <div>HTML</div>
             <Button
               icon={<Icon name="copy" size={12} />}
@@ -164,7 +164,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
         {/* CSS和JS代码 */}
         <Flex className="w-full" gap={0}>
           <div className="flex-1 flex flex-col" style={{ width: '1%' }}>
-            <Flex justify="space-between" align="center" className="pl-16 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
+            <Flex justify="space-between" align="center" className="pl-4 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
               <div>CSS</div>
               <Button
                 icon={<Icon name="copy" size={12} />}
@@ -182,7 +182,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
           </div>
           <Divider direction="vertical" style={{ height: '100%', width: '1px' }} className="flex-shrink-0" />
           <div className="flex-1" style={{ width: '1%' }}>
-            <Flex justify="space-between" align="center" className="pl-16 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
+            <Flex justify="space-between" align="center" className="pl-4 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary" style={{ height: '40px' }}>
               <div>JavaScript</div>
               <Button
                 icon={<Icon name="copy" size={12} />}
@@ -205,7 +205,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
   return (
     <div className="w-full">
       {/* 标题和描述 */}
-      <div className="mb-4">
+      <div className="mb-1">
         <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
         {description && (
           <p className="text-sm text-text-secondary mt-1">{description}</p>
@@ -238,7 +238,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({
       </Flex>
 
       {/* 内容区域 */}
-      <div className="mt-4">
+      <div className="mt-1">
         {activeTab === 'preview' ? renderPreview() : renderCode()}
       </div>
     </div>

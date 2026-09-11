@@ -49,6 +49,12 @@ export default function SelectExample() {
     { key: '3', label: '选项三（禁用）', disabled: true, tip: '此选项暂无法选择' },
   ];
 
+  const longOptions: SelectOption[] = [
+    { key: '1', label: '这是一个特别长的选项文本，用于演示下拉框宽度' },
+    { key: '2', label: '短选项' },
+    { key: '3', label: '普通长度的选项' },
+  ];
+
   const selectProps = [
     { name: 'options', type: 'SelectOption[]', desc: '选项数据' },
     { name: 'value', type: 'string | number', desc: '当前选中值（单选）' },
@@ -59,11 +65,12 @@ export default function SelectExample() {
     { name: 'size', type: "'small' | 'default' | 'large'", desc: '尺寸', default: 'default' },
     { name: 'disabled', type: 'boolean', desc: '是否禁用', default: 'false' },
     { name: 'width', type: 'number | string', desc: '宽度' },
+    { name: 'dropdownWidth', type: "'match' | 'auto'", desc: '下拉框宽度模式：match 与触发器等宽，auto 自适应内容宽度', default: 'match' },
     { name: 'showCheckbox', type: 'boolean', desc: '多选时是否显示复选框', default: 'false' },
     { name: 'separator', type: 'string', desc: '多选时的分隔符', default: '，' },
     { name: 'maxDisplayCount', type: 'number', desc: '多选时最大显示数量' },
     { name: 'tip', type: 'ReactNode', desc: '选择框提示内容' },
-    { name: 'tipProps', type: 'PopOverProps', desc: '选择框提示配置' },
+    { name: 'tipProps', type: 'TooltipProps', desc: '选择框提示配置' },
     { name: 'customValueDisplay', type: '(params) => ReactNode', desc: '自定义选中内容显示' },
     { name: 'renderOption', type: '(option, isSelected) => ReactNode', desc: '自定义选项渲染' },
     { name: 'emptyContent', type: 'ReactNode', desc: '空数据时的显示内容', default: '暂无数据' },
@@ -106,6 +113,18 @@ export default function SelectExample() {
                 onChange={(value) => setSingleValue(value as string)}
                 width={200}
               />
+            </CodeOperationContainer>
+          </ComponentSectionLayout>
+
+          {/* 下拉框宽度 */}
+          <ComponentSectionLayout
+            title="下拉框宽度"
+            id="select-dropdown-width"
+            description="dropdownWidth 控制下拉框宽度：match 与触发器等宽（默认），auto 自适应内容宽度。"
+          >
+            <CodeOperationContainer>
+              <Select options={longOptions} width={180} placeholder="默认等宽 match" />
+              <Select options={longOptions} width={180} dropdownWidth="auto" placeholder="自适应 auto" />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -209,7 +228,7 @@ export default function SelectExample() {
                     return <span style={{ color: 'var(--color-text-tertiary)' }}>{placeholder}</span>;
                   }
                   return (
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1">
                       {items.slice(0, 3).map((item) => (
                         <Tag
                           key={item.key}
@@ -276,13 +295,13 @@ export default function SelectExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           <div>
-            <h3 className="text-base font-semibold mb-12">Select Props</h3>
+            <h3 className="text-base font-semibold mb-3">Select Props</h3>
             <ComponentPropsTable props={selectProps} />
           </div>
           <div id="SelectOption-API">
-            <h3 className="text-base font-semibold mb-12">SelectOption</h3>
+            <h3 className="text-base font-semibold mb-3">SelectOption</h3>
             <ComponentPropsTable props={optionTypeProps} />
           </div>
         </div>

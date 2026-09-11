@@ -7,44 +7,98 @@
   --alert-padding-small: var(--gap-m) var(--gap-l);
   --alert-padding-medium: var(--gap-l) var(--gap-xl);
   --alert-padding-large: var(--gap-xl) var(--gap-2xl);
-  
+
   --alert-font-size-small: var(--font-content-s);
   --alert-font-size-medium: var(--font-content-m);
   --alert-font-size-large: var(--font-content-l);
 
+  // 行高：标题与图标「首行对齐」共用该值，保证图标始终贴合第一行文字
+  --alert-line-height: 1.5;
+
   // 颜色
-  --alert-info-color: var(--color-primary-6);
-  --alert-info-bg: var(--color-primary-1);
-  --alert-info-border: var(--color-primary-2);
-  --alert-info-light-bg: var(--color-primary-1);
+  // 本设计系统色阶为 primary/green/orange/red/blue/gray，
+  // 不存在 success-*/warning-*/danger-* 色阶，需映射到语义色变量；
+  // 引用 --color-link/--color-success 等语义变量而非原始色阶，
+  // 这样深色模式下色值才会自动切换。
+  // info → 链接色（蓝）
+  --alert-info-color: var(--color-link);
+  --alert-info-bg: var(--color-link-light);
+  --alert-info-border: var(--color-link-lighter);
+  --alert-info-light-bg: var(--color-link-light);
 
-  --alert-success-color: var(--color-success-6);
-  --alert-success-bg: var(--color-success-1);
-  --alert-success-border: var(--color-success-2);
-  --alert-success-light-bg: var(--color-success-1);
+  // success → 成功色（绿）
+  --alert-success-color: var(--color-success);
+  --alert-success-bg: var(--color-success-light);
+  --alert-success-border: var(--color-success-lighter);
+  --alert-success-light-bg: var(--color-success-light);
 
-  --alert-warning-color: var(--color-warning-6);
-  --alert-warning-bg: var(--color-warning-1);
-  --alert-warning-border: var(--color-warning-2);
-  --alert-warning-light-bg: var(--color-warning-1);
+  // warning → 警告色（橙）
+  --alert-warning-color: var(--color-warning);
+  --alert-warning-bg: var(--color-warning-light);
+  --alert-warning-border: var(--color-warning-lighter);
+  --alert-warning-light-bg: var(--color-warning-light);
 
-  --alert-error-color: var(--color-danger-6);
-  --alert-error-bg: var(--color-danger-1);
-  --alert-error-border: var(--color-danger-2);
-  --alert-error-light-bg: var(--color-danger-1);
+  // error → 错误色（红）
+  --alert-error-color: var(--color-error);
+  --alert-error-bg: var(--color-error-light);
+  --alert-error-border: var(--color-error-lighter);
+  --alert-error-light-bg: var(--color-error-light);
 
-  --alert-loading-color: var(--color-primary-6);
+  // loading → 中性色
+  --alert-loading-color: var(--color-text-primary);
   --alert-loading-bg: var(--color-bg-secondary);
   --alert-loading-border: var(--color-border-primary);
+  --alert-loading-light-bg: var(--color-bg-secondary);
 }
 
 // ─── 基础样式 ───
 .land-alert {
+  // 文字层级，filled 变体会整体覆盖为反色
+  --alert-fg: var(--color-text-primary);
+  --alert-fg-muted: var(--color-text-secondary);
+  --alert-fg-subtle: var(--color-text-tertiary);
+  --alert-fg-hover-bg: var(--color-bg-tertiary);
+
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
-  width: fit-content;
+  gap: var(--gap-m);
+  font-size: var(--alert-font-size-medium);
+  line-height: var(--alert-line-height);
+  color: var(--alert-fg);
   border-radius: var(--radius-m);
-  transition: all var(--transition-m) ease;
+  transition: opacity var(--transition-m) ease, transform var(--transition-m) ease;
+
+  // ─── 类型（统一提供 --alert-color / --alert-bg / --alert-border-color）───
+  &--info {
+    --alert-color: var(--alert-info-color);
+    --alert-bg: var(--alert-info-bg);
+    --alert-border-color: var(--alert-info-border);
+  }
+
+  &--success {
+    --alert-color: var(--alert-success-color);
+    --alert-bg: var(--alert-success-bg);
+    --alert-border-color: var(--alert-success-border);
+  }
+
+  &--warning {
+    --alert-color: var(--alert-warning-color);
+    --alert-bg: var(--alert-warning-bg);
+    --alert-border-color: var(--alert-warning-border);
+  }
+
+  &--error {
+    --alert-color: var(--alert-error-color);
+    --alert-bg: var(--alert-error-bg);
+    --alert-border-color: var(--alert-error-border);
+  }
+
+  &--loading {
+    --alert-color: var(--alert-loading-color);
+    --alert-bg: var(--alert-loading-bg);
+    --alert-border-color: var(--alert-loading-border);
+  }
 
   // ─── 尺寸变体 ───
   &--small {
@@ -78,119 +132,58 @@
   }
 
   // ─── 变体样式 ───
+  // filled：实色背景 + 反色文字
   &--filled {
-    &.land-alert--info {
-      background-color: var(--alert-info-color);
-      color: white;
-    }
-    &.land-alert--success {
-      background-color: var(--alert-success-color);
-      color: white;
-    }
-    &.land-alert--warning {
-      background-color: var(--alert-warning-color);
-      color: white;
-    }
-    &.land-alert--error {
-      background-color: var(--alert-error-color);
-      color: white;
-    }
-    &.land-alert--loading {
-      background-color: var(--color-bg-secondary);
-      color: var(--color-text-primary);
-    }
+    --alert-fg: var(--color-white);
+    --alert-fg-muted: rgba(255, 255, 255, 0.8);
+    --alert-fg-subtle: rgba(255, 255, 255, 0.75);
+    --alert-fg-hover-bg: rgba(255, 255, 255, 0.24);
 
-    .land-alert__icon svg {
-      color: white;
-    }
+    background-color: var(--alert-color);
   }
 
+  // loading 用中性底色，前景保持深色，不做反色处理
+  &--filled.land-alert--loading {
+    --alert-fg: var(--color-text-primary);
+    --alert-fg-muted: var(--color-text-secondary);
+    --alert-fg-subtle: var(--color-text-tertiary);
+    --alert-fg-hover-bg: var(--color-bg-tertiary);
+
+    background-color: var(--alert-bg);
+  }
+
+  // outlined：透明背景 + 描边 + 彩色文字
   &--outlined {
     background-color: transparent;
-    border-width: 1px;
-    border-style: solid;
-
-    &.land-alert--info {
-      border-color: var(--alert-info-border);
-      color: var(--alert-info-color);
-    }
-    &.land-alert--success {
-      border-color: var(--alert-success-border);
-      color: var(--alert-success-color);
-    }
-    &.land-alert--warning {
-      border-color: var(--alert-warning-border);
-      color: var(--alert-warning-color);
-    }
-    &.land-alert--error {
-      border-color: var(--alert-error-border);
-      color: var(--alert-error-color);
-    }
-    &.land-alert--loading {
-      border-color: var(--alert-loading-border);
-      color: var(--color-text-primary);
-    }
+    border: 1px solid var(--alert-border-color);
+    color: var(--alert-color);
   }
 
+  // light：浅色背景（默认）
   &--light {
-    &.land-alert--info {
-      background-color: var(--alert-info-light-bg);
-      color: var(--color-text-primary);
-    }
-    &.land-alert--success {
-      background-color: var(--alert-success-light-bg);
-      color: var(--color-text-primary);
-    }
-    &.land-alert--warning {
-      background-color: var(--alert-warning-light-bg);
-      color: var(--color-text-primary);
-    }
-    &.land-alert--error {
-      background-color: var(--alert-error-light-bg);
-      color: var(--color-text-primary);
-    }
-    &.land-alert--loading {
-      background-color: var(--alert-loading-bg);
-      color: var(--color-text-primary);
-    }
+    background-color: var(--alert-bg);
   }
 
+  // text：无背景、无边框
   &--text {
     background-color: transparent;
     padding-left: 0;
     padding-right: 0;
+    border: none;
   }
 
   // ─── 边框 ───
-  &--bordered {
-    &.land-alert--light,
-    &.land-alert--text {
-      &.land-alert--info {
-        border: 1px solid var(--alert-info-border);
-      }
-      &.land-alert--success {
-        border: 1px solid var(--alert-success-border);
-      }
-      &.land-alert--warning {
-        border: 1px solid var(--alert-warning-border);
-      }
-      &.land-alert--error {
-        border: 1px solid var(--alert-error-border);
-      }
-      &.land-alert--loading {
-        border: 1px solid var(--alert-loading-border);
-      }
-    }
-
-    &.land-alert--text {
-      border: none;
-    }
+  // outlined 自带边框；filled / text 恒无边框；
+  // 仅 light 由 bordered 属性控制
+  &--bordered.land-alert--light {
+    border: 1px solid var(--alert-border-color);
   }
 
   // ─── 关闭动画 ───
   &--closing {
     opacity: 0;
     transform: translateY(-10px);
+    pointer-events: none;
   }
 }
 
@@ -200,25 +193,43 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  color: var(--alert-color);
+
+  // 水平布局时图标与第一行文字对齐（而非在整个内容块中垂直居中）
+  .land-alert--horizontal & {
+    align-self: flex-start;
+    min-height: calc(1em * var(--alert-line-height));
+  }
+
+  // 实色背景下图标跟随前景色，避免与同色背景融为一体
+  .land-alert--filled & {
+    color: var(--alert-fg);
+  }
+
+  svg {
+    display: block;
+  }
 }
 
 // ─── 内容区域 ───
 .land-alert__content {
   flex: 1;
   min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .land-alert__title {
   font-weight: 500;
   color: inherit;
-  line-height: 1.5;
+  line-height: var(--alert-line-height);
 }
 
 .land-alert__description {
   margin-top: var(--gap-xs);
   font-size: 0.9em;
-  color: var(--color-text-secondary);
-  line-height: 1.5;
+  color: var(--alert-fg-muted);
+  line-height: var(--alert-line-height);
 }
 
 // ─── 操作区域 ───
@@ -234,14 +245,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--color-text-tertiary);
-  transition: color var(--transition-s) ease;
+  color: var(--alert-fg-subtle);
+  transition: color var(--transition-s) ease, background-color var(--transition-s) ease;
   padding: var(--gap-xs);
   border-radius: var(--radius-s);
 
   &:hover {
-    color: var(--color-text-secondary);
-    background-color: var(--color-bg-tertiary);
+    color: var(--alert-fg);
+    background-color: var(--alert-fg-hover-bg);
   }
 }
 

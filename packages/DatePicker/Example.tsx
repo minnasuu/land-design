@@ -163,7 +163,7 @@ export default function DatePickerExample() {
             id='date-picker-input'
             description='通过 allowInput 属性启用直接输入功能（仅date类型）。'
           >
-            <ul className='flex flex-col gap-4 text-12 color-text-secondary mb-8'>
+            <ul className='flex flex-col gap-1 text-12 color-text-secondary mb-2'>
               <li>支持格式：YYYY-MM-DD、YYYY/MM/DD、YYYY年MM月DD日 等</li>
               <li>示例：2024-01-15、2024/01/15、2024年1月15日</li>
               <li>输入后按Enter或失焦时确认，输入无效时恢复原值</li>
@@ -248,7 +248,7 @@ export default function DatePickerExample() {
             description='通过 autoWidth 属性使选择器宽度根据选中值自适应。当 value 展示时，宽度会自动调整以适应内容。'
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">日期选择：</span>
                 <DatePicker
                   autoWidth
@@ -257,7 +257,7 @@ export default function DatePickerExample() {
                   onChange={setAutoWidthValue}
                 />
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">周选择：</span>
                 <DatePicker
                   type="week"
@@ -265,7 +265,7 @@ export default function DatePickerExample() {
                   placeholder="请选择周"
                 />
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">月份选择：</span>
                 <DatePicker
                   type="month"
@@ -273,7 +273,7 @@ export default function DatePickerExample() {
                   placeholder="请选择月份"
                 />
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">季度选择：</span>
                 <DatePicker
                   type="quarter"
@@ -281,7 +281,7 @@ export default function DatePickerExample() {
                   placeholder="请选择季度"
                 />
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">年份选择：</span>
                 <DatePicker
                   type="year"
@@ -289,7 +289,7 @@ export default function DatePickerExample() {
                   placeholder="请选择年份"
                 />
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
                 <span className="fs-12 color-gray-4">自定义最小宽度：</span>
                 <DatePicker
                   autoWidth
@@ -303,7 +303,7 @@ export default function DatePickerExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={datePickerProps} />
         </div>
       )}

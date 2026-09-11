@@ -33,8 +33,8 @@ export default function SwitchExample() {
     { name: "checkedIcon", type: "ReactNode", desc: "开启状态的滑块图标", default: "-" },
     { name: "tip", type: "ReactNode", desc: "整体提示内容", default: "-" },
     { name: "iconTip", type: "ReactNode", desc: "图标提示内容", default: "-" },
-    { name: "tipProps", type: "Partial<PopOverProps>", desc: "整体提示的 PopOver 属性", default: "-" },
-    { name: "iconTipProps", type: "Partial<PopOverProps>", desc: "图标提示的 PopOver 属性", default: "-" },
+    { name: "tipProps", type: "Partial<TooltipProps>", desc: "整体提示的 Tooltip 属性", default: "-" },
+    { name: "iconTipProps", type: "Partial<TooltipProps>", desc: "图标提示的 Tooltip 属性", default: "-" },
     { name: "size", type: '"small" | "default" | "large"', desc: "尺寸", default: '"default"' },
     { name: "labelPosition", type: '"left" | "right"', desc: "标签位置", default: '"right"' },
     { name: "loading", type: "boolean", desc: "加载中状态", default: "false" },
@@ -282,7 +282,7 @@ export default function SwitchExample() {
       )}
 
       {activeTab === "props" && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={switchProps} />
         </div>
       )}

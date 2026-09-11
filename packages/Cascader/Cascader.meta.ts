@@ -1,27 +1,28 @@
 /**
- * SelectTree 组件元数据
+ * Cascader 组件元数据
  * @description 用于 AI 代码生成的组件信息描述
  * @author Land Design System
  */
 
-export const SelectTreeMeta = {
+export const CascaderMeta = {
   // 基础信息
-  name: 'SelectTree',
-  chineseName: '树形选择器',
-  description: '树形选择器组件，用于从树形结构的数据中选择一个或多个值。支持单选和多选模式，可展开/收起子节点。',
-  
+  name: 'Cascader',
+  chineseName: '级联选择器',
+  description: '级联选择器组件，用于从树形结构的数据中选择一个或多个值。支持单选和多选模式，多列层级展示，可展开/收起子节点。',
+
   // 分类
   category: 'form',
   subcategory: 'selection',
-  
+
   // 引入方式
-  importStatement: "import SelectTree from 'land-design/SelectTree';",
-  
+  importStatement: "import Cascader from 'land-design/Cascader';",
+
   // 组件特性
   features: [
     '支持树形结构数据',
     '支持单选和多选模式',
-    '支持节点展开/收起',
+    '支持节点展开/收起（多列面板）',
+    '列展开/收起带滑入/收起过渡动画（支持 prefers-reduced-motion 降级）',
     '支持禁用某些节点',
     '支持节点提示信息',
     '支持自定义选项渲染',
@@ -30,7 +31,7 @@ export const SelectTreeMeta = {
     '支持最大显示数量限制',
     '支持受控和非受控模式',
   ],
-  
+
   // 使用场景
   useCases: [
     '部门/组织选择',
@@ -40,13 +41,13 @@ export const SelectTreeMeta = {
     '文件目录选择',
     '多级分类筛选',
   ],
-  
+
   // 代码示例
   examples: [
     {
       title: '基础用法',
-      description: '单选树形选择器',
-      code: `<SelectTree
+      description: '单选级联选择器',
+      code: `<Cascader
   options={[
     {
       key: 'parent1',
@@ -71,7 +72,7 @@ export const SelectTreeMeta = {
     {
       title: '多选模式',
       description: '可选择多个节点',
-      code: `<SelectTree
+      code: `<Cascader
   multiple
   options={treeData}
   values={selectedKeys}
@@ -81,7 +82,7 @@ export const SelectTreeMeta = {
     {
       title: '禁用某些节点',
       description: '部分节点不可选择',
-      code: `<SelectTree
+      code: `<Cascader
   options={[
     { key: '1', label: '可选' },
     { key: '2', label: '禁用', disabled: true },
@@ -92,7 +93,7 @@ export const SelectTreeMeta = {
     {
       title: '自定义显示',
       description: '自定义已选内容的展示方式',
-      code: `<SelectTree
+      code: `<Cascader
   options={treeData}
   customValueDisplay={({ items }) => (
     <div>{items.map(i => i.label).join(' > ')}</div>
@@ -100,10 +101,10 @@ export const SelectTreeMeta = {
 />`,
     },
   ],
-  
+
   // 相关组件
-  relatedComponents: ['Select', 'Dropdown', 'Checkbox'],
-  
+  relatedComponents: ['Select', 'Tree', 'Dropdown', 'Checkbox'],
+
   // 使用注意事项
   notes: [
     'options 中每个选项的 key 必须唯一',
@@ -111,18 +112,18 @@ export const SelectTreeMeta = {
     'children 字段用于定义子节点',
     'data 属性已废弃，请使用 options',
   ],
-  
+
   // 版本信息
   version: '1.0.0',
-  
+
   // 更新日志
   changelog: [
     {
       version: '1.0.0',
       date: '2024-01-01',
-      changes: ['初始版本发布'],
+      changes: ['初始版本发布（由 SelectTree 的面板逻辑抽取而来）'],
     },
   ],
 };
 
-export default SelectTreeMeta;
+export default CascaderMeta;

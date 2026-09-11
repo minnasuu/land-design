@@ -136,17 +136,17 @@ export default function IconExample() {
         </Flex>
         <Flex gap={24} column className="w-full">
           {ICON_EXAMPLE_DATA.map((item1, index1) => (
-            <div id={item1.id} key={index1} className="flex flex-col gap-12 w-full">
+            <div id={item1.id} key={index1} className="flex flex-col gap-3 w-full">
               <Title title={item1.title} type="h3" />
               <div
-                className="grid gap-24"
+                className="grid gap-6"
                 style={{
                   gridTemplateColumns: "repeat(auto-fill, minmax(100px,1fr))",
                 }}
               >
                 {item1.data?.map((item2) => (
                   <AffixContainer
-                    className="flex flex-col items-center p-12 color-gray-4 border border-transparent hover:border-gray-2 rounded-xl hover:bg-gray transition-all cursor-pointer aspect-square"
+                    className="flex flex-col items-center p-3 color-gray-4 border border-transparent hover:border-gray-2 rounded-xl hover:bg-gray transition-all cursor-pointer aspect-square"
                     key={item2.name}
                     onClick={() => handleIconCopyClick?.(item2.name)}
                     items={[
@@ -166,7 +166,7 @@ export default function IconExample() {
                       {
                         placement: 'bottomCenter',
                         content: (
-                          <div className="text-xs pt-8 transition-all no-wrap text-gray-secondary">
+                          <div className="text-xs pt-2 transition-all no-wrap text-gray-secondary">
                             {item2.name}
                           </div>
                         ),
@@ -191,7 +191,7 @@ export default function IconExample() {
       </Flex>}
       {
         activeTab === 'props' && (
-          <div className='flex flex-col gap-12'>
+          <div className='flex flex-col gap-3'>
             <ComponentPropsTable props={IconProps} />
           </div>
         )

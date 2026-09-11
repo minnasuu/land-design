@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../Icon';
-import PopOver from '../PopOver';
+import Tooltip from '../Tooltip';
 import Dropdown from '../Dropdown';
 import Checkbox from '../Checkbox';
 import { SelectProps, SelectOption, SelectVariant } from './props';
@@ -66,6 +66,7 @@ const Select: React.FC<SelectProps> = ({
   style,
   dropdownClassName = '',
   dropdownStyle,
+  dropdownWidth = 'match',
 
   // 事件属性
   onChange,
@@ -83,7 +84,7 @@ const Select: React.FC<SelectProps> = ({
   const [internalValue, setInternalValue] = useState<string | number | undefined>(effectiveValue);
   const [internalValues, setInternalValues] = useState<(string | number)[]>(rawValues);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // 使用 ref 跟踪状态，避免 useCallback 依赖变化
   const prevRawValuesRef = useRef(rawValues);
   const internalValuesRef = useRef(internalValues);
@@ -102,7 +103,7 @@ const Select: React.FC<SelectProps> = ({
     const prev = prevRawValuesRef.current;
     // 比较数组内容是否相同
     const isSame = prev.length === rawValues.length && prev.every((v, i) => v === rawValues[i]);
-    
+
     if (!isSame) {
       prevRawValuesRef.current = rawValues;
       setInternalValues(rawValues);
@@ -267,13 +268,13 @@ const Select: React.FC<SelectProps> = ({
           {option.iconTip && (
             <div className={`${prefixCls}__option-icon`}>
               <Icon name="info-stroke" size={12} />
-              <PopOver content={option.iconTip} placement="right" theme="dark" />
+              <Tooltip content={option.iconTip} placement="right" theme="dark" />
             </div>
           )}
 
           {/* 整体提示 */}
           {option.tip && (
-            <PopOver content={option.tip} placement="right" theme="dark" />
+            <Tooltip content={option.tip} placement="right" theme="dark" />
           )}
         </div>
       );
@@ -297,8 +298,8 @@ const Select: React.FC<SelectProps> = ({
 
   // ─── 根容器类名 ───
   const rootClassName = useMemo(() => {
-    return [prefixCls, className].filter(Boolean).join(' ');
-  }, [className]);
+    return [prefixCls, `${prefixCls}--dropdown-${dropdownWidth}`, className].filter(Boolean).join(' ');
+  }, [className, dropdownWidth]);
 
   // ─── 根容器样式 ───
   const rootStyle = useMemo<React.CSSProperties>(() => {
@@ -334,8 +335,8 @@ const Select: React.FC<SelectProps> = ({
       >
         <div className={triggerClassName}>
           <div className={`${prefixCls}__content`}>{renderDisplayContent()}</div>
-          <Icon name="arrow-triangle" className={`${prefixCls}__arrow`} size={16} />
-          {tip && <PopOver attach="body" content={tip} theme="dark" {...tipProps} />}
+          <Icon name="arrow" className={`${prefixCls}__arrow`} size={16} />
+          {tip && <Tooltip attach="body" content={tip} theme="dark" {...tipProps} />}
         </div>
       </Dropdown>
     </div>

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import './index.scss'
-import PopOver from '../PopOver';
 import ButtonArrow from './ButtonArrow';
 import ButtonChange from './ButtonChange';
 import { ButtonProps } from './props';
@@ -28,8 +27,6 @@ const Button: React.FC<ButtonProps> & {
   subText,
   icon,
   capsule,
-  tip,
-  popoverProps,
   htmlProps,
 }) => {
     const isIconOnly = useMemo(() => {
@@ -43,7 +40,6 @@ const Button: React.FC<ButtonProps> & {
         `${prefixCls}--${status}`,
         `${prefixCls}--${size}`,
         isIconOnly && `${prefixCls}--icon-only`,
-        tip && `${prefixCls}--has-tip`,
         block && `${prefixCls}--block`,
         bold && `${prefixCls}--bold`,
         hoverBold && `${prefixCls}--hover-bold`,
@@ -54,18 +50,31 @@ const Button: React.FC<ButtonProps> & {
       ]
         .filter(Boolean)
         .join(' ');
-    }, [variant, status, size, isIconOnly, disabled, tip, block, bold, hoverBold, capsule, hoverAnimation, activeAnimation, className]);
+    }, [variant, status, size, isIconOnly, disabled, block, bold, hoverBold, capsule, hoverAnimation, activeAnimation, className]);
 
     const renderContent = () => (<>
       {icon && <div className={`${prefixCls}__icon`}>{icon}</div>}
       {(!isIconOnly && (text || subText)) && (
         <div className={`${prefixCls}__content-wrapper`}>
-          <span className={`${prefixCls}__text`}>{text}</span>
-          {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
-          {(hoverBold || variant === 'transparent') && <div className={`${prefixCls}__mask-content`}>
-            <span className={`${prefixCls}__mask-text`}>{text}</span>
-            {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
-          </div>}
+          {hoverBold || variant === 'transparent' ? (
+            <>
+              {/* 隐形加粗副本：仅占位预留加粗宽度，避免 hover 加粗时布局抖动 */}
+              <span className={`${prefixCls}__text-ghost`} aria-hidden="true">
+                {text}
+                {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
+              </span>
+              {/* 可见文案：默认常规字重，hover 时加粗（直接过渡字重，无重影） */}
+              <span className={`${prefixCls}__text-visible`}>
+                {text}
+                {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className={`${prefixCls}__text`}>{text}</span>
+              {subText && <span className={`${prefixCls}__sub-text`}>{subText}</span>}
+            </>
+          )}
         </div>
       )}
       {children}
@@ -84,13 +93,11 @@ const Button: React.FC<ButtonProps> & {
     };
 
     return (
-      <PopOver theme='dark' content={tip} {...popoverProps} >
       <button
         {...buttonProps}
       >
         {renderContent()}
       </button>
-      </PopOver>
     );
   };
 

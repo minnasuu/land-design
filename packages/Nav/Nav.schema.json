@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Menu",
-  "description": "菜单组件，用于展示导航菜单列表",
+  "title": "Nav",
+  "description": "导航组件，用于展示导航导航列表",
   "type": "object",
   "definitions": {
-    "MenuItem": {
+    "NavItem": {
       "type": "object",
       "properties": {
         "key": {
@@ -30,14 +30,6 @@
           ],
           "description": "前置图标"
         },
-        "isNew": {
-          "oneOf": [
-            { "type": "string" },
-            { "type": "boolean" },
-            { "type": "ReactNode" }
-          ],
-          "description": "角标内容"
-        },
         "href": {
           "type": "string",
           "description": "外部链接地址"
@@ -53,8 +45,8 @@
         },
         "children": {
           "type": "array",
-          "items": { "$ref": "#/definitions/MenuItem" },
-          "description": "子菜单数据"
+          "items": { "$ref": "#/definitions/NavItem" },
+          "description": "子导航数据"
         }
       },
       "required": ["key", "label"]
@@ -63,8 +55,8 @@
   "properties": {
     "items": {
       "type": "array",
-      "items": { "$ref": "#/definitions/MenuItem" },
-      "description": "菜单数据"
+      "items": { "$ref": "#/definitions/NavItem" },
+      "description": "导航数据"
     },
     "active": {
       "type": "string",
@@ -94,11 +86,11 @@
     },
     "onChange": {
       "type": "function",
-      "description": "菜单项点击回调"
+      "description": "导航项点击回调"
     },
     "onDropChange": {
       "type": "function",
-      "description": "下拉菜单项点击回调"
+      "description": "下拉导航项点击回调"
     },
     "className": {
       "type": "string",
@@ -111,7 +103,7 @@
   },
   "examples": [
     {
-      "description": "水平菜单",
+      "description": "水平导航",
       "value": {
         "items": [
           { "key": "home", "label": "首页" },
@@ -121,7 +113,7 @@
       }
     },
     {
-      "description": "垂直菜单",
+      "description": "垂直导航",
       "value": {
         "direction": "column",
         "items": [

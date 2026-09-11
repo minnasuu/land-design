@@ -16,9 +16,9 @@ export const EllipsisMeta = {
   features: [
     '支持单行和多行文本省略',
     '自动检测文本是否需要省略',
-    '悬停时显示完整内容（PopOver）',
+    '悬停时显示完整内容（Tooltip）',
     '自动监听容器尺寸变化',
-    '支持自定义 PopOver 配置',
+    '支持自定义 Tooltip 配置',
     '提供独立的 useEllipsis 钩子',
   ],
 
@@ -45,7 +45,7 @@ export const EllipsisMeta = {
     },
     {
       title: '禁用悬停提示',
-      description: '省略时不显示 PopOver',
+      description: '省略时不显示 Tooltip',
       code: `<Ellipsis open={false}>长文本内容...</Ellipsis>`,
     },
     {
@@ -55,7 +55,7 @@ export const EllipsisMeta = {
     },
   ],
 
-  relatedComponents: ['PopOver', 'Title', 'Text'],
+  relatedComponents: ['Tooltip', 'Title', 'Text'],
 
   notes: [
     'text 和 children 都可传入内容，text 优先',

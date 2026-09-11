@@ -133,7 +133,7 @@ export const SelectMeta = {
   ],
   
   // 相关组件
-  relatedComponents: ['Dropdown', 'Checkbox', 'RadioGroup', 'SelectTree'],
+  relatedComponents: ['Dropdown', 'Checkbox', 'RadioGroup'],
   
   // 使用注意事项
   notes: [

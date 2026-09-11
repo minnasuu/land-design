@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import "./index.scss";
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import { EllipsisProps } from "./props";
 
 /** 类名前缀 */
@@ -41,7 +41,7 @@ const Ellipsis: React.FC<EllipsisProps> = ({
   open = true,
   style,
   className,
-  popoverProps,
+  tooltipProps,
   setMaxWidth,
 }) => {
   const ellipsisRef = useRef<HTMLDivElement>(null);
@@ -169,8 +169,8 @@ const Ellipsis: React.FC<EllipsisProps> = ({
     return () => clearTimeout(timer);
   }, [displayText, checkEllipsis]);
 
-  // 计算 PopOver 的最大宽度
-  const popoverMaxWidth = useMemo(() => {
+  // 计算 Tooltip 的最大宽度
+  const tooltipMaxWidth = useMemo(() => {
     return setMaxWidth ? setMaxWidth(contentWidth) : contentWidth;
   }, [setMaxWidth, contentWidth]);
 
@@ -195,19 +195,20 @@ const Ellipsis: React.FC<EllipsisProps> = ({
     return ellipsisContent;
   }
 
-  // 如果文本被省略，使用PopOver包装以提供hover提示
+  // 如果文本被省略，使用Tooltip包装以提供hover提示
   return (
-    <PopOver
+    <Tooltip
       attach="body"
       placement="bottom"
       hideArrow
+      theme="light"
       content={displayText}
-      className={`${prefixCls}__popover`}
-      popoverStyle={{ maxWidth: popoverMaxWidth }}
-      {...popoverProps}
+      className={`${prefixCls}__tooltip`}
+      tooltipStyle={{ maxWidth: tooltipMaxWidth }}
+      {...tooltipProps}
     >
       {ellipsisContent}
-    </PopOver>
+    </Tooltip>
   );
 };
 

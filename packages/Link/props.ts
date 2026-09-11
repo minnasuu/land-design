@@ -1,5 +1,5 @@
 import { CSSProperties, MouseEvent, ReactNode } from 'react';
-import { PopOverProps } from '../PopOver/props';
+import { TooltipProps } from "../Tooltip/props";
 
 // ==================== 基础类型定义 ====================
 
@@ -55,8 +55,8 @@ export interface LinkProps {
   endIcon?: boolean | ReactNode;
   /** 气泡提示内容 */
   tip?: ReactNode | string;
-  /** 气泡提示配置，透传 PopOver 属性 */
-  popoverProps?: PopOverProps;
+  /** 气泡提示配置，透传 Tooltip 属性 */
+  tooltipProps?: TooltipProps;
   /** 点击事件 */
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
   /** 子元素 */

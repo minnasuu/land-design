@@ -57,7 +57,7 @@ export default function AnchorExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -75,9 +75,9 @@ export default function AnchorExample() {
                   }}
                 />
               </div>
-              <div id="a-scroller" className='flex-1 flex flex-col gap-12 overflow-auto h-[600px]'>
+              <div id="a-scroller" className='flex-1 flex flex-col gap-3 overflow-auto h-[600px]'>
                 {anchorData1.map((item, index) => (
-                  <div key={item.key} id={item.key} className='p-24 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
+                  <div key={item.key} id={item.key} className='p-6 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
                     <h3>第{index + 1}部分</h3>
                     <p>这是第{index + 1}部分的内容，用于测试锚点选中逻辑。</p>
                   </div>
@@ -103,9 +103,9 @@ export default function AnchorExample() {
                   }}
                 />
               </div>
-              <div id="b-scroller" className='flex-1 flex flex-col gap-12 overflow-auto h-[600px]'>
+              <div id="b-scroller" className='flex-1 flex flex-col gap-3 overflow-auto h-[600px]'>
                 {anchorData2.map((item, index) => (
-                  <div key={item.key} id={item.key} className='p-24 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
+                  <div key={item.key} id={item.key} className='p-6 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
                     <h3>第{index + 1}部分</h3>
                     <p>这是第{index + 1}部分的内容，用于测试锚点选中逻辑。{item.key}</p>
                   </div>
@@ -127,11 +127,11 @@ export default function AnchorExample() {
                   gap={12}
                   renderItem={(_item, _index, active, _defaultNode) => (
                     <div
-                      className='flex items-center gap-8 cursor-pointer px-8 rounded-md transition-all'
+                      className='flex items-center gap-2 cursor-pointer px-2 rounded-md transition-all'
                       style={{
-                        width:'24px',
-                        height:'4px',
-                        backgroundColor: active ? '#000' : '#999',
+                        width: '24px',
+                        height: '4px',
+                        backgroundColor: active ? '#000' : '#ddd',
                       }}
                     >
                     </div>
@@ -142,9 +142,9 @@ export default function AnchorExample() {
                   }}
                 />
               </div>
-              <div id="d-scroller" className='flex-1 flex flex-col gap-12 overflow-auto h-[600px]'>
+              <div id="d-scroller" className='flex-1 flex flex-col gap-3 overflow-auto h-[600px]'>
                 {anchorData4.map((item, index) => (
-                  <div key={item.key} id={item.key} className='p-24 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
+                  <div key={item.key} id={item.key} className='p-6 h-[200px] flex-shrink-0 color-text-primary bg-bg-secondary'>
                     <h3>第{index + 1}部分</h3>
                     <p>这是第{index + 1}部分的内容，用于测试自定义渲染锚点项。</p>
                   </div>
@@ -156,10 +156,10 @@ export default function AnchorExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={anchorProps} />
           {itemTypes.map(i => (
-            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
               <h3 className='text-sm font-bold'>{i.name}</h3>
               <ComponentPropsTable props={i.data} />
             </div>

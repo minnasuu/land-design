@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import styled from "styled-components";
-import Title from "../Title";
 import Flex from ".";
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
@@ -31,7 +29,7 @@ export default function FlexExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex column gap-24">
+        <div className="flex column gap-6">
           {/* 方向 */}
           <ComponentSectionLayout
             title='方向'
@@ -39,7 +37,7 @@ export default function FlexExample() {
             description='Flex 组件支持行和列两种方向。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 border p-32">
+              <div className="flex justify-center gap-6 border p-8">
                 <Flex>
                   <StyledCardLight></StyledCardLight>
                   <StyledCardDark></StyledCardDark>
@@ -57,12 +55,12 @@ export default function FlexExample() {
             description='通过 justify 属性可以设置主轴对齐方式。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 border p-32">
+              <div className="flex justify-center gap-6 border p-8">
                 <Flex justify="center">
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
+                  <div className='w-25 h-15 bg-primary-1'></div>
+                  <div className='w-25 h-15 bg-primary-2'></div>
+                  <div className='w-25 h-15 bg-primary-1'></div>
+                  <div className='w-25 h-15 bg-primary-2'></div>
                 </Flex>
               </div>
             </CodeOperationContainer>
@@ -75,12 +73,12 @@ export default function FlexExample() {
             description='通过 gap 属性可以设置元素之间的间距。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-24 border p-32">
+              <div className="flex justify-center gap-6 border p-8">
                 <Flex gap="12px">
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
+                  <div className='w-25 h-15 bg-primary-1'></div>
+                  <div className='w-25 h-15 bg-primary-2'></div>
+                  <div className='w-25 h-15 bg-primary-1'></div>
+                  <div className='w-25 h-15 bg-primary-2'></div>
                 </Flex>
               </div>
             </CodeOperationContainer>
@@ -89,22 +87,10 @@ export default function FlexExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={flexProps} />
         </div>
       )}
     </ComponentContentLayout>
   );
 }
-
-const StyledCardLight = styled.div`
-  width: 100px;
-  height: 60px;
-  background-color: var(--color-primary-1);
-`;
-
-const StyledCardDark = styled.div`
-  width: 100px;
-  height: 60px;
-  background-color: var(--color-primary-2);
-`;

@@ -1,0 +1,351 @@
+// ============================================================================
+// Cascader 组件样式
+// @description 级联选择器（多列树形选择器）组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 触发器令牌 ───
+$cascader-trigger-height: var(--land-cascader-trigger-height, 36px);
+$cascader-trigger-padding-x: var(--land-cascader-trigger-padding-x, 12px);
+$cascader-trigger-radius: var(--land-cascader-radius, var(--radius-m));
+$cascader-trigger-font-size: var(--land-cascader-font-size, 14px);
+$cascader-trigger-gap: var(--land-cascader-gap, var(--gap-s));
+
+// ─── 外观令牌: Outline ───
+$cascader-outline-bg: var(--land-cascader-outline-bg, transparent);
+$cascader-outline-border: var(--land-cascader-outline-border, 1px solid var(--color-border-primary));
+
+// ─── 外观令牌: Fill ───
+$cascader-fill-bg: var(--land-cascader-fill-bg, var(--color-bg-secondary));
+$cascader-fill-border: var(--land-cascader-fill-border, 1px solid transparent);
+
+// ─── 外观令牌: Text ───
+$cascader-text-bg: var(--land-cascader-text-bg, transparent);
+$cascader-text-bg-hover: var(--land-cascader-text-bg-hover, var(--color-bg-secondary));
+$cascader-text-border: var(--land-cascader-text-border, 1px solid transparent);
+
+// ─── 外观令牌: Transparent ───
+$cascader-transparent-bg: var(--land-cascader-transparent-bg, transparent);
+$cascader-transparent-border: var(--land-cascader-transparent-border, none);
+
+// ─── 排版令牌 ───
+$cascader-color: var(--land-cascader-color, var(--color-text-primary));
+$cascader-placeholder-color: var(--land-cascader-placeholder-color, var(--color-text-secondary));
+
+// ─── 状态令牌 ───
+$cascader-disabled-bg: var(--land-cascader-disabled-bg, var(--color-bg-secondary));
+$cascader-disabled-opacity: var(--land-cascader-disabled-opacity, 0.5);
+
+// ─── 下拉面板令牌 ───
+$cascader-dropdown-max-width: var(--land-cascader-dropdown-max-width, 600px);
+
+// ─── 列表令牌 ───
+$cascader-list-width: var(--land-cascader-list-width, 160px);
+$cascader-list-padding: var(--land-cascader-list-padding, var(--padding-s));
+$cascader-list-gap: var(--land-cascader-list-gap, var(--gap-s));
+$cascader-list-border: var(--land-cascader-list-border, 1px solid var(--color-border-primary));
+
+// ─── 选项令牌 ───
+$cascader-option-padding: var(--land-cascader-option-padding, var(--padding-m) var(--padding-l));
+$cascader-option-gap: var(--land-cascader-option-gap, var(--gap-m));
+$cascader-option-radius: var(--land-cascader-option-radius, var(--radius-m));
+$cascader-option-font-size: var(--land-cascader-option-font-size, 14px);
+$cascader-option-color: var(--land-cascader-option-color, var(--color-text-primary));
+$cascader-option-bg-hover: var(--land-cascader-option-bg-hover, var(--color-bg-secondary));
+$cascader-option-bg-selected: var(--land-cascader-option-bg-selected, var(--color-bg-secondary));
+
+// ─── 动效令牌 ───
+$cascader-transition: var(--land-cascader-transition, all var(--transition-s) linear);
+
+// ─── 列展开/收起动画令牌 ───
+$cascader-list-enter-duration: var(--land-cascader-list-enter-duration, 0.2s);
+$cascader-list-leave-duration: var(--land-cascader-list-leave-duration, var(--transition-s, 0.15s));
+$cascader-list-enter-ease: var(--land-cascader-list-enter-ease, var(--ease-out, cubic-bezier(0, 0, 0.2, 1)));
+$cascader-list-leave-ease: var(--land-cascader-list-leave-ease, var(--ease-in, cubic-bezier(0.4, 0, 1, 1)));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-cascader {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+
+  // 重置 Dropdown 内容区域的内边距
+  .land-dropdown__content {
+    padding: 0;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 触发器
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $cascader-trigger-gap;
+    padding: 0 $cascader-trigger-padding-x;
+    width: 100%;
+    height: $cascader-trigger-height;
+    font-size: $cascader-trigger-font-size;
+    border-radius: $cascader-trigger-radius;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: $cascader-transition;
+
+    // ─── Outline 变体 ───
+    &--outline {
+      background-color: $cascader-outline-bg;
+      border: $cascader-outline-border;
+    }
+
+    // ─── Fill 变体 ───
+    &--fill {
+      background-color: $cascader-fill-bg;
+      border: $cascader-fill-border;
+    }
+
+    // ─── Text 变体 ───
+    &--text {
+      background-color: $cascader-text-bg;
+      border: $cascader-text-border;
+
+      &:hover:not(.land-cascader__trigger--disabled) {
+        background-color: $cascader-text-bg-hover;
+      }
+    }
+
+    // ─── Transparent 变体 ───
+    &--transparent {
+      padding: 0;
+      background-color: $cascader-transparent-bg;
+      border: $cascader-transparent-border;
+    }
+
+    // ─── 禁用状态 ───
+    &--disabled {
+      background-color: $cascader-disabled-bg;
+      opacity: $cascader-disabled-opacity;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 内容区域
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__value {
+    color: $cascader-color;
+  }
+
+  &__placeholder {
+    color: $cascader-placeholder-color;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 箭头
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__arrow {
+    flex-shrink: 0;
+    transition: transform var(--transition-s) ease;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 下拉面板
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__dropdown {
+    display: flex;
+    // 各列拉伸至面板整体高度：保证列间 border-right 与下拉框等高，起到完整分割线作用
+    // （flex-start 会让每列只等于自身内容高度，短列的分隔线无法贯通面板上下边缘）
+    align-items: stretch;
+    gap: 0;
+    max-width: $cascader-dropdown-max-width;
+    overflow-x: auto;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 列表
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__list {
+    padding: $cascader-list-padding;
+    width: $cascader-list-width;
+    min-width: $cascader-list-width;
+    height: 100%;
+
+    &:not(:last-child) {
+      border-right: $cascader-list-border;
+    }
+
+    // ─── 新列滑入 ───
+    &--enter {
+      animation: land-cascader-list-enter $cascader-list-enter-duration $cascader-list-enter-ease;
+    }
+
+    // ─── 列收起（动画期间禁止交互，结束后由组件卸载） ───
+    &--leave {
+      pointer-events: none;
+      animation: land-cascader-list-leave $cascader-list-leave-duration $cascader-list-leave-ease forwards;
+    }
+  }
+
+  // ─── 列内容区：同级切换时重挂载并淡入，列壳保持稳定 ───
+  &__list-inner {
+    display: flex;
+    flex-direction: column;
+    gap: $cascader-list-gap;
+    height: 100%;
+
+    &--animate {
+      animation: land-cascader-list-fade-in $cascader-list-enter-duration $cascader-list-enter-ease;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 选项
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $cascader-option-gap;
+    padding: $cascader-option-padding;
+    font-size: $cascader-option-font-size;
+    color: $cascader-option-color;
+    white-space: nowrap;
+    border-radius: $cascader-option-radius;
+    transition: $cascader-transition;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $cascader-option-bg-hover;
+    }
+
+    &--expanded {
+      background-color: $cascader-option-bg-selected;
+    }
+
+    &--selected {
+      background-color: $cascader-option-bg-selected;
+    }
+  }
+
+  &__option-content {
+    display: flex;
+    align-items: center;
+    gap: $cascader-option-gap;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__option-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__option-arrow {
+    transform: rotate(-90deg);
+    transition: transform var(--transition-s) ease;
+    flex-shrink: 0;
+
+    &--expanded {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: Dropdown 开启状态下的箭头旋转
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-dropdown--open {
+  .land-cascader__arrow {
+    transform: scale(1, -1);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 列展开/收起动画
+// @description 通过 width + opacity 实现列的滑入/收起；动画期间以 overflow: hidden
+//              裁剪内容，避免选项溢出造成视觉抖动
+// ─────────────────────────────────────────────────────────────────────────────
+
+@keyframes land-cascader-list-enter {
+  from {
+    width: 0;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  to {
+    width: $cascader-list-width;
+    min-width: $cascader-list-width;
+    padding-left: $cascader-list-padding;
+    padding-right: $cascader-list-padding;
+    opacity: 1;
+    overflow: hidden;
+  }
+}
+
+@keyframes land-cascader-list-leave {
+  from {
+    width: $cascader-list-width;
+    min-width: $cascader-list-width;
+    padding-left: $cascader-list-padding;
+    padding-right: $cascader-list-padding;
+    opacity: 1;
+    overflow: hidden;
+  }
+  to {
+    width: 0;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    opacity: 0;
+    overflow: hidden;
+    border-right-color: transparent;
+  }
+}
+
+// 列内容切换淡入（同级切换时列壳不动，仅内容区轻微淡入）
+@keyframes land-cascader-list-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// ─── 无障碍：用户开启减弱动态效果时禁用列进出动画 ───
+@media (prefers-reduced-motion: reduce) {
+  .land-cascader__list--enter,
+  .land-cascader__list--leave,
+  .land-cascader__list-inner--animate {
+    animation: none;
+  }
+}

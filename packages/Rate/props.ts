@@ -204,7 +204,7 @@ export type RateProps = RateBaseProps &
 
 export const defaultRateProps = {
   count: 5,
-  allowHalf: true,
+  allowHalf: false,
   allowClear: true,
   size: "default" as RateSize,
   disabled: false,

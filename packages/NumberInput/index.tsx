@@ -8,7 +8,7 @@ import "./index.scss";
 import Divider from "../Divider";
 import Icon from "../Icon";
 import Input from "../Input";
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import {
   NumberInputProps,
   NumberInputChangeInfo,
@@ -318,9 +318,9 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
       {/* 输入框 */}
       {wheelable ? (
-        <PopOver
+        <Tooltip
           attach="body"
-          className="land-number-input__popover"
+          className="land-number-input__tooltip"
           content="滚动鼠标滚轮调整数值"
           placement="top"
           theme="dark"
@@ -346,9 +346,9 @@ const NumberInput: React.FC<NumberInputProps> = ({
               ...inputStyle,
             }}
           />
-        </PopOver>
+        </Tooltip>
       ) : (
-        <div className="land-number-input__popover">
+        <div className="land-number-input__tooltip">
           <Input
             className={`land-number-input__input ${inputClassName ?? ""}`}
             variant={variant}

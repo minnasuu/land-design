@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { BreadCrumbItemProps } from './props';
 import Icon from '../Icon';
-import PopOver from '../PopOver';
+import Tooltip from '../Tooltip';
 import useTextOverflow from '../hooks/useTextOverflow';
 
 const prefixCls = 'land-bread-crumb';
@@ -17,7 +17,7 @@ const BreadCrumbItem: React.FC<BreadCrumbItemProps> = ({
   const ellipsis = useTextOverflow(labelRef, { deps: [item] });
 
   return (
-    <PopOver attach="body" content={item.tip || (hoverPreview && ellipsis ? item.label : '')}>
+    <Tooltip attach="body" theme="light" content={item.tip || (hoverPreview && ellipsis ? item.label : '')}>
       <div
         className={`${prefixCls}__item hover-pop${active ? ` ${prefixCls}__item--active` : ''}`}
         onClick={() => onChange?.()}
@@ -33,7 +33,7 @@ const BreadCrumbItem: React.FC<BreadCrumbItemProps> = ({
           <Icon name="arrow" className={`${prefixCls}__arrow`} size={16} strokeWidth={4} />
         )}
       </div>
-    </PopOver>
+    </Tooltip>
   );
 };
 

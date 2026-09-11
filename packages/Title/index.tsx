@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import Icon from '../Icon';
 import './index.scss';
 import { TitleProps } from "./props";
@@ -57,7 +57,7 @@ const Title: React.FC<TitleProps> = ({
       {tip && (
         <div className={`${prefixCls}__tip hover-pop`}>
           <Icon name="info-stroke" stroke="var(--color-text-secondary)" />
-          <PopOver content={tip} theme="dark" style={{ maxWidth: "200px" }} />
+          <Tooltip content={tip} theme="dark" style={{ maxWidth: "200px" }} />
         </div>
       )}
       {renderSub}

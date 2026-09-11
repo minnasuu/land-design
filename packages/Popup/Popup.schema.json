@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Popup",
+  "description": "气泡提示组件，在元素附近弹出气泡卡片显示提示信息。",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "气泡内容（也支持 ReactNode）"
+    },
+    "children": {
+      "description": "触发气泡的子元素"
+    },
+    "show": {
+      "type": "boolean",
+      "description": "受控模式下的显示状态"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": ["hover", "click"],
+      "default": "hover",
+      "description": "触发方式"
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "default": "light",
+      "description": "颜色主题"
+    },
+    "placement": {
+      "type": "string",
+      "enum": ["top", "bottom", "left", "right"],
+      "default": "top",
+      "description": "气泡位置"
+    },
+    "hideArrow": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否隐藏箭头"
+    },
+    "radius": {
+      "type": "number",
+      "default": 12,
+      "description": "气泡主体圆角半径（px），控制 clip-path 切割圆角"
+    },
+    "arrowRadius": {
+      "type": "string",
+      "enum": ["none", "small", "medium", "large"],
+      "default": "medium",
+      "description": "箭头圆角档位（0 / 4px / 6px / 8px），不支持自定义数值"
+    },
+    "arrowSize": {
+      "type": "string",
+      "enum": ["small", "medium"],
+      "default": "medium",
+      "description": "箭头尺寸档位：medium 凸出 8px / 底宽 14px，small 凸出 6px / 底宽 11px（紧凑提示）"
+    },
+    "attach": {
+      "type": "string",
+      "enum": ["parent", "body"],
+      "default": "parent",
+      "description": "气泡挂载层级：parent-父容器、body-body元素"
+    },
+    "className": {
+      "type": "string",
+      "description": "根容器自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "根容器自定义样式"
+    },
+    "popupClassName": {
+      "type": "string",
+      "description": "气泡自定义类名"
+    },
+    "popupStyle": {
+      "type": "object",
+      "description": "气泡自定义样式"
+    },
+    "onVisibleChange": {
+      "type": "string",
+      "description": "显示状态变化回调：(visible: boolean) => void"
+    }
+  },
+  "examples": [
+    {
+      "description": "基础用法 - 悬停显示",
+      "code": "<Popup content=\"提示内容\"><Button>悬停显示</Button></Popup>"
+    },
+    {
+      "description": "点击触发",
+      "code": "<Popup trigger=\"click\" content=\"点击显示的内容\"><Button>点击</Button></Popup>"
+    },
+    {
+      "description": "暗色主题",
+      "code": "<Popup theme=\"dark\" content=\"暗色提示\"><span>暗色主题</span></Popup>"
+    },
+    {
+      "description": "不同位置",
+      "code": "<Popup placement=\"bottom\" content=\"底部显示\"><span>底部</span></Popup>"
+    },
+    {
+      "description": "挂载到 body",
+      "code": "<Popup attach=\"body\" content=\"挂载到body\"><Button>Body挂载</Button></Popup>"
+    }
+  ]
+}

@@ -81,7 +81,7 @@ export const PopConfirmMeta = {
   ],
   
   // 相关组件
-  relatedComponents: ['PopOver', 'Dialog', 'Button'],
+  relatedComponents: ['Popup', 'Dialog', 'Button'],
   
   // 使用注意事项
   notes: [

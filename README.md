@@ -210,11 +210,11 @@ document.documentElement.setAttribute('data-theme', 'light');
 | `LandTimeline` | Timeline component | ✅ |
 | `LandCollapse` | Collapsible content component | ✅ |
 | `LandDrawer` | Side drawer component | ✅ |
-| `LandPopover` | Popover component | ✅ |
+| `LandPopup` | Popup component | ✅ |
 | `LandTooltip` | Tooltip component | ✅ |
 | `LandMessage` | Message notification | ✅ |
 | `LandNotification` | Notification component | ✅ |
-| `LandMenu` | Navigation menu component | ✅ |
+| `LandNav` | Navigation menu component | ✅ |
 | `LandDropdown` | Dropdown menu component | ✅ |
 | `LandCascader` | Cascading select component | ✅ |
 | `LandTree` | Tree component | ✅ |

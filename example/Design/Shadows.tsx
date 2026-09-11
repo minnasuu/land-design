@@ -82,26 +82,26 @@ export default function Shadows() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* 页面标题 */}
-      <div className="mb-32">
-        <h1 className="text-title-xxl text-text-primary mb-16">阴影系统</h1>
+      <div className="mb-8">
+        <h1 className="text-title-xxl text-text-primary mb-4">阴影系统</h1>
         <p className="text-text-secondary text-lg leading-relaxed">
           LandDesign 的阴影系统提供统一的视觉层次和深度感，帮助用户理解界面元素的层级关系。
         </p>
       </div>
 
       {/* 阴影等级 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">阴影等级</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-24">
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">阴影等级</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {shadows.map((shadow, index) => (
             <div key={index} className={`card-base card-md ${shadow.example} bg-bg-primary`}>
-              <div className="text-center p-32">
-                <div className="w-64 h-64 bg-bg-secondary rounded-lg mx-auto mb-16 flex items-center justify-center">
+              <div className="text-center p-8">
+                <div className="w-16 h-16 bg-bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center">
                   <span className="text-caption text-text-tertiary">阴影示例</span>
                 </div>
-                <h3 className="text-title-s text-text-primary mb-8">{shadow.name}</h3>
-                <p className="text-body-s text-text-secondary mb-12">{shadow.description}</p>
-                <div className="text-caption text-text-tertiary bg-bg-secondary px-8 py-4 rounded">
+                <h3 className="text-title-s text-text-primary mb-2">{shadow.name}</h3>
+                <p className="text-body-s text-text-secondary mb-3">{shadow.description}</p>
+                <div className="text-caption text-text-tertiary bg-bg-secondary px-2 py-1 rounded">
                   {shadow.usage}
                 </div>
               </div>
@@ -111,23 +111,23 @@ export default function Shadows() {
       </section>
 
       {/* 层级系统 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">层级系统</h2>
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">层级系统</h2>
         <div className="card-base card-lg">
-          <div className="space-y-16">
+          <div className="space-y-4">
             {layers.map((layer, index) => (
-              <div key={index} className="flex items-center justify-between p-16 border-b border-border-secondary last:border-b-0">
+              <div key={index} className="flex items-center justify-between p-4 border-b border-border-secondary last:border-b-0">
                 <div className="flex-1">
-                  <div className="flex items-center gap-16 mb-8">
+                  <div className="flex items-center gap-4 mb-2">
                     <h3 className="text-title-m text-text-primary">{layer.level}</h3>
-                    <span className="text-caption text-text-quaternary bg-bg-secondary px-8 py-4 rounded">
+                    <span className="text-caption text-text-quaternary bg-bg-secondary px-2 py-1 rounded">
                       z-index: {layer.zIndex}
                     </span>
                   </div>
-                  <p className="text-body-s text-text-secondary mb-8">{layer.description}</p>
-                  <div className="flex flex-wrap gap-8">
+                  <p className="text-body-s text-text-secondary mb-2">{layer.description}</p>
+                  <div className="flex flex-wrap gap-2">
                     {layer.elements.map((element, idx) => (
-                      <span key={idx} className="text-caption text-text-tertiary bg-bg-secondary px-8 py-4 rounded">
+                      <span key={idx} className="text-caption text-text-tertiary bg-bg-secondary px-2 py-1 rounded">
                         {element}
                       </span>
                     ))}
@@ -140,29 +140,29 @@ export default function Shadows() {
       </section>
 
       {/* 使用示例 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">使用示例</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">使用示例</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="card-base card-md shadow-md">
-            <h3 className="text-title-m text-text-primary mb-16">卡片组件</h3>
-            <p className="text-body-s text-text-secondary mb-16">
+            <h3 className="text-title-m text-text-primary mb-4">卡片组件</h3>
+            <p className="text-body-s text-text-secondary mb-4">
               使用中等阴影突出卡片内容，提供适当的视觉层次。
             </p>
-            <div className="flex gap-8">
+            <div className="flex gap-2">
               <button className="btn-primary btn-sm shadow-sm">主要按钮</button>
               <button className="btn-secondary btn-sm shadow-xs">次要按钮</button>
             </div>
           </div>
           <div className="card-base card-md shadow-lg">
-            <h3 className="text-title-m text-text-primary mb-16">模态框</h3>
-            <p className="text-body-s text-text-secondary mb-16">
+            <h3 className="text-title-m text-text-primary mb-4">模态框</h3>
+            <p className="text-body-s text-text-secondary mb-4">
               使用深阴影创建模态框的浮动效果，确保在背景之上。
             </p>
-            <div className="space-y-8">
-              <div className="w-full h-32 bg-bg-secondary rounded flex items-center justify-center">
+            <div className="space-y-2">
+              <div className="w-full h-8 bg-bg-secondary rounded flex items-center justify-center">
                 <span className="text-caption text-text-tertiary">模态框内容</span>
               </div>
-              <div className="flex gap-8">
+              <div className="flex gap-2">
                 <button className="btn-primary btn-sm">确认</button>
                 <button className="btn-secondary btn-sm">取消</button>
               </div>
@@ -173,12 +173,12 @@ export default function Shadows() {
 
       {/* 最佳实践 */}
       <section>
-        <h2 className="text-title-xl text-text-primary mb-24">最佳实践</h2>
+        <h2 className="text-title-xl text-text-primary mb-6">最佳实践</h2>
         <div className="card-base card-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">✅ 推荐</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">✅ 推荐</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 根据元素重要性选择合适的阴影等级</li>
                 <li>• 保持阴影方向的一致性</li>
                 <li>• 考虑深色模式下的阴影效果</li>
@@ -186,8 +186,8 @@ export default function Shadows() {
               </ul>
             </div>
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">❌ 避免</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">❌ 避免</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 过度使用阴影造成视觉混乱</li>
                 <li>• 阴影方向不一致</li>
                 <li>• 忽略性能影响（过多阴影）</li>

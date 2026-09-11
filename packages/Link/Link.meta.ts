@@ -70,7 +70,7 @@ export const LinkMeta = {
     },
   ],
 
-  relatedComponents: ['Button', 'Menu', 'BreadCrumb'],
+  relatedComponents: ['Button', 'Nav', 'BreadCrumb'],
 
   notes: [
     'startIcon/endIcon 为 true 时自动判断内外链图标',

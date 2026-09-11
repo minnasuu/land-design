@@ -62,7 +62,7 @@
       ],
       "description": "气泡提示内容"
     },
-    "popoverProps": {
+    "tooltipProps": {
       "type": "object",
       "description": "气泡提示配置"
     },

@@ -91,7 +91,7 @@ export default function AudioExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -125,13 +125,13 @@ export default function AudioExample() {
             description="通过 showWave 显示音频波形可视化效果，可点击波形跳转进度。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8 text-sm">柱状图波形</h4>
+                  <h4 className="mb-2 text-sm">柱状图波形</h4>
                   <Audio src={audioUrl} showWave waveType="bar" />
                 </div>
                 <div>
-                  <h4 className="mb-8 text-sm">折线图波形</h4>
+                  <h4 className="mb-2 text-sm">折线图波形</h4>
                   <Audio src={audioUrl} showWave waveType="line" />
                 </div>
               </div>
@@ -145,9 +145,9 @@ export default function AudioExample() {
             description="可以自定义波形的颜色、尺寸、采样数量等参数。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8 text-sm">自定义颜色</h4>
+                  <h4 className="mb-2 text-sm">自定义颜色</h4>
                   <Audio
                     src={audioUrl}
                     showWave
@@ -156,7 +156,7 @@ export default function AudioExample() {
                   />
                 </div>
                 <div>
-                  <h4 className="mb-8 text-sm">自定义尺寸</h4>
+                  <h4 className="mb-2 text-sm">自定义尺寸</h4>
                   <Audio
                     src={audioUrl}
                     showWave
@@ -166,7 +166,7 @@ export default function AudioExample() {
                   />
                 </div>
                 <div>
-                  <h4 className="mb-8 text-sm">高采样</h4>
+                  <h4 className="mb-2 text-sm">高采样</h4>
                   <Audio
                     src={audioUrl}
                     showWave
@@ -184,10 +184,10 @@ export default function AudioExample() {
             description="可以单独使用子组件进行自定义组合。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8 text-sm">播放按钮</h4>
-                  <div className="flex items-center gap-12">
+                  <h4 className="mb-2 text-sm">播放按钮</h4>
+                  <div className="flex items-center gap-3">
                     <Audio.Button size="small" />
                     <Audio.Button size="medium" />
                     <Audio.Button size="large" />
@@ -196,8 +196,8 @@ export default function AudioExample() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8 text-sm">动画图标</h4>
-                  <div className="flex items-center gap-12">
+                  <h4 className="mb-2 text-sm">动画图标</h4>
+                  <div className="flex items-center gap-3">
                     <Audio.AnimationIcon size={16} color="var(--color-primary-6)" />
                     <Audio.AnimationIcon size={20} color="var(--color-success-6)" />
                     <Audio.AnimationIcon size={24} color="var(--color-warning-6)" />
@@ -249,24 +249,24 @@ export default function AudioExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           <div>
-            <h3 className="text-base font-semibold mb-12">Audio 属性</h3>
+            <h3 className="text-base font-semibold mb-3">Audio 属性</h3>
             <ComponentPropsTable props={audioProps} />
           </div>
 
           <div>
-            <h3 className="text-base font-semibold mb-12">Audio.Button 属性</h3>
+            <h3 className="text-base font-semibold mb-3">Audio.Button 属性</h3>
             <ComponentPropsTable props={buttonProps} />
           </div>
 
           <div>
-            <h3 className="text-base font-semibold mb-12">Audio.Wave 属性</h3>
+            <h3 className="text-base font-semibold mb-3">Audio.Wave 属性</h3>
             <ComponentPropsTable props={waveProps} />
           </div>
 
           <div>
-            <h3 className="text-base font-semibold mb-12">Audio.AnimationIcon 属性</h3>
+            <h3 className="text-base font-semibold mb-3">Audio.AnimationIcon 属性</h3>
             <ComponentPropsTable props={animationProps} />
           </div>
         </div>

@@ -208,7 +208,7 @@ export default function NumberInputExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={numberInputProps} />
         </div>
       )}

@@ -24,9 +24,9 @@ const ComponentRight: React.FC<Props> = ({
       <Title title={`${zh} ${en}`} type="h1" />
       {desc && <div className="text-sm text-gray-500">{desc}</div>}
       <Divider spacing={20} />
-      <Title title="1. 组件预览" type="h2" className="mb-16" />
+      <Title title="1. 组件预览" type="h2" className="mb-4" />
       {example}
-      <Title title="2. API" type="h2" className="my-16" />
+      <Title title="2. API" type="h2" className="my-4" />
       {props && (
         <Table
           titleData={[
@@ -40,13 +40,13 @@ const ComponentRight: React.FC<Props> = ({
       )}
       {types && types?.length > 0 && (
         <>
-          <Title title="3. Type" type="h2" className="my-16" />
+          <Title title="3. Type" type="h2" className="my-4" />
           {types?.map((type) => (
             <>
-              <Title title={type.name} type="h3" className="mt-16" />
-              <div className="text-sm text-gray-500 mb-16">{type.desc}</div>
+              <Title title={type.name} type="h3" className="mt-4" />
+              <div className="text-sm text-gray-500 mb-4">{type.desc}</div>
               <Table
-                className="w-full mt-16"
+                className="w-full mt-4"
                 titleData={[
                   { title: "属性", value: "props" },
                   { title: "类型", value: "type" },

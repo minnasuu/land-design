@@ -107,7 +107,7 @@ export const TabsMeta = {
   ],
   
   // 相关组件
-  relatedComponents: ['Menu', 'Steps', 'RadioGroup'],
+  relatedComponents: ['Nav', 'Steps', 'RadioGroup'],
   
   // 使用注意事项
   notes: [

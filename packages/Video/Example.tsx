@@ -90,7 +90,7 @@ const VideoExample: React.FC = () => {
             id="video-basic"
             description="Video 组件的基础用法，支持基本的视频播放功能。"
           >
-            <div className="flex flex-col gap-8 mb-24">
+            <div className="flex flex-col gap-2 mb-6">
               <label className="fs-14">选择视频：</label>
               <Select
                 selected={currentVideo}
@@ -98,7 +98,7 @@ const VideoExample: React.FC = () => {
                 data={videoOptions}
                 style={{ '--land-select-width': '200px' } as React.CSSProperties}
               />
-              <ul className="color-text-secondary flex flex-col gap-8 fs-14">
+              <ul className="color-text-secondary flex flex-col gap-2 fs-14">
                 <li><strong>空格键</strong> - 播放/暂停</li>
                 <li><strong>左右箭头</strong> - 快退/快进</li>
                 <li><strong>上下箭头</strong> - 调节音量</li>
@@ -170,7 +170,7 @@ const VideoExample: React.FC = () => {
             id="video-responsive"
             description="当播放器宽度较小时，右侧控件会自动收起到下拉菜单中。"
           >
-            <div className="color-text-secondary fs-14 mb-8">
+            <div className="color-text-secondary fs-14 mb-2">
               当播放器宽度较小时，右侧控件会自动收起到下拉菜单中，包含倍速、循环设置和全屏功能。
             </div>
             <CodeOperationContainer>
@@ -194,9 +194,9 @@ const VideoExample: React.FC = () => {
             description="通过 ratio 属性可以设置不同的视频宽高比。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-24">
+              <div className="flex flex-col gap-6">
                 <div>
-                  <div className="fs-12 color-gray-4 mb-8">16:9 比例</div>
+                  <div className="fs-12 color-gray-4 mb-2">16:9 比例</div>
                   <Video
                     src={videoOptions.find((item) => item.key === currentVideo)?.url}
                     ratio={16 / 9}
@@ -205,7 +205,7 @@ const VideoExample: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <div className="fs-12 color-gray-4 mb-8">4:3 比例</div>
+                  <div className="fs-12 color-gray-4 mb-2">4:3 比例</div>
                   <Video
                     src={videoOptions.find((item) => item.key === currentVideo)?.url}
                     ratio={4 / 3}
@@ -268,9 +268,9 @@ const VideoExample: React.FC = () => {
             description="可以通过 show* 属性控制各个控件的显示与隐藏。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-24">
+              <div className="flex flex-col gap-6">
                 <div>
-                  <div className="fs-12 color-gray-4 mb-8">只显示播放和进度</div>
+                  <div className="fs-12 color-gray-4 mb-2">只显示播放和进度</div>
                   <Video
                     src={videoOptions.find((item) => item.key === currentVideo)?.url}
                     radius={8}
@@ -283,7 +283,7 @@ const VideoExample: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <div className="fs-12 color-gray-4 mb-8">隐藏控制栏</div>
+                  <div className="fs-12 color-gray-4 mb-2">隐藏控制栏</div>
                   <Video
                     src={videoOptions.find((item) => item.key === currentVideo)?.url}
                     radius={8}
@@ -297,7 +297,7 @@ const VideoExample: React.FC = () => {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={videoProps} />
         </div>
       )}

@@ -79,7 +79,7 @@ export default function TagInputExample() {
             description="通过 value 和 onChange 实现受控模式。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-2">
                 <TagInput
                   value={controlledTags}
                   onChange={(newTags) => setControlledTags(newTags as string[])}
@@ -100,7 +100,7 @@ export default function TagInputExample() {
             description="支持 fill（填充）和 outline（描边）两种外观变体。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
+              <div className="flex flex-col gap-3">
                 <TagInput
                   variant="fill"
                   defaultValue={['Fill 变体']}
@@ -124,7 +124,7 @@ export default function TagInputExample() {
             description="支持 small、default、large 三种尺寸。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
+              <div className="flex flex-col gap-3">
                 <TagInput
                   size="small"
                   defaultValue={['Small']}
@@ -170,7 +170,7 @@ export default function TagInputExample() {
             description="通过 prefix 和 suffix 添加前后置内容。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
+              <div className="flex flex-col gap-3">
                 <TagInput
                   prefix={<Icon name="tag" />}
                   defaultValue={['带前置图标']}
@@ -192,7 +192,7 @@ export default function TagInputExample() {
             description="支持禁用和只读状态。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
+              <div className="flex flex-col gap-3">
                 <TagInput
                   disabled
                   defaultValue={['禁用状态']}
@@ -229,7 +229,7 @@ export default function TagInputExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={tagInputProps} />
         </div>
       )}

@@ -32,7 +32,7 @@ export default function PaginationExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 常规分页 */}
           <ComponentSectionLayout
             title='常规分页'
@@ -119,7 +119,7 @@ export default function PaginationExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={paginationProps} />
         </div>
       )}

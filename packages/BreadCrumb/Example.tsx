@@ -44,7 +44,7 @@ export default function BreadCrumbExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 常规面包屑 */}
           <ComponentSectionLayout
             title='常规面包屑'
@@ -141,10 +141,10 @@ export default function BreadCrumbExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={breadCrumbProps} />
           {itemTypes.map(i => (
-            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
               <h3 className='text-sm font-bold'>{i.name}</h3>
               <ComponentPropsTable props={i.data} />
             </div>

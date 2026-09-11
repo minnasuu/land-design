@@ -31,7 +31,7 @@ export default function BackToTopExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 容器内定位 */}
           <ComponentSectionLayout
             title='容器内定位'
@@ -40,8 +40,8 @@ export default function BackToTopExample() {
           >
             <CodeOperationContainer>
               <div className='flex justify-center w-full'>
-                <div className="relative w-full flex flex-col gap-8" style={{ height: '200px' }}>
-                  <div className='flex flex-col gap-8 w-full overflow-auto scrollbar-none'>
+                <div className="relative w-full flex flex-col gap-2" style={{ height: '200px' }}>
+                  <div className='flex flex-col gap-2 w-full overflow-auto scrollbar-none'>
                     {Array.from({ length: 20 }).map((_, index) => (
                       <div key={index} className="w-full bg-bg-secondary radius-4 shrink-0" style={{ height: '20px' }} />
                     ))}
@@ -54,7 +54,7 @@ export default function BackToTopExample() {
         </div>
       )}
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           <ComponentPropsTable props={backToTopProps} />
         </div>
       )}

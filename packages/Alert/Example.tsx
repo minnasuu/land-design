@@ -40,7 +40,7 @@ export default function AlertExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -48,7 +48,7 @@ export default function AlertExample() {
             description='Alert 组件的基础用法，展示不同类型的警告提示。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert type="info" title="这是一条信息提示" />
                 <Alert type="success" title="操作成功！" />
                 <Alert type="warning" title="你的额度即将用完！" />
@@ -65,10 +65,10 @@ export default function AlertExample() {
             description='Alert 支持 4 种变体样式：filled（填充）、outlined（边框）、light（浅色，默认）、text（纯文本）。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">Filled 填充样式</h4>
-                  <div className="flex flex-col gap-8">
+                  <h4 className="mb-2">Filled 填充样式</h4>
+                  <div className="flex flex-col gap-2">
                     <Alert type="info" variant="filled" title="信息提示" />
                     <Alert type="success" variant="filled" title="成功提示" />
                     <Alert type="warning" variant="filled" title="警告提示" />
@@ -76,22 +76,22 @@ export default function AlertExample() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8">Outlined 边框样式</h4>
-                  <div className="flex flex-col gap-8">
+                  <h4 className="mb-2">Outlined 边框样式</h4>
+                  <div className="flex flex-col gap-2">
                     <Alert type="info" variant="outlined" title="信息提示" />
                     <Alert type="success" variant="outlined" title="成功提示" />
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8">Light 浅色样式（默认）</h4>
-                  <div className="flex flex-col gap-8">
+                  <h4 className="mb-2">Light 浅色样式（默认）</h4>
+                  <div className="flex flex-col gap-2">
                     <Alert type="info" variant="light" title="信息提示" />
                     <Alert type="success" variant="light" title="成功提示" />
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8">Text 纯文本样式</h4>
-                  <div className="flex flex-col gap-8">
+                  <h4 className="mb-2">Text 纯文本样式</h4>
+                  <div className="flex flex-col gap-2">
                     <Alert type="info" variant="text" title="信息提示" />
                     <Alert type="success" variant="text" title="成功提示" />
                   </div>
@@ -107,7 +107,7 @@ export default function AlertExample() {
             description='支持 small、medium、large 三种尺寸。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert type="info" size="small" title="小尺寸 Alert" />
                 <Alert type="info" size="medium" title="中等尺寸 Alert（默认）" />
                 <Alert type="info" size="large" title="大尺寸 Alert" />
@@ -122,7 +122,7 @@ export default function AlertExample() {
             description='通过 description 属性可以添加详细描述内容。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert 
                   type="info" 
                   title="系统更新通知"
@@ -144,7 +144,7 @@ export default function AlertExample() {
             description='通过 link 属性可以为 Alert 添加可点击的链接。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert type="error" title="加载失败" link="重试" />
                 <Alert type="warning" title="你的额度即将用完！" link="立即充值" />
                 <Alert type="success" title="提交成功！" link="查看详情" />
@@ -159,7 +159,7 @@ export default function AlertExample() {
             description='通过 closable 属性可以显示关闭按钮。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 {showClosable && (
                   <Alert 
                     type="info" 
@@ -191,11 +191,11 @@ export default function AlertExample() {
             description='通过 icon 属性可以自定义图标，传入 false 可隐藏图标。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert 
                   type="info" 
                   title="自定义图标"
-                  icon={<Icon name="star-fill" color="var(--color-warning-6)" />}
+                  icon={<Icon name="star-fill" color="var(--color-orange-6)" />}
                 />
                 <Alert 
                   type="info" 
@@ -213,7 +213,7 @@ export default function AlertExample() {
             description='通过 action 属性可以添加操作按钮。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert 
                   type="warning" 
                   title="你的会员即将到期"
@@ -224,7 +224,7 @@ export default function AlertExample() {
                   title="新版本可用"
                   description="发现新版本 v2.0.0，包含多项改进和修复。"
                   action={
-                    <div className="flex gap-8">
+                    <div className="flex gap-2">
                       <Button size="small" variant="fill">稍后提醒</Button>
                       <Button size="small" variant="background" status="primary">立即更新</Button>
                     </div>
@@ -241,7 +241,7 @@ export default function AlertExample() {
             description='通过 direction="vertical" 可以设置垂直布局。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-16">
+              <div className="flex gap-4">
                 <Alert 
                   type="success" 
                   direction="vertical"
@@ -266,7 +266,7 @@ export default function AlertExample() {
             description='仍然支持旧版属性，会自动转换为新版。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Alert type="default" title="旧版 default 类型（转为 info）" />
                 <Alert type="fail" title="旧版 fail 类型（转为 error）" />
                 <Alert type="warn" title="旧版 warn 类型（转为 warning）" />
@@ -278,7 +278,7 @@ export default function AlertExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={alertProps} />
         </div>
       )}

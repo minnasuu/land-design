@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tree",
+  "description": "内联缩进树组件，用于展示层级数据并支持选择。",
+  "type": "object",
+  "properties": {
+    "treeData": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/TreeOption" },
+      "description": "树形数据"
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否多选（显示复选框）"
+    },
+    "value": {
+      "type": "string",
+      "description": "当前选中值（单选，受控）"
+    },
+    "values": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "当前选中值数组（多选，受控）"
+    },
+    "expandedKeys": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "展开的节点 key 数组（受控）"
+    },
+    "defaultExpandedKeys": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "默认展开的节点 key 数组"
+    },
+    "checkable": {
+      "type": "boolean",
+      "description": "是否显示复选框（多选时默认 true）"
+    },
+    "selectable": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否允许点击节点选中"
+    },
+    "expandAction": {
+      "default": false,
+      "description": "节点展开触发方式：false 仅点击箭头 / 'click' 点击节点任意区域 / 'doubleClick' 双击节点"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否整体禁用"
+    },
+    "indent": {
+      "type": "number",
+      "default": 16,
+      "description": "缩进像素值"
+    },
+    "emptyContent": {
+      "type": "string",
+      "description": "空数据时的显示内容"
+    },
+    "className": {
+      "type": "string",
+      "description": "自定义类名"
+    },
+    "style": {
+      "type": "object",
+      "description": "自定义样式"
+    },
+    "onExpand": {
+      "type": "string",
+      "description": "展开/收起回调：(expandedKeys: string[]) => void"
+    },
+    "onChange": {
+      "type": "string",
+      "description": "选中变化回调：(value, option, selectedOptions?) => void"
+    }
+  },
+  "definitions": {
+    "TreeOption": {
+      "type": "object",
+      "properties": {
+        "key": { "type": "string", "description": "节点唯一标识" },
+        "label": { "type": "string", "description": "节点显示内容" },
+        "disabled": { "type": "boolean", "description": "是否禁用" },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/TreeOption" },
+          "description": "子节点"
+        }
+      },
+      "required": ["key", "label"]
+    }
+  },
+  "examples": [
+    { "description": "单选内联树", "code": "<Tree treeData={treeData} value={value} onChange={setValue} />" },
+    { "description": "多选内联树", "code": "<Tree multiple treeData={treeData} values={values} onChange={setValues} />" }
+  ]
+}

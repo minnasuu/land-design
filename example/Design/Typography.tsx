@@ -34,20 +34,20 @@ export default function Typography() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* 页面标题 */}
-      <div className="mb-32">
-        <h1 className="text-title-xxl text-text-primary mb-16">字体规范</h1>
+      <div className="mb-8">
+        <h1 className="text-title-xxl text-text-primary mb-4">字体规范</h1>
         <p className="text-text-secondary text-lg leading-relaxed">
           LandDesign 采用现代化的字体系统，确保在不同设备和场景下都能提供清晰易读的文本体验。
         </p>
       </div>
 
       {/* 字体大小 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">字体大小</h2>
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">字体大小</h2>
         <div className="card-base card-lg">
-          <div className="space-y-16">
+          <div className="space-y-4">
             {fontSizes.map((font, index) => (
-              <div key={index} className="flex items-center justify-between p-16 border-b border-border-secondary last:border-b-0">
+              <div key={index} className="flex items-center justify-between p-4 border-b border-border-secondary last:border-b-0">
                 <div className="flex-1">
                   <div className={`${font.class} text-text-primary mb-4`}>
                     {font.description}
@@ -56,7 +56,7 @@ export default function Typography() {
                     {font.class} • {font.size} • {font.weight}
                   </div>
                 </div>
-                <div className="text-caption text-text-quaternary bg-bg-secondary px-8 py-4 rounded">
+                <div className="text-caption text-text-quaternary bg-bg-secondary px-2 py-1 rounded">
                   {font.size}
                 </div>
               </div>
@@ -66,12 +66,12 @@ export default function Typography() {
       </section>
 
       {/* 字体粗细 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">字体粗细</h2>
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">字体粗细</h2>
         <div className="card-base card-lg">
-          <div className="space-y-16">
+          <div className="space-y-4">
             {fontWeights.map((font, index) => (
-              <div key={index} className="flex items-center justify-between p-16 border-b border-border-secondary last:border-b-0">
+              <div key={index} className="flex items-center justify-between p-4 border-b border-border-secondary last:border-b-0">
                 <div className="flex-1">
                   <div className={`text-body-m ${font.class} text-text-primary mb-4`}>
                     字体粗细示例文本
@@ -80,7 +80,7 @@ export default function Typography() {
                     {font.class} • {font.weight}
                   </div>
                 </div>
-                <div className="text-caption text-text-quaternary bg-bg-secondary px-8 py-4 rounded">
+                <div className="text-caption text-text-quaternary bg-bg-secondary px-2 py-1 rounded">
                   {font.weight}
                 </div>
               </div>
@@ -90,12 +90,12 @@ export default function Typography() {
       </section>
 
       {/* 文本颜色 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">文本颜色</h2>
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">文本颜色</h2>
         <div className="card-base card-lg">
-          <div className="space-y-16">
+          <div className="space-y-4">
             {textColors.map((color, index) => (
-              <div key={index} className="flex items-center justify-between p-16 border-b border-border-secondary last:border-b-0">
+              <div key={index} className="flex items-center justify-between p-4 border-b border-border-secondary last:border-b-0">
                 <div className="flex-1">
                   <div className={`text-body-m ${color.class} mb-4`}>
                     这是一段示例文本，展示不同的文本颜色效果
@@ -104,7 +104,7 @@ export default function Typography() {
                     {color.class}
                   </div>
                 </div>
-                <div className="text-caption text-text-quaternary bg-bg-secondary px-8 py-4 rounded">
+                <div className="text-caption text-text-quaternary bg-bg-secondary px-2 py-1 rounded">
                   {color.description}
                 </div>
               </div>
@@ -114,12 +114,12 @@ export default function Typography() {
       </section>
 
       {/* 使用示例 */}
-      <section className="mb-48">
-        <h2 className="text-title-xl text-text-primary mb-24">使用示例</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+      <section className="mb-12">
+        <h2 className="text-title-xl text-text-primary mb-6">使用示例</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="card-base card-md">
-            <h3 className="text-title-m text-text-primary mb-16">页面标题</h3>
-            <div className="space-y-12">
+            <h3 className="text-title-m text-text-primary mb-4">页面标题</h3>
+            <div className="space-y-3">
               <h1 className="text-title-xxl text-text-primary">页面主标题</h1>
               <h2 className="text-title-xl text-text-primary">页面副标题</h2>
               <p className="text-body-m text-text-secondary">
@@ -128,8 +128,8 @@ export default function Typography() {
             </div>
           </div>
           <div className="card-base card-md">
-            <h3 className="text-title-m text-text-primary mb-16">卡片内容</h3>
-            <div className="space-y-12">
+            <h3 className="text-title-m text-text-primary mb-4">卡片内容</h3>
+            <div className="space-y-3">
               <h3 className="text-title-s text-text-primary">卡片标题</h3>
               <p className="text-body-s text-text-secondary">
                 卡片内容使用较小的字体大小，保持视觉层次。
@@ -144,12 +144,12 @@ export default function Typography() {
 
       {/* 最佳实践 */}
       <section>
-        <h2 className="text-title-xl text-text-primary mb-24">最佳实践</h2>
+        <h2 className="text-title-xl text-text-primary mb-6">最佳实践</h2>
         <div className="card-base card-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">✅ 推荐</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">✅ 推荐</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 使用语义化的字体大小类名</li>
                 <li>• 保持合适的行高和字间距</li>
                 <li>• 确保文本颜色有足够的对比度</li>
@@ -157,8 +157,8 @@ export default function Typography() {
               </ul>
             </div>
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">❌ 避免</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">❌ 避免</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 使用过小的字体大小</li>
                 <li>• 文本颜色对比度不足</li>
                 <li>• 在同一页面使用过多字体大小</li>

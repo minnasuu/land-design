@@ -57,7 +57,7 @@ export default function ColorPickerExample() {
                 onChange={handleColorChange}
               />
               {colorInfo && (
-                <div className="flex flex-col gap-2 text-sm text-secondary">
+                <div className="flex flex-col gap-0.5 text-sm text-secondary">
                   <div>当前颜色: <code>{colorInfo.color}</code></div>
                   <div>HEX: <code>{colorInfo.hex}</code></div>
                   <div>RGB: <code>{colorInfo.rgb}</code></div>
@@ -100,24 +100,24 @@ export default function ColorPickerExample() {
             description="通过 format 属性设置返回的颜色格式。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">HEX:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm w-4">HEX:</span>
                 <ColorPicker
                   format="hex"
                   defaultValue="#1677ff"
                   onColorChange={(color) => console.log("HEX:", color)}
                 />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">RGB:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm w-4">RGB:</span>
                 <ColorPicker
                   format="rgb"
                   defaultValue="#52c41a"
                   onColorChange={(color) => console.log("RGB:", color)}
                 />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">HSL:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm w-4">HSL:</span>
                 <ColorPicker
                   format="hsl"
                   defaultValue="#faad14"
@@ -200,7 +200,7 @@ export default function ColorPickerExample() {
                 defaultValue="#1677ff"
                 onChange={handleColorChange}
               >
-                <button className="px-4 py-2 rounded border border-primary text-primary hover:bg-primary-bg">
+                <button className="px-1 py-0.5 rounded border border-primary text-primary hover:bg-primary-bg">
                   选择颜色
                 </button>
               </ColorPicker>
@@ -225,7 +225,7 @@ export default function ColorPickerExample() {
       )}
 
       {activeTab === "props" && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={colorPickerProps} />
         </div>
       )}

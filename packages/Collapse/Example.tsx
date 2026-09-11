@@ -146,9 +146,9 @@ export default function CollapseExample() {
             description="通过 expanded 和 onChange 实现受控模式。"
           >
             <CodeOperationContainer column style={{ alignItems: 'stretch' }}>
-              <div className="flex gap-8 mb-12">
+              <div className="flex gap-2 mb-3">
                 <button
-                  className="px-12 py-4 radius-4 border border-border-primary hover:bg-fill-secondary"
+                  className="px-3 py-1 radius-4 border border-border-primary hover:bg-fill-secondary"
                   onClick={() => setExpanded(!expanded)}
                 >
                   {expanded ? '收起' : '展开'}
@@ -255,7 +255,7 @@ export default function CollapseExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={collapseProps} />
         </div>
       )}

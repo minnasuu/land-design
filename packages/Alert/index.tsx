@@ -28,12 +28,14 @@ const directionMap: Record<string, AlertDirection> = {
 };
 
 // 图标配置
-const iconConfig: Record<AlertType, { name: string; color: string }> = {
-  info: { name: 'info-fill', color: 'var(--color-primary-6)' },
-  success: { name: 'check-fill', color: 'var(--color-success-6)' },
-  warning: { name: 'attention-fill', color: 'var(--color-warning-6)' },
-  error: { name: 'error-fill', color: 'var(--color-danger-6)' },
-  loading: { name: '', color: 'var(--color-primary-6)' },
+// 颜色不在此处硬编码：由 index.scss 根据类型/变体计算
+// （浅色系图标取类型色，filled 实色背景取反色），组件统一使用 currentColor。
+const iconConfig: Record<AlertType, { name: string }> = {
+  info: { name: 'info-fill' },
+  success: { name: 'check-fill' },
+  warning: { name: 'attention-fill' },
+  error: { name: 'error-fill' },
+  loading: { name: '' },
 };
 
 const Alert: React.FC<AlertProps> = ({
@@ -128,18 +130,18 @@ const Alert: React.FC<AlertProps> = ({
     }
 
     const config = iconConfig[type];
-    
+
     if (type === 'loading') {
       return (
         <span className={`${prefixCls}__icon`} style={iconStyle}>
-          <Loading size={iconSize} color={config.color} />
+          <Loading size={iconSize} color="currentColor" />
         </span>
       );
     }
 
     return (
       <span className={`${prefixCls}__icon`} style={iconStyle}>
-        <Icon name={config.name} size={iconSize} color={config.color} />
+        <Icon name={config.name} size={iconSize} color="currentColor" />
       </span>
     );
   };

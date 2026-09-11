@@ -54,7 +54,7 @@ export default function InputExample() {
       hasVariants
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout title='基础用法' id='input-basic' description='Input 组件的基础用法，支持输入和清除功能。'>
             <CodeOperationContainer>
@@ -196,7 +196,7 @@ export default function InputExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={inputProps} />
         </div>
       )}

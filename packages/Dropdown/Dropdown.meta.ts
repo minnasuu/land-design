@@ -73,7 +73,7 @@ export const DropdownMeta = {
     },
   ],
 
-  relatedComponents: ['Select', 'Menu', 'PopOver'],
+  relatedComponents: ['Select', 'Nav', 'Popup'],
 
   notes: [
     'content 优先级高于 items',

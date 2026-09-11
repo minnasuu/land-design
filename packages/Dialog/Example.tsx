@@ -55,7 +55,7 @@ export default function DialogExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -102,9 +102,9 @@ export default function DialogExample() {
             description='支持自定义头部左侧、右侧或整体组件。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">自定义头部左侧</h4>
+                  <h4 className="mb-2">自定义头部左侧</h4>
                   <Button onClick={() => setShowHeaderLeft(true)}>打开弹窗（自定义头部左侧）</Button>
                   <Dialog 
                     show={showHeaderLeft} 
@@ -117,7 +117,7 @@ export default function DialogExample() {
                   </Dialog>
                 </div>
                 <div>
-                  <h4 className="mb-8">自定义头部右侧</h4>
+                  <h4 className="mb-2">自定义头部右侧</h4>
                   <Button onClick={() => setShowHeaderRight(true)}>打开弹窗（自定义头部右侧）</Button>
                   <Dialog 
                     show={showHeaderRight} 
@@ -130,7 +130,7 @@ export default function DialogExample() {
                   </Dialog>
                 </div>
                 <div>
-                  <h4 className="mb-8">自定义整体头部</h4>
+                  <h4 className="mb-2">自定义整体头部</h4>
                   <Button onClick={() => setShowCustomHeader(true)}>打开弹窗（自定义头部）</Button>
                   <Dialog 
                     show={showCustomHeader} 
@@ -176,9 +176,9 @@ export default function DialogExample() {
             description='支持自定义底部左侧、右侧或整体组件。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">自定义底部左侧</h4>
+                  <h4 className="mb-2">自定义底部左侧</h4>
                   <Button onClick={() => setShowFooterLeft(true)}>打开弹窗（自定义底部左侧）</Button>
                   <Dialog 
                     show={showFooterLeft} 
@@ -192,7 +192,7 @@ export default function DialogExample() {
                   </Dialog>
                 </div>
                 <div>
-                  <h4 className="mb-8">自定义底部右侧</h4>
+                  <h4 className="mb-2">自定义底部右侧</h4>
                   <Button onClick={() => setShowFooterRight(true)}>打开弹窗（自定义底部右侧）</Button>
                   <Dialog 
                     show={showFooterRight} 
@@ -204,7 +204,7 @@ export default function DialogExample() {
                   </Dialog>
                 </div>
                 <div>
-                  <h4 className="mb-8">自定义整体底部</h4>
+                  <h4 className="mb-2">自定义整体底部</h4>
                   <Button onClick={() => setShowCustomFooter(true)}>打开弹窗（自定义底部）</Button>
                   <Dialog 
                     show={showCustomFooter} 
@@ -250,9 +250,9 @@ export default function DialogExample() {
             description='通过 enableEsc 属性可以控制是否启用ESC键关闭弹窗。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">默认启用ESC键关闭（按ESC键可关闭）</h4>
+                  <h4 className="mb-2">默认启用ESC键关闭（按ESC键可关闭）</h4>
                   <Button onClick={() => setShowBasic(true)}>打开弹窗（默认ESC键关闭）</Button>
                   <Dialog 
                     show={showBasic} 
@@ -265,7 +265,7 @@ export default function DialogExample() {
                   </Dialog>
                 </div>
                 <div>
-                  <h4 className="mb-8">禁用ESC键关闭（按ESC键无法关闭）</h4>
+                  <h4 className="mb-2">禁用ESC键关闭（按ESC键无法关闭）</h4>
                   <Button onClick={() => setShowEscDisabled(true)}>打开弹窗（禁用ESC键关闭）</Button>
                   <Dialog 
                     show={showEscDisabled} 
@@ -297,17 +297,17 @@ export default function DialogExample() {
                 onCancel={() => setShowBasic(false)} 
                 onSubmit={() => setShowBasic(false)}
               >
-                <div className="flex flex-col gap-16">
+                <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block mb-4">姓名：</label>
+                    <label className="block mb-1">姓名：</label>
                     <Input placeholder="请输入姓名" />
                   </div>
                   <div>
-                    <label className="block mb-4">邮箱：</label>
+                    <label className="block mb-1">邮箱：</label>
                     <Input placeholder="请输入邮箱" />
                   </div>
                   <div>
-                    <label className="block mb-4">部门：</label>
+                    <label className="block mb-1">部门：</label>
                     <Select placeholder="请选择部门" />
                   </div>
                   <Alert type="default" title="请确保信息准确无误" />
@@ -319,7 +319,7 @@ export default function DialogExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={dialogProps} />
         </div>
       )}

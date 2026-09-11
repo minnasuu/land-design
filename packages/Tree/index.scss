@@ -1,0 +1,149 @@
+// ============================================================================
+// Tree 组件样式
+// @description 内联缩进树（基础树）组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+$tree-bg: var(--land-tree-bg, transparent);
+$tree-padding: var(--land-tree-padding, 4px);
+
+$tree-node-height: var(--land-tree-node-height, 32px);
+$tree-node-gap: var(--land-tree-node-gap, 2px);
+$tree-node-padding-x: var(--land-tree-node-padding-x, 8px);
+$tree-node-radius: var(--land-tree-node-radius, var(--radius-m));
+$tree-node-font-size: var(--land-tree-node-font-size, 14px);
+$tree-node-color: var(--land-tree-node-color, var(--color-text-primary));
+$tree-node-bg-hover: var(--land-tree-node-bg-hover, var(--color-bg-secondary));
+$tree-node-bg-selected: var(--land-tree-node-bg-selected, var(--color-bg-secondary));
+
+$tree-caret-size: var(--land-tree-caret-size, 16px);
+$tree-caret-color: var(--land-tree-caret-color, var(--color-text-secondary));
+// 箭头命中区尺寸：默认跟随节点行高，保证 1:1 方形且 ≥ 32×32
+$tree-caret-hit-size: var(--land-tree-caret-hit-size, #{$tree-node-height});
+
+$tree-transition: var(--land-tree-transition, all var(--transition-s) linear);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-tree {
+  display: inline-block;
+  min-width: 100%;
+  background: $tree-bg;
+  padding: $tree-padding;
+  box-sizing: border-box;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 节点
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__node {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-s);
+    height: $tree-node-height;
+    padding: 0 $tree-node-padding-x;
+    font-size: $tree-node-font-size;
+    color: $tree-node-color;
+    border-radius: $tree-node-radius;
+    cursor: pointer;
+    transition: $tree-transition;
+    user-select: none;
+
+    &:hover {
+      background-color: $tree-node-bg-hover;
+    }
+
+    &--selected {
+      background-color: $tree-node-bg-selected;
+    }
+
+    &--disabled {
+      color: var(--color-text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  // ─── 展开箭头 ───
+  // 命中区为「行高 × 行高」的 1:1 方形（图标视觉仅 12px，盒子撑满行高），避免箭头过小难点不中
+  &__caret {
+    position: relative;
+    flex-shrink: 0;
+    align-self: stretch;
+    width: $tree-caret-hit-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $tree-caret-color;
+    cursor: pointer;
+    transition: transform var(--transition-s) ease, color var(--transition-s) ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    // 仅鼠标设备给 hover，避免触摸设备上高亮粘住
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: var(--land-tree-caret-color-hover, var(--color-text-primary));
+      }
+    }
+
+    &:active {
+      opacity: 0.6;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-6);
+      outline-offset: -2px;
+      border-radius: var(--radius-s, 4px);
+    }
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+
+    // 无子节点时的占位，保持对齐（visibility: hidden 同时移出焦点顺序与命中）
+    &--leaf {
+      visibility: hidden;
+    }
+  }
+
+  // ─── 复选框占位 ───
+  &__checkbox {
+    flex-shrink: 0;
+  }
+
+  // ─── 节点内容 ───
+  &__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 子节点容器
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__children {
+    display: flex;
+    flex-direction: column;
+    gap: $tree-node-gap;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 空状态
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__empty {
+    padding: $tree-node-padding-x;
+    color: var(--color-text-secondary);
+    font-size: $tree-node-font-size;
+  }
+}

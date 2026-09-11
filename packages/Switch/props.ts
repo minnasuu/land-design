@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from "react";
-import { PopOverProps } from "../PopOver/props";
+import { TooltipProps } from "../Tooltip/props";
 
 // ==================== 类型定义 ====================
 
@@ -104,14 +104,14 @@ export interface SwitchTipProps {
   iconTip?: ReactNode;
 
   /**
-   * 整体提示的 PopOver 属性
+   * 整体提示的 Tooltip 属性
    */
-  tipProps?: Partial<PopOverProps>;
+  tipProps?: Partial<TooltipProps>;
 
   /**
-   * 图标提示的 PopOver 属性
+   * 图标提示的 Tooltip 属性
    */
-  iconTipProps?: Partial<PopOverProps>;
+  iconTipProps?: Partial<TooltipProps>;
 }
 
 /**

@@ -1,0 +1,391 @@
+.land-nav {
+  display: flex;
+  gap: var(--land-nav-gap, var(--gap-s));
+  height: 100%;
+  width: fit-content;
+  box-sizing: border-box;
+
+  // ─── 方向修饰 ───
+  &--column {
+    height: auto;
+    width: 100%;
+    flex-direction: column;
+
+    .land-nav__item {
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  // 竖向导航（浮层模式）：下拉项定位在右侧而非下方
+  &--column:not(&--inline) {
+    .land-nav__item .land-nav__drop-wrap {
+      top: 0;
+      left: 100%;
+      padding-top: 0;
+      transform-origin: left center;
+
+      &:not(.land-nav__drop-wrap--open) {
+        transform: scaleX(0.85);
+        padding-left: 8px;
+      }
+
+      &.land-nav__drop-wrap--open {
+        transform: scaleX(1);
+        padding-left: 8px;
+      }
+    }
+  }
+
+  // ─── 边框修饰 ───
+  &--border {
+    &:not(.land-nav--column) {
+      border-bottom: 1px solid var(--land-nav-border-color, var(--color-border-primary));
+    }
+
+    &.land-nav--column {
+      border-right: 1px solid var(--land-nav-border-color, var(--color-border-primary));
+    }
+  }
+
+  // ─── 导航项 ───
+  &__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    border-radius: var(--land-nav-item-border-radius, var(--radius-s));
+    transition: background-color var(--transition-s) linear, color var(--transition-s) linear;
+
+    &--simple {
+      cursor: default;
+
+      .land-nav__link {
+        cursor: default;
+      }
+    }
+
+    &--disabled {
+      opacity: var(--land-nav-item-disabled-opacity, var(--opacity-disabled));
+
+      .land-nav__link {
+        cursor: not-allowed;
+      }
+    }
+
+    &:not(.land-nav__item--disabled) {
+      .land-nav__link:not(.land-nav__link--deputy):hover {
+        color: var(--land-nav-item-hover-color, var(--color-text-primary));
+        background-color: var(--land-nav-item-hover-bg, var(--color-bg-secondary));
+
+        .land-nav__title {
+          color: transparent;
+        }
+
+        .land-nav__title::before {
+          opacity: 1;
+        }
+
+        svg path {
+          stroke-width: 4px;
+        }
+      }
+    }
+
+    &:hover .land-nav__drop-wrap,
+    &:focus-within .land-nav__drop-wrap {
+      opacity: 1;
+      pointer-events: all;
+      transform: scaleY(1);
+    }
+  }
+
+  // ─── 链接区域 ───
+  &__link {
+    --land-nav-title-font-size: var(--land-nav-title-font-size, var(--font-title-xs));
+
+    position: relative;
+    padding: var(--land-nav-link-padding, var(--padding-m));
+    display: flex;
+    align-items: center;
+    gap: var(--land-nav-link-gap, 8px);
+    width: 100%;
+    height: 100%;
+    font-size: var(--land-nav-title-font-size);
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition: background-color var(--transition-s) linear;
+    cursor: pointer;
+    color: var(--land-nav-link-color, var(--color-text-primary));
+
+    // 指示条
+    &:not(.land-nav__link--deputy)::after {
+      content: '';
+      display: block;
+      position: absolute;
+      right: 50%;
+      bottom: 0;
+      width: 12px;
+      height: 2px;
+      transform-origin: center center;
+      border-radius: 1px;
+      background-color: var(--land-nav-link-indicator-color, var(--color-primary-6));
+      opacity: 0;
+      transform: translateX(50%);
+    }
+
+    &--column {
+      flex-wrap: wrap;
+
+      &:not(.land-nav__link--deputy)::after {
+        right: 0;
+        bottom: 50%;
+        width: 2px;
+        height: calc(100% - 12px);
+        transform: translateY(50%);
+      }
+    }
+
+    &--title-column {
+      .land-nav__title-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    &--deputy {
+      cursor: default;
+    }
+
+    &--active {
+      color: var(--land-nav-link-active-color, var(--color-text-primary));
+      background-color: var(--land-nav-link-active-bg, var(--color-bg-secondary));
+
+      .land-nav__title::before {
+        color: var(--land-nav-link-active-color, var(--color-text-primary));
+        font-weight: bold;
+      }
+
+      &::after {
+        opacity: 1;
+        transition: opacity var(--transition-s) linear;
+      }
+
+      svg path {
+        stroke-width: 4px;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      font-size: var(--land-nav-link-font-size, var(--font-title-xs));
+    }
+  }
+
+  // ─── 标题容器 ───
+  &__title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+  }
+
+  // ─── 标题 ───
+  &__title {
+    --land-nav-deputy-title-font-size: var(--land-nav-deputy-title-font-size, var(--font-content-s));
+
+    position: relative;
+    color: var(--land-nav-title-color, var(--color-text-primary));
+    max-width: 100%;
+
+    &--deputy {
+      font-size: var(--land-nav-deputy-title-font-size);
+      color: var(--land-nav-deputy-title-color, var(--color-text-secondary));
+      font-weight: normal;
+
+      &::before {
+        color: var(--land-nav-deputy-title-color, var(--color-text-secondary));
+        font-size: var(--land-nav-deputy-title-font-size);
+      }
+    }
+
+    &::before {
+      content: attr(data-title);
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      color: var(--land-nav-title-color, var(--color-text-primary));
+      font-size: var(--land-nav-title-font-size);
+      font-weight: 600;
+      text-align: center;
+      line-height: 40px;
+      opacity: 0;
+    }
+  }
+
+  // ─── 图标 ───
+  &__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &__link svg,
+  &__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &__link svg path {
+    stroke-width: 3px;
+  }
+
+  // ─── 副标题 ───
+  &__sub-title {
+    --land-nav-sub-title-font-size: var(--font-content-s);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--land-nav-sub-title-font-size);
+    color: var(--land-nav-sub-title-color, var(--color-text-secondary));
+  }
+
+  // ─── 下拉容器 ───
+  &__drop-wrap {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: max-content;
+    z-index: 100;
+
+    .land-nav {
+      position: static;
+      border: none;
+      padding: 0;
+    }
+
+    .land-nav__link .land-nav__title--deputy {
+      font-weight: bold;
+    }
+
+    &--open {
+      opacity: 1;
+      pointer-events: all;
+      transform: scaleY(1);
+      padding: 0;
+    }
+
+    &:not(.land-nav__drop-wrap--open) {
+      padding-top: 8px;
+      opacity: 0;
+      transform: scaleY(0.8);
+      transform-origin: top center;
+      pointer-events: none;
+      transition: all var(--transition-s) linear;
+    }
+
+    // 浮层模式：白底圆角阴影面板（宽随内容，避免截断）
+    &--float .land-nav__drop {
+      background-color: var(--land-nav-drop-bg, var(--color-white));
+      border-radius: var(--land-nav-drop-border-radius, var(--radius-m));
+      box-shadow: var(--land-nav-drop-box-shadow, var(--shadow-m));
+      min-width: var(--land-nav-drop-min-width, 160px);
+    }
+  }
+
+  // ─── 宽面板（mega）多列布局 ───
+  &__mega {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--land-nav-mega-gap, 32px);
+    padding: var(--land-nav-mega-padding, 12px 20px);
+  }
+
+  &__mega-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+  }
+
+  &__mega-title {
+    margin: 0;
+    padding: 8px 12px 4px;
+    font-size: var(--land-nav-mega-title-font-size, var(--font-content-s));
+    color: var(--land-nav-mega-title-color, var(--color-text-secondary));
+    white-space: nowrap;
+  }
+
+  // ─── 平铺（内联）模式：子导航占据实际位置，点击展开/收起 ───
+  &--inline {
+    .land-nav__title-wrap {
+      width: auto;
+      flex: 1;
+    }
+
+    .land-nav__drop-wrap {
+      position: static;
+      top: auto;
+      left: auto;
+      width: 100%;
+      opacity: 1;
+      pointer-events: all;
+      transform: none;
+      padding: 0;
+    }
+
+    .land-nav__drop {
+      padding: 0;
+    }
+
+    // 收起态：不占据空间（且不响应 hover）
+    .land-nav__drop-wrap:not(.land-nav__drop-wrap--open) {
+      display: none;
+    }
+
+    // 各级子项逐级缩进
+    .land-nav__drop-wrap.land-nav__drop-wrap--open .land-nav__link {
+      padding-left: 32px;
+    }
+
+    // 内联模式下拉始终不随 hover 显示
+    .land-nav__item:hover .land-nav__drop-wrap:not(.land-nav__drop-wrap--open) {
+      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: none;
+    }
+
+    .land-nav__caret {
+      display: block;
+    }
+  }
+
+  // ─── 展开指示箭头（平铺模式）───
+  &__caret {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    opacity: 0.6;
+    transition: transform var(--transition-s) linear;
+
+    &--open {
+      transform: rotate(45deg);
+    }
+  }
+
+  &__drop {
+    padding: 8px 0;
+  }
+}

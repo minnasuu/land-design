@@ -80,7 +80,7 @@ export const BreadCrumbMeta = {
     },
   ],
 
-  relatedComponents: ['Menu', 'Tabs', 'Link'],
+  relatedComponents: ['Nav', 'Tabs', 'Link'],
 
   notes: [
     'items 数组会反向渲染（最后一项在最右）',

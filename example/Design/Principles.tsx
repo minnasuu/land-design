@@ -37,32 +37,32 @@ export default function Principles() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* 页面标题 */}
-      <div className="mb-32">
-        <h1 className="text-title-xxl text-text-primary mb-16">设计原则</h1>
+      <div className="mb-8">
+        <h1 className="text-title-xxl text-text-primary mb-4">设计原则</h1>
         <p className="text-text-secondary text-lg leading-relaxed">
           LandDesign 基于现代设计理念，致力于为用户提供优秀的产品体验。我们的设计原则指导着每一个组件的设计和实现。
         </p>
       </div>
 
       {/* 设计原则列表 */}
-      <div className="space-y-32">
+      <div className="space-y-8">
         {principles.map((principle, index) => (
           <div key={index} className="card-base card-lg">
-            <div className="flex items-start gap-24">
-              <div className="text-48 text-center w-80 flex-shrink-0">
+            <div className="flex items-start gap-6">
+              <div className="text-48 text-center w-20 flex-shrink-0">
                 {principle.icon}
               </div>
               <div className="flex-1">
-                <h2 className="text-title-xl text-text-primary mb-16">
+                <h2 className="text-title-xl text-text-primary mb-4">
                   {principle.title}
                 </h2>
-                <p className="text-text-secondary text-lg leading-relaxed mb-24">
+                <p className="text-text-secondary text-lg leading-relaxed mb-6">
                   {principle.description}
                 </p>
-                <div className="space-y-8">
+                <div className="space-y-2">
                   {principle.examples.map((example, idx) => (
-                    <div key={idx} className="flex items-center gap-12">
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                    <div key={idx} className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary flex items-center justify-center">
                         <span className="text-white text-xs font-bold">{idx + 1}</span>
                       </div>
                       <span className="text-text-primary">{example}</span>
@@ -76,28 +76,28 @@ export default function Principles() {
       </div>
 
       {/* 设计流程 */}
-      <div className="mt-48 card-base card-lg">
-        <h2 className="text-title-xl text-text-primary mb-24">设计流程</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+      <div className="mt-12 card-base card-lg">
+        <h2 className="text-title-xl text-text-primary mb-6">设计流程</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="w-64 h-64 rounded-full bg-primary text-white flex items-center justify-center text-32 font-bold mx-auto mb-16">
+            <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-32 font-bold mx-auto mb-4">
               1
             </div>
-            <h3 className="text-title-m text-text-primary mb-8">需求分析</h3>
+            <h3 className="text-title-m text-text-primary mb-2">需求分析</h3>
             <p className="text-text-secondary">深入理解用户需求和业务目标</p>
           </div>
           <div className="text-center">
-            <div className="w-64 h-64 rounded-full bg-success text-white flex items-center justify-center text-32 font-bold mx-auto mb-16">
+            <div className="w-16 h-16 rounded-full bg-success text-white flex items-center justify-center text-32 font-bold mx-auto mb-4">
               2
             </div>
-            <h3 className="text-title-m text-text-primary mb-8">设计实现</h3>
+            <h3 className="text-title-m text-text-primary mb-2">设计实现</h3>
             <p className="text-text-secondary">基于设计原则创建组件和界面</p>
           </div>
           <div className="text-center">
-            <div className="w-64 h-64 rounded-full bg-warning text-white flex items-center justify-center text-32 font-bold mx-auto mb-16">
+            <div className="w-16 h-16 rounded-full bg-warning text-white flex items-center justify-center text-32 font-bold mx-auto mb-4">
               3
             </div>
-            <h3 className="text-title-m text-text-primary mb-8">D2C</h3>
+            <h3 className="text-title-m text-text-primary mb-2">D2C</h3>
             <p className="text-text-secondary">Design to Code 设计到代码的转换</p>
           </div>
         </div>

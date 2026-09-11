@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import './index.scss';
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import Icon from "../Icon";
 import { CheckboxProps, checkboxDefaultProps } from "./props";
 
@@ -157,7 +157,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
             size={12}
             className={`${prefixCls}__tip-icon`} 
           />
-          <PopOver
+          <Tooltip
             content={tip}
             theme="dark"
             style={{ maxWidth: "200px" }}

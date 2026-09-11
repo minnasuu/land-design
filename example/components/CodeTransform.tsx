@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-// import Menu from '../../packages/Menu'
+// import Nav from '../../packages/Nav'
 import Flex from '../../packages/Flex';
 import CodeHighlightContainer from './CodeHighlightContainer';
 import { reactToHtml } from '../utils/reactToHtml';
@@ -114,7 +114,7 @@ const CodeTransform: React.FC<Props> = ({
     if (active === 'react') {
       return <Flex className='w-full bg-bg-secondary' gap={8} style={{ maxHeight: '720px' }}>
         <div className='flex-1 flex flex-col' style={{ width: '1%' }}>
-          <Flex justify='space-between' align='center' className='pl-16 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
+          <Flex justify='space-between' align='center' className='pl-4 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
             <div>TSX</div>
             <Button icon={<Icon name="copy" size={12} />} variant='transparent' size='small' onClick={() => copyToClipboard(reactTsxCodeStr || '', 'TSX')} />
           </Flex>
@@ -122,7 +122,7 @@ const CodeTransform: React.FC<Props> = ({
         </div>
         <Divider direction='vertical' style={{ height: '100%', width: '1px' }} className='flex-shrink-0' />
         <div className='flex-1' style={{ width: '1%' }}>
-          <Flex justify='space-between' align='center' className='pl-16 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
+          <Flex justify='space-between' align='center' className='pl-4 text-12 text-text-tertiary bg-bg-secondary border-b border-border-primary' style={{ height: '40px' }}>
             <div>SCSS</div>
             <Button icon={<Icon name="copy" size={12} />} variant='transparent' size='small' onClick={() => copyToClipboard(reactScssCodeStr || '', 'SCSS')} />
           </Flex>
@@ -134,9 +134,9 @@ const CodeTransform: React.FC<Props> = ({
     if (active === 'html') {
       // if (isLoading) {
       //   return (
-      //     <div className='w-full h-64 flex items-center justify-center'>
-      //       <div className='flex flex-col items-center gap-4'>
-      //         <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500'></div>
+      //     <div className='w-full h-16 flex items-center justify-center'>
+      //       <div className='flex flex-col items-center gap-1'>
+      //         <div className='animate-spin rounded-full h-2 w-2 border-b-2 border-blue-500'></div>
       //         <p className='text-gray-600'>正在转换React代码为HTML...</p>
       //       </div>
       //     </div>
@@ -145,8 +145,8 @@ const CodeTransform: React.FC<Props> = ({
 
       // if (error) {
       //   return (
-      //     <div className='w-full h-64 flex items-center justify-center'>
-      //       <div className='flex flex-col items-center gap-4 text-red-500'>
+      //     <div className='w-full h-16 flex items-center justify-center'>
+      //       <div className='flex flex-col items-center gap-1 text-red-500'>
       //         <Icon name="error" size={24} />
       //         <p className='text-center'>转换失败: {error}</p>
       //       </div>
@@ -158,7 +158,7 @@ const CodeTransform: React.FC<Props> = ({
       //   <div className='w-full bg-bg-secondary' style={{ maxHeight: '720px' }}>
       //     {/* HTML代码块 */}
       //     <div className='flex-1 flex flex-col' style={{ width: '100%' }}>
-      //       <Flex justify='space-between' align='center' className='pl-16 pr-12 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
+      //       <Flex justify='space-between' align='center' className='pl-4 pr-3 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
       //         <div>HTML</div>
       //         <Flex gap={4} width='fit-content'>
       //           <Button icon={<Icon name="copy" size={12} />} type='transparent' size='small' onClick={() => copyToClipboard(htmlCodeStr, 'HTML')} />
@@ -173,7 +173,7 @@ const CodeTransform: React.FC<Props> = ({
       //     {/* CSS和JS代码块 */}
       //     <Flex className='w-full' gap={0}>
       //       <div className='flex-1 flex flex-col' style={{ width: '1%' }}>
-      //         <Flex justify='space-between' align='center' className='pl-16 pr-8 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
+      //         <Flex justify='space-between' align='center' className='pl-4 pr-2 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
       //           <div>CSS</div>
       //           <Button icon={<Icon name="copy" size={12} />} type='transparent' size='small' onClick={() => copyToClipboard(htmlCssCodeStr, 'CSS')} />
       //         </Flex>
@@ -181,7 +181,7 @@ const CodeTransform: React.FC<Props> = ({
       //       </div>
       //       <Divider direction='column' style={{ height: '100%', width: '1px' }} className='flex-shrink-0' />
       //       <div className='flex-1' style={{ width: '1%' }}>
-      //         <Flex justify='space-between' align='center' className='pl-16 pr-8 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
+      //         <Flex justify='space-between' align='center' className='pl-4 pr-2 text-12 text-text-tertiary bg-bg-primary border-b border-border-primary' style={{ height: '40px' }}>
       //           <div>JavaScript</div>
       //           <Button icon={<Icon name="copy" size={12} />} type='transparent' size='small' onClick={() => copyToClipboard(htmlJsCodeStr, 'JavaScript')} />
       //         </Flex>
@@ -190,7 +190,7 @@ const CodeTransform: React.FC<Props> = ({
       //     </Flex>
       //   </div>
       // );
-      return <Flex bothCenter className='w-full p-24'>
+      return <Flex bothCenter className='w-full p-6'>
         <State title='建设中，敬请期待' />
       </Flex>
     }

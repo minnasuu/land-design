@@ -213,7 +213,7 @@ export default function BadgeExample() {
             description="徽标数值可以动态变化。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-16">
+              <div className="flex items-center gap-4">
                 <Badge count={count}>
                   <div style={boxStyle} />
                 </Badge>
@@ -221,21 +221,21 @@ export default function BadgeExample() {
                   <div style={boxStyle} />
                 </Badge>
               </div>
-              <div className="flex gap-8">
+              <div className="flex gap-2">
                 <button
-                  className="px-12 py-4 radius-4 border border-border-primary hover:bg-fill-secondary"
+                  className="px-3 py-1 radius-4 border border-border-primary hover:bg-fill-secondary"
                   onClick={() => setCount(Math.max(0, count - 1))}
                 >
                   -
                 </button>
                 <button
-                  className="px-12 py-4 radius-4 border border-border-primary hover:bg-fill-secondary"
+                  className="px-3 py-1 radius-4 border border-border-primary hover:bg-fill-secondary"
                   onClick={() => setCount(count + 1)}
                 >
                   +
                 </button>
                 <button
-                  className="px-12 py-4 radius-4 border border-border-primary hover:bg-fill-secondary"
+                  className="px-3 py-1 radius-4 border border-border-primary hover:bg-fill-secondary"
                   onClick={() => setCount(Math.floor(Math.random() * 200))}
                 >
                   随机
@@ -247,7 +247,7 @@ export default function BadgeExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={badgeProps} />
         </div>
       )}

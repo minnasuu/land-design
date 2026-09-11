@@ -1,0 +1,123 @@
+// ============================================================================
+// Popup 组件样式
+// @description 气泡提示组件的完整样式定义
+// @author Land Design System
+// ============================================================================
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 设计令牌 (Design Tokens)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── 布局令牌 ───
+$popup-padding: var(--land-popup-padding, var(--padding-m) var(--padding-l));
+$popup-max-width: var(--land-popup-max-width, 300px);
+$popup-radius: var(--land-popup-radius, var(--radius-m));
+$popup-z-index: var(--land-popup-z-index, 100);
+$popup-z-index-body: var(--land-popup-z-index-body, 1000);
+
+// ─── 外观令牌: Light ───
+$popup-light-bg: var(--land-popup-light-bg, var(--color-bg-primary));
+$popup-light-color: var(--land-popup-light-color, var(--color-text-primary));
+$popup-light-border-color: var(--land-popup-light-border-color, var(--color-border-primary));
+
+// ─── 外观令牌: Dark ───
+$popup-dark-bg: var(--land-popup-dark-bg, var(--color-bg-primary-inverse));
+$popup-dark-color: var(--land-popup-dark-color, var(--color-text-primary-inverse));
+
+// ─── 阴影令牌（定义在 .land-popup 上，可通过 CSS 变量整体覆盖）───
+// 近阴影：贴近容器的细弱投影；远阴影：营造浮起层次的大范围投影
+$popup-shadow-near: var(--land-popup-shadow-near, 0 1px 2px rgba(0, 0, 0, 0.04));
+$popup-shadow-far: var(--land-popup-shadow-far, 0 4px 12px rgba(0, 0, 0, 0.06));
+$popup-shadow-dark: var(--land-popup-shadow-dark, 0 2px 8px rgba(0, 0, 0, 0.16));
+
+// ─── 排版令牌 ───
+$popup-font-size: var(--land-popup-font-size, var(--font-content-m));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION: 根容器
+// ─────────────────────────────────────────────────────────────────────────────
+
+.land-popup {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  height: fit-content;
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 气泡容器（定位 + 动效 + 阴影/描边）
+  // 气泡整体形状由子元素 `__shape` 通过 clip-path 一体成型切割，
+  // 阴影与描边通过 drop-shadow 跟随切割后的轮廓，实现箭头与主体无缝衔接。
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__bubble {
+    position: absolute;
+    width: max-content;
+    max-width: $popup-max-width;
+    box-sizing: border-box;
+    pointer-events: none;
+    opacity: 0;
+    z-index: $popup-z-index;
+
+    // ─── 主题: Light ───
+    &--light {
+      filter: drop-shadow($popup-shadow-near)
+        drop-shadow($popup-shadow-far)
+        drop-shadow(1px 0 0 $popup-light-border-color)
+        drop-shadow(-1px 0 0 $popup-light-border-color)
+        drop-shadow(0 1px 0 $popup-light-border-color)
+        drop-shadow(0 -1px 0 $popup-light-border-color);
+
+      .land-popup__shape {
+        background-color: $popup-light-bg;
+      }
+
+      .land-popup__content {
+        color: $popup-light-color;
+      }
+    }
+
+    // ─── 主题: Dark ───
+    &--dark {
+      filter: drop-shadow($popup-shadow-dark);
+
+      .land-popup__shape {
+        background-color: $popup-dark-bg;
+      }
+
+      .land-popup__content {
+        color: $popup-dark-color;
+      }
+    }
+
+    // ─── 状态: 可见 ───
+    &--visible {
+      pointer-events: auto;
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 气泡形状（clip-path 一体切割的背景层，绝对定位铺满气泡盒）
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__shape {
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    // fallback：当 clip-path 不可用时退化为圆角矩形
+    border-radius: $popup-radius;
+    will-change: clip-path;
+  }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // SUBSECTION: 气泡内容
+  // 内容保持正常盒模型，其尺寸等于「气泡除箭头外的部分」
+  // ───────────────────────────────────────────────────────────────────────────
+
+  &__content {
+    position: relative;
+    box-sizing: border-box;
+    padding: $popup-padding;
+    font-size: $popup-font-size;
+    line-height: 1.5;
+  }
+}

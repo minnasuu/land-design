@@ -1,6 +1,6 @@
 import React, { MouseEvent, useMemo } from 'react';
 import './index.scss';
-import PopOver from '../PopOver';
+import Tooltip from '../Tooltip';
 import Icon from '../Icon';
 import LinkWave from './LinkWave';
 import { LinkProps, LinkStatus } from './props';
@@ -27,7 +27,7 @@ const Link: React.FC<LinkProps> & {
   disabled = false,
   underline = 'hover',
   tip,
-  popoverProps,
+  tooltipProps,
   startIcon,
   endIcon,
   children,
@@ -105,7 +105,7 @@ const Link: React.FC<LinkProps> & {
     </a>
   );
 
-  // 禁用时用包裹层承载 not-allowed 鼠标样式和 PopOver hover 事件
+  // 禁用时用包裹层承载 not-allowed 鼠标样式和 Tooltip hover 事件
   // 内部 <a> 的 pointer-events: none 阻止实际点击但不影响外层交互
   const wrappedNode = disabled ? (
     <span className={`${prefixCls}-disabled-wrapper`}>{linkNode}</span>
@@ -114,9 +114,9 @@ const Link: React.FC<LinkProps> & {
   );
 
   return (
-    <PopOver content={tip} {...popoverProps}>
+    <Tooltip content={tip} theme="light" {...tooltipProps}>
       {wrappedNode}
-    </PopOver>
+    </Tooltip>
   );
 };
 

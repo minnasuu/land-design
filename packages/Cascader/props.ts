@@ -1,45 +1,45 @@
 // ============================================================================
-// SelectTree 组件属性定义
-// @description 树形选择器组件的完整类型定义
+// Cascader 组件属性定义
+// @description 级联选择器（多列树形选择器）组件的完整类型定义
 // @author Land Design System
 // ============================================================================
 
 import { CSSProperties, ReactNode } from "react";
 import { CommonProps } from "../types";
 import { DropdownProps } from "../Dropdown/props";
-import { PopOverProps } from "../PopOver/props";
+import { TooltipProps } from "../Tooltip/props";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SECTION: 基础类型定义
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * 树形选择器外观变体
+ * 级联选择器外观变体
  * - outline: 描边样式（默认）
  * - fill: 填充样式
  * - text: 文本样式
  * - transparent: 透明样式
  */
-export type SelectTreeVariant = 'outline' | 'fill' | 'text' | 'transparent';
+export type CascaderVariant = 'outline' | 'fill' | 'text' | 'transparent';
 
 /**
- * @deprecated 使用 SelectTreeVariant 代替
+ * @deprecated 使用 CascaderVariant 代替
  */
-export type SelectTreeType = "border" | "background" | "transparent" | "text";
+export type CascaderType = "border" | "background" | "transparent" | "text";
 
 /**
- * 树形选择器尺寸
+ * 级联选择器尺寸
  * - small: 小尺寸
  * - default: 默认尺寸
  * - large: 大尺寸
  */
-export type SelectTreeSize = 'small' | 'default' | 'large';
+export type CascaderSize = 'small' | 'default' | 'large';
 
 /**
- * 树形选项数据项类型
- * @description 定义单个树形选项的完整配置
+ * 级联选项数据项类型
+ * @description 定义单个级联选项的完整配置
  */
-export interface SelectTreeOption {
+export interface CascaderOption {
   /** 
    * 选项唯一标识
    * @description 用于标识选项的唯一值
@@ -69,23 +69,23 @@ export interface SelectTreeOption {
    * 子选项
    * @description 当前选项的子选项列表，形成树形结构
    */
-  children?: SelectTreeOption[];
+  children?: CascaderOption[];
 }
 
 /**
- * @deprecated 使用 SelectTreeOption 代替
+ * @deprecated 使用 CascaderOption 代替
  */
-export type SelectTreeItemType = SelectTreeOption;
+export type CascaderItemType = CascaderOption;
 
 /**
  * 自定义显示回调参数
  * @description customValueDisplay 回调的参数类型
  */
-export interface SelectTreeCustomDisplayParams {
+export interface CascaderCustomDisplayParams {
   /** 选中的 key 数组 */
   values: string[];
   /** 选中的选项数组 */
-  items: SelectTreeOption[];
+  items: CascaderOption[];
   /** 是否为多选模式 */
   isMultiple: boolean;
   /** 占位符文本 */
@@ -96,19 +96,19 @@ export interface SelectTreeCustomDisplayParams {
 // SECTION: 组件属性接口
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'content' | 'children' | 'onChange'> {
+export interface CascaderProps extends CommonProps, Omit<DropdownProps, 'content' | 'children' | 'onChange'> {
   // ─── 核心属性 ───
 
   /**
    * 选项数据
    * @description 树形选项的完整数据
    */
-  options?: SelectTreeOption[];
+  options?: CascaderOption[];
 
   /**
    * @deprecated 使用 options 代替
    */
-  data?: SelectTreeOption[];
+  data?: CascaderOption[];
 
   /**
    * 当前选中值（单选）
@@ -119,7 +119,7 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
   /**
    * @deprecated 使用 value 代替
    */
-  selected?: SelectTreeOption;
+  selected?: CascaderOption;
 
   /**
    * 当前选中值数组（多选）
@@ -130,7 +130,7 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
   /**
    * @deprecated 使用 values 代替
    */
-  selectedValues?: SelectTreeOption[];
+  selectedValues?: CascaderOption[];
 
   /**
    * 默认选中值（单选，非受控）
@@ -160,18 +160,18 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
    * 外观变体
    * @default 'outline'
    */
-  variant?: SelectTreeVariant;
+  variant?: CascaderVariant;
 
   /**
    * @deprecated 使用 variant 代替
    */
-  type?: SelectTreeType;
+  type?: CascaderType;
 
   /**
    * 尺寸
    * @default 'default'
    */
-  size?: SelectTreeSize;
+  size?: CascaderSize;
 
   /**
    * 是否禁用
@@ -209,7 +209,7 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
   /**
    * 选择框提示配置
    */
-  tipProps?: PopOverProps;
+  tipProps?: TooltipProps;
 
   // ─── 自定义渲染 ───
 
@@ -218,7 +218,7 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
    * @param params 显示参数
    * @returns 自定义渲染内容
    */
-  customValueDisplay?: (params: SelectTreeCustomDisplayParams) => ReactNode;
+  customValueDisplay?: (params: CascaderCustomDisplayParams) => ReactNode;
 
   /**
    * 自定义选项渲染
@@ -227,7 +227,7 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
    * @returns 自定义渲染内容
    */
   renderOption?: (
-    option: SelectTreeOption,
+    option: CascaderOption,
     state: {
       selected: boolean;
       expanded: boolean;
@@ -266,8 +266,8 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
    */
   onChange?: (
     value: string | string[],
-    option: SelectTreeOption,
-    selectedOptions?: SelectTreeOption[]
+    option: CascaderOption,
+    selectedOptions?: CascaderOption[]
   ) => void;
 
   /**
@@ -282,9 +282,9 @@ export interface SelectTreeProps extends CommonProps, Omit<DropdownProps, 'conte
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * SelectTree 组件默认属性
+ * Cascader 组件默认属性
  */
-export const selectTreeDefaultProps: Partial<SelectTreeProps> = {
+export const cascaderDefaultProps: Partial<CascaderProps> = {
   variant: 'outline',
   size: 'default',
   placeholder: '请选择',
@@ -303,7 +303,7 @@ export const selectTreeDefaultProps: Partial<SelectTreeProps> = {
  * 旧 type 到新 variant 的映射
  * @internal
  */
-export const typeToVariantMap: Record<SelectTreeType, SelectTreeVariant> = {
+export const typeToVariantMap: Record<CascaderType, CascaderVariant> = {
   border: 'outline',
   background: 'fill',
   transparent: 'transparent',
@@ -315,7 +315,7 @@ export const typeToVariantMap: Record<SelectTreeType, SelectTreeVariant> = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * SelectTree 属性使用说明
+ * Cascader 属性使用说明
  * 
  * 1. 数据源：
  *    - 推荐使用 options（新）而非 data（旧）
@@ -335,7 +335,7 @@ export const typeToVariantMap: Record<SelectTreeType, SelectTreeVariant> = {
  * 
  * @example
  * // 单选模式
- * <SelectTree
+ * <Cascader
  *   options={treeData}
  *   value={selectedKey}
  *   onChange={(value, option) => setSelectedKey(value)}
@@ -344,20 +344,11 @@ export const typeToVariantMap: Record<SelectTreeType, SelectTreeVariant> = {
  * 
  * @example
  * // 多选模式
- * <SelectTree
+ * <Cascader
  *   options={treeData}
  *   multiple
  *   values={selectedKeys}
  *   onChange={(values, option, allSelected) => setSelectedKeys(values)}
  *   maxDisplayCount={2}
- * />
- * 
- * @example
- * // 自定义显示
- * <SelectTree
- *   options={treeData}
- *   customValueDisplay={({ items }) => (
- *     <div>{items.map(i => i.label).join(' > ')}</div>
- *   )}
  * />
  */

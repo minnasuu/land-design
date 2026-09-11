@@ -159,9 +159,9 @@ export default function RadioExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={radioProps} />
-          {radioTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+          {radioTypes?.map(i => <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
             <h3 className='text-sm font-bold'>{i.name}</h3>
             <ComponentPropsTable props={i.data as any} />
           </div>)}

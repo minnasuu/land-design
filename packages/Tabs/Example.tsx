@@ -6,7 +6,7 @@ import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import Link from '../Link';
 import Icon from '../Icon';
-import PopOver from '../PopOver';
+import Tooltip from '../Tooltip';
 
 export default function TabsExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
@@ -66,7 +66,7 @@ export default function TabsExample() {
       label: (
         <span className="hover-pop" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           模块2
-          <PopOver content="这是模块2的提示" theme="dark" ><Icon name="info-stroke" size={14} /></PopOver>
+          <Tooltip content="这是模块2的提示" theme="dark" ><Icon name="info-stroke" size={14} /></Tooltip>
         </span>
       ),
     },
@@ -78,7 +78,7 @@ export default function TabsExample() {
     {
       key: "1",
       label: (item: any, isSelected: boolean) => (
-       <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+       <div className="flex items-center gap-1" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
           模块1 {isSelected && <Icon name="check-fill" size={14} />}
         </div>
       ),
@@ -86,7 +86,7 @@ export default function TabsExample() {
     {
       key: "2",
       label: (item: any, isSelected: boolean) => (
-        <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+        <div className="flex items-center gap-1" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
           模块2 {isSelected && <Icon name="check-fill" size={14} />}
         </div>
       ),
@@ -94,7 +94,7 @@ export default function TabsExample() {
     {
       key: "3",
       label: (item: any, isSelected: boolean) => (
-       <div className="flex items-center gap-4" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
+       <div className="flex items-center gap-1" style={{ fontWeight: isSelected ? 'bold' : 'normal' }}>
           模块3 {isSelected && <Icon name="check-fill" size={14} />}
         </div>
       ),
@@ -232,9 +232,9 @@ export default function TabsExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={tabsProps} />
-          {tabsTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+          {tabsTypes?.map(i => <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
             <h3 className='text-sm font-bold'>{i.name}</h3>
             <ComponentPropsTable props={i.data as any} />
           </div>)}

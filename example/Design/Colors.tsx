@@ -64,14 +64,14 @@ export default function Colors() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* 页面标题 */}
-      <div className="mb-32">
-        <h1 className="text-title-xxl text-text-primary mb-16">颜色系统</h1>
+      <div className="mb-8">
+        <h1 className="text-title-xxl text-text-primary mb-4">颜色系统</h1>
         <p className="text-text-secondary text-lg leading-relaxed">
           LandDesign 采用语义化的颜色系统，支持浅色和深色模式，确保在不同场景下都能提供优秀的视觉体验。
         </p>
 
         {/* 主题切换 */}
-        <div className="mt-24">
+        <div className="mt-6">
           <button
             onClick={toggleTheme}
             className="btn-primary btn-md"
@@ -82,16 +82,16 @@ export default function Colors() {
       </div>
 
       {/* 颜色分类 */}
-      <div className="space-y-48">
+      <div className="space-y-12">
         {colorCategories.map((category, index) => (
           <section key={index}>
-            <h2 className="text-title-xl text-text-primary mb-16">{category.title}</h2>
-            <p className="text-text-secondary text-body-m mb-24">{category.description}</p>
+            <h2 className="text-title-xl text-text-primary mb-4">{category.title}</h2>
+            <p className="text-text-secondary text-body-m mb-6">{category.description}</p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {category.colors.map((color, idx) => (
                 <div key={idx} className="card-base card-md">
-                  <div className={`${color.class} w-full h-32 rounded-lg mb-16 flex items-center justify-center`}>
+                  <div className={`${color.class} w-full h-8 rounded-lg mb-4 flex items-center justify-center`}>
                     <span className={`text-body-s font-medium ${color.class.includes('bg-') && !color.class.includes('bg-bg-') && !color.class.includes('bg-gray-')
                         ? 'text-white'
                         : 'text-text-primary'
@@ -99,9 +99,9 @@ export default function Colors() {
                       {color.name}
                     </span>
                   </div>
-                  <h3 className="text-title-s text-text-primary mb-8">{color.name}</h3>
-                  <p className="text-body-s text-text-secondary mb-12">{color.description}</p>
-                  <div className="text-caption text-text-tertiary bg-bg-secondary px-8 py-4 rounded">
+                  <h3 className="text-title-s text-text-primary mb-2">{color.name}</h3>
+                  <p className="text-body-s text-text-secondary mb-3">{color.description}</p>
+                  <div className="text-caption text-text-tertiary bg-bg-secondary px-2 py-1 rounded">
                     {color.class}
                   </div>
                 </div>
@@ -112,20 +112,20 @@ export default function Colors() {
       </div>
 
       {/* 使用示例 */}
-      <section className="mt-48">
-        <h2 className="text-title-xl text-text-primary mb-24">使用示例</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+      <section className="mt-12">
+        <h2 className="text-title-xl text-text-primary mb-6">使用示例</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="card-base card-md">
-            <h3 className="text-title-m text-text-primary mb-16">卡片组件</h3>
-            <p className="text-text-secondary text-body-s mb-16">
+            <h3 className="text-title-m text-text-primary mb-4">卡片组件</h3>
+            <p className="text-text-secondary text-body-s mb-4">
               使用语义化颜色创建层次分明的卡片组件。
             </p>
-            <div className="space-y-12">
-              <div className="p-16 bg-bg-secondary rounded">
-                <h4 className="text-title-s text-text-primary mb-8">卡片标题</h4>
+            <div className="space-y-3">
+              <div className="p-4 bg-bg-secondary rounded">
+                <h4 className="text-title-s text-text-primary mb-2">卡片标题</h4>
                 <p className="text-body-s text-text-secondary">卡片内容使用次要文本颜色</p>
               </div>
-              <div className="flex gap-8">
+              <div className="flex gap-2">
                 <button className="btn-primary btn-sm">主要按钮</button>
                 <button className="btn-secondary btn-sm">次要按钮</button>
               </div>
@@ -133,18 +133,18 @@ export default function Colors() {
           </div>
 
           <div className="card-base card-md">
-            <h3 className="text-title-m text-text-primary mb-16">状态展示</h3>
-            <p className="text-text-secondary text-body-s mb-16">
+            <h3 className="text-title-m text-text-primary mb-4">状态展示</h3>
+            <p className="text-text-secondary text-body-s mb-4">
               使用状态颜色传达不同的信息类型。
             </p>
-            <div className="space-y-12">
-              <div className="flex gap-8">
+            <div className="space-y-3">
+              <div className="flex gap-2">
                 <span className="badge-primary">主要</span>
                 <span className="badge-success">成功</span>
                 <span className="badge-warning">警告</span>
                 <span className="badge-error">错误</span>
               </div>
-              <div className="p-16 bg-success text-white rounded">
+              <div className="p-4 bg-success text-white rounded">
                 <span className="text-body-s">成功消息示例</span>
               </div>
             </div>
@@ -153,13 +153,13 @@ export default function Colors() {
       </section>
 
       {/* 最佳实践 */}
-      <section className="mt-48">
-        <h2 className="text-title-xl text-text-primary mb-24">最佳实践</h2>
+      <section className="mt-12">
+        <h2 className="text-title-xl text-text-primary mb-6">最佳实践</h2>
         <div className="card-base card-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">✅ 推荐</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">✅ 推荐</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 使用语义化的颜色类名</li>
                 <li>• 确保文本与背景的对比度</li>
                 <li>• 保持颜色使用的一致性</li>
@@ -167,8 +167,8 @@ export default function Colors() {
               </ul>
             </div>
             <div>
-              <h3 className="text-title-m text-text-primary mb-16">❌ 避免</h3>
-              <ul className="space-y-8 text-body-s text-text-secondary">
+              <h3 className="text-title-m text-text-primary mb-4">❌ 避免</h3>
+              <ul className="space-y-2 text-body-s text-text-secondary">
                 <li>• 使用硬编码的颜色值</li>
                 <li>• 忽略可访问性要求</li>
                 <li>• 过度使用颜色</li>

@@ -77,16 +77,16 @@ export default function RateExample() {
             description="Rate 组件提供三种尺寸：small、default、large。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">Small:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">Small:</span>
                 <Rate size="small" defaultValue={3} />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">Default:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">Default:</span>
                 <Rate size="default" defaultValue={3} />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">Large:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">Large:</span>
                 <Rate size="large" defaultValue={3} />
               </div>
             </CodeOperationContainer>
@@ -99,12 +99,12 @@ export default function RateExample() {
             description="通过 allowHalf 属性控制是否允许半星评分。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-24">允许半星:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">允许半星:</span>
                 <Rate allowHalf defaultValue={2.5} />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-24">仅整星:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">仅整星:</span>
                 <Rate allowHalf={false} defaultValue={3} />
               </div>
             </CodeOperationContainer>
@@ -212,12 +212,12 @@ export default function RateExample() {
             description="readOnly 只读模式保持视觉，disabled 禁用并降低透明度。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">只读:</span>
+              <div className="flex items-center gap-1 whitespace-nowrap">
+                <span className="text-sm">只读:</span>
                 <Rate readOnly value={4} />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-16">禁用:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">禁用:</span>
                 <Rate disabled value={3} />
               </div>
             </CodeOperationContainer>
@@ -230,12 +230,12 @@ export default function RateExample() {
             description="allowClear 允许再次点击同一值时清零，设为 false 禁用此功能。"
           >
             <CodeOperationContainer column>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-28">可清除:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">可清除:</span>
                 <Rate allowClear defaultValue={3} />
               </div>
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-28">不可清除:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm">不可清除:</span>
                 <Rate allowClear={false} defaultValue={3} />
               </div>
             </CodeOperationContainer>
@@ -258,7 +258,7 @@ export default function RateExample() {
       )}
 
       {activeTab === "props" && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={rateProps} />
         </div>
       )}

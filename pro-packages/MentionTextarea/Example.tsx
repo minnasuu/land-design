@@ -174,7 +174,7 @@ export default function MentionTextareaExample() {
       <CodeOperationBar label="关键代码" reactTsxCodeStr={reactTsxCodeStr} />
 
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -182,7 +182,7 @@ export default function MentionTextareaExample() {
             description="输入 @ 触发提及，选择后插入 mention，点击已有 mention 可替换编辑。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16 relative">
+              <div className="flex flex-col gap-4 relative">
                 <div style={{ maxWidth: 600 }}>
                   <MentionTextarea
                     value={basicValue}
@@ -196,13 +196,13 @@ export default function MentionTextareaExample() {
                 </div>
                 {basicShowList && (
                   <div
-                    className="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-80 max-h-64 overflow-y-auto"
+                    className="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-20 max-h-16 overflow-y-auto"
                     style={{ left: Math.min(basicAtPos.left, 400), top: basicAtPos.top }}
                   >
                     {mockProducts.slice(0, 6).map((item) => (
                       <div
                         key={item.id}
-                        className="p-12 hover:bg-blue-50 cursor-pointer text-sm transition-colors"
+                        className="p-3 hover:bg-blue-50 cursor-pointer text-sm transition-colors"
                         onClick={() => handleBasicSelect(item)}
                       >
                         {item.name}
@@ -221,7 +221,7 @@ export default function MentionTextareaExample() {
             description="使用 trigger={['@', '#']} 支持多触发符，renderMention 自定义 mention 样式。@ 提及用户（绿色），# 提及商品（橙色）。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16 relative">
+              <div className="flex flex-col gap-4 relative">
                 <div style={{ maxWidth: 600 }}>
                   <MentionTextarea
                     value={customValue}
@@ -237,13 +237,13 @@ export default function MentionTextareaExample() {
                 </div>
                 {customShowList && (
                   <div
-                    className="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-64 max-h-64 overflow-y-auto"
+                    className="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg min-w-16 max-h-16 overflow-y-auto"
                     style={{ left: Math.min(customAtPos.left, 400), top: customAtPos.top }}
                   >
                     {getCustomDataSource().map((item) => (
                       <div
                         key={item.id}
-                        className="p-12 hover:bg-blue-50 cursor-pointer text-sm transition-colors"
+                        className="p-3 hover:bg-blue-50 cursor-pointer text-sm transition-colors"
                         onClick={() => handleCustomSelect(item)}
                       >
                         {item.name}
@@ -258,7 +258,7 @@ export default function MentionTextareaExample() {
           {/* 禁用 / 只读 */}
           <ComponentSectionLayout title="禁用与只读" id="disabled-readonly" description="disabled 和 readOnly 状态。">
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16" style={{ maxWidth: 600 }}>
+              <div className="flex flex-col gap-4" style={{ maxWidth: 600 }}>
                 <MentionTextarea
                   value="禁用状态"
                   disabled
@@ -278,7 +278,7 @@ export default function MentionTextareaExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={mentionTextareaProps} />
         </div>
       )}

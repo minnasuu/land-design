@@ -27,7 +27,7 @@ export default function LoadingExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -91,11 +91,11 @@ export default function LoadingExample() {
             description='Loading 组件常用于按钮中表示加载状态。'
           >
             <CodeOperationContainer>
-                <button className="px-16 py-8 border radius-4 flex items-center gap-8">
+                <button className="px-4 py-2 border radius-4 flex items-center gap-2">
                   <Loading size={16} />
                   加载中...
                 </button>
-                <button className="px-16 py-8 bg-primary color-white radius-4 flex items-center gap-8">
+                <button className="px-4 py-2 bg-primary color-white radius-4 flex items-center gap-2">
                   <Loading size={16} color="white" />
                   提交中...
                 </button>
@@ -122,7 +122,7 @@ export default function LoadingExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={loadingProps} />
         </div>
       )}

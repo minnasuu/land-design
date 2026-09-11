@@ -31,8 +31,6 @@ export default function ButtonExample() {
     { name: 'capsule', type: 'boolean', desc: '是否为胶囊按钮', default: 'false' },
     { name: 'hoverAnimation', type: 'boolean', desc: '是否启用悬停动画', default: 'false' },
     { name: 'activeAnimation', type: 'boolean', desc: '是否启用点击动画', default: 'false' },
-    { name: 'tip', type: 'ReactNode | string', desc: '气泡提示内容' },
-    { name: 'popoverProps', type: 'PopOverProps', desc: '气泡提示配置，透传 PopOver 属性' },
     { name: 'htmlProps', type: 'ButtonHTMLAttributes', desc: '原生 button HTML 属性透传' },
     { name: 'onClick', type: '(e: MouseEvent) => void', desc: '点击事件回调' },
   ];
@@ -49,7 +47,7 @@ export default function ButtonExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -143,8 +141,8 @@ export default function ButtonExample() {
             description='Button 支持图标，可以单独使用图标或与文字组合使用。'
           >
             <CodeOperationContainer>
-              <Button text='下载' variant='outline' icon={<Icon name='download' strokeWidth={4}/>} />
-              <Button variant='outline' icon={<Icon name='download' strokeWidth={4}/>} />
+              <Button text='下载' variant='outline' icon={<Icon name='download' strokeWidth={4} />} />
+              <Button variant='outline' icon={<Icon name='download' strokeWidth={4} />} />
               <Button text='设置' variant='fill' icon={<Icon name='setting-fill' />} />
               <Button variant='fill' icon={<Icon name='setting-fill' />} />
             </CodeOperationContainer>
@@ -182,8 +180,8 @@ export default function ButtonExample() {
             description='通过 Loading 组件可以实现按钮的加载状态效果。'
           >
             <CodeOperationContainer>
-              <Button text='保存中' variant='outline' disabled icon={<Loading />} />
-              <Button variant='outline' disabled icon={<Loading />} />
+              <Button text='保存中' variant='outline' disabled icon={<Loading size={16} />} />
+              <Button variant='outline' disabled icon={<Loading size={16} />} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
@@ -235,19 +233,6 @@ export default function ButtonExample() {
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 按钮提示 */}
-          <ComponentSectionLayout
-            title='按钮提示'
-            id='button-tip'
-            description='通过 tip 属性可以为按钮添加气泡提示。'
-          >
-            <CodeOperationContainer>
-              <Button text='含提示按钮' tip='这是一个提示内容' />
-              <Button text='禁用提示' tip='禁用状态的提示' disabled />
-              <Button icon={<Icon name='download' />} tip='图标按钮的提示' />
-            </CodeOperationContainer>
-          </ComponentSectionLayout>
-
           {/* 按钮动效 */}
           <ComponentSectionLayout
             title='按钮动效'
@@ -266,7 +251,7 @@ export default function ButtonExample() {
 
       {
         activeTab === 'props' && (
-          <div className='flex flex-col gap-12'>
+          <div className='flex flex-col gap-3'>
             <ComponentPropsTable props={buttonProps} />
           </div>
         )

@@ -90,7 +90,7 @@ export default function StepsExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 使用 item.finished 字段 */}
           <ComponentSectionLayout
             title='使用 item.finished 字段'
@@ -140,7 +140,7 @@ export default function StepsExample() {
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          <div className='flex gap-12 justify-center'>
+          <div className='flex gap-3 justify-center'>
             <Button onClick={handlePrev} disabled={currentStep === 1}>上一步</Button>
             <Button onClick={handleNext} disabled={currentStep === stepsData.length}>下一步</Button>
             <Button onClick={handleFinish}>完成所有</Button>
@@ -150,10 +150,10 @@ export default function StepsExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={stepsProps} />
           {stepsTypes.map((i) => (
-            <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+            <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
               <h3 className='text-sm font-bold'>{i.name}</h3>
               <ComponentPropsTable props={i.data} />
             </div>

@@ -20,7 +20,7 @@ export default function PopConfirmExample() {
     { name: 'title', type: 'string', desc: '确认气泡标题', default: '提示' },
     { name: 'okText', type: 'string', desc: '确认按钮文案', default: '确定' },
     { name: 'cancelText', type: 'string', desc: '取消按钮文案', default: '取消' },
-    { name: 'placement', type: 'PopOverPlacement (top | bottom | left | right)', desc: '气泡出现位置', default: 'top' },
+    { name: 'placement', type: 'PopupPlacement (top | bottom | left | right)', desc: '气泡出现位置', default: 'top' },
     { name: 'onCancel', type: '() => void', desc: '取消按钮回调' },
     { name: 'onSubmit', type: '() => void', desc: '确认按钮回调' },
     { name: 'style', type: 'CSSProperties', desc: '自定义样式' },
@@ -39,7 +39,7 @@ export default function PopConfirmExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -91,7 +91,7 @@ export default function PopConfirmExample() {
             description='可以在触发按钮中添加图标。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-16">
+              <div className="flex gap-4">
                 <div className="relative">
                   <Button onClick={() => setShowIcon(true)}>
                     <Icon name="delete" size={16} />删除
@@ -125,7 +125,7 @@ export default function PopConfirmExample() {
             description='支持四个方向的定位。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div className="flex justify-center">
                   <div className="relative">
                     <Button onClick={() => setShowBasic(true)}>上方显示</Button>
@@ -138,7 +138,7 @@ export default function PopConfirmExample() {
                     />
                   </div>
                 </div>
-                <div className="flex gap-16 justify-center">
+                <div className="flex gap-4 justify-center">
                   <div className="relative">
                     <Button onClick={() => setShowBasic(true)}>左侧显示</Button>
                     <PopConfirm 
@@ -190,10 +190,10 @@ export default function PopConfirmExample() {
                 <PopConfirm 
                   show={showComplex} 
                   content={
-                    <div className="p-12">
-                      <h4 className="mb-8">⚠️ 危险操作</h4>
-                      <p className="mb-8">此操作将永久删除以下内容：</p>
-                      <ul className="mb-8">
+                    <div className="p-3">
+                      <h4 className="mb-2">⚠️ 危险操作</h4>
+                      <p className="mb-2">此操作将永久删除以下内容：</p>
+                      <ul className="mb-2">
                         <li>• 用户数据</li>
                         <li>• 配置文件</li>
                         <li>• 历史记录</li>
@@ -239,7 +239,7 @@ export default function PopConfirmExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={popConfirmProps} />
         </div>
       )}

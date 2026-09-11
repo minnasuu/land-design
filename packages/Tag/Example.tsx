@@ -73,7 +73,7 @@ export default function TagExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -92,7 +92,7 @@ export default function TagExample() {
             description="支持 default、primary、success、warning、error、info 六种预设颜色。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 <Tag color="default">Default</Tag>
                 <Tag color="primary">Primary</Tag>
                 <Tag color="success">Success</Tag>
@@ -110,20 +110,20 @@ export default function TagExample() {
             description="支持 light(浅色)、filled(填充)、outlined(边框) 三种变体。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
-                <div className="flex gap-8 flex-wrap">
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-2 flex-wrap">
                   <Tag color="primary" variant="light">Light</Tag>
                   <Tag color="success" variant="light">Light</Tag>
                   <Tag color="warning" variant="light">Light</Tag>
                   <Tag color="error" variant="light">Light</Tag>
                 </div>
-                <div className="flex gap-8 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   <Tag color="primary" variant="filled">Filled</Tag>
                   <Tag color="success" variant="filled">Filled</Tag>
                   <Tag color="warning" variant="filled">Filled</Tag>
                   <Tag color="error" variant="filled">Filled</Tag>
                 </div>
-                <div className="flex gap-8 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   <Tag color="primary" variant="outlined">Outlined</Tag>
                   <Tag color="success" variant="outlined">Outlined</Tag>
                   <Tag color="warning" variant="outlined">Outlined</Tag>
@@ -140,7 +140,7 @@ export default function TagExample() {
             description="支持 small、medium、large 三种尺寸。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 items-center">
+              <div className="flex gap-2 items-center">
                 <Tag size="small" color="primary">Small</Tag>
                 <Tag size="medium" color="primary">Medium</Tag>
                 <Tag size="large" color="primary">Large</Tag>
@@ -155,7 +155,7 @@ export default function TagExample() {
             description="支持 square(方形)、rounded(圆角)、pill(药丸) 三种形状。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 items-center">
+              <div className="flex gap-2 items-center">
                 <Tag shape="square" color="primary">Square</Tag>
                 <Tag shape="rounded" color="primary">Rounded</Tag>
                 <Tag shape="pill" color="primary">Pill</Tag>
@@ -170,7 +170,7 @@ export default function TagExample() {
             description="通过 icon 和 suffixIcon 属性添加前置和后置图标。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 <Tag icon={<Icon name="tag" size={14} />} color="primary">
                   带图标
                 </Tag>
@@ -194,7 +194,7 @@ export default function TagExample() {
             description="设置 closable 属性使标签可关闭。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 <Tag closable onClose={() => console.log('关闭')}>
                   可关闭
                 </Tag>
@@ -218,7 +218,7 @@ export default function TagExample() {
             description="使用 Tag.CheckableTag 或设置 checkable 属性实现可选中标签。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 {['React', 'Vue', 'Angular', 'Svelte'].map((tag) => (
                   <Tag.CheckableTag
                     key={tag}
@@ -240,7 +240,7 @@ export default function TagExample() {
             description="设置 disabled 属性禁用标签。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 <Tag disabled>禁用</Tag>
                 <Tag disabled closable>禁用可关闭</Tag>
                 <Tag disabled checkable>禁用可选中</Tag>
@@ -256,7 +256,7 @@ export default function TagExample() {
             description="使用 Tag.Group 组织多个标签，支持间距、换行、最大数量等配置。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Tag.Group gap={12}>
                   <Tag color="primary">标签1</Tag>
                   <Tag color="success">标签2</Tag>
@@ -282,19 +282,19 @@ export default function TagExample() {
             description="传入非预设的颜色值，或使用 backgroundColor、textColor、borderColor 属性自定义颜色。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-12">
-                <div className="flex gap-8 flex-wrap">
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-2 flex-wrap">
                   <Tag color="#f50">自定义色1</Tag>
                   <Tag color="#2db7f5">自定义色2</Tag>
                   <Tag color="#87d068">自定义色3</Tag>
                   <Tag color="#108ee9">自定义色4</Tag>
                 </div>
-                <div className="flex gap-8 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   <Tag color="#f50" variant="filled">Filled</Tag>
                   <Tag color="#2db7f5" variant="outlined">Outlined</Tag>
                   <Tag color="#87d068" variant="light">Light</Tag>
                 </div>
-                <div className="flex gap-8 flex-wrap">
+                <div className="flex gap-2 flex-wrap">
                   <Tag
                     backgroundColor="#fff0f6"
                     textColor="#eb2f96"
@@ -315,7 +315,7 @@ export default function TagExample() {
             description="通过 style 属性自定义标签外观。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-8 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 <Tag
                   style={{
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -344,7 +344,7 @@ export default function TagExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <h3 className="text-sm font-bold">Tag Props</h3>
           <ComponentPropsTable props={tagProps} />
 

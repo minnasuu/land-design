@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import Title from "../Title";
 import Grid from ".";
 import { GridType } from "./props";
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
@@ -48,7 +46,7 @@ export default function GridExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 3 列宫格 */}
           <ComponentSectionLayout
             title='3 列宫格'
@@ -56,12 +54,12 @@ export default function GridExample() {
             description='使用 column-repeat 类型创建固定列数的栅格布局。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-6 border border-gray-3 p-8" style={{ height: '200px' }}>
+              <div className="flex justify-center gap-1.5 border border-gray-3 p-2" style={{ height: '200px' }}>
                 <Grid className="w-full" type={GridType.ColumnRepeat} repeatNum={3}>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardLight></StyledCardLight>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-2"></div>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-1"></div>
                 </Grid>
               </div>
             </CodeOperationContainer>
@@ -74,12 +72,12 @@ export default function GridExample() {
             description='使用 column-fit 类型创建自适应宽度的栅格布局。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-6 border border-gray-3 p-8" style={{ height: '200px' }}>
+              <div className="flex justify-center gap-1.5 border border-gray-3 p-2" style={{ height: '200px' }}>
                 <Grid className="w-full" type={GridType.ColumnFit} autoSize={160}>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardLight></StyledCardLight>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-2"></div>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-1"></div>
                 </Grid>
               </div>
             </CodeOperationContainer>
@@ -92,12 +90,12 @@ export default function GridExample() {
             description='使用 column-fill 类型创建自动填充的栅格布局。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-6 border border-gray-3 p-8" style={{ height: '200px' }}>
+              <div className="flex justify-center gap-1.5 border border-gray-3 p-2" style={{ height: '200px' }}>
                 <Grid className="w-full" type={GridType.ColumnFill} autoSize={160}>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardDark></StyledCardDark>
-                  <StyledCardLight></StyledCardLight>
-                  <StyledCardLight></StyledCardLight>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-2"></div>
+                  <div className="bg-primary-1"></div>
+                  <div className="bg-primary-1"></div>
                 </Grid>
               </div>
             </CodeOperationContainer>
@@ -106,18 +104,10 @@ export default function GridExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={gridProps} />
         </div>
       )}
     </ComponentContentLayout>
   );
 }
-
-const StyledCardLight = styled.div`
-  background-color: var(--color-primary-1);
-`;
-
-const StyledCardDark = styled.div`
-  background-color: var(--color-primary-2);
-`;

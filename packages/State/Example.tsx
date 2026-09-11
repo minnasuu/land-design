@@ -274,7 +274,7 @@ export default function StateExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={stateProps} />
         </div>
       )}

@@ -209,7 +209,7 @@ export default function UploaderExample() {
                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   />
                 ) : (
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center gap-0.5">
                     <Icon name="avatar" size={32} />
                     <span className="text-xs text-secondary">上传头像</span>
                   </div>
@@ -246,7 +246,7 @@ export default function UploaderExample() {
           >
             <CodeOperationContainer column>
               <div>
-                <div className="text-sm font-medium mb-2">text 类型</div>
+                <div className="text-sm font-medium mb-0.5">text 类型</div>
                 <Uploader
                   title="文本列表"
                   hint="默认的文件列表样式"
@@ -255,7 +255,7 @@ export default function UploaderExample() {
                 />
               </div>
               <div>
-                <div className="text-sm font-medium mb-2">picture 类型</div>
+                <div className="text-sm font-medium mb-0.5">picture 类型</div>
                 <Uploader
                   title="图片列表"
                   hint="带缩略图的文件列表"
@@ -300,7 +300,7 @@ export default function UploaderExample() {
       )}
 
       {activeTab === "props" && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={uploaderProps} />
         </div>
       )}

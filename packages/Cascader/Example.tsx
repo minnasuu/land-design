@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import SelectTree from '.';
-import { SelectTreeItemType } from './props';
+import Cascader from '.';
+import { CascaderOption } from './props';
 import Tag from '../Tag';
 import CodeOperationContainer from '../../example/components/CodeOperationContainer';
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
@@ -8,12 +8,12 @@ import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
 import Link from '../Link';
 
-export default function SelectTreeExample() {
+export default function CascaderExample() {
   const [activeTab, setActiveTab] = useState<string>('examples');
-  const [selected, setSelected] = useState<SelectTreeItemType>();
-  const [selectedValues, setSelectedValues] = useState<SelectTreeItemType[]>([]);
-  const [customDisplaySelectedValues, setCustomDisplaySelectedValues] = useState<SelectTreeItemType[]>([]);
-  const [singleCustomDisplayValue, setSingleCustomDisplayValue] = useState<SelectTreeItemType>();
+  const [selected, setSelected] = useState<CascaderOption>();
+  const [selectedValues, setSelectedValues] = useState<CascaderOption[]>([]);
+  const [customDisplaySelectedValues, setCustomDisplaySelectedValues] = useState<CascaderOption[]>([]);
+  const [singleCustomDisplayValue, setSingleCustomDisplayValue] = useState<CascaderOption>();
 
   const treeData = useMemo(() => [
     { key: 'all', label: '全部' },
@@ -130,30 +130,30 @@ export default function SelectTreeExample() {
     }
   ], []);
 
-  const handleSingleChange = (selected: SelectTreeItemType) => {
-    console.log('单选变化:', selected);
-    setSelected(selected);
+  const handleSingleChange = (_value: string | string[], option: CascaderOption) => {
+    console.log('单选变化:', option);
+    setSelected(option);
   };
 
-  const handleMultipleChange = (selected: SelectTreeItemType[], item: SelectTreeItemType) => {
-    console.log('多选变化:', selected, item);
-    setSelectedValues(selected);
+  const handleMultipleChange = (_values: string | string[], item: CascaderOption, selectedOptions?: CascaderOption[]) => {
+    console.log('多选变化:', selectedOptions, item);
+    setSelectedValues(selectedOptions ?? []);
   };
 
-  const handleCustomDisplayChange = (selected: SelectTreeItemType[], item: SelectTreeItemType) => {
-    console.log('自定义显示多选变化:', selected, item);
-    setCustomDisplaySelectedValues(selected);
+  const handleCustomDisplayChange = (_values: string | string[], item: CascaderOption, selectedOptions?: CascaderOption[]) => {
+    console.log('自定义显示多选变化:', selectedOptions, item);
+    setCustomDisplaySelectedValues(selectedOptions ?? []);
   };
 
-  const handleSingleCustomDisplayChange = (selected: SelectTreeItemType) => {
-    console.log('自定义显示单选变化:', selected);
-    setSingleCustomDisplayValue(selected);
+  const handleSingleCustomDisplayChange = (_value: string | string[], option: CascaderOption) => {
+    console.log('自定义显示单选变化:', option);
+    setSingleCustomDisplayValue(option);
   };
 
-  const selectTreeProps = [
+  const cascaderProps = [
     {
-      name: "data",
-      type: <><Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>[]</>,
+      name: "options",
+      type: <><Link anchor="CascaderOption-API">CascaderOption</Link>[]</>,
       desc: "数据",
     },
     {
@@ -163,13 +163,13 @@ export default function SelectTreeExample() {
       default: "请选择",
     },
     {
-      name: "selected",
-      type: "SelectTreeItemType",
+      name: "value",
+      type: "string",
       desc: "当前选中项（单选模式）",
     },
     {
-      name: "selectedValues",
-      type: "SelectTreeItemType[]",
+      name: "values",
+      type: "string[]",
       desc: "当前选中的多个值（多选模式）",
     },
     {
@@ -196,13 +196,13 @@ export default function SelectTreeExample() {
       desc: "自定义选择结果的展示内容",
     },
     {
-      name: "type",
-      type: "SelectTreeType (border | background | transparent | text)",
+      name: "variant",
+      type: "CascaderVariant (outline | fill | text | transparent)",
       desc: "选择器样式",
-      default: "border",
+      default: "outline",
     },
     { name: "tip", type: "Element", desc: "选框提示内容" },
-    { name: "tipProps", type: "PopOverProps", desc: "选框提示内容配置" },
+    { name: "tipProps", type: "TooltipProps", desc: "选框提示内容配置" },
     {
       name: "disabled",
       type: "boolean",
@@ -211,13 +211,13 @@ export default function SelectTreeExample() {
     },
     {
       name: "onChange",
-      type: <>(selectedValue: <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link> | <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>[], item: <Link anchor="SelectTreeItemType-API">SelectTreeItemType</Link>){' =>'} void</>,
-      desc: "选择事件",
+      type: <>(value: string | string[], option: <Link anchor="CascaderOption-API">CascaderOption</Link>, selectedOptions?: <Link anchor="CascaderOption-API">CascaderOption</Link>[]){' =>'} void</>,
+      desc: "选择事件（value 为选中 key 或 key 数组，selectedOptions 为所有选中项）",
     },
   ];
-  const SelectTreeTypes = [
+  const CascaderTypes = [
     {
-      name: "SelectTreeItemType",
+      name: "CascaderOption",
       data: [
         { name: "key", type: "string", desc: "唯一标识" },
         { name: "label", type: "string", desc: "选项值" },
@@ -229,16 +229,16 @@ export default function SelectTreeExample() {
           desc: "是否禁用该选项",
           default: "false",
         },
-        { name: "children", type: "SelectTreeItemType[]", desc: "子选项" },
+        { name: "children", type: "CascaderOption[]", desc: "子选项" },
       ],
     },
   ]
 
   return (
     <ComponentContentLayout
-      zh='树形选择器'
-      en='SelectTree'
-      desc='LandDesign 的树形选择器组件，支持单选和多选模式，提供层级结构展示和父子节点联动功能。'
+      zh='级联选择器'
+      en='Cascader'
+      desc='LandDesign 的级联选择器组件，支持单选和多选模式，提供多列层级展示和父子节点联动功能。'
       activeTab={activeTab}
       onTabChange={setActiveTab}
     >
@@ -249,37 +249,37 @@ export default function SelectTreeExample() {
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
-            id='select-tree-normal'
-            description='SelectTree 组件的基础用法，支持单选模式。'
+            id='cascader-normal'
+            description='Cascader 组件的基础用法，支持单选模式。'
           >
             <CodeOperationContainer>
-              <SelectTree
-                data={treeData}
-                selected={selected}
+              <Cascader
+                options={treeData}
+                value={selected?.key}
                 onChange={handleSingleChange}
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 多选树形选择器 */}
+          {/* 多选级联选择器 */}
           <ComponentSectionLayout
-            title='多选树形选择器'
-            id='select-tree-multiple'
+            title='多选级联选择器'
+            id='cascader-multiple'
             description='通过 multiple 属性可以启用多选模式，支持父子节点联动。'
           >
             <CodeOperationContainer>
-              <SelectTree
-                data={treeData}
+              <Cascader
+                options={treeData}
                 multiple
-                selectedValues={selectedValues}
+                values={selectedValues.map(i => i.key)}
                 onChange={handleMultipleChange}
                 separator="、"
                 maxDisplayCount={5}
               />
-              <SelectTree
-                data={treeData}
+              <Cascader
+                options={treeData}
                 multiple
-                selectedValues={selectedValues}
+                values={selectedValues.map(i => i.key)}
                 onChange={handleMultipleChange}
                 separator=" | "
                 maxDisplayCount={2}
@@ -295,13 +295,13 @@ export default function SelectTreeExample() {
           {/* 自定义显示内容 */}
           <ComponentSectionLayout
             title='自定义显示内容'
-            id='select-tree-custom-display'
+            id='cascader-custom-display'
             description='通过 customValueDisplay 属性可以自定义选择结果的显示方式。'
           >
             <CodeOperationContainer>
-              <SelectTree
-                data={treeData}
-                selected={singleCustomDisplayValue}
+              <Cascader
+                options={treeData}
+                value={singleCustomDisplayValue?.key}
                 onChange={handleSingleCustomDisplayChange}
                 customValueDisplay={({ items, placeholder }) => {
                   if (items.length === 0) {
@@ -315,10 +315,10 @@ export default function SelectTreeExample() {
                   );
                 }}
               />
-              <SelectTree
-                data={treeData}
+              <Cascader
+                options={treeData}
                 multiple
-                selectedValues={customDisplaySelectedValues}
+                values={customDisplaySelectedValues.map(i => i.key)}
                 onChange={handleCustomDisplayChange}
                 customValueDisplay={({ items, placeholder }) => {
                   if (items.length === 0) {
@@ -326,7 +326,7 @@ export default function SelectTreeExample() {
                   }
 
                   return (
-                    <div className='flex items-center gap-4'>
+                    <div className='flex items-center gap-1'>
                       {items.slice(0, 3).map((item) => (
                         <Tag key={item.key} style={{ background: '#e6f7ff', border: '1px solid var(--color-primary-3)', borderRadius: '4px', padding: '2px 8px', fontSize: '12px', color: 'var(--color-primary-6)' }}>{item.label}</Tag>
                       ))}
@@ -345,13 +345,13 @@ export default function SelectTreeExample() {
           {/* 包含提示内容 */}
           <ComponentSectionLayout
             title='包含提示内容'
-            id='select-tree-tip'
-            description='通过 tip 属性可以为树形选择器添加提示内容。'
+            id='cascader-tip'
+            description='通过 tip 属性可以为级联选择器添加提示内容。'
           >
             <CodeOperationContainer>
-              <SelectTree
-                data={treeDataWithTips}
-                tip='树形选择器提示内容'
+              <Cascader
+                options={treeDataWithTips}
+                tip='级联选择器提示内容'
               />
             </CodeOperationContainer>
           </ComponentSectionLayout>
@@ -359,23 +359,23 @@ export default function SelectTreeExample() {
           {/* 选项包含提示内容 */}
           <ComponentSectionLayout
             title='选项包含提示内容'
-            id='select-tree-item-tip'
+            id='cascader-item-tip'
             description='选项可以包含提示内容，支持整个选项和选项后置图标两种展示形式。'
           >
             <CodeOperationContainer>
-              <SelectTree data={treeDataWithTips} />
+              <Cascader options={treeDataWithTips} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
-          {/* 树形选择器整体禁用 */}
+          {/* 级联选择器整体禁用 */}
           <ComponentSectionLayout
-            title='树形选择器整体禁用'
-            id='select-tree-disabled'
-            description='通过 disabled 属性可以禁用整个树形选择器。'
+            title='级联选择器整体禁用'
+            id='cascader-disabled'
+            description='通过 disabled 属性可以禁用整个级联选择器。'
           >
             <CodeOperationContainer>
-              <SelectTree
-                data={treeData}
+              <Cascader
+                options={treeData}
                 disabled
               />
             </CodeOperationContainer>
@@ -384,28 +384,28 @@ export default function SelectTreeExample() {
           {/* 选项禁用 */}
           <ComponentSectionLayout
             title='选项禁用'
-            id='select-tree-item-disabled'
+            id='cascader-item-disabled'
             description='可以单独禁用某些选项，禁用后该选项不可选择。'
           >
             <CodeOperationContainer>
-              <SelectTree data={treeDataWithDisabled} />
+              <Cascader options={treeDataWithDisabled} />
             </CodeOperationContainer>
           </ComponentSectionLayout>
 
           {/* 设置不同样式 */}
           <ComponentSectionLayout
             title='设置不同样式'
-            id='select-tree-type'
-            description='SelectTree 支持 4 种不同的样式类型，适应不同的使用场景。'
+            id='cascader-type'
+            description='Cascader 支持 4 种不同的样式类型，适应不同的使用场景。'
           >
             <CodeOperationContainer>
-              {['border', 'background', 'text', 'transparent'].map(type => (
-                <SelectTree
+              {['outline', 'fill', 'text', 'transparent'].map(type => (
+                <Cascader
                   key={type}
-                  data={treeData}
-                  selected={selected}
+                  options={treeData}
+                  value={selected?.key}
                   onChange={handleSingleChange}
-                  type={type as any}
+                  variant={type as any}
                 />
               ))}
             </CodeOperationContainer>
@@ -414,9 +414,9 @@ export default function SelectTreeExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
-          <ComponentPropsTable props={selectTreeProps} />
-            {SelectTreeTypes?.map(i => <div key={i.name} className='flex flex-col gap-12' id={`${i.name}-API`}>
+        <div className='flex flex-col gap-3'>
+          <ComponentPropsTable props={cascaderProps} />
+            {CascaderTypes?.map(i => <div key={i.name} className='flex flex-col gap-3' id={`${i.name}-API`}>
             <h3 className='text-sm font-bold'>{i.name}</h3>
             <ComponentPropsTable props={i.data as any} />
           </div>)}

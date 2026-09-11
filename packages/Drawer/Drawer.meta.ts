@@ -77,7 +77,7 @@ export const DrawerMeta = {
     },
   ],
 
-  relatedComponents: ['Dialog', 'PopOver', 'Menu'],
+  relatedComponents: ['Dialog', 'Popup', 'Nav'],
 
   notes: [
     'show 控制抽屉的显示/隐藏',

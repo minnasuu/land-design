@@ -18,7 +18,7 @@
 - 响应式设计，适配不同屏幕尺寸
 
 ### 3. 滚动到视区功能
-- Menu组件新增`scrollToView`属性
+- Nav组件新增`scrollToView`属性
 - 当选中项切换时，自动将选中项滚动到视区中心
 - 支持水平和垂直方向的滚动
 
@@ -58,10 +58,10 @@ export default function Example() {
 ### 滚动到视区功能
 
 ```tsx
-import Menu from '../packages/Menu';
+import Nav from '../packages/Nav';
 
 // 水平滚动
-<Menu
+<Nav
   data={menuData}
   active={activeKey}
   onChange={handleChange}
@@ -69,7 +69,7 @@ import Menu from '../packages/Menu';
 />
 
 // 垂直滚动
-<Menu
+<Nav
   data={menuData}
   active={activeKey}
   direction="column"
@@ -114,8 +114,8 @@ export const componentCodeMap: Record<string, string> = {
 - 按钮样式
 - 背景遮罩
 
-### Menu 滚动样式
-当启用`scrollToView`时，Menu组件会自动添加：
+### Nav 滚动样式
+当启用`scrollToView`时，Nav组件会自动添加：
 - `overflow: auto`
 - `scroll-behavior: smooth`
 

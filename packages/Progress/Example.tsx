@@ -30,7 +30,7 @@ export default function ProgressExample() {
 
       {/* 标签页内容 */}
       {activeTab === 'examples' && (
-        <div className='flex flex-col gap-24'>
+        <div className='flex flex-col gap-6'>
           {/* 基础用法 */}
           <ComponentSectionLayout
             title='基础用法'
@@ -68,18 +68,18 @@ export default function ProgressExample() {
             description='支持默认、成功、失败三种状态。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">线性进度条</h4>
-                  <div className="flex flex-col gap-12">
+                  <h4 className="mb-2">线性进度条</h4>
+                  <div className="flex flex-col gap-3">
                     <Progress value={0.3} status="default" />
                     <Progress value={0.7} status="success" />
                     <Progress value={0.5} status="fail" />
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-8">圆形进度条</h4>
-                  <div className="flex gap-16">
+                  <h4 className="mb-2">圆形进度条</h4>
+                  <div className="flex gap-4">
                     <Progress type="circle" value={0.3} status="default" />
                     <Progress type="circle" value={0.7} status="success" />
                     <Progress type="circle" value={0.5} status="fail" />
@@ -96,16 +96,16 @@ export default function ProgressExample() {
             description='通过 hideLabel 属性可以隐藏百分比标签。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">线性进度条（隐藏标签）</h4>
+                  <h4 className="mb-2">线性进度条（隐藏标签）</h4>
                     <Progress hideLabel value={0.3} />
                     <Progress hideLabel value={0.7} status="success" />
                     <Progress hideLabel value={0.5} status="fail" />
                 </div>
                 <div>
-                  <h4 className="mb-8">圆形进度条（隐藏标签）</h4>
-                  <div className="flex gap-16">
+                  <h4 className="mb-2">圆形进度条（隐藏标签）</h4>
+                  <div className="flex gap-4">
                     <Progress type="circle" hideLabel value={0.3} />
                     <Progress type="circle" hideLabel value={0.7} status="success" />
                     <Progress type="circle" hideLabel value={0.5} status="fail" />
@@ -122,7 +122,7 @@ export default function ProgressExample() {
             description='可以通过 strokeWidth 属性自定义圆形进度条的线条宽度。'
           >
             <CodeOperationContainer>
-              <div className="flex gap-16">
+              <div className="flex gap-4">
                 <Progress type="circle" strokeWidth={2} value={0.5} />
                 <Progress type="circle" strokeWidth={4} value={0.5} />
                 <Progress type="circle" strokeWidth={8} value={0.5} />
@@ -138,13 +138,13 @@ export default function ProgressExample() {
             description='进度条支持平滑的动画效果。'
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <div>
-                  <h4 className="mb-8">线性进度条动画</h4>
+                  <h4 className="mb-2">线性进度条动画</h4>
                   <Progress value={0.8} status="success" />
                 </div>
                 <div>
-                  <h4 className="mb-8">圆形进度条动画</h4>
+                  <h4 className="mb-2">圆形进度条动画</h4>
                   <Progress type="circle" value={0.8} status="success" />
                 </div>
               </div>
@@ -154,7 +154,7 @@ export default function ProgressExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={progressProps} />
         </div>
       )}

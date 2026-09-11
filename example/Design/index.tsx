@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Menu from '../../packages/Menu'
+import Nav from '../../packages/Nav'
 import Colors from './Colors';
 import Principles from './Principles';
 import Typography from './Typography';
@@ -37,15 +37,15 @@ export default function Design() {
 
   return (
     <ComponentLayout active="design">
-      <Menu
+      <Nav
         items={menuItems}
         active={active}
         onChange={(item) => setActive(item.key)}
         direction="column"
         style={{ width: "240px", height: "100%" }}
-        className="py-24 overflow-auto scrollbar-none"
+        className="py-6 overflow-auto scrollbar-none"
       />
-      <div className="flex-1 p-24 height-100 overflow-auto border-box">
+      <div className="flex-1 p-6 height-100 overflow-auto border-box">
         <div className="flex flex-col w-full">
           {renderContent()}
         </div>

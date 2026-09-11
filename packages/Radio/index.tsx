@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import './index.scss';
-import PopOver from "../PopOver";
+import Tooltip from "../Tooltip";
 import Icon from "../Icon";
 import { RadioProps, radioDefaultProps } from "./props";
 
@@ -127,7 +127,7 @@ const Radio: React.FC<RadioProps> = ({
             color="var(--color-text-tertiary)" 
             size={12} 
           />
-          <PopOver 
+          <Tooltip 
             content={tip} 
             theme="dark" 
             style={{ maxWidth: "200px" }} 

@@ -5,7 +5,7 @@ import Layout from ".";
 import Header from "../Header";
 import Content from "../Content";
 import Footer from "../Footer";
-import { ClickType } from "../Menu/props";
+import { ClickType } from "../Nav/props";
 import ComponentContentLayout from '../../example/components/ComponentContentLayout';
 import ComponentPropsTable from '../../example/components/ComponentPropsTable';
 import ComponentSectionLayout from '../../example/components/ComponentSectionLayout';
@@ -30,7 +30,7 @@ export default function LayoutExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基本布局 */}
           <ComponentSectionLayout
             title='基本布局'
@@ -38,7 +38,7 @@ export default function LayoutExample() {
             description='Layout 组件的基本用法，包含Header、Content、Footer。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-6 border border-gray-3 p-8">
+              <div className="flex justify-center gap-1.5 border border-gray-3 p-2">
                 <Layout className="border border-gray-3 w-full" style={{ height: 600 }}>
                   <Header
                     logo={<p>🌷🌷🌷</p>}
@@ -69,7 +69,7 @@ export default function LayoutExample() {
             description='通过Header的fixed属性可以创建固定顶部导航栏。'
           >
             <CodeOperationContainer>
-              <div className="flex justify-center gap-6 p-8 border border-gray-3">
+              <div className="flex justify-center gap-1.5 p-2 border border-gray-3">
                 <Layout className="border border-gray-3 w-full" style={{ height: 600 }}>
                   <Header logo={<p>🌷🌷🌷</p>} name={<Title title="Web Site" type="h2" />} fixed filter={10} />
                   <Layout>
@@ -84,7 +84,7 @@ export default function LayoutExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className='flex flex-col gap-12'>
+        <div className='flex flex-col gap-3'>
           <ComponentPropsTable props={layoutProps} />
         </div>
       )}

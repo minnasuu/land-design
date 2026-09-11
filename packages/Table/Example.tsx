@@ -205,7 +205,7 @@ export default function TableExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -224,7 +224,7 @@ export default function TableExample() {
             description="通过 size 属性设置表格尺寸，支持 small、medium、large 三种尺寸。"
           >
             <CodeOperationContainer>
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-4">
                 <Table columns={basicColumns} dataSource={basicData} size="small" />
                 <Table columns={basicColumns} dataSource={basicData} size="medium" />
                 <Table columns={basicColumns} dataSource={basicData} size="large" />
@@ -378,10 +378,10 @@ export default function TableExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={tableProps} />
           {tableTypes.map((type) => (
-            <div key={type.name} className="flex flex-col gap-12" id={`${type.name}-API`}>
+            <div key={type.name} className="flex flex-col gap-3" id={`${type.name}-API`}>
               <h3 className="text-sm font-bold">{type.name}</h3>
               <ComponentPropsTable props={type.data as any} />
             </div>

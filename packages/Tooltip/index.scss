@@ -1,0 +1,17 @@
+// ============================================================================
+// Tooltip 组件样式
+// @description 轻量文字提示，沿用 Popup 的气泡结构，仅收敛为紧凑尺寸与更轻的投影
+// @author Land Design System
+// ============================================================================
+
+.land-tooltip {
+  // 紧凑内边距 / 字号 / 最大宽度（覆盖 Popup 的默认气泡令牌）
+  --land-popup-padding: 4px 8px;
+  --land-popup-font-size: 12px;
+  --land-popup-max-width: 240px;
+
+  // 文字提示更轻的投影（覆盖 Popup 的阴影令牌）
+  --land-popup-shadow-near: 0 1px 1px rgba(0, 0, 0, 0.03);
+  --land-popup-shadow-far: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --land-popup-shadow-dark: 0 1px 4px rgba(0, 0, 0, 0.14);
+}

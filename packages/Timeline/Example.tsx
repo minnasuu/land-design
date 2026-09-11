@@ -108,7 +108,7 @@ export default function TimelineExample() {
       onTabChange={setActiveTab}
     >
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -138,13 +138,13 @@ export default function TimelineExample() {
             description="通过 icon 属性自定义节点图标。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-32">
+              <div className="flex gap-8">
                 <div>
-                  <h4 className="mb-12 font-medium">图标节点</h4>
+                  <h4 className="mb-3 font-medium">图标节点</h4>
                   <Timeline items={iconItems} />
                 </div>
                 <div>
-                  <h4 className="mb-12 font-medium">数字节点</h4>
+                  <h4 className="mb-3 font-medium">数字节点</h4>
                   <Timeline items={numberItems} />
                 </div>
               </div>
@@ -191,17 +191,17 @@ export default function TimelineExample() {
             description="支持 solid(实线)、dashed(虚线)、dotted(点线) 三种连接线类型。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-32">
+              <div className="flex gap-8">
                 <div>
-                  <h4 className="mb-12 font-medium">实线</h4>
+                  <h4 className="mb-3 font-medium">实线</h4>
                   <Timeline items={basicItems.slice(0, 3)} lineType="solid" />
                 </div>
                 <div>
-                  <h4 className="mb-12 font-medium">虚线</h4>
+                  <h4 className="mb-3 font-medium">虚线</h4>
                   <Timeline items={basicItems.slice(0, 3)} lineType="dashed" />
                 </div>
                 <div>
-                  <h4 className="mb-12 font-medium">点线</h4>
+                  <h4 className="mb-3 font-medium">点线</h4>
                   <Timeline items={basicItems.slice(0, 3)} lineType="dotted" />
                 </div>
               </div>
@@ -273,9 +273,9 @@ export default function TimelineExample() {
             description="通过 CSS 变量或 style 属性自定义样式。"
           >
             <CodeOperationContainer>
-              <div className="flex gap-32">
+              <div className="flex gap-8">
                 <div>
-                  <h4 className="mb-12 font-medium">自定义颜色</h4>
+                  <h4 className="mb-3 font-medium">自定义颜色</h4>
                   <Timeline
                     items={basicItems.slice(0, 3)}
                     dotColor="#722ed1"
@@ -283,7 +283,7 @@ export default function TimelineExample() {
                   />
                 </div>
                 <div>
-                  <h4 className="mb-12 font-medium">自定义尺寸</h4>
+                  <h4 className="mb-3 font-medium">自定义尺寸</h4>
                   <Timeline
                     items={basicItems.slice(0, 3)}
                     dotSize={14}
@@ -309,7 +309,7 @@ export default function TimelineExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <h3 className="text-sm font-bold">Timeline Props</h3>
           <ComponentPropsTable props={timelineProps} />
 

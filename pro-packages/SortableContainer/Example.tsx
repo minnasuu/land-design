@@ -206,7 +206,7 @@ export default function SortableContainerExample() {
       <CodeOperationBar label="关键代码" reactTsxCodeStr={reactTsxCodeStr} />
 
       {activeTab === 'examples' && (
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-6">
           {/* 基础用法 */}
           <ComponentSectionLayout
             title="基础用法"
@@ -306,7 +306,7 @@ export default function SortableContainerExample() {
       )}
 
       {activeTab === 'props' && (
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-3">
           <ComponentPropsTable props={propsData} />
         </div>
       )}

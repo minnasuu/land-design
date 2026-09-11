@@ -44,8 +44,9 @@ export interface AlertBaseProps {
    * - loading: 加载类型
    * 
    * 向后兼容值：default, fail, warn
+   * （组件内部通过 typeMap 归一化，运行时与类型均支持）
    */
-  type?: AlertType;
+  type?: AlertType | LegacyAlertType;
 
   /** 
    * Alert变体样式
